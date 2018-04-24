@@ -22,6 +22,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,6 +32,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Checador.Cat_Horarios;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -113,7 +115,7 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 		panel.add(btnFiltroDeColaborador).setBounds(x+ancho, y, 30, 20);
 		panel.add(txtFolioColaborador).setBounds(x+ancho+30, y, ancho-30, 20);
 		panel.add(txtNombreColaborador).setBounds(x+ancho*2, y, ancho*4, 20);
-		panel.add(btnRefresh).setBounds(x+ancho*6, y, ancho+40, 20);
+		panel.add(btnRefresh).setBounds(x+ancho*6, y, ancho+35, 20);
 		panel.add(lblFotoColaborador).setBounds(x+ancho*8, y, 100, 90);
 		
 		panel.add(new JLabel("Establecimiento:")).setBounds(x, y+=25, ancho+20, 20);
@@ -177,16 +179,37 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 		
 		btnFiltroDeColaborador.addActionListener(opFiltroEmpleados);
 		btnRefresh.addActionListener(opRefrescar);
+		btnGuardar.addActionListener(opGuardar);
 		
 		rbH1.addActionListener(opRb);
 		rbH2.addActionListener(opRb);
 		rbH3.addActionListener(opRb);
+		
+		btnFiltroH1.addActionListener(opH1);
+		btnFiltroH2.addActionListener(opH2);
+		btnFiltroH3.addActionListener(opH3);
 		
 		this.setSize(800,280);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		
 	}
+	
+	ActionListener opH1 = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+				new Cat_Horarios(Integer.valueOf(lblFolioH1.getText().toString().trim()),"SI").setVisible(true);
+		}
+	};
+	ActionListener opH2 = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+				new Cat_Horarios(Integer.valueOf(lblFolioH2.getText().toString().trim()),"SI").setVisible(true);
+		}
+	};
+	ActionListener opH3 = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+				new Cat_Horarios(Integer.valueOf(lblFolioH3.getText().toString().trim()),"SI").setVisible(true);
+		}
+	};
 	
 	public void caposActivos(){
 		
@@ -203,16 +226,16 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 		}else{
 			
 			cmbTurnoCuadrante.setEnabled(true);
-			
-			if(!txtHorario1.getText().toString().trim().equals("")){
+//			String[] horarioRotativo = { "Sin Horario rotativo ", "2 Horarios", "3 Horarios" };
+			if(!txtHorario1.getText().toString().trim().equals("") && cmbStatusRotativo.getSelectedIndex()==0){
 				btnFiltroH1.setEnabled(true);
 				rbH1.setEnabled(true);
 			}
-			if(!txtHorario2.getText().toString().trim().equals("")){
+			if(!txtHorario2.getText().toString().trim().equals("") && cmbStatusRotativo.getSelectedIndex()>0){
 				btnFiltroH2.setEnabled(true);
 				rbH2.setEnabled(true);
 			}
-			if(!txtHorario3.getText().toString().trim().equals("")){
+			if(!txtHorario3.getText().toString().trim().equals("") && cmbStatusRotativo.getSelectedIndex()>1){
 				btnFiltroH3.setEnabled(true);
 				rbH3.setEnabled(true);
 			}
@@ -237,10 +260,75 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 				seleccionDeColaborador(Integer.valueOf(txtFolioColaborador.getText()));
 			}else{
 				//aviso (es necesario seleccionar un colaborador para poder actualizar la informacion)
+				JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Un Colaborador Para Actualizar La Informacion", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
 			}
 			
 		}
 	};
+	
+	ActionListener opGuardar = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			
+			if(!txtFolioColaborador.getText().equals("")){
+				
+				Obj_Revision_De_Horario_Por_Nivel_Jerarquico revision = new Obj_Revision_De_Horario_Por_Nivel_Jerarquico();
+				
+				revision.setFolio_colaborador(Integer.valueOf(txtFolioColaborador.getText()));
+				revision.setStatus_h1(rbH1.isSelected());
+				revision.setStatus_h2(rbH2.isSelected());
+				revision.setStatus_h3(rbH3.isSelected());
+				revision.setTurno_cuadrante(cmbTurnoCuadrante.getSelectedItem().toString().trim());
+				
+				if(revision.guardar()){
+					limpiar();
+					JOptionPane.showMessageDialog(null, "Se Actualizaron Los Datos Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+					dispose();
+					return;
+				}else{
+					JOptionPane.showMessageDialog(null,"No Se Pudo Actualizar El Registro", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+				
+
+			}else{
+				//aviso (es necesario seleccionar un colaborador para poder actualizar la informacion)
+				JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Un Colaborador Para Actualizar La Informacion", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+			
+		}
+	};
+	
+	public void limpiar(){
+		txtFolioColaborador.setText("");
+		txtNombreColaborador.setText("");
+		txtEstablecimiento.setText("");
+		txtDepartamento.setText("");
+		txtPuesto.setText("");
+		lblFolioH1.setText("");
+		txtHorario1.setText("");
+		lblFolioH2.setText("");
+		txtHorario2.setText("");
+		lblFolioH3.setText("");
+		txtHorario3.setText("");
+		cmbStatusRotativo.setSelectedIndex(0);
+		txtDescanso.setText("");
+		txtDobla.setText("");
+		cmbTurnoCuadrante.setSelectedIndex(0);
+		
+		btnGroup.remove(rbH1);
+		btnGroup.remove(rbH2);
+		btnGroup.remove(rbH3);
+		
+		rbH1.setSelected(false);
+		rbH2.setSelected(false);
+		rbH3.setSelected(false);
+		
+		btnGroup.add(rbH1);
+		btnGroup.add(rbH2);
+		btnGroup.add(rbH3);
+	}
 	
 	//TODO Filtro COLABORADOR
 	public class Filtro_Permiso_Empleado extends JDialog{

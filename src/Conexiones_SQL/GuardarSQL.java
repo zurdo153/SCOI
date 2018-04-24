@@ -95,6 +95,7 @@ import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
+import Obj_Lista_de_Raya.Obj_Revision_De_Horario_Por_Nivel_Jerarquico;
 import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
@@ -2415,8 +2416,8 @@ public boolean Guardar_Asignacion_mensajes(Obj_Asignacion_Mensajes mensj){
 
 
 //Guardamos el horario
-public boolean Guardar_Horario(Obj_Horarios horario){
-	String query = "exec sp_insert_horarios ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+public boolean Guardar_Horario(Obj_Horarios horario,int folio_turno){
+	String query = "exec sp_insert_horarios_2 ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 	Connection con = new Connexion().conexion();
 	PreparedStatement pstmt = null;
 	try {
@@ -2480,8 +2481,8 @@ public boolean Guardar_Horario(Obj_Horarios horario){
 		pstmt.setInt(i+=1, horario.getDiaDobla3());
 		pstmt.setInt(i+=1, horario.getRecesoDiarioExtra());
 		pstmt.setInt(i+=1, horario.getHorarioDeposito());
-		
-		
+		pstmt.setInt(i+=1, folio_turno);
+
 		pstmt.executeUpdate();
 		con.commit();
 	} catch (Exception e) {
@@ -7686,6 +7687,50 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	    	 pstmt.setInt(1,folio_emp);
 	    	 pstmt.setBinaryStream(2, datosHuella,tamañoHuella);
 	    	 pstmt.setBinaryStream(3, datosHuella2,tamañoHuella2);
+	    	 
+	    	 pstmt.executeUpdate();
+				con.commit();
+				
+			}catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				return false;
+			}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}		
+			return true;
+	}
+	
+	public boolean guardarRevision(Obj_Revision_De_Horario_Por_Nivel_Jerarquico revision){
+		
+		String query = "exec actualizar_horario_nivel_gerarquico ?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+	     try {
+	    	 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 
+	    	 pstmt.setInt(1,revision.getFolio_colaborador());
+	    	 pstmt.setBoolean(2,revision.isStatus_h1());
+	    	 pstmt.setBoolean(3,revision.isStatus_h2());
+	    	 pstmt.setBoolean(4,revision.isStatus_h3());
+	    	 pstmt.setString(5, revision.getTurno_cuadrante());
 	    	 
 	    	 pstmt.executeUpdate();
 				con.commit();

@@ -84,7 +84,7 @@ public class Cat_Filtro_Horarios extends JFrame
 	        		
 	    			int fila = tabla.getSelectedRow();
 	    			Object folio =  tabla.getValueAt(fila, 0);
-	    			new Cat_Horarios(Integer.parseInt(folio+"")).setVisible(true);
+	    			new Cat_Horarios(Integer.parseInt(folio+""),"NO").setVisible(true);
 	    			dispose();
 	        	}
 	        }

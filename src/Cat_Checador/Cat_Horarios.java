@@ -362,8 +362,21 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		btnEditar.setEnabled(false);
 	}
 	
+	
+//	public Cat_Horarios(int folio,String nivelGerarquico){
+//		new Cat_Horarios(folio);
+//		if(nivelGerarquico.equals("SI")){
+//			btnAceptar.setVisible(false);
+//			btnDeshacer.setVisible(false);
+//			btnEditar.setVisible(false);
+//			btnNuevo.setVisible(false);
+//			btnFiltro.setVisible(false);
+//			btnReportes.setVisible(false);
+//		}
+//	}
+	
 	@SuppressWarnings("deprecation")
-	public Cat_Horarios(int folio)//String nom
+	public Cat_Horarios(int folio,String nivelGerarquico)//String nom
 	{
 		getContenedor();
 		camposbooleano(false);
@@ -371,6 +384,15 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		btnAceptar.setEnabled(false);
 		
 		CargarCajero();
+		
+		if(nivelGerarquico.equals("SI")){
+			btnAceptar.setVisible(false);
+			btnDeshacer.setVisible(false);
+			btnEditar.setVisible(false);
+			btnNuevo.setVisible(false);
+			btnFiltro.setVisible(false);
+			btnReportes.setEnabled(true);
+		}
 		
 		Obj_Horarios buscar_horario = new Obj_Horarios().buscar(folio);
 		
@@ -563,6 +585,8 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 			
 			String[] sabadoRec = buscar_horario.getSabado5().split(":");
 			spSabado5.setValue(new Time(Integer.parseInt(sabadoRec[0]),Integer.parseInt(sabadoRec[1]),Integer.parseInt(sabadoRec[2])));
+			
+			cmbTurnoCuadrante.setSelectedItem(buscar_horario.getTurno());
 		}
 	
 
@@ -606,7 +630,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
         		return;
         	}else{
             	dispose();
-            	new Cat_Horarios(Integer.parseInt(txtFolio.getText())).setVisible(true);
+            	new Cat_Horarios(Integer.parseInt(txtFolio.getText()),"NO").setVisible(true);
             	txtFolio.setEnabled(false);
         	}
 		}
@@ -865,12 +889,14 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 	
 	ActionListener deshacer = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0){
+			cmbTurnoCuadrante.setSelectedIndex(0);
 			horasdefault();
 			resetear();
 			camposbooleano(false);
 			btnNuevo.setEnabled(true);
 			txtFolio.setEditable(true);
 			resestTextFieldDobladasExtras();
+			
 		}
 	};
 	
@@ -949,12 +975,16 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		public void actionPerformed(ActionEvent e) {
 			
 				Object[] tiempo = new Object[2];
-				
-				for(int i=0; i<turnosCuadrante.length; i++){
-					if(turnosCuadrante[i][1].toString().trim().equals(cmbTurnoCuadrante.getSelectedItem().toString().trim())){
-						tiempo[0]=turnosCuadrante[i][2].toString().trim();
-						tiempo[1]=turnosCuadrante[i][3].toString().trim();
-						i=turnosCuadrante.length;
+				if(cmbTurnoCuadrante.getSelectedIndex()==0){
+					tiempo[0]="00:00:00";
+					tiempo[1]="23:59:00";
+				}else{
+					for(int i=0; i<turnosCuadrante.length; i++){
+						if(turnosCuadrante[i][1].toString().trim().equals(cmbTurnoCuadrante.getSelectedItem().toString().trim())){
+							tiempo[0]=turnosCuadrante[i][2].toString().trim();
+							tiempo[1]=turnosCuadrante[i][3].toString().trim();
+							i=turnosCuadrante.length;
+						}
 					}
 				}
 				horasTurno(tiempo);
@@ -971,7 +1001,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 		spDomingo1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
 		spDomingo2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
 		
-		spLunes1.setValue(new Time(Integer.parseInt(inicioDefault[0]),Integer.parseInt(inicioDefault[1]),Integer.parseInt(inicioDefault[2])));
+		spLunes1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
 		spLunes2.setValue(new Time(Integer.parseInt(fin[0]),Integer.parseInt(fin[1]),Integer.parseInt(fin[2])));
 		
 		spMartes1.setValue(new Time(Integer.parseInt(inicio[0]),Integer.parseInt(inicio[1]),Integer.parseInt(inicio[2])));
@@ -1099,151 +1129,355 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 			if(txtFolio.getText().equals("")){
 				JOptionPane.showMessageDialog(null, "El folio es requerido \n", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 			}else{			
-				Obj_Horarios horario = new Obj_Horarios().buscar(Integer.parseInt(txtFolio.getText()));
+				int folio_turno=0;
+				for(int i=0; i<turnosCuadrante.length; i++){
+					if(cmbTurnoCuadrante.getSelectedItem().toString().trim().equals(turnosCuadrante[i][1].toString().trim())){
+						folio_turno=Integer.valueOf(turnosCuadrante[i][0].toString().trim());
+					}
+				}
 				
-				if(new Obj_Horarios().Existe(Integer.parseInt(txtFolio.getText())) == true){
-					if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
-						if(txtNombre.getText().equals("")) {
-							JOptionPane.showMessageDialog(null, "El Nombre es Requerido:", "Error al Actualizar el Registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-							return;
-						}else{
-//							actualizar
-							preguntas();
-							SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
-							
-							//Domingo
-							String Domingo_resultado1 = sdf.format ((Date) spDomingo1.getValue());
-							String Domingo_resultado2 = sdf.format((Date) spDomingo2.getValue());
-							String Domingo_resultado3 = sdf.format ((Date) spDomingo3.getValue());
-							String Domingo_resultado4 = sdf.format ((Date) spDomingo4.getValue());
-							String Domingo_resultado5 = sdf.format ((Date) spDomingo5.getValue());
-							
-							//Lunes
-							String Lunes_resultado1 = sdf.format ((Date) spLunes1.getValue());
-							String Lunes_resultado2 = sdf.format((Date) spLunes2.getValue());
-							String Lunes_resultado3 = sdf.format ((Date) spLunes3.getValue());
-							String Lunes_resultado4 = sdf.format ((Date) spLunes4.getValue());
-							String Lunes_resultado5 = sdf.format ((Date) spLunes5.getValue());
-							
-							//Martes
-							String Martes_resultado1 = sdf.format ((Date) spMartes1.getValue());
-							String Martes_resultado2 = sdf.format((Date)spMartes2.getValue());
-							String Martes_resultado3 = sdf.format ((Date) spMartes3.getValue());
-							String Martes_resultado4 = sdf.format ((Date) spMartes4.getValue());
-							String Martes_resultado5 = sdf.format ((Date) spMartes5.getValue());
-							
-							//Miercoles
-							String Miercoles_resultado1 = sdf.format ((Date) spMiercoles1.getValue());
-							String Miercoles_resultado2 = sdf.format ((Date) spMiercoles2.getValue());
-							String Miercoles_resultado3 = sdf.format ((Date) spMiercoles3.getValue());
-							String Miercoles_resultado4 = sdf.format ((Date) spMiercoles4.getValue());
-							String Miercoles_resultado5 = sdf.format ((Date) spMiercoles5.getValue());
-							
-							//Jueves
-							String Jueves_resultado1 = sdf.format ((Date) spJueves1.getValue());
-							String Jueves_resultado2 = sdf.format ((Date) spJueves2.getValue());
-							String Jueves_resultado3 = sdf.format ((Date) spJueves3.getValue());
-							String Jueves_resultado4 = sdf.format ((Date) spJueves4.getValue());
-							String Jueves_resultado5 = sdf.format ((Date) spJueves5.getValue());
-							
-							//Viernes
-							String Viernes_resultado1 = sdf.format ((Date) spViernes1.getValue());
-							String Viernes_resultado2 = sdf.format ((Date) spViernes2.getValue());
-							String Viernes_resultado3 = sdf.format ((Date) spViernes3.getValue());
-							String Viernes_resultado4 = sdf.format ((Date) spViernes4.getValue());
-							String Viernes_resultado5 = sdf.format ((Date) spViernes5.getValue());
-							
-							//Sabado
-							String Sabado_resultado1 = sdf.format ((Date) spSabado1.getValue());
-							String Sabado_resultado2 = sdf.format ((Date) spSabado2.getValue());
-							String Sabado_resultado3 = sdf.format ((Date) spSabado3.getValue());
-							String Sabado_resultado4 = sdf.format ((Date) spSabado4.getValue());
-							String Sabado_resultado5 = sdf.format ((Date) spSabado5.getValue());
-							
-							
-							Obj_Horarios horario_emp = new Obj_Horarios();
-							
+				if(folio_turno>0){
+					
+					Obj_Horarios horario = new Obj_Horarios().buscar(Integer.parseInt(txtFolio.getText()));
+					
+					if(new Obj_Horarios().Existe(Integer.parseInt(txtFolio.getText())) == true){
+						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
+							if(txtNombre.getText().equals("")) {
+								JOptionPane.showMessageDialog(null, "El Nombre es Requerido:", "Error al Actualizar el Registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+								return;
+							}else{
+//								actualizar
+								preguntas();
+								SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+								
+								//Domingo
+								String Domingo_resultado1 = sdf.format ((Date) spDomingo1.getValue());
+								String Domingo_resultado2 = sdf.format((Date) spDomingo2.getValue());
+								String Domingo_resultado3 = sdf.format ((Date) spDomingo3.getValue());
+								String Domingo_resultado4 = sdf.format ((Date) spDomingo4.getValue());
+								String Domingo_resultado5 = sdf.format ((Date) spDomingo5.getValue());
+								
+								//Lunes
+								String Lunes_resultado1 = sdf.format ((Date) spLunes1.getValue());
+								String Lunes_resultado2 = sdf.format((Date) spLunes2.getValue());
+								String Lunes_resultado3 = sdf.format ((Date) spLunes3.getValue());
+								String Lunes_resultado4 = sdf.format ((Date) spLunes4.getValue());
+								String Lunes_resultado5 = sdf.format ((Date) spLunes5.getValue());
+								
+								//Martes
+								String Martes_resultado1 = sdf.format ((Date) spMartes1.getValue());
+								String Martes_resultado2 = sdf.format((Date)spMartes2.getValue());
+								String Martes_resultado3 = sdf.format ((Date) spMartes3.getValue());
+								String Martes_resultado4 = sdf.format ((Date) spMartes4.getValue());
+								String Martes_resultado5 = sdf.format ((Date) spMartes5.getValue());
+								
+								//Miercoles
+								String Miercoles_resultado1 = sdf.format ((Date) spMiercoles1.getValue());
+								String Miercoles_resultado2 = sdf.format ((Date) spMiercoles2.getValue());
+								String Miercoles_resultado3 = sdf.format ((Date) spMiercoles3.getValue());
+								String Miercoles_resultado4 = sdf.format ((Date) spMiercoles4.getValue());
+								String Miercoles_resultado5 = sdf.format ((Date) spMiercoles5.getValue());
+								
+								//Jueves
+								String Jueves_resultado1 = sdf.format ((Date) spJueves1.getValue());
+								String Jueves_resultado2 = sdf.format ((Date) spJueves2.getValue());
+								String Jueves_resultado3 = sdf.format ((Date) spJueves3.getValue());
+								String Jueves_resultado4 = sdf.format ((Date) spJueves4.getValue());
+								String Jueves_resultado5 = sdf.format ((Date) spJueves5.getValue());
+								
+								//Viernes
+								String Viernes_resultado1 = sdf.format ((Date) spViernes1.getValue());
+								String Viernes_resultado2 = sdf.format ((Date) spViernes2.getValue());
+								String Viernes_resultado3 = sdf.format ((Date) spViernes3.getValue());
+								String Viernes_resultado4 = sdf.format ((Date) spViernes4.getValue());
+								String Viernes_resultado5 = sdf.format ((Date) spViernes5.getValue());
+								
+								//Sabado
+								String Sabado_resultado1 = sdf.format ((Date) spSabado1.getValue());
+								String Sabado_resultado2 = sdf.format ((Date) spSabado2.getValue());
+								String Sabado_resultado3 = sdf.format ((Date) spSabado3.getValue());
+								String Sabado_resultado4 = sdf.format ((Date) spSabado4.getValue());
+								String Sabado_resultado5 = sdf.format ((Date) spSabado5.getValue());
+								
+								
+								Obj_Horarios horario_emp = new Obj_Horarios();
+								
+									//Asignamos los datos
+									horario_emp.setFolio(Integer.parseInt(txtFolio.getText()));
+									horario_emp.setNombre(txtNombre.getText().toUpperCase());
+									
+									horario_emp.setDomingo1(Domingo_resultado1);
+									horario_emp.setDomingo2(Domingo_resultado2);
+									horario_emp.setDomingo3(Domingo_resultado3);
+									horario_emp.setDomingo4(Domingo_resultado4);
+									horario_emp.setDomingo5(Domingo_resultado5);
+									
+									horario_emp.setLunes1(Lunes_resultado1);
+									horario_emp.setLunes2(Lunes_resultado2);
+									horario_emp.setLunes3(Lunes_resultado3);
+									horario_emp.setLunes4(Lunes_resultado4);
+									horario_emp.setLunes5(Lunes_resultado5);
+									
+									horario_emp.setMartes1(Martes_resultado1);
+									horario_emp.setMartes2(Martes_resultado2);
+									horario_emp.setMartes3(Martes_resultado3);
+									horario_emp.setMartes4(Martes_resultado4);
+									horario_emp.setMartes5(Martes_resultado5);
+									
+									horario_emp.setMiercoles1(Miercoles_resultado1);
+									horario_emp.setMiercoles2(Miercoles_resultado2);
+									horario_emp.setMiercoles3(Miercoles_resultado3);
+									horario_emp.setMiercoles4(Miercoles_resultado4);
+									horario_emp.setMiercoles5(Miercoles_resultado5);
+									
+									horario_emp.setJueves1(Jueves_resultado1);
+									horario_emp.setJueves2(Jueves_resultado2);
+									horario_emp.setJueves3(Jueves_resultado3);
+									horario_emp.setJueves4(Jueves_resultado4);
+									horario_emp.setJueves5(Jueves_resultado5);
+									
+									horario_emp.setViernes1(Viernes_resultado1);
+									horario_emp.setViernes2(Viernes_resultado2);
+									horario_emp.setViernes3(Viernes_resultado3);
+									horario_emp.setViernes4(Viernes_resultado4);
+									horario_emp.setViernes5(Viernes_resultado5);
+									
+									horario_emp.setSabado1(Sabado_resultado1);
+									horario_emp.setSabado2(Sabado_resultado2);
+									horario_emp.setSabado3(Sabado_resultado3);
+									horario_emp.setSabado4(Sabado_resultado4);
+									horario_emp.setSabado5(Sabado_resultado5);
+									
+									horario_emp.setDescanso(Descanso);
+									
+//									manda al objeto el dia de la semana que dobla numerico 
+										if(rbNoDobla.isSelected()==true){	horario_emp.setDiaDobla(0);		}
+										if(rbLunes.isSelected()==true){		horario_emp.setDiaDobla(1);		}
+										if(rbMartes.isSelected()==true){	horario_emp.setDiaDobla(2);		}
+										if(rbMiercoles.isSelected()==true){	horario_emp.setDiaDobla(3);		}
+										if(rbJueves.isSelected()==true){	horario_emp.setDiaDobla(4);		}
+										if(rbViernes.isSelected()==true){	horario_emp.setDiaDobla(5);		}
+										if(rbSabado.isSelected()==true){	horario_emp.setDiaDobla(6);		}
+										if(rbDomingo.isSelected()==true){	horario_emp.setDiaDobla(7);		}
+										
+//									manda al objeto el diaExtra1 de la semana que dobla numerico 
+										if(rbNoDobla2.isSelected()==true){	horario_emp.setDiaDobla2(0);		}
+										if(rbLunes2.isSelected()==true){	horario_emp.setDiaDobla2(1);		}
+										if(rbMartes2.isSelected()==true){	horario_emp.setDiaDobla2(2);		}
+										if(rbMiercoles2.isSelected()==true){horario_emp.setDiaDobla2(3);		}
+										if(rbJueves2.isSelected()==true){	horario_emp.setDiaDobla2(4);		}
+										if(rbViernes2.isSelected()==true){	horario_emp.setDiaDobla2(5);		}
+										if(rbSabado2.isSelected()==true){	horario_emp.setDiaDobla2(6);		}
+										if(rbDomingo2.isSelected()==true){	horario_emp.setDiaDobla2(7);		}
+											
+//									manda al objeto el diaExtra2 de la semana que dobla numerico 
+										if(rbNoDobla3.isSelected()==true){	horario_emp.setDiaDobla3(0);		}
+										if(rbLunes3.isSelected()==true){	horario_emp.setDiaDobla3(1);		}
+										if(rbMartes3.isSelected()==true){	horario_emp.setDiaDobla3(2);		}
+										if(rbMiercoles3.isSelected()==true){horario_emp.setDiaDobla3(3);		}
+										if(rbJueves3.isSelected()==true){	horario_emp.setDiaDobla3(4);		}
+										if(rbViernes3.isSelected()==true){	horario_emp.setDiaDobla3(5);		}
+										if(rbSabado3.isSelected()==true){	horario_emp.setDiaDobla3(6);		}
+										if(rbDomingo3.isSelected()==true){	horario_emp.setDiaDobla3(7);		}
+										
+//									status extras
+										if(chbHorarioDeposito.isSelected()==true){ horario_emp.setHorarioDeposito(1);}else{horario_emp.setHorarioDeposito(0);}
+										if(chbRecesoExtraDiario.isSelected()==true){ horario_emp.setRecesoDiarioExtra(1);}else{horario_emp.setRecesoDiarioExtra(0);}
+										
+										if(rbDomingo.isSelected() && rbDomingo2.isSelected() || rbDomingo2.isSelected() && rbDomingo3.isSelected() || rbDomingo.isSelected() && rbDomingo3.isSelected()){
+											JOptionPane.showMessageDialog(null, "El dia Domingo Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
+													                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}
+										if(rbLunes.isSelected() && rbLunes2.isSelected() || rbLunes2.isSelected() && rbLunes3.isSelected() || rbLunes.isSelected() && rbLunes3.isSelected()){
+											JOptionPane.showMessageDialog(null, "El dia Lunes Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
+													                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}
+										if(rbMartes.isSelected() && rbMartes2.isSelected() || rbMartes2.isSelected() && rbMartes3.isSelected() || rbMartes.isSelected() && rbMartes3.isSelected()){
+											JOptionPane.showMessageDialog(null, "El dia Martes Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
+													                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}
+										if(rbMiercoles.isSelected() && rbMiercoles2.isSelected() || rbMiercoles2.isSelected() && rbMiercoles3.isSelected() || rbMiercoles.isSelected() && rbMiercoles3.isSelected()){
+											JOptionPane.showMessageDialog(null, "El dia Miercoles Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
+													                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}
+										if(rbJueves.isSelected() && rbJueves2.isSelected() || rbJueves2.isSelected() && rbJueves3.isSelected() || rbJueves.isSelected() && rbJueves3.isSelected()){
+											JOptionPane.showMessageDialog(null, "El dia Jueves Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
+													                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}
+										if(rbViernes.isSelected() && rbViernes2.isSelected() || rbViernes2.isSelected() && rbViernes3.isSelected() || rbViernes.isSelected() && rbViernes3.isSelected()){
+											JOptionPane.showMessageDialog(null, "El dia Viernes Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
+													                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}
+										if(rbSabado.isSelected() && rbSabado2.isSelected() || rbSabado2.isSelected() && rbSabado3.isSelected() || rbSabado.isSelected() && rbSabado3.isSelected()){
+											JOptionPane.showMessageDialog(null, "El dia Sabado Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
+													                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}else{
+												if(horario_emp.Actualizar(Integer.parseInt(txtFolio.getText()),folio_turno)){
+//													cmbTurnoCuadrante.setSelectedIndex(0);
+													camposbooleano(false);
+													btnEditar.setEnabled(true);
+													btnAceptar.setEnabled(false);
+													JOptionPane.showMessageDialog(null, "El registro se Actualizo exitosamente!" , "Exito al Actualizar!", JOptionPane.INFORMATION_MESSAGE);
+													return;
+												}else{
+													JOptionPane.showMessageDialog(null, "Error al tratar de Actualizar el registro", "Error al Actualizar registro", JOptionPane.WARNING_MESSAGE);
+													return;
+												}
+										}
+							}
+						}
+						
+					}else{
+//							guardar
+						preguntas();
+							if(txtNombre.getText().equals(""))
+							{
+									JOptionPane.showMessageDialog(null, "El Nombre es Requerido:", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+									return;
+							}else{
+								SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
+								
+//								SimpleDateFormat sdf1 = new SimpleDateFormat ("E H:mm");
+								
+								//Domingo
+								String Domingo_resultado1 = sdf.format ((Date) spDomingo1.getValue());
+								String Domingo_resultado2 = sdf.format((Date) spDomingo2.getValue());
+								String Domingo_resultado3 = sdf.format ((Date) spDomingo3.getValue());
+								String Domingo_resultado4 = sdf.format ((Date) spDomingo4.getValue());
+								String Domingo_resultado5 = sdf.format ((Date) spDomingo5.getValue());
+								
+								//Lunes
+								String Lunes_resultado1 = sdf.format ((Date) spLunes1.getValue());
+								String Lunes_resultado2 = sdf.format((Date) spLunes2.getValue());
+								String Lunes_resultado3 = sdf.format ((Date) spLunes3.getValue());
+								String Lunes_resultado4 = sdf.format ((Date) spLunes4.getValue());
+								String Lunes_resultado5 = sdf.format ((Date) spLunes5.getValue());
+								
+								//Martes
+								String Martes_resultado1 = sdf.format ((Date) spMartes1.getValue());
+								String Martes_resultado2 = sdf.format((Date)spMartes2.getValue());
+								String Martes_resultado3 = sdf.format ((Date) spMartes3.getValue());
+								String Martes_resultado4 = sdf.format ((Date) spMartes4.getValue());
+								String Martes_resultado5 = sdf.format ((Date) spMartes5.getValue());
+								
+								//Miercoles
+								String Miercoles_resultado1 = sdf.format ((Date) spMiercoles1.getValue());
+								String Miercoles_resultado2 = sdf.format ((Date) spMiercoles2.getValue());
+								String Miercoles_resultado3 = sdf.format ((Date) spMiercoles3.getValue());
+								String Miercoles_resultado4 = sdf.format ((Date) spMiercoles4.getValue());
+								String Miercoles_resultado5 = sdf.format ((Date) spMiercoles5.getValue());
+								
+								//Jueves
+								String Jueves_resultado1 = sdf.format ((Date) spJueves1.getValue());
+								String Jueves_resultado2 = sdf.format ((Date) spJueves2.getValue());
+								String Jueves_resultado3 = sdf.format ((Date) spJueves3.getValue());
+								String Jueves_resultado4 = sdf.format ((Date) spJueves4.getValue());
+								String Jueves_resultado5 = sdf.format ((Date) spJueves5.getValue());
+								
+								//Viernes
+								String Viernes_resultado1 = sdf.format ((Date) spViernes1.getValue());
+								String Viernes_resultado2 = sdf.format ((Date) spViernes2.getValue());
+								String Viernes_resultado3 = sdf.format ((Date) spViernes3.getValue());
+								String Viernes_resultado4 = sdf.format ((Date) spViernes4.getValue());
+								String Viernes_resultado5 = sdf.format ((Date) spViernes5.getValue());
+								
+								//Sabado
+								String Sabado_resultado1 = sdf.format ((Date) spSabado1.getValue());
+								String Sabado_resultado2 = sdf.format ((Date) spSabado2.getValue());
+								String Sabado_resultado3 = sdf.format ((Date) spSabado3.getValue());
+								String Sabado_resultado4 = sdf.format ((Date) spSabado4.getValue());
+								String Sabado_resultado5 = sdf.format ((Date) spSabado5.getValue());
+								
+								
+								
+//								ObjHorario horario_emp = new ObjHorario();
+								horario.setNombre(txtNombre.getText().toUpperCase());
+								
 								//Asignamos los datos
-								horario_emp.setFolio(Integer.parseInt(txtFolio.getText()));
-								horario_emp.setNombre(txtNombre.getText().toUpperCase());
+								horario.setDomingo1(Domingo_resultado1);
+								horario.setDomingo2(Domingo_resultado2);
+								horario.setDomingo3(Domingo_resultado3);
+								horario.setDomingo4(Domingo_resultado4);
+								horario.setDomingo5(Domingo_resultado5);
 								
-								horario_emp.setDomingo1(Domingo_resultado1);
-								horario_emp.setDomingo2(Domingo_resultado2);
-								horario_emp.setDomingo3(Domingo_resultado3);
-								horario_emp.setDomingo4(Domingo_resultado4);
-								horario_emp.setDomingo5(Domingo_resultado5);
+								horario.setLunes1(Lunes_resultado1);
+								horario.setLunes2(Lunes_resultado2);
+								horario.setLunes3(Lunes_resultado3);
+								horario.setLunes4(Lunes_resultado4);
+								horario.setLunes5(Lunes_resultado5);
 								
-								horario_emp.setLunes1(Lunes_resultado1);
-								horario_emp.setLunes2(Lunes_resultado2);
-								horario_emp.setLunes3(Lunes_resultado3);
-								horario_emp.setLunes4(Lunes_resultado4);
-								horario_emp.setLunes5(Lunes_resultado5);
+								horario.setMartes1(Martes_resultado1);
+								horario.setMartes2(Martes_resultado2);
+								horario.setMartes3(Martes_resultado3);
+								horario.setMartes4(Martes_resultado4);
+								horario.setMartes5(Martes_resultado5);
 								
-								horario_emp.setMartes1(Martes_resultado1);
-								horario_emp.setMartes2(Martes_resultado2);
-								horario_emp.setMartes3(Martes_resultado3);
-								horario_emp.setMartes4(Martes_resultado4);
-								horario_emp.setMartes5(Martes_resultado5);
+								horario.setMiercoles1(Miercoles_resultado1);
+								horario.setMiercoles2(Miercoles_resultado2);
+								horario.setMiercoles3(Miercoles_resultado3);
+								horario.setMiercoles4(Miercoles_resultado4);
+								horario.setMiercoles5(Miercoles_resultado5);
 								
-								horario_emp.setMiercoles1(Miercoles_resultado1);
-								horario_emp.setMiercoles2(Miercoles_resultado2);
-								horario_emp.setMiercoles3(Miercoles_resultado3);
-								horario_emp.setMiercoles4(Miercoles_resultado4);
-								horario_emp.setMiercoles5(Miercoles_resultado5);
+								horario.setJueves1(Jueves_resultado1);
+								horario.setJueves2(Jueves_resultado2);
+								horario.setJueves3(Jueves_resultado3);
+								horario.setJueves4(Jueves_resultado4);
+								horario.setJueves5(Jueves_resultado5);
 								
-								horario_emp.setJueves1(Jueves_resultado1);
-								horario_emp.setJueves2(Jueves_resultado2);
-								horario_emp.setJueves3(Jueves_resultado3);
-								horario_emp.setJueves4(Jueves_resultado4);
-								horario_emp.setJueves5(Jueves_resultado5);
+								horario.setViernes1(Viernes_resultado1);
+								horario.setViernes2(Viernes_resultado2);
+								horario.setViernes3(Viernes_resultado3);
+								horario.setViernes4(Viernes_resultado4);
+								horario.setViernes5(Viernes_resultado5);
 								
-								horario_emp.setViernes1(Viernes_resultado1);
-								horario_emp.setViernes2(Viernes_resultado2);
-								horario_emp.setViernes3(Viernes_resultado3);
-								horario_emp.setViernes4(Viernes_resultado4);
-								horario_emp.setViernes5(Viernes_resultado5);
+								horario.setSabado1(Sabado_resultado1);
+								horario.setSabado2(Sabado_resultado2);
+								horario.setSabado3(Sabado_resultado3);
+								horario.setSabado4(Sabado_resultado4);
+								horario.setSabado5(Sabado_resultado5);
 								
-								horario_emp.setSabado1(Sabado_resultado1);
-								horario_emp.setSabado2(Sabado_resultado2);
-								horario_emp.setSabado3(Sabado_resultado3);
-								horario_emp.setSabado4(Sabado_resultado4);
-								horario_emp.setSabado5(Sabado_resultado5);
-								
-								horario_emp.setDescanso(Descanso);
+								horario.setDescanso(Descanso);
 								
 //								manda al objeto el dia de la semana que dobla numerico 
-									if(rbNoDobla.isSelected()==true){	horario_emp.setDiaDobla(0);		}
-									if(rbLunes.isSelected()==true){		horario_emp.setDiaDobla(1);		}
-									if(rbMartes.isSelected()==true){	horario_emp.setDiaDobla(2);		}
-									if(rbMiercoles.isSelected()==true){	horario_emp.setDiaDobla(3);		}
-									if(rbJueves.isSelected()==true){	horario_emp.setDiaDobla(4);		}
-									if(rbViernes.isSelected()==true){	horario_emp.setDiaDobla(5);		}
-									if(rbSabado.isSelected()==true){	horario_emp.setDiaDobla(6);		}
-									if(rbDomingo.isSelected()==true){	horario_emp.setDiaDobla(7);		}
+									if(rbNoDobla.isSelected()==true){	horario.setDiaDobla(0);		}
+									if(rbLunes.isSelected()==true){		horario.setDiaDobla(1);		}
+									if(rbMartes.isSelected()==true){	horario.setDiaDobla(2);		}
+									if(rbMiercoles.isSelected()==true){	horario.setDiaDobla(3);		}
+									if(rbJueves.isSelected()==true){	horario.setDiaDobla(4);		}
+									if(rbViernes.isSelected()==true){	horario.setDiaDobla(5);		}
+									if(rbSabado.isSelected()==true){	horario.setDiaDobla(6);		}
+									if(rbDomingo.isSelected()==true){	horario.setDiaDobla(7);		}
 									
 //								manda al objeto el diaExtra1 de la semana que dobla numerico 
-									if(rbNoDobla2.isSelected()==true){	horario_emp.setDiaDobla2(0);		}
-									if(rbLunes2.isSelected()==true){	horario_emp.setDiaDobla2(1);		}
-									if(rbMartes2.isSelected()==true){	horario_emp.setDiaDobla2(2);		}
-									if(rbMiercoles2.isSelected()==true){horario_emp.setDiaDobla2(3);		}
-									if(rbJueves2.isSelected()==true){	horario_emp.setDiaDobla2(4);		}
-									if(rbViernes2.isSelected()==true){	horario_emp.setDiaDobla2(5);		}
-									if(rbSabado2.isSelected()==true){	horario_emp.setDiaDobla2(6);		}
-									if(rbDomingo2.isSelected()==true){	horario_emp.setDiaDobla2(7);		}
+									if(rbNoDobla2.isSelected()==true){	horario.setDiaDobla2(0);		}
+									if(rbLunes2.isSelected()==true){	horario.setDiaDobla2(1);		}
+									if(rbMartes2.isSelected()==true){	horario.setDiaDobla2(2);		}
+									if(rbMiercoles2.isSelected()==true){horario.setDiaDobla2(3);		}
+									if(rbJueves2.isSelected()==true){	horario.setDiaDobla2(4);		}
+									if(rbViernes2.isSelected()==true){	horario.setDiaDobla2(5);		}
+									if(rbSabado2.isSelected()==true){	horario.setDiaDobla2(6);		}
+									if(rbDomingo2.isSelected()==true){	horario.setDiaDobla2(7);		}
 										
 //								manda al objeto el diaExtra2 de la semana que dobla numerico 
-									if(rbNoDobla3.isSelected()==true){	horario_emp.setDiaDobla3(0);		}
-									if(rbLunes3.isSelected()==true){	horario_emp.setDiaDobla3(1);		}
-									if(rbMartes3.isSelected()==true){	horario_emp.setDiaDobla3(2);		}
-									if(rbMiercoles3.isSelected()==true){horario_emp.setDiaDobla3(3);		}
-									if(rbJueves3.isSelected()==true){	horario_emp.setDiaDobla3(4);		}
-									if(rbViernes3.isSelected()==true){	horario_emp.setDiaDobla3(5);		}
-									if(rbSabado3.isSelected()==true){	horario_emp.setDiaDobla3(6);		}
-									if(rbDomingo3.isSelected()==true){	horario_emp.setDiaDobla3(7);		}
-									
+									if(rbNoDobla3.isSelected()==true){	horario.setDiaDobla3(0);		}
+									if(rbLunes3.isSelected()==true){	horario.setDiaDobla3(1);		}
+									if(rbMartes3.isSelected()==true){	horario.setDiaDobla3(2);		}
+									if(rbMiercoles3.isSelected()==true){horario.setDiaDobla3(3);		}
+									if(rbJueves3.isSelected()==true){	horario.setDiaDobla3(4);		}
+									if(rbViernes3.isSelected()==true){	horario.setDiaDobla3(5);		}
+									if(rbSabado3.isSelected()==true){	horario.setDiaDobla3(6);		}
+									if(rbDomingo3.isSelected()==true){	horario.setDiaDobla3(7);		}
+								
 //								status extras
-									if(chbHorarioDeposito.isSelected()==true){ horario_emp.setHorarioDeposito(1);}else{horario_emp.setHorarioDeposito(0);}
-									if(chbRecesoExtraDiario.isSelected()==true){ horario_emp.setRecesoDiarioExtra(1);}else{horario_emp.setRecesoDiarioExtra(0);}
+									if(chbHorarioDeposito.isSelected()==true){ horario.setHorarioDeposito(1);}else{horario.setHorarioDeposito(0);}
+									if(chbRecesoExtraDiario.isSelected()==true){ horario.setRecesoDiarioExtra(1);}else{horario.setRecesoDiarioExtra(0);}
 									
 									if(rbDomingo.isSelected() && rbDomingo2.isSelected() || rbDomingo2.isSelected() && rbDomingo3.isSelected() || rbDomingo.isSelected() && rbDomingo3.isSelected()){
 										JOptionPane.showMessageDialog(null, "El dia Domingo Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
@@ -1280,214 +1514,26 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 												                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
 										return;
 									}else{
-											if(horario_emp.Actualizar(Integer.parseInt(txtFolio.getText()))){
-												camposbooleano(false);
-												btnEditar.setEnabled(true);
-												btnAceptar.setEnabled(false);
-												JOptionPane.showMessageDialog(null, "El registro se Actualizo exitosamente!" , "Exito al Actualizar!", JOptionPane.INFORMATION_MESSAGE);
-												return;
-											}else{
-												JOptionPane.showMessageDialog(null, "Error al tratar de Actualizar el registro", "Error al Actualizar registro", JOptionPane.WARNING_MESSAGE);
-												return;
-											}
-									}
+									
+										if(horario.Guardar(folio_turno)){
+//											cmbTurnoCuadrante.setSelectedIndex(0);
+											camposbooleano(false);
+											btnEditar.setEnabled(true);
+											btnAceptar.setEnabled(false);
+											JOptionPane.showMessageDialog(null, "El registro se guardó exitosamente!" , "Exito al guardar!", JOptionPane.INFORMATION_MESSAGE);
+											return;
+										}else{
+											JOptionPane.showMessageDialog(null, "Error al tratar de guardar el registro", "Error al guardar registro", JOptionPane.WARNING_MESSAGE);
+											return;
+										}
+									}	
+							}
 						}
-					}
 					
 				}else{
-//						guardar
-					preguntas();
-						if(txtNombre.getText().equals(""))
-						{
-								JOptionPane.showMessageDialog(null, "El Nombre es Requerido:", "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-								return;
-						}else{
-							SimpleDateFormat sdf = new SimpleDateFormat ("H:mm");
-							
-//							SimpleDateFormat sdf1 = new SimpleDateFormat ("E H:mm");
-							
-							//Domingo
-							String Domingo_resultado1 = sdf.format ((Date) spDomingo1.getValue());
-							String Domingo_resultado2 = sdf.format((Date) spDomingo2.getValue());
-							String Domingo_resultado3 = sdf.format ((Date) spDomingo3.getValue());
-							String Domingo_resultado4 = sdf.format ((Date) spDomingo4.getValue());
-							String Domingo_resultado5 = sdf.format ((Date) spDomingo5.getValue());
-							
-							//Lunes
-							String Lunes_resultado1 = sdf.format ((Date) spLunes1.getValue());
-							String Lunes_resultado2 = sdf.format((Date) spLunes2.getValue());
-							String Lunes_resultado3 = sdf.format ((Date) spLunes3.getValue());
-							String Lunes_resultado4 = sdf.format ((Date) spLunes4.getValue());
-							String Lunes_resultado5 = sdf.format ((Date) spLunes5.getValue());
-							
-							//Martes
-							String Martes_resultado1 = sdf.format ((Date) spMartes1.getValue());
-							String Martes_resultado2 = sdf.format((Date)spMartes2.getValue());
-							String Martes_resultado3 = sdf.format ((Date) spMartes3.getValue());
-							String Martes_resultado4 = sdf.format ((Date) spMartes4.getValue());
-							String Martes_resultado5 = sdf.format ((Date) spMartes5.getValue());
-							
-							//Miercoles
-							String Miercoles_resultado1 = sdf.format ((Date) spMiercoles1.getValue());
-							String Miercoles_resultado2 = sdf.format ((Date) spMiercoles2.getValue());
-							String Miercoles_resultado3 = sdf.format ((Date) spMiercoles3.getValue());
-							String Miercoles_resultado4 = sdf.format ((Date) spMiercoles4.getValue());
-							String Miercoles_resultado5 = sdf.format ((Date) spMiercoles5.getValue());
-							
-							//Jueves
-							String Jueves_resultado1 = sdf.format ((Date) spJueves1.getValue());
-							String Jueves_resultado2 = sdf.format ((Date) spJueves2.getValue());
-							String Jueves_resultado3 = sdf.format ((Date) spJueves3.getValue());
-							String Jueves_resultado4 = sdf.format ((Date) spJueves4.getValue());
-							String Jueves_resultado5 = sdf.format ((Date) spJueves5.getValue());
-							
-							//Viernes
-							String Viernes_resultado1 = sdf.format ((Date) spViernes1.getValue());
-							String Viernes_resultado2 = sdf.format ((Date) spViernes2.getValue());
-							String Viernes_resultado3 = sdf.format ((Date) spViernes3.getValue());
-							String Viernes_resultado4 = sdf.format ((Date) spViernes4.getValue());
-							String Viernes_resultado5 = sdf.format ((Date) spViernes5.getValue());
-							
-							//Sabado
-							String Sabado_resultado1 = sdf.format ((Date) spSabado1.getValue());
-							String Sabado_resultado2 = sdf.format ((Date) spSabado2.getValue());
-							String Sabado_resultado3 = sdf.format ((Date) spSabado3.getValue());
-							String Sabado_resultado4 = sdf.format ((Date) spSabado4.getValue());
-							String Sabado_resultado5 = sdf.format ((Date) spSabado5.getValue());
-							
-							
-							
-//							ObjHorario horario_emp = new ObjHorario();
-							horario.setNombre(txtNombre.getText().toUpperCase());
-							
-							//Asignamos los datos
-							horario.setDomingo1(Domingo_resultado1);
-							horario.setDomingo2(Domingo_resultado2);
-							horario.setDomingo3(Domingo_resultado3);
-							horario.setDomingo4(Domingo_resultado4);
-							horario.setDomingo5(Domingo_resultado5);
-							
-							horario.setLunes1(Lunes_resultado1);
-							horario.setLunes2(Lunes_resultado2);
-							horario.setLunes3(Lunes_resultado3);
-							horario.setLunes4(Lunes_resultado4);
-							horario.setLunes5(Lunes_resultado5);
-							
-							horario.setMartes1(Martes_resultado1);
-							horario.setMartes2(Martes_resultado2);
-							horario.setMartes3(Martes_resultado3);
-							horario.setMartes4(Martes_resultado4);
-							horario.setMartes5(Martes_resultado5);
-							
-							horario.setMiercoles1(Miercoles_resultado1);
-							horario.setMiercoles2(Miercoles_resultado2);
-							horario.setMiercoles3(Miercoles_resultado3);
-							horario.setMiercoles4(Miercoles_resultado4);
-							horario.setMiercoles5(Miercoles_resultado5);
-							
-							horario.setJueves1(Jueves_resultado1);
-							horario.setJueves2(Jueves_resultado2);
-							horario.setJueves3(Jueves_resultado3);
-							horario.setJueves4(Jueves_resultado4);
-							horario.setJueves5(Jueves_resultado5);
-							
-							horario.setViernes1(Viernes_resultado1);
-							horario.setViernes2(Viernes_resultado2);
-							horario.setViernes3(Viernes_resultado3);
-							horario.setViernes4(Viernes_resultado4);
-							horario.setViernes5(Viernes_resultado5);
-							
-							horario.setSabado1(Sabado_resultado1);
-							horario.setSabado2(Sabado_resultado2);
-							horario.setSabado3(Sabado_resultado3);
-							horario.setSabado4(Sabado_resultado4);
-							horario.setSabado5(Sabado_resultado5);
-							
-							horario.setDescanso(Descanso);
-							
-//							manda al objeto el dia de la semana que dobla numerico 
-								if(rbNoDobla.isSelected()==true){	horario.setDiaDobla(0);		}
-								if(rbLunes.isSelected()==true){		horario.setDiaDobla(1);		}
-								if(rbMartes.isSelected()==true){	horario.setDiaDobla(2);		}
-								if(rbMiercoles.isSelected()==true){	horario.setDiaDobla(3);		}
-								if(rbJueves.isSelected()==true){	horario.setDiaDobla(4);		}
-								if(rbViernes.isSelected()==true){	horario.setDiaDobla(5);		}
-								if(rbSabado.isSelected()==true){	horario.setDiaDobla(6);		}
-								if(rbDomingo.isSelected()==true){	horario.setDiaDobla(7);		}
-								
-//							manda al objeto el diaExtra1 de la semana que dobla numerico 
-								if(rbNoDobla2.isSelected()==true){	horario.setDiaDobla2(0);		}
-								if(rbLunes2.isSelected()==true){	horario.setDiaDobla2(1);		}
-								if(rbMartes2.isSelected()==true){	horario.setDiaDobla2(2);		}
-								if(rbMiercoles2.isSelected()==true){horario.setDiaDobla2(3);		}
-								if(rbJueves2.isSelected()==true){	horario.setDiaDobla2(4);		}
-								if(rbViernes2.isSelected()==true){	horario.setDiaDobla2(5);		}
-								if(rbSabado2.isSelected()==true){	horario.setDiaDobla2(6);		}
-								if(rbDomingo2.isSelected()==true){	horario.setDiaDobla2(7);		}
-									
-//							manda al objeto el diaExtra2 de la semana que dobla numerico 
-								if(rbNoDobla3.isSelected()==true){	horario.setDiaDobla3(0);		}
-								if(rbLunes3.isSelected()==true){	horario.setDiaDobla3(1);		}
-								if(rbMartes3.isSelected()==true){	horario.setDiaDobla3(2);		}
-								if(rbMiercoles3.isSelected()==true){horario.setDiaDobla3(3);		}
-								if(rbJueves3.isSelected()==true){	horario.setDiaDobla3(4);		}
-								if(rbViernes3.isSelected()==true){	horario.setDiaDobla3(5);		}
-								if(rbSabado3.isSelected()==true){	horario.setDiaDobla3(6);		}
-								if(rbDomingo3.isSelected()==true){	horario.setDiaDobla3(7);		}
-							
-//							status extras
-								if(chbHorarioDeposito.isSelected()==true){ horario.setHorarioDeposito(1);}else{horario.setHorarioDeposito(0);}
-								if(chbRecesoExtraDiario.isSelected()==true){ horario.setRecesoDiarioExtra(1);}else{horario.setRecesoDiarioExtra(0);}
-								
-								if(rbDomingo.isSelected() && rbDomingo2.isSelected() || rbDomingo2.isSelected() && rbDomingo3.isSelected() || rbDomingo.isSelected() && rbDomingo3.isSelected()){
-									JOptionPane.showMessageDialog(null, "El dia Domingo Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
-											                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}
-								if(rbLunes.isSelected() && rbLunes2.isSelected() || rbLunes2.isSelected() && rbLunes3.isSelected() || rbLunes.isSelected() && rbLunes3.isSelected()){
-									JOptionPane.showMessageDialog(null, "El dia Lunes Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
-											                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}
-								if(rbMartes.isSelected() && rbMartes2.isSelected() || rbMartes2.isSelected() && rbMartes3.isSelected() || rbMartes.isSelected() && rbMartes3.isSelected()){
-									JOptionPane.showMessageDialog(null, "El dia Martes Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
-											                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}
-								if(rbMiercoles.isSelected() && rbMiercoles2.isSelected() || rbMiercoles2.isSelected() && rbMiercoles3.isSelected() || rbMiercoles.isSelected() && rbMiercoles3.isSelected()){
-									JOptionPane.showMessageDialog(null, "El dia Miercoles Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
-											                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}
-								if(rbJueves.isSelected() && rbJueves2.isSelected() || rbJueves2.isSelected() && rbJueves3.isSelected() || rbJueves.isSelected() && rbJueves3.isSelected()){
-									JOptionPane.showMessageDialog(null, "El dia Jueves Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
-											                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}
-								if(rbViernes.isSelected() && rbViernes2.isSelected() || rbViernes2.isSelected() && rbViernes3.isSelected() || rbViernes.isSelected() && rbViernes3.isSelected()){
-									JOptionPane.showMessageDialog(null, "El dia Viernes Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
-											                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}
-								if(rbSabado.isSelected() && rbSabado2.isSelected() || rbSabado2.isSelected() && rbSabado3.isSelected() || rbSabado.isSelected() && rbSabado3.isSelected()){
-									JOptionPane.showMessageDialog(null, "El dia Sabado Tiene mas de un Dia Dobla seleccionado\n                        (selecciones solo uno)" ,
-											                "Aviso!", JOptionPane.INFORMATION_MESSAGE);
-									return;
-								}else{
-								
-									if(horario.Guardar()){
-										camposbooleano(false);
-										btnEditar.setEnabled(true);
-										btnAceptar.setEnabled(false);
-										JOptionPane.showMessageDialog(null, "El registro se guardó exitosamente!" , "Exito al guardar!", JOptionPane.INFORMATION_MESSAGE);
-										return;
-									}else{
-										JOptionPane.showMessageDialog(null, "Error al tratar de guardar el registro", "Error al guardar registro", JOptionPane.WARNING_MESSAGE);
-										return;
-									}
-								}	
-						}
-					}
+					JOptionPane.showMessageDialog(null,"Necesita Seleccionar Un Turno", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
 			}
 		}
 	};
@@ -1769,7 +1815,7 @@ ButtonGroup RBAgrupados3 = new ButtonGroup();
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Horarios().setVisible(true);
+			new Cat_Horarios(9,"SI").setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}

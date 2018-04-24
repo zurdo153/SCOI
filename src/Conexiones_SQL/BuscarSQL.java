@@ -3856,7 +3856,7 @@ public class BuscarSQL {
 	//Buscamos el horario por su nombre
 	public Obj_Horarios buscahorario(int folio) throws SQLException{
 		Obj_Horarios horaa = new Obj_Horarios();
-		String query = "exec sp_select_horarios "+folio;
+		String query = "exec sp_select_horarios_2 "+folio;
 		
 		Statement stmt = null;
 		try {
@@ -3930,6 +3930,8 @@ public class BuscarSQL {
 				horaa.setEntrada_doblada_extra2(rs.getString("entrada_doblada_extra2"));
 				horaa.setSalida_doblada_extra2(rs.getString("salida_doblada_extra2"));
 				horaa.setComida_doblada_extra2(rs.getString("comida_doblada_extra2"));
+				
+				horaa.setTurno(rs.getString("turno"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

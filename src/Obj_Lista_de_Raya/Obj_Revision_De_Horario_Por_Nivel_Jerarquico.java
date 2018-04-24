@@ -3,6 +3,7 @@ package Obj_Lista_de_Raya;
 import java.io.File;
 
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Revision_De_Horario_Por_Nivel_Jerarquico {
 
@@ -234,5 +235,9 @@ public class Obj_Revision_De_Horario_Por_Nivel_Jerarquico {
 
 	public Obj_Revision_De_Horario_Por_Nivel_Jerarquico buscar(int folioColaborador){
 		return new BuscarSQL().buscar_colaborador(folioColaborador);
+	}
+	
+	public boolean guardar(){
+		return new GuardarSQL().guardarRevision(this);
 	}
 }

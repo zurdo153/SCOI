@@ -28,6 +28,8 @@ public class Obj_Horarios
 	
 	String entrada_doblada_extra1,salida_doblada_extra1,comida_doblada_extra1,entrada_doblada_extra2,salida_doblada_extra2,comida_doblada_extra2;
 	
+	String turno;
+	
 	public Obj_Horarios()
 	{
 		this.folio=0;
@@ -97,6 +99,8 @@ public class Obj_Horarios
 		this.entrada_doblada_extra2="";
 		this.salida_doblada_extra2="";
 		this.comida_doblada_extra2="";
+		
+		this.turno="";
 	}
 	
 
@@ -550,6 +554,14 @@ public class Obj_Horarios
 		this.comida_doblada_extra2 = comida_doblada_extra2;
 	}
 
+	public String getTurno() {
+		return turno;
+	}
+
+	public void setTurno(String turno) {
+		this.turno = turno;
+	}
+
 	//buscar horario
 	public Obj_Horarios buscar(int folio){
 		try {
@@ -564,16 +576,16 @@ public class Obj_Horarios
 		return new BuscarSQL().Permiso_de_usuario_para_horario(folio_usuario); 
 	}
 
-	public boolean Guardar(){
-		return new GuardarSQL().Guardar_Horario(this);
+	public boolean Guardar(int folio_turno){
+		return new GuardarSQL().Guardar_Horario(this,folio_turno);
 	}
 	
 	public boolean Existe(int folio){ 
 		return new BuscarSQL().HorarioExiste(folio);
 	}
 	
-	public boolean Actualizar(int folio){
-		return new ActualizarSQL().Horario(this,folio); 
+	public boolean Actualizar(int folio,int folio_turno){
+		return new ActualizarSQL().Horario(this,folio,folio_turno); 
 		}
 	
 	public Obj_Horarios buscar_nuevo() throws SQLException{ return new BuscarSQL().Horario_Nuevo(); }
