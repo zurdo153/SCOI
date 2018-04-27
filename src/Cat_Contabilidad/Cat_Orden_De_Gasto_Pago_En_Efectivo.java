@@ -117,7 +117,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	
 	JDateChooser fhFecha 	= new JDateChooser();
 	
-	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
+	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 	
@@ -663,7 +663,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 				
 		        private KeyListener opFiltropuestos = new KeyListener(){
 					public void keyReleased(KeyEvent arg0) {
-						ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+						ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 					}
 					public void keyTyped(KeyEvent arg0) {}
 					public void keyPressed(KeyEvent arg0) {}		

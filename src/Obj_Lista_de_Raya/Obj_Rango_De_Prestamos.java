@@ -86,12 +86,9 @@ public class Obj_Rango_De_Prestamos {
 	}
 	
 	public String[] Combo_Prestamos(){ 
-		try {
-			return new Cargar_Combo().Rango_Prestamos("tb_rango_prestamos");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+		try {return new Cargar_Combo().Combos("rango_prestamos");
+		} catch (SQLException e) {e.printStackTrace();}
+		return null; 
+	    }
 
 }

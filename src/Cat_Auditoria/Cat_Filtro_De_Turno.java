@@ -112,7 +112,7 @@ public class Cat_Filtro_De_Turno extends JDialog{
 	
 	KeyListener opFiltro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla_filtro_turnos, txtNombre.getText().toUpperCase(), columnaspo);
+			ObjTab.Obj_Filtro(tabla_filtro_turnos, txtNombre.getText().toUpperCase(), columnaspo,txtNombre);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

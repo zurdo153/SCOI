@@ -275,7 +275,7 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				if(tabla.isEditing()){tabla.getCellEditor().stopCellEditing();}
 
-				ObjTab.Obj_Filtro(tablab, "", columnas);
+				ObjTab.Obj_Filtro(tablab, "", columnas,txtNombre_Completo);
 				txtNombre_Completo.setText("");
 				
 				if(valida_select() > 4){
@@ -321,7 +321,7 @@ public class Cat_Gafetes_para_Empleados extends JFrame{
 		
 		KeyListener opFiltroNombre = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablab, txtNombre_Completo.getText().toUpperCase().trim(), columnas);
+				ObjTab.Obj_Filtro(tablab, txtNombre_Completo.getText().toUpperCase().trim(), columnas,txtNombre_Completo);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

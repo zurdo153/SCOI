@@ -260,7 +260,7 @@ public class Cat_Control_De_Autorizaciones extends JFrame {
 	
 	KeyListener op_filtro_nombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla_proveedores, txtFiltro.getText(), columnas);
+			ObjTab.Obj_Filtro(tabla_proveedores, txtFiltro.getText(), columnas,txtFiltro);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

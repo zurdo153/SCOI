@@ -115,7 +115,6 @@ public class Componentes {
 		cbPesawat.setEditable(true);
 		JTextField text = (JTextField)cbPesawat.getEditor().getEditorComponent();
 		text.setFocusable(true);
-//		text.setText("");
 		text.addKeyListener(new ComboListener(cbPesawat,vector));
 		
 		text.addKeyListener(new KeyListener() {
@@ -149,74 +148,161 @@ public class Componentes {
 		return v;
 	}
 	
+	Obj_tabla ObjTab =new Obj_tabla();
+	public final JTextField textfiltro(final JTextField tmp, final String caption, final int longitud, final String tipo, JTable tabla,final int columnas){
+		tmp.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				ObjTab.Obj_Filtro(tabla, tmp.getText().toUpperCase(), columnas,tmp);
+				funciones_validacion(tmp, longitud, e, tipo);
+			}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {}
+		});
+		
+
+	tmp.setToolTipText(caption);
+	if(tmp.getClass().getSimpleName().equals("JCTextField")){
+	((JCTextField) tmp).setPlaceholder(caption);
+	((JCTextField) tmp).setPhColor( new Color(0,0,255) );
+	tmp.setFont( new Font("SansSerif",Font.PLAIN, 12) );
+	}
+	return tmp;
+}
 	
+	public void funciones_validacion(JTextField tmp,final int longitud,KeyEvent e, final String tipo){
+		char caracter = e.getKeyChar();
+		switch (tipo) {
+			case "String" :
+				if(getTextProcesa(tmp.getText()).length() >= longitud)
+					e.consume();
+				break;
+			case "Int" :
+				if(getTextProcesa(tmp.getText()).length() >= longitud)
+					e.consume();
+				if(((caracter < '0') ||
+				        (caracter > '9')) &&
+				        (caracter != KeyEvent.VK_BACK_SPACE)){
+				    e.consume(); 
+				}
+				break;
+			case "Double" :
+				if(getTextProcesa(tmp.getText()).length() >= longitud)
+					e.consume();
+			    if(((caracter < '0') ||	
+			    	(caracter > '9')) && 
+			    	(caracter != '.' )){
+			    	e.consume();
+			    }
+			    	
+			    if (caracter==KeyEvent.VK_PERIOD)
+					if (tmp.getText().indexOf(".")>-1) 
+						e.consume();
+		
+				break;
+			case "Real" :
+				if(getTextProcesa(tmp.getText()).length() >= longitud)
+					e.consume();
+			    if(((caracter < '0') ||	
+			    	(caracter > '9')) && 
+			    	(caracter != '.' )&& 
+			    	(caracter != '-' )){
+			    	e.consume();
+			    }
+			    	
+			    if (caracter==KeyEvent.VK_PERIOD)
+					if (tmp.getText().indexOf(".")>-1){
+						e.consume();
+					}
+				
+			    if (caracter==KeyEvent.VK_MINUS){
+			    	if(tmp.getText().indexOf("-")>=-1 && !tmp.getText().equals("")){
+			    			e.consume();
+			    	}
+			    }
+				break;
+				
+			case "Negativo" :
+				if(getTextProcesa(tmp.getText()).length() >= longitud)
+					e.consume();
+			    if(((caracter < '0') ||	
+			    	(caracter > '9')) && 
+			    	(caracter != '-' )){
+			    	e.consume();
+			    }
+			    	
+				break;	
+		}
+		
+	}
 	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public final JTextField text(final JTextField tmp, final String caption, final int longitud, final String tipo){
 			tmp.addKeyListener(new KeyListener() {
 				public void keyTyped(KeyEvent e) {
-					char caracter = e.getKeyChar();
-					
-					switch (tipo) {
-						case "String" :
-							if(getTextProcesa(tmp.getText()).length() >= longitud)
-								e.consume();
-							break;
-						case "Int" :
-							if(getTextProcesa(tmp.getText()).length() >= longitud)
-								e.consume();
-							if(((caracter < '0') ||
-							        (caracter > '9')) &&
-							        (caracter != KeyEvent.VK_BACK_SPACE)){
-							    e.consume(); 
-							}
-							break;
-						case "Double" :
-							if(getTextProcesa(tmp.getText()).length() >= longitud)
-								e.consume();
-						    if(((caracter < '0') ||	
-						    	(caracter > '9')) && 
-						    	(caracter != '.' )){
-						    	e.consume();
-						    }
-						    	
-						    if (caracter==KeyEvent.VK_PERIOD)
-								if (tmp.getText().indexOf(".")>-1) 
-									e.consume();
-					
-							break;
-						case "Real" :
-							if(getTextProcesa(tmp.getText()).length() >= longitud)
-								e.consume();
-						    if(((caracter < '0') ||	
-						    	(caracter > '9')) && 
-						    	(caracter != '.' )&& 
-						    	(caracter != '-' )){
-						    	e.consume();
-						    }
-						    	
-						    if (caracter==KeyEvent.VK_PERIOD)
-								if (tmp.getText().indexOf(".")>-1){
-									e.consume();
-								}
-							
-						    if (caracter==KeyEvent.VK_MINUS){
-						    	if(tmp.getText().indexOf("-")>=-1 && !tmp.getText().equals("")){
-						    			e.consume();
-						    	}
-						    }
-							break;
-							
-						case "Negativo" :
-							if(getTextProcesa(tmp.getText()).length() >= longitud)
-								e.consume();
-						    if(((caracter < '0') ||	
-						    	(caracter > '9')) && 
-						    	(caracter != '-' )){
-						    	e.consume();
-						    }
-						    	
-							break;	
-					}
+					funciones_validacion(tmp, longitud, e, tipo);
+//					char caracter = e.getKeyChar();
+//					
+//					switch (tipo) {
+//						case "String" :
+//							if(getTextProcesa(tmp.getText()).length() >= longitud)
+//								e.consume();
+//							break;
+//						case "Int" :
+//							if(getTextProcesa(tmp.getText()).length() >= longitud)
+//								e.consume();
+//							if(((caracter < '0') ||
+//							        (caracter > '9')) &&
+//							        (caracter != KeyEvent.VK_BACK_SPACE)){
+//							    e.consume(); 
+//							}
+//							break;
+//						case "Double" :
+//							if(getTextProcesa(tmp.getText()).length() >= longitud)
+//								e.consume();
+//						    if(((caracter < '0') ||	
+//						    	(caracter > '9')) && 
+//						    	(caracter != '.' )){
+//						    	e.consume();
+//						    }
+//						    	
+//						    if (caracter==KeyEvent.VK_PERIOD)
+//								if (tmp.getText().indexOf(".")>-1) 
+//									e.consume();
+//					
+//							break;
+//						case "Real" :
+//							if(getTextProcesa(tmp.getText()).length() >= longitud)
+//								e.consume();
+//						    if(((caracter < '0') ||	
+//						    	(caracter > '9')) && 
+//						    	(caracter != '.' )&& 
+//						    	(caracter != '-' )){
+//						    	e.consume();
+//						    }
+//						    	
+//						    if (caracter==KeyEvent.VK_PERIOD)
+//								if (tmp.getText().indexOf(".")>-1){
+//									e.consume();
+//								}
+//							
+//						    if (caracter==KeyEvent.VK_MINUS){
+//						    	if(tmp.getText().indexOf("-")>=-1 && !tmp.getText().equals("")){
+//						    			e.consume();
+//						    	}
+//						    }
+//							break;
+//							
+//						case "Negativo" :
+//							if(getTextProcesa(tmp.getText()).length() >= longitud)
+//								e.consume();
+//						    if(((caracter < '0') ||	
+//						    	(caracter > '9')) && 
+//						    	(caracter != '-' )){
+//						    	e.consume();
+//						    }
+//						    	
+//							break;	
+//					}
 								
 				}
 				public void keyReleased(KeyEvent e) {}
@@ -229,7 +315,6 @@ public class Componentes {
 		((JCTextField) tmp).setPhColor( new Color(0,0,255) );
 		tmp.setFont( new Font("SansSerif",Font.PLAIN, 12) );
 		}
-
 		return tmp;
 	}
 	

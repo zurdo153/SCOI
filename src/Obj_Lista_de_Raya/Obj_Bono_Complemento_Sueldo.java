@@ -50,12 +50,13 @@ public class Obj_Bono_Complemento_Sueldo {
 	}
 	public String[] Combo_Bono() { 
 		try {
-			return new Cargar_Combo().Bono("tb_bono");
+			return new Cargar_Combo().Combos("bonos");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null; 
 	}
+
 	
 	public Obj_Bono_Complemento_Sueldo buscar(int folio) {
 		try {

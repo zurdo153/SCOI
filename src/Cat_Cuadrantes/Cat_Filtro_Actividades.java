@@ -113,7 +113,7 @@ public class Cat_Filtro_Actividades extends JDialog {
 	
 	KeyListener op_filtro_nombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txtFiltro.getText(), columnas);
+			ObjTab.Obj_Filtro(tabla, txtFiltro.getText(), columnas,txtFiltro);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

@@ -78,7 +78,7 @@ public class Cat_Nivel_Jerarquico extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(lista);
 	
-	String lista3[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
+	String lista3[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_Establecimiento = new JComboBox(lista3);
 	

@@ -52,13 +52,13 @@ public class Obj_Sueldos {
 	
 	public String[] Combo_Sueldo(){
 		try {
-			return new Cargar_Combo().Sueldo("tb_sueldo");
+			return new Cargar_Combo().Combos("sueldos");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return null; 
 	}
-	
+		
 	public Obj_Sueldos buscar(int folio){
 		try {
 			return new BuscarSQL().Sueldo(folio);

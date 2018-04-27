@@ -172,7 +172,7 @@ import Obj_Principal.Obj_tabla;
 		
 		KeyListener opFiltrof = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTabf.Obj_Filtro(tablaf, txtFiltrof.getText().toUpperCase(), columnas);
+				ObjTabf.Obj_Filtro(tablaf, txtFiltrof.getText().toUpperCase(), columnas,txtFiltrof);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

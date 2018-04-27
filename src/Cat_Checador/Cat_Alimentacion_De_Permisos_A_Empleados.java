@@ -100,7 +100,7 @@ public class Cat_Alimentacion_De_Permisos_A_Empleados extends JFrame {
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	private JComboBox cmbDias = new JComboBox(dias);
 	 
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	 

@@ -83,14 +83,6 @@ public class Obj_Establecimiento {
 	
 	public String[] Combo_Establecimiento(){
 		try {
-			return new Cargar_Combo().Establecimiento("tb_establecimiento");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	return null; }
-	
-	public String[] Combo_Establecimiento_Todos(){
-		try {
 			return new Cargar_Combo().Establecimiento_Todos("tb_establecimiento");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -99,7 +91,7 @@ public class Obj_Establecimiento {
 	
 	public String[] Combo_Establecimiento201(){
 		try {
-			return new Cargar_Combo().Establecimiento("establecimientos");
+			return new Cargar_Combo().Establecimiento_Todos("establecimientos");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

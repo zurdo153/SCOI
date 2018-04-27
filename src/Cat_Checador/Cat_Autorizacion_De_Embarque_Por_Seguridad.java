@@ -143,7 +143,7 @@ public class Cat_Autorizacion_De_Embarque_Por_Seguridad extends JDialog  {
 		Obj_tabla ObjTabf =new Obj_tabla();
 		KeyListener opFiltro = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTabf.Obj_Filtro(tablaFiltro, txtFiltrar.getText().toUpperCase(), 5);
+				ObjTabf.Obj_Filtro(tablaFiltro, txtFiltrar.getText().toUpperCase(), 5,txtFiltrar);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

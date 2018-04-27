@@ -7,91 +7,11 @@ import java.util.Vector;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
-
 public class Cargar_Combo {
 	Connexion con = new Connexion();
 	@SuppressWarnings("rawtypes")
 	Vector miVector = new Vector();
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-		
-	@SuppressWarnings("unchecked")
-	public String[] menus() throws SQLException{
-		String query = "select nombre from tb_menus";
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Seleciona un Menu");
-				}
-				miVector.add(rs.getString("nombre"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-			
-	}
-	
-	
-	
-	@SuppressWarnings("unchecked")
-	public String[] Establecimiento(String tabla) throws SQLException{
-		String query = "";
-		if(tabla.equals("tb_establecimiento")){
-			query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 1 order by nombre asc";
-		}else{
-			query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 'V' order by nombre asc";
-		}
-		Statement stmt = null;
-		try {
-			if(tabla.equals("tb_establecimiento")){
-				stmt = con.conexion().createStatement();
-			}else{
-				stmt = con.conexion_IZAGAR().createStatement();
-			}
-			
-			ResultSet rs = stmt.executeQuery(query);
-			
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Establecimiento");
-				}
-				miVector.add(rs.getString("nombre"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-			
-	}
 	
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento_Todos(String tabla) throws SQLException{
@@ -108,10 +28,7 @@ public class Cargar_Combo {
 			}else{
 				stmt = con.conexion_IZAGAR().createStatement();
 			}
-			
-			
 			ResultSet rs = stmt.executeQuery(query);
-			
 			int j=0;
 			while(rs.next()){
 				if(j == 0){
@@ -134,24 +51,20 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 	
-	
 	@SuppressWarnings("unchecked")
-	public String[] Responsables(String tabla) throws SQLException{
-		
-		String 	query = "select ltrim(rtrim(nombre)) as nombre from " + tabla + " where status = 1 order by nombre asc";
+	public String[] EstablecimientoPoliza() throws SQLException{
+		String query = "select nombre from tb_establecimiento order by nombre desc";
 		Statement stmt = null;
 		try {
-				stmt = con.conexion().createStatement();
-			
+			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
 			int j=0;
 			while(rs.next()){
 				if(j == 0){
-					miVector.add("Selecciona un Establecimiento");
+					miVector.add("MULTIPLE");
+					miVector.add("NO APLICA");
 				}
 				miVector.add(rs.getString("nombre"));
 				j++;
@@ -170,7 +83,6 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -238,108 +150,7 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
-	
-	@SuppressWarnings("unchecked")
-	public String[] Indicadores() throws SQLException{
-		String query = "select indicador from tb_indicadores order by orden";
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona Un Indicador");
-				}
-				miVector.add(rs.getString(1));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-			
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public String[] Departamentos() throws SQLException{
-		String query = "select ltrim(rtrim(departamento)) as departamento from tb_departamento where status = 1 order by departamento asc";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Departamento");
-				}
-				miVector.add(rs.getString("departamento"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public String[] DepartamentoDeServicios() throws SQLException{
-		String query = "select ltrim(rtrim(departamento)) as departamento from tb_departamento where status = 1 and aplica_para_servicios ='S' order by departamento asc";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Departamento");
-				}
-				miVector.add(rs.getString("departamento"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public String[] Establecimiento_Caja() throws SQLException{
@@ -376,7 +187,6 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 
 	@SuppressWarnings("unchecked")
@@ -415,7 +225,6 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 
 	@SuppressWarnings("unchecked")
@@ -448,7 +257,6 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -461,9 +269,7 @@ public class Cargar_Combo {
 			int j=0;
 			while(rs.next()){
 				if(j == 0){
-					
 					miVector.add("Selecciona un Puesto");
-//					miVector.add("");
 				}
 				miVector.add(rs.getString("nombre").toUpperCase());
 				j++;
@@ -483,9 +289,7 @@ public class Cargar_Combo {
 			pila[i]= miVector.get(i).toString();
 			i++;
 		}
-		
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -542,7 +346,6 @@ public class Cargar_Combo {
 		}finally{
 			if(stmt!=null){stmt.close();}
 		}
-		
 		int i=0;
 		String[] pila= new String[miVector.size()];
 		
@@ -551,9 +354,7 @@ public class Cargar_Combo {
 			pila[i]= miVector.get(i).toString();
 			i++;
 		}
-		
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -586,110 +387,41 @@ public class Cargar_Combo {
 			pila[i]= miVector.get(i).toString();
 			i++;
 		}
-		
 		return pila;
-			
 	}
 	
-	@SuppressWarnings("unchecked")
-	public String[] Sueldo(String tabla) throws SQLException{
-		String query = "select sueldo from " + tabla+" order by sueldo asc";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Sueldo");
-				}
-				miVector.add(rs.getString("sueldo"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-			
-	}
-	
-	@SuppressWarnings("unchecked")
-	public String[] Bono(String tabla) throws SQLException {
-		String query = "select bono from " + tabla +" order by bono asc";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Bono");
-				}
-				miVector.add(rs.getString("bono"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;	
-	}
-	
-	@SuppressWarnings("unchecked")
-	public String[] Bono_Puntualidad_y_Asistencia(String tabla) throws SQLException {
-		String query = "select round(bono,2) as bono from " + tabla +" order by bono asc";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Bono");
-				}
-				miVector.add(rs.getString("bono"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;	
-	}
+//	@SuppressWarnings("unchecked")
+//	public String[] Bono_Puntualidad_y_Asistencia(String tabla) throws SQLException {
+//		String query = "select round(bono,2) as bono from " + tabla +" order by bono asc";
+//		Statement stmt = null;
+//		try {
+//			stmt = con.conexion().createStatement();
+//			ResultSet rs = stmt.executeQuery(query);
+//			int j=0;
+//			while(rs.next()){
+//				if(j == 0){
+//					miVector.add("Selecciona un Bono");
+//				}
+//				miVector.add(rs.getString("bono"));
+//				j++;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}finally{
+//			if(stmt!=null){stmt.close();}
+//		}
+//		
+//		int i=0;
+//		String[] pila= new String[miVector.size()];
+//		
+//		while(i < miVector.size()){
+//			
+//			pila[i]= miVector.get(i).toString();
+//			i++;
+//		}
+//		return pila;	
+//	}
 	
 	
 	@SuppressWarnings("unchecked")
@@ -722,41 +454,6 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String[] Rango_Prestamos(String tabla) throws SQLException {
-		String query = "select minimo,maximo from " + tabla;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona un Rango de Prestamo");
-				}
-				miVector.add(Math.rint(rs.getDouble("minimo")*100)/100+" - "+Math.rint(rs.getDouble("maximo")*100)/100);
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		
-		return pila;
-			
-	}
-	
-	@SuppressWarnings("unchecked")
 	public String[] GruposDeCortes() throws SQLException {
 		String query = "select grupo_para_cortes from tb_grupos_para_cortes";
 		Statement stmt = null;
@@ -777,7 +474,6 @@ public class Cargar_Combo {
 		}finally{
 			if(stmt!=null){stmt.close();}
 		}
-		
 		int i=0;
 		String[] pila= new String[miVector.size()];
 		
@@ -786,9 +482,7 @@ public class Cargar_Combo {
 			pila[i]= miVector.get(i).toString();
 			i++;
 		}
-		
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -821,9 +515,7 @@ public class Cargar_Combo {
 			pila[i]= miVector.get(i).toString();
 			i++;
 		}
-		
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -857,7 +549,6 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -891,7 +582,6 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -925,9 +615,7 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public String[] Respuesta(String tabla) throws SQLException{
@@ -964,7 +652,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] Combos(String tabla) throws SQLException{
-		String query = "exec cuadrantes_combos "+ tabla ;
+		String query = "exec combos "+ tabla ;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -1049,7 +737,6 @@ public class Cargar_Combo {
 		return pila;
 			
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	public String[] niveljerarquico(String tabla) throws SQLException{
@@ -1221,9 +908,7 @@ public class Cargar_Combo {
 			pila[i]= miVector.get(i).toString();
 			i++;
 		}
-		
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1323,7 +1008,6 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1393,9 +1077,7 @@ public class Cargar_Combo {
 			i++;
 		}
 		return pila;
-			
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public String[] Datos_Combo_CuentasBancarias() throws SQLException{
@@ -1438,14 +1120,8 @@ public class Cargar_Combo {
 		try {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
-//			int j=0;
 			while(rs.next()){
-//				if(j == 0){
-//					miVector.add("Selecciona un Tipo");
-//				}
 				miVector.add(rs.getString("nombre"));
-//				j++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1561,37 +1237,7 @@ public class Cargar_Combo {
 		return pila;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public String[] EstablecimientoPoliza() throws SQLException{
-		String query = "select nombre from tb_establecimiento order by nombre desc";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("MULTIPLE");
-					miVector.add("NO APLICA");
-				}
-				miVector.add(rs.getString("nombre"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public String[] tipos_de_banco_polizas() throws SQLException{
@@ -1650,9 +1296,6 @@ public class Cargar_Combo {
 		return pila;
 	}
 	
-	
-	
-	
 	@SuppressWarnings("unchecked")
 	public String[] autorizados_para_pago_efectivo() throws SQLException{
 		String query = "select nombre_completo as nombre from tb_autorizan_orden_de_pago where status = 'V' order by orden";
@@ -1662,13 +1305,8 @@ public class Cargar_Combo {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
-//			int j=0;
 			while(rs.next()){
-//				if(j == 0){
-//					miVector.add("Selecciona un Tipo");
-//				}
 				miVector.add(rs.getString("nombre"));
-//				j++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1951,35 +1589,7 @@ public class Cargar_Combo {
 		return pila;
 			
 	}
-	//metodo llenaCombo del departamento
-	@SuppressWarnings("unchecked")
-	public String[] Combo_Matriz_Departamento() throws SQLException{
-		String query = "select departamento from dbo.tb_departamento where status=1";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-
-			while(rs.next()){
-				miVector.add(rs.getString(1).trim());
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-			
-	}
+	
 	//llenado de la unidad de inspeccion
 	@SuppressWarnings("unchecked")
 	public String[] Combo_Matriz_Unidad_De_Inspeccion() throws SQLException{
@@ -2180,33 +1790,6 @@ public class Cargar_Combo {
 		}
 		return pila;
 			
-	}
-	
-	@SuppressWarnings("unchecked")
-	public String[] Servicios_Combos(String tabla) throws SQLException{
-		String query = "exec servicios_combos "+ tabla ;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				miVector.add(rs.getString(1).trim());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -190,7 +190,7 @@ public class Cat_Marcas_De_Activos extends JFrame{
 		txtMarca.setText("");
 		txtBuscar.setText("");
 		cmb_status.setSelectedIndex(0);
-		ObjTab.Obj_Filtro(tabla, txtBuscar.getText(), columnas);
+		ObjTab.Obj_Filtro(tabla, txtBuscar.getText(), columnas,txtBuscar);
 	}	
 	
 	private void agregar(final JTable tbl) {
@@ -210,7 +210,7 @@ public class Cat_Marcas_De_Activos extends JFrame{
 	
 	KeyListener opFiltro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), columnas);
+			ObjTab.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), columnas,txtBuscar);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

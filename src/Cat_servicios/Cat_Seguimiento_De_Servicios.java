@@ -305,7 +305,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	
 	KeyListener opFiltroNombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), columnas);
+			ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), columnas,txtFiltro);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -827,7 +827,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		
 		KeyListener opFiltrof = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTabf.Obj_Filtro(tablaf, txtFiltrof.getText().toUpperCase(), columnas);
+				ObjTabf.Obj_Filtro(tablaf, txtFiltrof.getText().toUpperCase(), columnas,txtFiltrof);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -951,7 +951,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			
 			KeyListener opFiltrof = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTabf.Obj_Filtro(tablaf, txtFiltrof.getText().toUpperCase(), columnas);
+					ObjTabf.Obj_Filtro(tablaf, txtFiltrof.getText().toUpperCase(), columnas,txtFiltrof);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

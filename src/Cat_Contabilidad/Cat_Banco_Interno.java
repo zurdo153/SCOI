@@ -177,7 +177,7 @@ public class Cat_Banco_Interno extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
 	
-	String cuentas[] =  banco_interno.Combo_Cuentas("cuentas");
+	String cuentas[] =  banco_interno.Combo_Cuentas();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbcuenta_bancaria = new JComboBox(cuentas);
 	
@@ -216,6 +216,7 @@ public void constructor_Ingreso(String tipo) {
 	 		this.btnIngreso.setVisible(false);
 	 		this.btnEgreso.setVisible(false);
 	 		this.btnEgresoDlsVa.setVisible(false);
+	 		this.btnReporte.setVisible(false);
 	 		
 	 		this.menu_toolbar.add(btnNuevo      );
 			this.menu_toolbar.addSeparator(     );
@@ -292,7 +293,7 @@ public void constructor_Ingreso(String tipo) {
 		 		this.panel.add(Observaciones).setBounds                         (x         ,y+=15  ,700     ,40     );
 		 		
 		 		cmbcuenta_bancaria.removeAllItems();
-		 		String cuentas[] =  banco_interno.Combo_Cuentas("reposicioncajachica");
+		 		String cuentas[] =  banco_interno.Combo_Cuentas_reposicion_caja_chica();
 		 	    for(int i=0;i<cuentas.length;i++){
 		 	    	cmbcuenta_bancaria.addItem(cuentas[i].toString().trim());
 		 		  }
@@ -382,7 +383,7 @@ public void constructor_Ingreso(String tipo) {
 		 		btnSolicitante.setEnabled(false);
 		 		
 		 		cmbcuenta_bancaria.removeAllItems();
-		 		String cuentas[] =  banco_interno.Combo_Cuentas("valedola");
+		 		String cuentas[] =  banco_interno.Combo_Cuentas_Vale_Dola();
 		 	    for(int i=0;i<cuentas.length;i++){
 		 	    	cmbcuenta_bancaria.addItem(cuentas[i].toString().trim());
 		 		  }
@@ -874,7 +875,7 @@ public void constructor_Ingreso(String tipo) {
 		
         private KeyListener opFiltropuestos = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -990,7 +991,7 @@ public void constructor_Ingreso(String tipo) {
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

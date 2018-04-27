@@ -39,10 +39,9 @@ public class Obj_Marcas_De_Activos {
 	public boolean guardar(){ return new GuardarSQL().Guardar_Marca_De_Activo(this); }
 			
 	public String[] Combo_Marcas() {
-		try {return new Cargar_Combo().Servicios_Combos("marcas");
-		   } catch (SQLException e) {
-			e.printStackTrace();
-		   }
-			return null; 
-			}
+		try {return new Cargar_Combo().Combos("marcas");
+		} catch (SQLException e) {e.printStackTrace();}
+		return null; 
+	    }
+	
 }

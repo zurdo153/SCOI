@@ -928,7 +928,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	 
 	KeyListener opFiltro_lunes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaLunes, txtBuscarLunes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaLunes, txtBuscarLunes.getText(), columnas,txtBuscarLunes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -936,7 +936,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_martes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaMartes, txtBuscarMartes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaMartes, txtBuscarMartes.getText(), columnas,txtBuscarMartes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -944,7 +944,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_miercoles = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaMiercoles, txtBuscarMiercoles.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaMiercoles, txtBuscarMiercoles.getText(), columnas,txtBuscarMiercoles);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -952,7 +952,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_jueves = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaJueves, txtBuscarJueves.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaJueves, txtBuscarJueves.getText(), columnas,txtBuscarJueves);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -960,7 +960,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_viernes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaViernes, txtBuscarViernes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaViernes, txtBuscarViernes.getText(), columnas,txtBuscarViernes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -968,7 +968,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_sabado = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaSabado, txtBuscarSabado.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaSabado, txtBuscarSabado.getText(), columnas,txtBuscarSabado);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -976,7 +976,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_domingo = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaDomingo, txtBuscarDomingo.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaDomingo, txtBuscarDomingo.getText(), columnas,txtBuscarDomingo);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -1245,13 +1245,13 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		txtEstablecimiento.setText("");
 		txtDepartamento.setText("");
 		
-		ObjTab.Obj_Filtro(tablaLunes    , "", columnas);
-		ObjTab.Obj_Filtro(tablaMartes   , "", columnas);
-		ObjTab.Obj_Filtro(tablaMiercoles, "", columnas);
-		ObjTab.Obj_Filtro(tablaJueves   , "", columnas);
-		ObjTab.Obj_Filtro(tablaViernes  , "", columnas);
-		ObjTab.Obj_Filtro(tablaSabado   , "", columnas);
-		ObjTab.Obj_Filtro(tablaDomingo  , "", columnas);
+		ObjTab.Obj_Filtro(tablaLunes    , "", columnas,txtBuscarLunes);
+		ObjTab.Obj_Filtro(tablaMartes   , "", columnas,txtBuscarMartes);
+		ObjTab.Obj_Filtro(tablaMiercoles, "", columnas,txtBuscarMiercoles);
+		ObjTab.Obj_Filtro(tablaJueves   , "", columnas,txtBuscarJueves);
+		ObjTab.Obj_Filtro(tablaViernes  , "", columnas,txtBuscarViernes);
+		ObjTab.Obj_Filtro(tablaSabado   , "", columnas,txtBuscarSabado);
+		ObjTab.Obj_Filtro(tablaDomingo  , "", columnas,txtBuscarDomingo);
 	}	
 	
 	public void panelEnabledFalse(){

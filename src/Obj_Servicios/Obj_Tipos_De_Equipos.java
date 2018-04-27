@@ -56,10 +56,8 @@ public class Obj_Tipos_De_Equipos {
 	public boolean guardar(){ return new GuardarSQL().Guardar_Tipos_De_Activo(this); }
 			
 	public String[] Combo_Tipos_De_Equipo() {
-		try {return new Cargar_Combo().Servicios_Combos("tipos");
-		   } catch (SQLException e) {
-			e.printStackTrace();
-		   }
-			return null; 
-			}
+		try {return new Cargar_Combo().Combos("tipos");
+		} catch (SQLException e) {e.printStackTrace();}
+		return null; 
+	    }
 }

@@ -27,7 +27,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.MaskFormatter;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.time.LocalDate;
 
 import Conexiones_SQL.Connexion;
@@ -241,9 +244,12 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 			              }
 			      }
 	   }
-  
 
-	public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,String comando,String BasdeDatos, String pintar, Integer checkbox){
+		trsfiltro = new TableRowSorter(modelo); 
+		tabla.setRowSorter(trsfiltro);
+		
     	tabla.getTableHeader().setReorderingAllowed(false) ;
     	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		modelo.setRowCount(0);
@@ -324,6 +330,7 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 			      }
 	           }
 		 }
+		
 	   }
 	
 	@SuppressWarnings("serial")
@@ -406,8 +413,14 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 		}
 	}
 	
+	 @SuppressWarnings("rawtypes")
+	private TableRowSorter trsfiltro;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void Obj_Filtro(JTable tabla,String contenido,int columnasa) {
+	public void Obj_Filtro(JTable tabla,String contenido,int columnasa, JComponent txt) {
+		DefaultTableModel modelo= (DefaultTableModel) tabla.getModel();
+			trsfiltro = new TableRowSorter(modelo); 
+			tabla.setRowSorter(trsfiltro);
+		
 			int[] columnas= new int [columnasa];
 			for(int i=0;i<columnasa;i++){
 				columnas[i]=i;
@@ -429,7 +442,30 @@ public void tabla_programacion_proveedores_mascara(JTable tabla,int columnamask1
 			if(!contenido.equals("")){andFilters.add(filtradoDeArregloDePalabras);}
 			sorter.setRowFilter(RowFilter.andFilter (andFilters));
 			tabla.setRowSorter(sorter);
+			txt.addKeyListener(new PasarATabla(tabla));
+			
 		};
+	
+		class PasarATabla implements KeyListener{   
+			JTable tablaparametro;
+			int filak=0,columnak=0;
+		    public PasarATabla (final JTable tblp){
+		    	tablaparametro = tblp;
+		    }
+		    public void actionPerformed(ActionEvent evt){}
+			@Override
+			public void keyPressed(KeyEvent arg0) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DOWN){
+					tablaparametro.requestFocus();
+					tablaparametro.getSelectionModel().setSelectionInterval(0,0);;
+				}
+			}
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+		};
+		
 	
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public  String[][] tabla_guardar(JTable tabla){ 

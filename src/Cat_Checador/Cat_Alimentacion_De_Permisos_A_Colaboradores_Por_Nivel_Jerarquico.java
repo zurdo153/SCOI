@@ -98,7 +98,7 @@ public class Cat_Alimentacion_De_Permisos_A_Colaboradores_Por_Nivel_Jerarquico e
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	private JComboBox cmbDias = new JComboBox(dias);
 	 
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	

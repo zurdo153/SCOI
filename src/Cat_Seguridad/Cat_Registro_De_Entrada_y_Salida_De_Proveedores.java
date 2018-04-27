@@ -882,7 +882,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		PtxtClave.setText("");
 		cmb_status.setSelectedIndex(0);
 		cmbEstablecimiento.setSelectedIndex(0);
-		ObjTab.Obj_Filtro(tablaEntrada_Salida    , "", columnas);
+		ObjTab.Obj_Filtro(tablaEntrada_Salida    , "", columnas,txaObservaciones);
 	}	
 	
 	public void panelEnabledFalse(){
@@ -1022,7 +1022,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 				
 	        private KeyListener opFiltroproveedor = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablafprv, txtBuscarfp.getText().toUpperCase(), columnasp);
+					ObjTab.Obj_Filtro(tablafprv, txtBuscarfp.getText().toUpperCase(), columnasp,txtBuscarfp);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		
@@ -1119,7 +1119,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 		    	txtImporteorden.setEditable(false);
 		        txtBuscarfp.setText(txtProveedor.getText().toString().trim());
 		        
-				ObjTab.Obj_Filtro(tablafilordenes, txtProveedor.getText().toString().trim().toUpperCase(), columnaspo);
+				ObjTab.Obj_Filtro(tablafilordenes, txtProveedor.getText().toString().trim().toUpperCase(), columnaspo,txtProveedor);
 				
 				  Object[]   vectorOrdenes = new Object[11];
 				for(int i=0;i<tablaordenes_compra.length;i++){
@@ -1197,7 +1197,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablafilordenes, txtBuscarfp.getText().toUpperCase(), columnaspo);
+					ObjTab.Obj_Filtro(tablafilordenes, txtBuscarfp.getText().toUpperCase(), columnaspo,txtBuscarfp);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		
@@ -1282,7 +1282,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb);
+					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb,txtBuscarb);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

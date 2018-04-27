@@ -1194,7 +1194,7 @@ public class Cat_Finiquitos extends JFrame{
 		
 	    private KeyListener opFiltroproveedor = new KeyListener(){
 					public void keyReleased(KeyEvent arg0) {
-						ObjTab.Obj_Filtro(tabla_filtro, txtFiltro.getText().toUpperCase(), tabla_filtro.getColumnCount());
+						ObjTab.Obj_Filtro(tabla_filtro, txtFiltro.getText().toUpperCase(), tabla_filtro.getColumnCount(),txtFiltro);
 					}
 					public void keyTyped(KeyEvent arg0) {}
 					public void keyPressed(KeyEvent arg0) {}		
