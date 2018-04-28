@@ -1124,7 +1124,7 @@ public void guardar_modificar_Perfil(){
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-			new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);
+			new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString()),"NO").setVisible(true);
 			}
 		}
 	};

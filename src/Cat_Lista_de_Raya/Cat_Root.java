@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 
 @SuppressWarnings("serial")
 public class Cat_Root extends JFrame {
@@ -20,8 +21,8 @@ public class Cat_Root extends JFrame {
 	
 	public JToolBar menu_toolbar = new JToolBar();
 	
-	public JTextField txtFolio = new JTextField();
-	public JTextField txtNombre_Completo = new JTextField();
+	public JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 10, "int");
+	public JTextField txtNombre_Completo = new Componentes().text(new JTextField(), "Folio", 10, "String");
 	
 	public String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "rawtypes", "unchecked" })

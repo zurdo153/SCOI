@@ -1000,6 +1000,19 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 	       				modelo.addRow(vectortabla);
 	       			}
        		
+//	       	  Venta_Express.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));	
+//			  Venta_Express.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
+//			  Venta_Express.setTipo_de_cliente(rbCliente.isSelected()?"B":"S");
+//			  Venta_Express.setFolio_cliente(txtFolio_cliente.getText().toString().trim());
+//			  Venta_Express.setNotas(txtNota.getText().toString());		
+//			  Venta_Express.setFolio_vendedor(txtFolioVendedor.getText().toString().trim());
+//			  Venta_Express.setTotal_venta(Double.valueOf(txtTotalImporte.getText().toString().trim()));
+//			  Venta_Express.setFolio_proveedor(txtcod_prv.getText().toString().trim());
+//			  Venta_Express.setFolio_supervisor_autoriza(tablasupervisores [i][0].toString().trim());	
+//			  Venta_Express.setTabla_prodcutos(tabla_guardado ); 
+//			  Venta_Express.setGuardar_actualizar(guardar_actualizar);
+//			  Venta_Express.setEstatus(cmb_status.getSelectedItem().toString().trim());
+			  
        		
        		calculo();
        		dispose();

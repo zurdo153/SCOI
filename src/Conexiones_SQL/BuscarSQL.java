@@ -97,6 +97,7 @@ import Obj_Lista_de_Raya.Obj_Perfil_De_Puestos;
 import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
+import Obj_Lista_de_Raya.Obj_Revision_De_Horario_Por_Nivel_Jerarquico;
 import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tabla_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
@@ -3746,7 +3747,7 @@ public class BuscarSQL {
 	//Buscamos el horario por su nombre
 	public Obj_Horarios buscahorario(int folio) throws SQLException{
 		Obj_Horarios horaa = new Obj_Horarios();
-		String query = "exec sp_select_horarios "+folio;
+		String query = "exec sp_select_horarios_2 "+folio;
 		
 		Statement stmt = null;
 		try {
@@ -3820,6 +3821,8 @@ public class BuscarSQL {
 				horaa.setEntrada_doblada_extra2(rs.getString("entrada_doblada_extra2"));
 				horaa.setSalida_doblada_extra2(rs.getString("salida_doblada_extra2"));
 				horaa.setComida_doblada_extra2(rs.getString("comida_doblada_extra2"));
+				
+				horaa.setTurno(rs.getString("turno"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -10608,6 +10611,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return dato;
 	}
 	
+
 	public Obj_Empleados Empleado(int folio) throws SQLException{
 		Obj_Empleados empleado = new Obj_Empleados();
 		String query = "exec sp_empleados "+ folio;
@@ -10709,22 +10713,60 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 //		        
 //		        empleado.setForma_de_checar(rs.getString("forma_de_checar"));
 			}
+
+			
+		
+
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 		finally{
+
 			if(stmt!=null){stmt.close();}
 		}
 		return empleado;
 	}
 	
 	
+	public Object[][] BuscarTurnos(){
+			String query = "select folio,turno,convert(varchar(20),inicia_dia,108) as inicia_dia,convert(varchar(20),finaliza_dia,108) as finaliza_dia from cuadrantes_turnos where estatus = 'V'";
+			Object[][] dato = new Object[get_filas(query)+1][4];
+			Statement stmt = null;
+			try {
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				dato[0][0] = 0;
+				dato[0][1] = "Selecciona un Turno";
+				dato[0][2] ="";
+				dato[0][3] ="";
+				int i =1;
+				while(rs.next()){
+					dato[i][0] = rs.getInt("folio");
+					dato[i][1] =rs.getString("turno");
+					dato[i][2] =rs.getString("inicia_dia");
+					dato[i][3] =rs.getString("finaliza_dia");
+					i++;
+			    }
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			finally{
+				if(stmt!=null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}}
+			}
+			return dato;
+	}		
+		
+	
 	public String[][] empleado_buscar_datos(String folio_empleado) throws IOException{
 		String[][] Matriz = null;
 		String query = "exec empleado_buscar_datos '"+folio_empleado+"'";
-		
 		Matriz = new String[getFilas(query)][78];
 		Statement s;
 		ResultSet rs;
@@ -10825,8 +10867,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		                fos.write(buffer);
 		            }
 		            fos.close();
-		            
-		            
 				i++;
 			}
 			
@@ -10927,8 +10967,109 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 			return Matriz;
 		}
+
 	 
-	 
+	
+	public Obj_Revision_De_Horario_Por_Nivel_Jerarquico buscar_colaborador(int folioColaborador){
+		Obj_Revision_De_Horario_Por_Nivel_Jerarquico datos = new Obj_Revision_De_Horario_Por_Nivel_Jerarquico();
+		String query = "declare @folio_colaborador int "
+				+ " set @folio_colaborador = "+folioColaborador
+				+ " select emp.folio, "
+				+ "		emp.nombre+' '+emp.ap_paterno+' '+emp.ap_materno as colaborador, "
+				+ "		estab.nombre as establecimiento, "
+				+ "		depto.departamento, "
+				+ "		p.nombre as puesto, "
+				+ "		emp.horario as folio_horario_1, "
+				+ "		isnull(h1.nombre,'') as horario_1, "
+				+ "		emp.horario2 as folio_horario_2, "
+				+ " 	isnull(h2.nombre,'') as horario_2, "
+				+ "		emp.horario3 as folio_horario_3, "
+				+ "		isnull(h3.nombre,'') as horario_3, "
+				+ "		case emp.status_h1 when 1 then 'true' else 'false' end status1, "
+				+ "		case emp.status_h2 when 1 then 'true' else 'false' end status2, "
+				+ "		case emp.status_h3 when 1 then 'true' else 'false' end status3, "
+				+ "		emp.status_rotativo, "
+				+ "		turno.turno turno_cuadrante, "
+				+ "		isnull(case h1.descanso-1 when -1 then 'Sin Descanso Asignado' else datename(dw,h1.descanso-1) end,'') as descanso_h1, "
+				+ "		isnull(case h1.dobla-1 when -1 then 'No Dobla' else datename(dw,h1.dobla-1) end,'') as dobla_h1, "
+				+ "		isnull(case h2.descanso-1 when -1 then 'Sin Descanso Asignado' else datename(dw,h2.descanso-1) end,'') as descanso_h2, "
+				+ "		isnull(case h2.dobla-1 when -1 then 'No Dobla' else datename(dw,h2.dobla-1) end,'') as dobla_h2, "
+				+ "		isnull(case h3.descanso-1 when -1 then 'Sin Descanso Asignado' else datename(dw,h3.descanso-1) end,'') as descanso_h3, "
+				+ "		isnull(case h3.dobla-1 when -1 then 'No Dobla' else datename(dw,h3.dobla-1) end,'') as dobla_h3, " 
+				+ "		emp.foto "
+				+ "from tb_empleado emp "
+				+ " inner join tb_establecimiento estab on estab.folio = emp.establecimiento_id "
+				+ " inner join tb_departamento depto on depto.folio = emp.departamento "
+				+ " inner join tb_puesto p on p.folio = emp.puesto_id "
+				+ " left outer join tb_horarios h1 on h1.folio = emp.horario "
+				+ " left outer join tb_horarios h2 on h2.folio = emp.horario2 "
+				+ " left outer join tb_horarios h3 on h3.folio = emp.horario3 "
+				+ " inner join cuadrantes_turnos turno on turno.folio = emp.folio_turno "
+				+ " where emp.folio = @folio_colaborador";
+		
+		Statement stmt= null;
+		
+						try {
+							stmt= con.conexion().createStatement();
+									
+							ResultSet rs= stmt.executeQuery(query);
+							
+								   while(rs.next()){
+									   datos.setFolio_colaborador(rs.getInt("folio"));
+									   datos.setColaborador(rs.getString("colaborador"));
+									   datos.setEstablecimiento(rs.getString("establecimiento"));
+									   datos.setDepartamento(rs.getString("departamento"));
+									   datos.setPuesto(rs.getString("puesto"));
+									   
+									   datos.setFolio_h1(rs.getInt("folio_horario_1"));
+									   datos.setHorario_1(rs.getString("horario_1"));
+									   datos.setFolio_h2(rs.getInt("folio_horario_2"));
+									   datos.setHorario_2(rs.getString("horario_2"));
+									   datos.setFolio_h3(rs.getInt("folio_horario_3"));
+									   datos.setHorario_3(rs.getString("horario_3"));
+									   
+									   datos.setStatus_h1(rs.getBoolean("status1"));
+									   datos.setStatus_h2(rs.getBoolean("status2"));
+									   datos.setStatus_h3(rs.getBoolean("status3"));
+									   
+									   datos.setDescanso_h1(rs.getString("descanso_h1"));
+									   datos.setDobla_h1(rs.getString("dobla_h1"));
+									   datos.setDescanso_h2(rs.getString("descanso_h2"));
+									   datos.setDobla_h2(rs.getString("dobla_h2"));
+									   datos.setDescanso_h3(rs.getString("descanso_h3"));
+									   datos.setDobla_h3(rs.getString("dobla_h3"));
+									   
+									   datos.setStatus_rotativo(rs.getInt("status_rotativo"));
+									   datos.setTurno_cuadrante(rs.getString("turno_cuadrante"));
+									   
+									   File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+										FileOutputStream fos = new FileOutputStream(photo);
+										
+								            byte[] buffer = new byte[1];
+								            InputStream is = rs.getBinaryStream("foto");
+								            while (is.read(buffer) > 0) {
+								                fos.write(buffer);
+								            }
+								            fos.close();
+								   }
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion buscar_codigo_surtidor \n SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+							return null;
+						}
+
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return datos;
+	}
+
+	
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";

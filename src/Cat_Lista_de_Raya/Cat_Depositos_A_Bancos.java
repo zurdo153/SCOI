@@ -182,10 +182,10 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
            }
         });
     
-		this.txtFolio.addKeyListener(op_filtro_folio);
-		this.txtNombre_Completo.addKeyListener(op_filtro_nombre);
+		this.txtFolio.addKeyListener(op_filtro);
+		this.txtNombre_Completo.addKeyListener(op_filtro);
 		this.cmbEstablecimientos.addActionListener(op_filtro_establecimiento);
-		this.chbNegativos.addActionListener(op_negativos);
+		this.chbNegativos.addActionListener(op_filtro_establecimiento);
 		
 		llenar_tabla();
 		calcularSugerido();
@@ -451,47 +451,35 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
     	}
     }
     
-    KeyListener op_filtro_folio = new KeyListener(){
-		@SuppressWarnings("unchecked")
+	KeyListener op_filtro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
+			String negativo = chbNegativos.isSelected()?"-":"";
+			new Obj_Filtro_Dinamico(tabla,"Folio", txtFolio.getText().toString().trim(), "Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"","Total a Pagar",negativo);
 		}
 		public void keyTyped(KeyEvent arg0) {
-			
-			char caracter = arg0.getKeyChar();
-			
-			if(((caracter < '0') ||
-				(caracter > '9')) &&
-			    (caracter != KeyEvent.VK_BACK_SPACE)){
-				arg0.consume(); 
-			}	
 		}
 		public void keyPressed(KeyEvent arg0) {}
-	};
-	
-	KeyListener op_filtro_nombre = new KeyListener(){
-		public void keyReleased(KeyEvent arg0) {
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
-		}
-		public void keyTyped(KeyEvent arg0) {}
-		public void keyPressed(KeyEvent arg0) {}		
+
 	};
 	
 	ActionListener op_filtro_establecimiento = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0){
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"", "", "", "", "");
+			String negativo = chbNegativos.isSelected()?"-":"";
+			new Obj_Filtro_Dinamico(tabla,"Folio", txtFolio.getText().toString().trim(), "Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"","Total a Pagar",negativo);
 		}
 	};
 	
-	ActionListener op_negativos = new ActionListener(){
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			if(tabla.isEditing()){tabla.getCellEditor().stopCellEditing();}
-			String negativo = chbNegativos.isSelected()?"-":"";
-			new Obj_Filtro_Dinamico(tabla,"Nombre Completo",txtNombre_Completo.getText().toString().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem().toString(),"Total a Pagar",negativo,"","");
-		}
-		
-	};
+//	ActionListener op_negativos = new ActionListener(){
+//		@Override
+//		public void actionPerformed(ActionEvent arg0) {
+//			if(tabla.isEditing()){tabla.getCellEditor().stopCellEditing();}
+//			String negativo = chbNegativos.isSelected()?"-":"";
+//			new Obj_Filtro_Dinamico(tabla,"Folio", txtFolio.getText().toString().trim(), "Nombre Completo", txtNombre_Completo.getText().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem()+"","Total a Pagar",negativo);
+//
+////			new Obj_Filtro_Dinamico(tabla,"Nombre Completo",txtNombre_Completo.getText().toString().toUpperCase(),"Establecimiento",cmbEstablecimientos.getSelectedItem().toString(),"Total a Pagar",negativo,"","");
+//		}
+//		
+//	};
     
 	DecimalFormat formato = new DecimalFormat("#0.00");
 	public float returnBanamex(){

@@ -2286,7 +2286,7 @@ public void guardar_modificar_Empleado(){
 				if(lblFolioHorario1.getText().equals("")){
 					new Cat_Horarios().setVisible(true);
 				}else{
-			     new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString())).setVisible(true);
+			     new Cat_Horarios(Integer.valueOf(lblFolioHorario1.getText().toString()),"NO").setVisible(true);
 				}
 			}
 		}

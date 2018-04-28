@@ -1950,13 +1950,13 @@ public class ActualizarSQL {
 				return true;
 			}
 
-			public boolean Horario(Obj_Horarios horario_emp, int folio){
+			public boolean Horario(Obj_Horarios horario_emp, int folio,int folio_turno){
 
-				String query = "exec sp_update_horarios ?,?,?,?,?,?,?,?,?,?," +
-													"	?,?,?,?,?,?,?,?,?,?," +
-													"	?,?,?,?,?,?,?,?,?,?," +
-													"	?,?,?,?,?,?,?,?,?,?," +
-													"	?,?,?";
+				String query = "exec sp_update_horarios_2 ?,?,?,?,?,?,?,?,?,?," +
+														" ?,?,?,?,?,?,?,?,?,?," +
+														" ?,?,?,?,?,?,?,?,?,?," +
+														" ?,?,?,?,?,?,?,?,?,?," +
+														" ?,?,?,?";
 
 				Connection con = new Connexion().conexion();
 				PreparedStatement pstmt = null;
@@ -2023,6 +2023,8 @@ public class ActualizarSQL {
 					pstmt.setString(i+=1, horario_emp.getSabado5());
 					pstmt.setInt(i+=1, horario_emp.getRecesoDiarioExtra());
 					pstmt.setInt(i+=1, horario_emp.getHorarioDeposito());
+					pstmt.setInt(i+=1, folio_turno);
+					
 					pstmt.executeUpdate();
 					con.commit();
 				} catch (Exception e) {
