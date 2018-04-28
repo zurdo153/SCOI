@@ -105,7 +105,7 @@ public class Cat_Ingresos_Manuales_A_Banco_Interno extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
 	
-	String cuentas[] =  banco_interno.Combo_Cuentas("cuentas");
+	String cuentas[] =  banco_interno.Combo_Cuentas();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbNombreCuenta = new JComboBox(cuentas);
 	
@@ -573,7 +573,7 @@ public class Cat_Ingresos_Manuales_A_Banco_Interno extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

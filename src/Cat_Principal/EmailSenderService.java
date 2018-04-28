@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 
 
 public class EmailSenderService {
-
 		public boolean enviarcorreo(String para,int cantidad_de_correos,String mensaje,String asunto,String correo){
 		boolean enviado = false;
 
@@ -28,6 +27,10 @@ public class EmailSenderService {
 		 clave="Ragazi/*-1";
 		}
 		
+		if(correo.equals("express")) {
+		 de="scoi.ventas.express@gmail.com";
+		 clave="Ragazi/*-1";
+		}
 		
 		try{
 		String host="smtp.gmail.com";

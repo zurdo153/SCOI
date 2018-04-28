@@ -2652,7 +2652,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			    }
 			    	
 				   for(int i=0;i<modelo_filtro_turnos.getRowCount();i++) {
-					    	 ObjTab.Obj_Filtro(tabla_filtro_turnos, "", columnaspo);
+					    	 ObjTab.Obj_Filtro(tabla_filtro_turnos, "", columnaspo,txtCorteSistema);
 					    	if(tabla_filtro_turnos.getValueAt(i, 0).toString().equals("true")) {
 					    		importe_turno= Double.valueOf(new BuscarSQL().Venta_Del_Turno(modelo_filtro_turnos.getValueAt(i,8).toString().trim(), modelo_filtro_turnos.getValueAt(i,1).toString().trim())) ;//calculo del total
 					    		vectorturnos[0] = modelo_filtro_turnos.getValueAt(i,1).toString().trim();
@@ -2701,7 +2701,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		public Cat_Filtrar_Vauchers(String Asignacion_O_Turno){
 			bandera = 0;
 			txtFolioTicket.setText("");
-			ObjTab.Obj_Filtro(tabla_vaucher_filtro, "", columnaspo);
+			ObjTab.Obj_Filtro(tabla_vaucher_filtro, "", columnaspo,txtFolioTicket);
 			
 			if(Asignacion_O_Turno.equals("A")) {
 				for(int i=0; i<tabla_asignaciones.getRowCount(); i++){
@@ -2759,7 +2759,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				bandera+=1;
 				txtFolioTicket.setText("");
-				ObjTab.Obj_Filtro(tabla_vaucher_filtro, "", columnaspo);
+				ObjTab.Obj_Filtro(tabla_vaucher_filtro, "", columnaspo,txtTotalVaucher);
 				double suma_total =0;
 				String[] fila = new String[12];
 				

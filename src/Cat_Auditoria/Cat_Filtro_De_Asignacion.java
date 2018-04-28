@@ -132,7 +132,7 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
  	     
 	public void limpiar_filtro(){
 		txtFiltro_asignacion.setText("");
-		ObjTab.Obj_Filtro(tablaFiltro, "", columnas);
+		ObjTab.Obj_Filtro(tablaFiltro, "", columnas,txtFiltro_asignacion);
 	}
 	
 	public void tablaRender(){
@@ -243,7 +243,7 @@ public class Cat_Filtro_De_Asignacion extends JDialog{
 	
    	KeyListener opFiltro_busqueda = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaFiltro, txtFiltro_asignacion.getText().toUpperCase(), columnas);
+			ObjTab.Obj_Filtro(tablaFiltro, txtFiltro_asignacion.getText().toUpperCase(), columnas,txtFiltro_asignacion);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

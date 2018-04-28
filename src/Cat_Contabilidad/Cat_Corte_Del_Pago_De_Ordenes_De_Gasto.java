@@ -165,7 +165,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	
 	  private KeyListener opFiltroGeneral = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), columnas);
+				ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), columnas,txtFiltro);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		

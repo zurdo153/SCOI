@@ -89,23 +89,39 @@ public class Obj_Saldo_Banco_Interno {
 		this.tabla = tabla;
 	}
 
-	public String[] Combo_Cuentas(String parametro) {
+	public String[] Combo_Cuentas() {
 		try {
-			return new Cargar_Combo().Servicios_Combos(parametro);
-		   } catch (SQLException e) {
+			return new Cargar_Combo().Combos("cuentas");
+		} catch (SQLException e) {
 			e.printStackTrace();
-		   }
-			return null; 
+		}
+		return null; 
 	}
+
+	public String[] Combo_Cuentas_reposicion_caja_chica() {
+		try {
+			return new Cargar_Combo().Combos("reposicioncajachica");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
+	public String[] Combo_Cuentas_Vale_Dola() {
+		try {
+			return new Cargar_Combo().Combos("valedola");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
 	
 	public Obj_Saldo_Banco_Interno GuardarActualizar(){ 
 		return new GuardarSQL().Guardar_Saldo_Banco_Interno(this); }
 	
 	public Obj_Saldo_Banco_Interno GuardarActualizar_Egreso(){ 
 		return new GuardarSQL().Guardar_Saldo_Banco_Interno_Egreso(this); }
-	
-//	public String[][] consulta_movimiento_banco(int folio_orden_gasto){
-//		return new BuscarSQL().Tabla_Movimiento_banco(folio_orden_gasto);
-//	}
+
 }
 

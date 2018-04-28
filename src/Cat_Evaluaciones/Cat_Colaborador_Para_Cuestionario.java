@@ -272,7 +272,7 @@ public class Cat_Colaborador_Para_Cuestionario extends JFrame {
 			
 			KeyListener opFiltrof = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTabf.Obj_Filtro(tablaf, txtFolioFiltroEmpleado.getText().toUpperCase(), columnas);
+					ObjTabf.Obj_Filtro(tablaf, txtFolioFiltroEmpleado.getText().toUpperCase(), columnas,txtFolioFiltroEmpleado);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

@@ -289,7 +289,7 @@ public class Cat_Actividades extends JFrame {
 		cmb_Observacion.setSelectedIndex(0);
 		cmbGeneraAlerta.setSelectedIndex(0);
 		init_tabla();
-		ObjTab.Obj_Filtro(tabla, "", columnas);
+		ObjTab.Obj_Filtro(tabla, "", columnas,txaActividad);
 	}
 	
 	public void OBuscarActividad(int folio_actividad){
@@ -306,12 +306,12 @@ public class Cat_Actividades extends JFrame {
 		cmb_evidencia.setSelectedItem(actividad.getExige_Evidencia());
 		cmb_Observacion.setSelectedItem(actividad.getExige_Observacion());
 		cmbGeneraAlerta.setSelectedItem(actividad.getGenera_Alerta());
-		ObjTab.Obj_Filtro(tabla, txaActividad.getText(), columnas);
+		ObjTab.Obj_Filtro(tabla, txaActividad.getText(), columnas,txaActividad);
 	}
 	
 	KeyListener op_filtro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txaActividad.getText(), columnas);
+			ObjTab.Obj_Filtro(tabla, txaActividad.getText(), columnas,txaActividad);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

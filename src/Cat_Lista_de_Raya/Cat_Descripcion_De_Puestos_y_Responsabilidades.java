@@ -378,7 +378,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			     @SuppressWarnings({ "rawtypes" })
 			    private TableRowSorter trsfiltro2;
 			     
-			JTextField txtBuscarfp  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
+			JTextField txtBuscarfp  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tablafp,columnasp);
 			String parametro="";
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Cat_Filtro_Puestos(String btnparametro){
@@ -392,7 +392,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 					this.panelf.add(scroll_tablafp2).setBounds   (10 ,40 ,820 ,415 );
 					this.init_tablafp2();
 					this.agregar(tablafp2);
-					this.txtBuscarfp.addKeyListener  (opFiltropuestos2 );
+//					this.txtBuscarfp.addKeyListener  (opFiltropuestos2 );
 				}else{
 					this.setSize(500,500);
 					trsfiltro = new TableRowSorter(modelof); 
@@ -401,7 +401,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 					this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,470 ,415 );
 					this.init_tablafp();
 					this.agregar(tablafp);
-					this.txtBuscarfp.addKeyListener  (opFiltropuestos );
+//					this.txtBuscarfp.addKeyListener  (opFiltropuestos );
 				}
 				
 				this.setResizable(false);
@@ -441,21 +441,21 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		        });
 		    }
 			
-	        private KeyListener opFiltropuestos = new KeyListener(){
-				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablafp, txtBuscarfp.getText().toUpperCase(), columnasp);
-				}
-				public void keyTyped(KeyEvent arg0) {}
-				public void keyPressed(KeyEvent arg0) {}		
-			};
-			
-			 private KeyListener opFiltropuestos2 = new KeyListener(){
-					public void keyReleased(KeyEvent arg0) {
-						ObjTab.Obj_Filtro(tablafp2, txtBuscarfp.getText().toUpperCase(), columnasp2);
-					}
-					public void keyTyped(KeyEvent arg0) {}
-					public void keyPressed(KeyEvent arg0) {}		
-				};
+//	        private KeyListener opFiltropuestos = new KeyListener(){
+//				public void keyReleased(KeyEvent arg0) {
+//					ObjTab.Obj_Filtro(tablafp, txtBuscarfp.getText().toUpperCase(), columnasp);
+//				}
+//				public void keyTyped(KeyEvent arg0) {}
+//				public void keyPressed(KeyEvent arg0) {}		
+//			};
+//			
+//			 private KeyListener opFiltropuestos2 = new KeyListener(){
+//					public void keyReleased(KeyEvent arg0) {
+//						ObjTab.Obj_Filtro(tablafp2, txtBuscarfp.getText().toUpperCase(), columnasp2);
+//					}
+//					public void keyTyped(KeyEvent arg0) {}
+//					public void keyPressed(KeyEvent arg0) {}		
+//				};
 		}//termina filtro puestos
 	
 	public static void main(String[] args) {

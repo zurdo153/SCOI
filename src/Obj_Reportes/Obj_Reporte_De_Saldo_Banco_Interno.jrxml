@@ -502,7 +502,7 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band splitType="Stretch"/>
+		<band height="14" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
 		<band height="52" splitType="Stretch">

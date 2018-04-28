@@ -150,7 +150,7 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 	
 	KeyListener opFiltro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablafilordenes, txtBuscar.getText().toUpperCase(), columnaspo);
+			ObjTab.Obj_Filtro(tablafilordenes, txtBuscar.getText().toUpperCase(), columnaspo,txtBuscar);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

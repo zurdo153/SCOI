@@ -133,7 +133,7 @@ public class Cat_Traspaso_A_Cobro_De_Fuente_De_Sodas_DH extends JFrame {
 	
 	KeyListener opFiltroFolio = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), columnas);
+			ObjTab.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), columnas,txtBuscar);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

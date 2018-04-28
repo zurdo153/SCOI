@@ -1,6 +1,9 @@
 package Obj_Cuadrantes;
 
+import java.sql.SQLException;
+
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Cuadrantes {
@@ -17,6 +20,7 @@ public class Obj_Cuadrantes {
 	String responsabilidades;
 	String estatus;
 	String NuevoModifica;
+	String Turno;
 	String [][] tabla_actividades;
 	 
 	public Obj_Cuadrantes(){
@@ -33,6 +37,14 @@ public class Obj_Cuadrantes {
 		this.estatus="";
 		this.NuevoModifica="";
 		this.tabla_actividades=null;
+	}
+
+	public String getTurno() {
+		return Turno;
+	}
+
+	public void setTurno(String turno) {
+		Turno = turno;
 	}
 
 	public int getFolio_cuadrante() {
@@ -166,6 +178,15 @@ public class Obj_Cuadrantes {
 	
 	public boolean Guardar_Captura(){
 		return new GuardarSQL().Guardar_Captura_Cuadrante(this);
+	}
+	
+	public String[] Combo_Turnos() {
+		try {
+			return new Cargar_Combo().Combos("turnos");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
 	}
 	
 }

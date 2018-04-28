@@ -198,7 +198,7 @@ public class Cat_Tipos_De_Equipo extends JFrame{
 		txtBuscar.setText("");
 		txtSerie.setText("");
 		cmb_status.setSelectedIndex(0);
-		ObjTab.Obj_Filtro(tabla, txtBuscar.getText(), columnas);
+		ObjTab.Obj_Filtro(tabla, txtBuscar.getText(), columnas,txtBuscar);
 	}	
 	
 	private void agregar(final JTable tbl) {
@@ -218,7 +218,7 @@ public class Cat_Tipos_De_Equipo extends JFrame{
 	
 	KeyListener opFiltro = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), columnas);
+			ObjTab.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), columnas,txtBuscar);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

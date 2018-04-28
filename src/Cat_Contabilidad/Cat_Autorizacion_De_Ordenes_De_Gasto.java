@@ -219,7 +219,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 		}
 		 private KeyListener op_filtro = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), Cantidad_Real_De_Columnas);
+					ObjTab.Obj_Filtro(tabla, txtFiltro.getText().toUpperCase(), Cantidad_Real_De_Columnas,txtFiltro);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

@@ -245,7 +245,7 @@ public class Cat_Asignacion_De_Computadoras_Por_Establecimiento extends JFrame{
     
 	KeyListener opFiltroFolio = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txtEstablecimientoFiltro.getText(), columnas);
+			ObjTab.Obj_Filtro(tabla, txtEstablecimientoFiltro.getText(), columnas,txtEstablecimientoFiltro);
 		}
 		public void keyPressed(KeyEvent arg0) {}
 		@Override

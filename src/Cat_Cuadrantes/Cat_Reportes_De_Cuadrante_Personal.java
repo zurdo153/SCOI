@@ -1,4 +1,4 @@
-package Cat_Reportes;
+package Cat_Cuadrantes;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -75,7 +75,8 @@ public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
      @SuppressWarnings({ "rawtypes" })
     private TableRowSorter trsfiltro;
 	
- 	JCButton btnGenerar    = new JCButton("Generar Cuadrante Personal"    ,"buscar-buscar-ampliar-icono-6234-32.png"     ,"Azul"); 
+ 	JCButton btnGenerar         = new JCButton("Cuadrante Personal Actividad"    ,"buscar-buscar-ampliar-icono-6234-32.png"     ,"Azul"); 
+ 	JCButton btnGenerarDetalle  = new JCButton("Cuadrante Personal Descripcion"  ,"buscar-buscar-ampliar-icono-6234-32.png"     ,"Azul"); 
  	
 	JTextField txtBuscarb     = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String");
 	JTextField txtfolio       = new Componentes().text(new JCTextField(), "Folio", 20, "String");
@@ -92,17 +93,20 @@ public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
 		this.setTitle("Reporte De Cuadrante Personal");
 		trsfiltro = new TableRowSorter(modelob); 
 		tablab.setRowSorter(trsfiltro);
-		this.panelfb.add(txtBuscarb).setBounds      (10  , 20 ,1004 , 20 );
-		this.panelfb.add(scroll_tablab).setBounds   (10  , 40 ,1004 ,400 );
-		this.panelfb.add(txtfolio).setBounds        (10  ,450 ,55   , 20 );
-		this.panelfb.add(txtcolaborador).setBounds  (60  ,450 ,280  , 20 );		
-		this.panelfb.add(btnGenerar).setBounds      (710 ,450 ,250  , 35 ); 
+		int x=10,y=20;
+		this.panelfb.add(txtBuscarb).setBounds        (x      ,y     ,1004 , 20 );
+		this.panelfb.add(scroll_tablab).setBounds     (x      ,y+=20 ,1004 ,400 );
+		this.panelfb.add(txtfolio).setBounds          (x      ,y+=400,55   , 20 );
+		this.panelfb.add(txtcolaborador).setBounds    (x+=55  ,y     ,280  , 20 );		
+		this.panelfb.add(btnGenerar).setBounds        (x+=300 ,y+=5  ,270  , 35 ); 
+		this.panelfb.add(btnGenerarDetalle).setBounds (x+=280 ,y     ,270  , 35 ); 
 		this.init_tablafp();
 		this.agregar(tablab);
 		this.txtBuscarb.addKeyListener  (opFiltropuestos );
 		this.btnGenerar.addActionListener(opGenerar);
-		txtfolio.setEditable(false);
-		txtcolaborador.setEditable(false);
+		this.btnGenerarDetalle.addActionListener(opGenerar);
+		this.txtfolio.setEditable(false);
+		this.txtcolaborador.setEditable(false);
 		contfb.add(panelfb);
 	}
 
@@ -120,7 +124,7 @@ public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
 	
     private KeyListener opFiltropuestos = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb);
+			ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb,txtBuscarb);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -136,11 +140,17 @@ public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
 			String basedatos="2.26";
 			String vista_previa_reporte="si";
 			int vista_previa_de_ventana=0;
+			String reporte ="";
 			String comando="exec reporte_de_cuadrante_por_folio_de_colaborador "+txtfolio.getText()+","+0;
-			String reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia.jrxml";
 			
-				     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-				     return;
+			if(e.getActionCommand().equals("Cuadrante Personal Actividad")) {		
+			  reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia.jrxml";
+			}else {
+			  reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia_Detalle_Descripcion.jrxml";
+			}
+			
+		     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		      return;
 		     }
 	};		
 			

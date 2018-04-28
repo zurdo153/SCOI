@@ -115,14 +115,13 @@ public class Obj_Matriz {
 		}
 	}
 	//departamento
-	public String[] Combo_Respuesta_Departamento(){
-		try {
-			return new Cargar_Combo().Combo_Matriz_Departamento();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		public String[] Combo_Respuesta_Departamento() {
+			try {return new Cargar_Combo().Combos("departamentos");
+			} catch (SQLException e) {e.printStackTrace();}
+			return null; 
 		}
-	}
+		
+		
 	//unidad de Inspeccion
 	public String[] Combo_Respuesta_UnidadDeInspeccion(){
 		try {

@@ -47,10 +47,8 @@ public class Obj_Modelos_De_Activos {
 	public boolean guardar(){ return new GuardarSQL().Guardar_Modelo_De_Activo(this); }
 			
 	public String[] Combo_Modelos() {
-		try {return new Cargar_Combo().Servicios_Combos("modelos");
-		   } catch (SQLException e) {
-			e.printStackTrace();
-		   }
-			return null; 
-			}
+		try {return new Cargar_Combo().Combos("modelos");
+		} catch (SQLException e) {e.printStackTrace();}
+		return null; 
+	    }
 }

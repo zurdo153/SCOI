@@ -51,7 +51,7 @@ public class Obj_Bono_Puntualidad_Y_Asistencia {
 	
 	public String[] Combo_Bono() { 
 		try {
-			return new Cargar_Combo().Bono_Puntualidad_y_Asistencia("tb_bono_puntualidad_y_asistencia");
+			return new Cargar_Combo().Combos("bono_puntualidad_y_asistencia");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

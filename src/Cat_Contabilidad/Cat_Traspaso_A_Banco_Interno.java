@@ -662,7 +662,7 @@ public class Cat_Traspaso_A_Banco_Interno extends JFrame{
 		
         private KeyListener opFiltropuestos = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -827,7 +827,7 @@ public class Cat_Traspaso_A_Banco_Interno extends JFrame{
 		
         private KeyListener opFiltro = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -993,7 +993,7 @@ public class Cat_Traspaso_A_Banco_Interno extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

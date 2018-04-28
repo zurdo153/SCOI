@@ -1,4 +1,4 @@
-package Cat_Lista_de_Raya;
+package Cat_Checador;
 
 import java.awt.Container;
 import java.awt.Image;
@@ -32,7 +32,6 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Checador.Cat_Horarios;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -283,7 +282,6 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 				if(revision.guardar()){
 					limpiar();
 					JOptionPane.showMessageDialog(null, "Se Actualizaron Los Datos Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-					dispose();
 					return;
 				}else{
 					JOptionPane.showMessageDialog(null,"No Se Pudo Actualizar El Registro", "Aviso!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));

@@ -79,14 +79,15 @@ public class Obj_Transpaso_A_Banco_Interno {
 	public String[][] consulta_movimiento_banco(int folio_orden_gasto){
 		return new BuscarSQL().Tabla_Movimiento_banco(folio_orden_gasto);
 	}
-	
+
 	public String[] Combo_Cuentas() {
-		try {return new Cargar_Combo().Servicios_Combos("cuentas");
-		   } catch (SQLException e) {
+		try {
+			return new Cargar_Combo().Combos("cuentas");
+		} catch (SQLException e) {
 			e.printStackTrace();
-		   }
-			return null; 
-			}
+		}
+		return null; 
+	}
 	
 }
 

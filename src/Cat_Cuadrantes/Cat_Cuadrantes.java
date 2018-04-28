@@ -261,6 +261,10 @@ public class Cat_Cuadrantes extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento = new JComboBox(Departamentos);  
 	
+	String Turnos[] = new Obj_Cuadrantes().Combo_Turnos();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbTurnos = new JComboBox(Turnos);  
+	
 	JToolBar menu_toolbar = new JToolBar();
 	JCButton btnBuscar    = new JCButton("Buscar"    ,"Filter-List-icon16.png"     ,"Azul"); 
 	JCButton btnNuevo     = new JCButton("Nuevo"     ,"Nuevo.png"                  ,"Azul");
@@ -392,6 +396,8 @@ public class Cat_Cuadrantes extends JFrame{
 		this.panel.add(cmbEstablecimiento).setBounds            (x+sep ,y      ,width*3    ,height );
 		this.panel.add(new JLabel("Departamento:")).setBounds   (x     ,y+=30  ,width      ,height );
 		this.panel.add(cmbDepartamento).setBounds               (x+sep ,y      ,width*3    ,height );
+		this.panel.add(new JLabel("Turno:")).setBounds          (x     ,y+=30  ,width      ,height );
+		this.panel.add(cmbTurnos).setBounds                     (x+sep ,y      ,width*3    ,height );
 		this.panel.add(new JLabel("Puesto:")).setBounds         (x     ,y+=30  ,width      ,height );
 		this.panel.add(txtPuesto).setBounds                     (x+sep ,y      ,width*3-20 ,height );
 		this.panel.add(btnfilpuestos).setBounds                 (x+355 ,y       ,height    ,height );
@@ -399,8 +405,8 @@ public class Cat_Cuadrantes extends JFrame{
 		this.panel.add(txtReporta).setBounds                    (x+sep ,y      ,width*3-20 ,height );
 		this.panel.add(btnfilrepora).setBounds                  (x+355 ,y      ,height     ,height );
 		this.panel.add(new JLabel("Objetivo Del Puesto:")).setBounds(x ,y+=30  ,width      ,height );
-		this.panel.add(scrollobjet).setBounds                   (x     ,y+=20  ,width*4-25 ,140    );
-		this.panel.add(new JLabel("Responsabilidades Del Puesto:")).setBounds(x,y+=150,180 ,height );
+		this.panel.add(scrollobjet).setBounds                   (x     ,y+=20  ,width*4-25 ,100    );
+		this.panel.add(new JLabel("Responsabilidades Del Puesto:")).setBounds(x,y+=105,180 ,height );
 		this.panel.add(scrollrespons).setBounds                 (x     ,y+=20  ,width*4-25 ,220    );
 		this.panelEnabledFalse();
 		
@@ -448,6 +454,8 @@ public class Cat_Cuadrantes extends JFrame{
 	  txaResponsabili.setText           (tablacompleta[0][12].toString());
 	  txaObjetivo.setText               (tablacompleta[0][13].toString()); 
 	  cmb_status.setSelectedItem        (tablacompleta[0][14].toString());
+	  cmbTurnos.setSelectedItem         (tablacompleta[0][15].toString());
+	  
 	  for(int i=0;i<tablacompleta.length;i++){
 		 if(Integer.valueOf(tablacompleta[i][5].toString())==1){
 			for(int j=0;j<5;j++){
@@ -726,7 +734,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_lunes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaLunes, txtBuscarLunes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaLunes, txtBuscarLunes.getText(), columnas,txtBuscarLunes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -734,7 +742,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_martes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaMartes, txtBuscarMartes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaMartes, txtBuscarMartes.getText(), columnas,txtBuscarMartes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -742,7 +750,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_miercoles = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaMiercoles, txtBuscarMiercoles.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaMiercoles, txtBuscarMiercoles.getText(), columnas,txtBuscarMiercoles);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -750,7 +758,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_jueves = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaJueves, txtBuscarJueves.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaJueves, txtBuscarJueves.getText(), columnas,txtBuscarJueves);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -758,7 +766,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_viernes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaViernes, txtBuscarViernes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaViernes, txtBuscarViernes.getText(), columnas,txtBuscarViernes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -766,7 +774,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_sabado = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaSabado, txtBuscarSabado.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaSabado, txtBuscarSabado.getText(), columnas,txtBuscarSabado);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -774,7 +782,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 	KeyListener opFiltro_domingo = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaDomingo, txtBuscarDomingo.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaDomingo, txtBuscarDomingo.getText(), columnas,txtBuscarDomingo);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -1047,12 +1055,13 @@ public class Cat_Cuadrantes extends JFrame{
 					if(!Mensaje.equals("Para Poder Guardar Es Requerido Alimente:")){
 						JOptionPane.showMessageDialog(null, Mensaje, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					}else{
-					Obj_Cuadrantes cuadrantes =new Obj_Cuadrantes();
+					Obj_Cuadrantes cuadrantes = new Obj_Cuadrantes();
 
 					cuadrantes.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));
 					cuadrantes.setCuadrante(txtCuadrante.getText().toString().trim());
 					cuadrantes.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString());
 					cuadrantes.setDepartamento(cmbDepartamento.getSelectedItem().toString());
+					cuadrantes.setTurno(cmbTurnos.getSelectedItem().toString());
 					cuadrantes.setPuesto(txtPuesto.getText().toString().trim());
 					cuadrantes.setPuesto_reporta(txtReporta.getText().toString().trim());
 					cuadrantes.setResponsabilidades(txaResponsabili.getText().toString().trim());
@@ -1182,6 +1191,7 @@ public class Cat_Cuadrantes extends JFrame{
 	    if(txtCuadrante.getText().equals("")){Mensaje+="\nEl Nombre Del Cuadrante"; }
 	    if(cmbEstablecimiento.getSelectedIndex()==0){Mensaje+="\nEl Establecimiento"; }
 	    if(cmbDepartamento.getSelectedIndex()==0){Mensaje+="\nEl Departamento"; }
+	    if(cmbTurnos.getSelectedIndex()==0){Mensaje+="\nEl Turno"; }
 	    if(txtPuesto.getText().equals("")){Mensaje+="\nEl Nombre Del Puesto"; }
 	    if(txtReporta.getText().equals("")){Mensaje+="\nEl Puesto Al Que Reporta"; }
 	    if(txaObjetivo.getText().equals("")){Mensaje+="\nLos Objetivos Del Puesto"; }
@@ -1228,14 +1238,15 @@ public class Cat_Cuadrantes extends JFrame{
 		cmb_status.setSelectedIndex(0);
 		cmbDepartamento.setSelectedIndex(0);
 		cmbEstablecimiento.setSelectedIndex(0);
+		cmbTurnos.setSelectedIndex(0);
 		
-		ObjTab.Obj_Filtro(tablaLunes    , "", columnas);
-		ObjTab.Obj_Filtro(tablaMartes   , "", columnas);
-		ObjTab.Obj_Filtro(tablaMiercoles, "", columnas);
-		ObjTab.Obj_Filtro(tablaJueves   , "", columnas);
-		ObjTab.Obj_Filtro(tablaViernes  , "", columnas);
-		ObjTab.Obj_Filtro(tablaSabado   , "", columnas);
-		ObjTab.Obj_Filtro(tablaDomingo  , "", columnas);
+		ObjTab.Obj_Filtro(tablaLunes    , "", columnas,txtBuscarLunes);
+		ObjTab.Obj_Filtro(tablaMartes   , "", columnas,txtBuscarMartes);
+		ObjTab.Obj_Filtro(tablaMiercoles, "", columnas,txtBuscarMiercoles);
+		ObjTab.Obj_Filtro(tablaJueves   , "", columnas,txtBuscarJueves);
+		ObjTab.Obj_Filtro(tablaViernes  , "", columnas,txtBuscarViernes);
+		ObjTab.Obj_Filtro(tablaSabado   , "", columnas,txtBuscarSabado);
+		ObjTab.Obj_Filtro(tablaDomingo  , "", columnas,txtBuscarDomingo);
 	}	
 	
 	
@@ -1295,6 +1306,7 @@ public class Cat_Cuadrantes extends JFrame{
         btnCopDomingo.setEnabled(false);
 		cmb_status.setEnabled (false);
 		cmbDepartamento.setEnabled(false);
+		cmbTurnos.setEnabled(false);
 		cmbEstablecimiento.setEnabled(false);
 		
 		bloqueocolumna=false;
@@ -1355,6 +1367,7 @@ public class Cat_Cuadrantes extends JFrame{
         
 		cmb_status.setEnabled (true);
 		cmbDepartamento.setEnabled(true);
+		cmbTurnos.setEnabled(true);
 		cmbEstablecimiento.setEnabled(true);
 		btnBuscar.requestFocus();
 	}
@@ -1492,7 +1505,7 @@ public class Cat_Cuadrantes extends JFrame{
 		
         private KeyListener opFiltroCopiar = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablacopiar, txtBuscarfp.getText(), columnacopiar);
+				ObjTab.Obj_Filtro(tablacopiar, txtBuscarfp.getText(), columnacopiar,txtBuscarfp);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -1561,7 +1574,7 @@ public class Cat_Cuadrantes extends JFrame{
 		ActionListener opAgregar = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				  if(tablafa.isEditing()){tablafa.getCellEditor().stopCellEditing(); }
-				  ObjTab.Obj_Filtro(tablafa, "", columnas2);
+				  ObjTab.Obj_Filtro(tablafa, "", columnas2,txtFiltro_a);
 				  for (int i=0;i<tablafa.getRowCount();i++){
 						if((tablafa.getValueAt(i,checkbox2-1).toString().trim()).equals("true")){
 				    		  Object[] vector = new Object[5];
@@ -1583,7 +1596,7 @@ public class Cat_Cuadrantes extends JFrame{
 	
 		KeyListener op_filtro_nombre_a = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablafa, txtFiltro_a.getText(), columnas2);
+				ObjTab.Obj_Filtro(tablafa, txtFiltro_a.getText(), columnas2,txtFiltro_a);
 			}
 			public void keyTyped(KeyEvent arg0)   {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -1724,7 +1737,7 @@ public class Cat_Cuadrantes extends JFrame{
 		
         private KeyListener opFiltropuestos = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablafp, txtBuscarfp.getText().toUpperCase(), columnasp);
+				ObjTab.Obj_Filtro(tablafp, txtBuscarfp.getText().toUpperCase(), columnasp,txtBuscarfp);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -1732,7 +1745,7 @@ public class Cat_Cuadrantes extends JFrame{
 		
 		 private KeyListener opFiltropuestos2 = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablafp2, txtBuscarfp.getText().toUpperCase(), columnasp2);
+					ObjTab.Obj_Filtro(tablafp2, txtBuscarfp.getText().toUpperCase(), columnasp2,txtBuscarfp);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		
@@ -1823,7 +1836,7 @@ public class Cat_Cuadrantes extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb);
+					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb,txtBuscarb);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

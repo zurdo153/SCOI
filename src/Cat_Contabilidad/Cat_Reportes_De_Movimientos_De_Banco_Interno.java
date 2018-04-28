@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import Obj_Contabilidad.Obj_Saldo_Banco_Interno;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 
@@ -34,15 +35,24 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 	
 	Obj_Saldo_Banco_Interno banco_interno= new Obj_Saldo_Banco_Interno();	
 	
-	String cuentas[] =  banco_interno.Combo_Cuentas("cuentas");
+	String cuentas[] =  banco_interno.Combo_Cuentas();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbcuenta_bancaria = new JComboBox(cuentas);
 
 	String operador[] = {"Selecciona Un Reporte"
 			                ,"Saldo de Banco Interno en un Periodo por Cuenta" 
+			                ,"Gastos Pendientes de Realizar Corte" 
 							};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
+	
+	String conceptos[] = {"TODOS","GASTO","COMPRA"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmb_conceptosolicitud = new JComboBox(conceptos);
+
+	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 	
 	JCButton btngenerar_reporte = new JCButton("Generar Reporte En Pantalla","hoja-de-calculo-icono-8865-32.png","Azul");
 	
@@ -62,24 +72,34 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 		
 		int x=20, y=25, width=100,height=20;
 		x=20;width=100;
-		this.panel.add(cmbConcepto).setBounds                   (x     ,y      ,width*4  ,height    );
-		this.panel.add(new JLabel("Fecha:")).setBounds          (x     ,y+=30  ,width    ,height    );
-		this.panel.add(JLBlinicio).setBounds                    (x+=35 ,y      ,height   ,height    );
-		this.panel.add(c_inicio).setBounds                      (x+=20 ,y      ,width    ,height    );
-		this.panel.add(new JLabel("Fecha:")).setBounds          (x+=190,y      ,width    ,height    );
-		this.panel.add(JLBfin).setBounds                        (x+=35 ,y      ,height   ,height    );
-		this.panel.add(c_final).setBounds                       (x+=20 ,y      ,width    ,height    );
-		this.panel.add(cmbcuenta_bancaria).setBounds            (x-300 ,y+=30  ,width+90 ,height    );
-		x=70;width=300;
-		this.panel.add(btngenerar_reporte).setBounds            (x     ,y+=35  ,width    ,height*2  );
+		this.panel.add(cmbConcepto).setBounds                   (x      ,y      ,width*4  ,height   );
+		this.panel.add(new JLabel("Fecha:")).setBounds          (x      ,y+=30  ,width    ,height   );
+		this.panel.add(JLBlinicio).setBounds                    (x+=35  ,y      ,height   ,height   );
+		this.panel.add(c_inicio).setBounds                      (x+=20  ,y      ,width    ,height   );
+		this.panel.add(new JLabel("Fecha:")).setBounds          (x+=190 ,y      ,width    ,height   );
+		this.panel.add(JLBfin).setBounds                        (x+=35  ,y      ,height   ,height   );
+		this.panel.add(c_final).setBounds                       (x+=20  ,y      ,width    ,height   );
+		this.panel.add(cmbcuenta_bancaria).setBounds            (x=20   ,y+=30  ,width    ,height   );
+		this.panel.add(cmbEstablecimiento).setBounds            (x+=115 ,y      ,170      ,height   );
+		this.panel.add(cmb_conceptosolicitud).setBounds         (x+=185 ,y      ,width    ,height   );
+		
+		width=300;
+		this.panel.add(btngenerar_reporte).setBounds            (x=70  ,y+=35  ,width    ,height*2  );
 		this.cont.add(panel);
 		
 		btngenerar_reporte.addActionListener(opGenerar_reporte);
 		cmbConcepto.addActionListener(op_seleccion_reporte);
-		 c_inicio.setEnabled(false);
-		 c_final.setEnabled(false);
-		 cmbcuenta_bancaria.setEnabled(false);
-		 
+		estatus(false);
+	}
+	
+	
+	public void estatus(boolean booleano) {
+		 c_inicio.setEnabled(booleano);
+		 c_final.setEnabled(booleano);
+		 cmbcuenta_bancaria.setEnabled(booleano);
+		 cmb_conceptosolicitud.setEnabled(booleano);
+		 cmbcuenta_bancaria.setSelectedIndex(0);
+		 cmb_conceptosolicitud.setSelectedIndex(0);
 	}
 	
 	public String validar_campos(){
@@ -118,18 +138,27 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 	ActionListener op_seleccion_reporte = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			 estatus(false);
 			 String concepto=cmbConcepto.getSelectedItem().toString().trim();
 			 if(concepto.equals("Selecciona Un Reporte")){
 				 c_inicio.setEnabled(false);
 				 c_final.setEnabled(false);
 				 cmbcuenta_bancaria.setEnabled(false);
 			 }
+			 
 			 if(concepto.equals("Saldo de Banco Interno en un Periodo por Cuenta")){
 				 c_inicio.setEnabled(true);
 				 c_final.setEnabled(true);
 				 cmbcuenta_bancaria.setEnabled(true);
 				 cmbcuenta_bancaria.showPopup();
 			 }
+			 
+			 if(concepto.equals("Gastos Pendientes de Realizar Corte" )){
+				 c_inicio.setEnabled(true);
+				 c_final.setEnabled(true);
+				 cmb_conceptosolicitud.setEnabled(true);
+			 }
+			 
 		}
 	};
 	
@@ -155,6 +184,12 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 									comando="exec banco_interno_reporte_estado_de_cuenta '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+cmbcuenta_bancaria.getSelectedItem().toString().trim()+"'";
 									reporte ="Obj_Reporte_De_Saldo_Banco_Interno.jrxml";
 							    }
+								
+								if(concepto.equals("Gastos Pendientes de Realizar Corte" )){
+									comando="exec ordenes_de_gasto_reporte_de_pagos_pendientes_de_rembolsar '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','ESTABLECIMIENTO','BENEFICIARIO','"+cmb_conceptosolicitud.getSelectedItem().toString()+"'";
+									reporte ="Obj_Reporte_De_Banco_Interno_Ordenes_De_Gasto_Pendientes_De_Realizar_Corte.jrxml";
+							    }
+								
 								
 						}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_campos(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));

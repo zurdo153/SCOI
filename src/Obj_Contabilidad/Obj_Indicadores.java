@@ -31,12 +31,10 @@ public class Obj_Indicadores {
 	
 	
 	 public String[] Combo_Indicadores(){
-			try {
-				return new Cargar_Combo().Indicadores();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		return null; };
+			try {return new Cargar_Combo().Combos("indicadores");
+			} catch (SQLException e) {e.printStackTrace();}
+			return null; 
+		    }
 	 
 	 
 		public Obj_Indicadores buscar(String indicador){

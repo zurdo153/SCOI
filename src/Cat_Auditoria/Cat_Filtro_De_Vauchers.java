@@ -108,7 +108,7 @@ public class Cat_Filtro_De_Vauchers extends JDialog{
 	
 	KeyListener opFiltro_busqueda = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla_vaucher_filtro, txtFolioTicket.getText().toUpperCase(), columnaspo);
+			ObjTab.Obj_Filtro(tabla_vaucher_filtro, txtFolioTicket.getText().toUpperCase(), columnaspo,txtFolioTicket);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

@@ -721,7 +721,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	KeyListener opFiltro_lunes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaLunes, txtBuscarLunes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaLunes, txtBuscarLunes.getText(), columnas,txtBuscarLunes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -729,7 +729,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	KeyListener opFiltro_martes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaMartes, txtBuscarMartes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaMartes, txtBuscarMartes.getText(), columnas,txtBuscarMartes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -737,7 +737,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	KeyListener opFiltro_miercoles = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaMiercoles, txtBuscarMiercoles.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaMiercoles, txtBuscarMiercoles.getText(), columnas,txtBuscarMiercoles);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -745,7 +745,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	KeyListener opFiltro_jueves = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaJueves, txtBuscarJueves.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaJueves, txtBuscarJueves.getText(), columnas,txtBuscarJueves);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -753,7 +753,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	KeyListener opFiltro_viernes = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaViernes, txtBuscarViernes.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaViernes, txtBuscarViernes.getText(), columnas,txtBuscarViernes);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -761,7 +761,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	KeyListener opFiltro_sabado = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaSabado, txtBuscarSabado.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaSabado, txtBuscarSabado.getText(), columnas,txtBuscarSabado);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -769,7 +769,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 	
 	KeyListener opFiltro_domingo = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tablaDomingo, txtBuscarDomingo.getText(), columnas);
+			ObjTab.Obj_Filtro(tablaDomingo, txtBuscarDomingo.getText(), columnas,txtBuscarDomingo);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		
@@ -1307,13 +1307,13 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 		cmb_status.setSelectedIndex(0);
 		cmbEstablecimiento.setSelectedIndex(0);
 		
-		ObjTab.Obj_Filtro(tablaLunes    , "", columnas);
-		ObjTab.Obj_Filtro(tablaMartes   , "", columnas);
-		ObjTab.Obj_Filtro(tablaMiercoles, "", columnas);
-		ObjTab.Obj_Filtro(tablaJueves   , "", columnas);
-		ObjTab.Obj_Filtro(tablaViernes  , "", columnas);
-		ObjTab.Obj_Filtro(tablaSabado   , "", columnas);
-		ObjTab.Obj_Filtro(tablaDomingo  , "", columnas);
+		ObjTab.Obj_Filtro(tablaLunes    , "", columnas,txtBuscarLunes);
+		ObjTab.Obj_Filtro(tablaMartes   , "", columnas,txtBuscarMartes);
+		ObjTab.Obj_Filtro(tablaMiercoles, "", columnas,txtBuscarMiercoles);
+		ObjTab.Obj_Filtro(tablaJueves   , "", columnas,txtBuscarJueves);
+		ObjTab.Obj_Filtro(tablaViernes  , "", columnas,txtBuscarViernes);
+		ObjTab.Obj_Filtro(tablaSabado   , "", columnas,txtBuscarSabado);
+		ObjTab.Obj_Filtro(tablaDomingo  , "", columnas,txtBuscarDomingo);
 	}	
 	
 	public void panel_boolean(boolean boleano){
@@ -1447,7 +1447,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 			this.panelf.add(scroll_tablafp).setBounds                  (x     ,y+=20 ,width ,305    );
 	        txtBuscarfp.setText(txtProveedor.getText().toString().trim());
 	        
-			ObjTab.Obj_Filtro(tablafilordenes, txtProveedor.getText().toString().trim().toUpperCase(), columnaspo);
+			ObjTab.Obj_Filtro(tablafilordenes, txtProveedor.getText().toString().trim().toUpperCase(), columnaspo,txtProveedor);
 			init_tablaordenes(cmb_tipo_Proveedor.getSelectedItem().toString().trim(),parametro_busqueda());
 			cmb_tipo_Proveedor.addActionListener(proveedor);
 			this.agregar(tablafilordenes);
@@ -1540,7 +1540,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 						int orden= modeloparametro.getRowCount();
 						
 					    for(int i=0;i<modeloor_filtro.getRowCount();i++) {
-					    	 ObjTab.Obj_Filtro(tablafilordenes, "", columnaspo);
+					    	 ObjTab.Obj_Filtro(tablafilordenes, "", columnaspo,txtBuscarfp);
 					    	if(tablafilordenes.getValueAt(i, 0).toString().equals("true")) {
 					    		orden=orden+1;
 					    		vectorAgregarOrden[0]=orden+"";
@@ -1594,7 +1594,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 		
         private KeyListener opFiltropuestos = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablafilordenes, txtBuscarfp.getText().toUpperCase(), columnaspo);
+				ObjTab.Obj_Filtro(tablafilordenes, txtBuscarfp.getText().toUpperCase(), columnaspo,txtBuscarfp);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -1684,7 +1684,7 @@ public class Cat_Programacion_De_Proveedores extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb);
+					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText(), columnasb,txtBuscarb);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

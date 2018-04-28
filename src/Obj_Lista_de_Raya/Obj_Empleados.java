@@ -2,6 +2,7 @@ package Obj_Lista_de_Raya;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import Conexiones_SQL.ActualizarSQL;
@@ -781,4 +782,9 @@ public class Obj_Empleados {
 		}
 		return null;
 	}
+	
+	public String[][] empleado_buscar_datos(String folio_empleado) throws IOException{
+		return new BuscarSQL().empleado_buscar_datos(folio_empleado);
+	}
+	
 }

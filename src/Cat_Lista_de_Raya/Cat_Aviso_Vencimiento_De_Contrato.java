@@ -90,7 +90,7 @@ public class Cat_Aviso_Vencimiento_De_Contrato extends JDialog{
 	
 	KeyListener opFiltroNombre = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
-			ObjTabf.Obj_Filtro(tabla, txtFiltrof.getText().toUpperCase(), columnas);
+			ObjTabf.Obj_Filtro(tabla, txtFiltrof.getText().toUpperCase(), columnas,txtFiltrof);
 		}
 		public void keyTyped(KeyEvent arg0) {}
 		public void keyPressed(KeyEvent arg0) {}		

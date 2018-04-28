@@ -119,7 +119,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_concepto = new JComboBox(conceptos);
 	
-	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento_Todos();
+	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 
@@ -294,9 +294,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	public void calculo() {
 		float importe=0;
 		for(int i=0;i<tabla.getRowCount();i++) {
-			tabla.setValueAt(Float.valueOf(tabla.getValueAt(i, 1)+"") * Float.valueOf(tabla.getValueAt(i, 2)+"")   , i, 3);
+			tabla.setValueAt(Float.valueOf(tabla.getValueAt(i, 1)+"") * Float.valueOf(tabla.getValueAt(i, 2)+""), i, 3);
 			importe=importe+Float.valueOf(tabla.getValueAt(i, 3)+"");
-			
 		}
 		txtTotal.setText(importe+"");
 	};
@@ -404,7 +403,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			}
 			txtSolicitante.setText(usuario.getNombre_completo());
 			txtFoliosolicit.setText(usuario.getFolio()+"");
-			
 			txtFolio.setText(folio_inventario);
 			txtFolio.setEditable(false);
 			btnGuardar.setEnabled(true);
@@ -467,6 +465,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	
 	//TODO GUARDAR
 	ActionListener guardar = new ActionListener(){
+	@SuppressWarnings("unlikely-arg-type")
 	public void actionPerformed(ActionEvent e){
 			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 				if(tabla.isEditing()){	tabla.getCellEditor().stopCellEditing();}
@@ -481,18 +480,16 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 				   }
 
 				   if(gasto.validacion_existe(txtFolio.getText().toString())||guardar_actualizar.equals('N')){
-						   
-				   gasto.setFolio(Integer.valueOf(txtFolio.getText().toString()));
-                   gasto.setFolio_usuario_solicito(Integer.valueOf(txtFoliosolicit.getText()));
-                   gasto.setTotal_gasto(Float.valueOf(txtTotal.getText()));
-                   gasto.setEstablecimiento_solicito(cmbEstablecimiento.getSelectedItem().toString());
-                   gasto.setCod_prv(txtFolio_prv.getText().toString());
-                   gasto.setTipo_proveedor(rbProveedor.isSelected()?"P":"C"); 
-                   gasto.setDescripcion_gasto(txaUso.getText().trim());
-                   gasto.setGuardar_actualizar(guardar_actualizar);
-                   gasto.setTabla_obj(tabla_guardado);
-                   gasto.setConcepto_gasto(cmb_concepto.getSelectedItem().toString());
-                   
+					   gasto.setFolio(Integer.valueOf(txtFolio.getText().toString()));
+	                   gasto.setFolio_usuario_solicito(Integer.valueOf(txtFoliosolicit.getText()));
+	                   gasto.setTotal_gasto(Float.valueOf(txtTotal.getText()));
+	                   gasto.setEstablecimiento_solicito(cmbEstablecimiento.getSelectedItem().toString());
+	                   gasto.setCod_prv(txtFolio_prv.getText().toString());
+	                   gasto.setTipo_proveedor(rbProveedor.isSelected()?"P":"C"); 
+	                   gasto.setDescripcion_gasto(txaUso.getText().trim());
+	                   gasto.setGuardar_actualizar(guardar_actualizar);
+	                   gasto.setTabla_obj(tabla_guardado);
+	                   gasto.setConcepto_gasto(cmb_concepto.getSelectedItem().toString());
 					if(gasto.GuardarActualizar().getFolio()>0){
 		                Obj_Correos correos = new Obj_Correos().buscar_correos(84, "");
 						String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+"Con un valor total de:$"+txtTotal.getText().toString()+"\n "
@@ -514,7 +511,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 						JOptionPane.showMessageDialog(null, "El Estatus De La Orden De Gasto Es Requerido Sea PENDIENTE Para Poder Guardar", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				      return;
 				   }
-					
 			 }
 	  }			
     };
@@ -602,7 +598,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		
         private KeyListener opFiltropuestos = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+				ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -766,7 +762,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			
 	        private KeyListener opFiltropuestos = new KeyListener(){
 				public void keyReleased(KeyEvent arg0) {
-					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb);
+					ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
 				}
 				public void keyTyped(KeyEvent arg0) {}
 				public void keyPressed(KeyEvent arg0) {}		

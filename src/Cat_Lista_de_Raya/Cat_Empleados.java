@@ -13,8 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -129,6 +127,8 @@ import Cat_Camaras.Cat_Camara;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Empleados extends JFrame{
+	String[][] tablacompleta = null;
+	
 	Runtime R = Runtime.getRuntime();
 	Container cont = getContentPane();
 	JTabbedPane pestanas = new JTabbedPane();
@@ -166,8 +166,8 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtColonia = new Componentes().text( new JTextField(), "Colonia", 30, "String");
 	JTextField txtCalle = new Componentes().text( new JTextField(), "Calle", 30, "String");
 	
-	JTextField txtemailEmpresa                  = new Componentes().text(new JCTextField(),"@email empresa", 150, "String");
-	JTextField txtemailPersonal                  = new Componentes().text(new JCTextField(),"@email personal", 150, "String");
+	JTextField txtemailEmpresa           = new Componentes().text(new JCTextField(),"@email empresa", 150, "String");
+	JTextField txtemailPersonal          = new Componentes().text(new JCTextField(),"@email personal", 150, "String");
 	JTextField txtDescanso               = new Componentes().text(new JCTextField(),"Dia De Descanso", 100, "String");
 	JTextField txtDobla                  = new Componentes().text(new JCTextField(),"Dia Dobla", 100, "String");
 	JTextField txtFechaUltimasVacaciones = new Componentes().text(new JCTextField(),"Ultimas Vaciones", 100, "String");
@@ -291,11 +291,6 @@ public class Cat_Empleados extends JFrame{
 	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
-	
-//	JDateChooser txtFechaNacimiento = new JDateChooser();
-//	JDateChooser txtIngreso = new JDateChooser();
-//	JDateChooser txtIngresoImss = new JDateChooser();
-//	JDateChooser txtVencimientoLicencia = new JDateChooser();
 	
 	JDateChooser txtFechaNacimiento = new Componentes().jchooser(new JDateChooser()  ,"",0);
 	JDateChooser txtIngreso = new Componentes().jchooser(new JDateChooser()  ,"",0);
@@ -463,18 +458,9 @@ public class Cat_Empleados extends JFrame{
 		panel.add(btnBuscar).setBounds(ancho*2-67,y,100,20);
 		panel.add(btnFiltro).setBounds(ancho*2+35,y,100,20);
 	
-//		panel.add(btnFoto).setBounds(x*2+ancho*5,y-5,ancho+55,160);
 		panel.add(btnFoto).setBounds(ancho*6,y,ancho+15,120);
-//		panel.add(btnTrueFoto).setBounds(x*2+ancho*5-10, y+155,220,20);
 		panel.add(btnTrueFoto).setBounds(ancho*6, y+120,ancho+15,20);
-		
-//		panel.add(btnExaminar).setBounds(x*2+ancho*5-10, y+175,80,20);		
-//		panel.add(new JLabel("320 x 240")).setBounds(x*2+ancho*5+76, y+175,60,20);
-//		panel.add(btnCamara).setBounds(x*2+ancho*5+130, y+175,80,20);
 		panel.add(btnCamara).setBounds(ancho*6, y+140,ancho+15,20);
-		
-//		panel.add(new JLabel("Clave Checador")).setBounds(x+450,y,ancho,20);
-//		panel.add(txtChecador).setBounds(x+(ancho*3)+110,y,ancho-15,20);
 		
 		panel.add(new JLabel("Nombre:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtNombre).setBounds(ancho-60,y,ancho-15,20);
@@ -518,155 +504,137 @@ public class Cat_Empleados extends JFrame{
 		panel.add(new JLabel("RFC:")).setBounds(x,y+=25,ancho,20);
 		panel.add(txtRFC).setBounds(ancho-60,y,ancho-15,20);
 		
-//		panel.add(new JLabel("Sexo: ")).setBounds(240,y,ancho,20);
-//		panel.add(cmbSexo).setBounds((ancho*2)+30,y,ancho-15,20);
-		
-//		panel.add(new JLabel("Estado Civil: ")).setBounds(450,y,ancho,20);
-//		panel.add(cmbEstadoCivil).setBounds((ancho*3)+110,y,ancho-15,20);
-		
 		panel.add(new JLabel("Curp:")).setBounds(220,y,ancho,20);
 		panel.add(txtCurp).setBounds((ancho*2)+10,y,ancho-15,20);
 		
-		panel.add(new JLabel("Email Personal:")).setBounds          (x+=410         	,y     ,width   ,height );
-		panel.add(txtemailPersonal).setBounds                      (x+=80         	,y     ,width+25,height );		
-		
-		panel.add(btnHuella).setBounds                     ((ancho*5)+10,y,ancho-15,20);
-		
-//		panel.add(new JLabel("T. De Sangre: ")).setBounds(240,y,ancho,20);
-//		panel.add(cmbTipoDeSangre).setBounds((ancho*2)+30,y,ancho-15,20);
-		
-//		panel.add(new JLabel("Escolaridad: ")).setBounds(450,y,ancho,20);
-//		panel.add(cmbEscolaridad).setBounds((ancho*3)+110,y,ancho-15,20);
-		
-		panel.add(new JLabel("Perfil:")).setBounds         (x=20           	,y+=25 ,width   ,height );
-		panel.add(btnLimpiarPerfil).setBounds              (x+=30        	,y     ,height  ,height );
-		panel.add(btnAgregarPerfil).setBounds              (x+=20        	,y     ,height  ,height );
-		panel.add(lblFolioPerfil).setBounds                (x+=20           ,y     ,height  ,height );
-		panel.add(txtPerfil).setBounds                     (x+=25           ,y     ,300		,height );
-		
-		panel.add(new JLabel("Email Empresa:")).setBounds (x=430         	,y     ,width   ,height );
-		panel.add(txtemailEmpresa).setBounds               (x+=80         	,y     ,width+25,height );
+		panel.add(new JLabel("Email Personal:")).setBounds      (x+=410      ,y     ,width   ,height );
+		panel.add(txtemailPersonal).setBounds                   (x+=80       ,y     ,width+25,height );		
+		panel.add(btnHuella).setBounds                          ((ancho*5)+10,y     ,ancho-15,height );
+		panel.add(new JLabel("Perfil:")).setBounds              (x=20        ,y+=25 ,width   ,height );
+		panel.add(btnLimpiarPerfil).setBounds                   (x+=30       ,y     ,height  ,height );
+		panel.add(btnAgregarPerfil).setBounds                   (x+=20       ,y     ,height  ,height );
+		panel.add(lblFolioPerfil).setBounds                     (x+=20       ,y     ,height  ,height );
+		panel.add(txtPerfil).setBounds                          (x+=25       ,y     ,300	 ,height );
+		panel.add(new JLabel("Email Empresa:")).setBounds       (x=430       ,y     ,width   ,height );
+		panel.add(txtemailEmpresa).setBounds                    (x+=80       ,y     ,width+25,height );
 //TODO Laboral ------------------------------------------------------------------------------------------------------------------------------------------		
 		x=17 ;y=230;width=340;sep=120;
-		panel.add(lblLaboral).setBounds                      (x-7         ,y     ,997     ,245    );
-		panel.add(new JLabel("Horario:")).setBounds          (x           ,y+=15 ,width   ,height );
-		panel.add(btnHorarioNew).setBounds                   (x+50        ,y     ,height  ,height );
-		panel.add(btnHorario).setBounds                      (x+70        ,y     ,height  ,height );
-		panel.add(lblFolioHorario1).setBounds                (x+sep-30    ,y     ,height  ,height );
-		panel.add(txtHorario).setBounds                      (x+sep       ,y     ,width   ,height );
-		panel.add(rbHorario).setBounds                       (x+460       ,y     ,height  ,height );
-	    panel.add(new JLabel("Horario 2:")).setBounds        (x           ,y+=25 ,width   ,height );
+		panel.add(lblLaboral).setBounds                         (x-7         ,y     ,997      ,245    );
+		panel.add(new JLabel("Horario:")).setBounds             (x           ,y+=15 ,width    ,height );
+		panel.add(btnHorarioNew).setBounds                      (x+50        ,y     ,height   ,height );
+		panel.add(btnHorario).setBounds                         (x+70        ,y     ,height   ,height );
+		panel.add(lblFolioHorario1).setBounds                   (x+sep-30    ,y     ,height   ,height );
+		panel.add(txtHorario).setBounds                         (x+sep       ,y     ,width    ,height );
+		panel.add(rbHorario).setBounds                          (x+460       ,y     ,height   ,height );
+	    panel.add(new JLabel("Horario 2:")).setBounds           (x           ,y+=25 ,width    ,height );
 	    
-	    panel.add(btnLimpiarH2).setBounds                    (x+sep-70    ,y     ,height  ,height );
-		panel.add(btnHorario2).setBounds                     (x+sep-50    ,y     ,height  ,height );
-		panel.add(lblFolioHorario2).setBounds                (x+sep-30    ,y     ,height  ,height );
-		panel.add(txtHorario2).setBounds                     (x+sep       ,y     ,width   ,height );
-		panel.add(rbHorario2).setBounds                      (x+460       ,y     ,height  ,height );
-	    panel.add(new JLabel("Horario 3:")).setBounds        (x           ,y+=25 ,width   ,height );
-	    panel.add(btnLimpiarH3).setBounds                    (x+50    ,y     ,height  ,height );
-		panel.add(btnHorario3).setBounds                     (x+70        ,y     ,height  ,height );
-		panel.add(lblFolioHorario3).setBounds                (x+sep-30    ,y     ,height  ,height );
-		panel.add(txtHorario3).setBounds                     (x+sep       ,y     ,width   ,height );
-		panel.add(rbHorario3).setBounds                      (x+460       ,y     ,height  ,height );
-		panel.add(new JLabel("Establecimiento:")).setBounds           (x           ,y+=25 ,width   ,height );
-		panel.add(cmbEstablecimiento).setBounds                       (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Departamento:")).setBounds     (x           ,y+=25 ,width   ,height );
-		panel.add(cmbDepartamento).setBounds                 (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Puesto:")).setBounds  (x           ,y+=25 ,width   ,height );
-		panel.add(cmbPuesto).setBounds              (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("N° Seguro Social:")).setBounds (x           ,y+=25 ,width/2 ,height );
-		panel.add(txtImss).setBounds                         (x+sep       ,y     ,width/2 ,height );
-		panel.add(cmbActivo_Inactivo).setBounds              (x+290       ,y     ,width/2 ,height );
-		panel.add(new JLabel("N° Infonavit:")).setBounds     (x           ,y+=25 ,width   ,height );
-		panel.add(txtNumeroInfonavit).setBounds              (x+sep       ,y     ,width/2 ,height );
-		panel.add(new JLabel("Últ.Vacaciones:")).setBounds   (x+290       ,y     ,width/2 ,height );
-		panel.add(txtFechaUltimasVacaciones).setBounds       (x+365       ,y     ,95      ,height );
-		panel.add(btnFechaUltimasVacaciones).setBounds       (x+462       ,y     ,height  ,height );
+	    panel.add(btnLimpiarH2).setBounds                       (x+sep-70    ,y     ,height   ,height );
+		panel.add(btnHorario2).setBounds                        (x+sep-50    ,y     ,height   ,height );
+		panel.add(lblFolioHorario2).setBounds                   (x+sep-30    ,y     ,height   ,height );
+		panel.add(txtHorario2).setBounds                        (x+sep       ,y     ,width    ,height );
+		panel.add(rbHorario2).setBounds                         (x+460       ,y     ,height   ,height );
+	    panel.add(new JLabel("Horario 3:")).setBounds           (x           ,y+=25 ,width    ,height );
+	    panel.add(btnLimpiarH3).setBounds                       (x+50        ,y     ,height   ,height );
+		panel.add(btnHorario3).setBounds                        (x+70        ,y     ,height   ,height );
+		panel.add(lblFolioHorario3).setBounds                   (x+sep-30    ,y     ,height   ,height );
+		panel.add(txtHorario3).setBounds                        (x+sep       ,y     ,width    ,height );
+		panel.add(rbHorario3).setBounds                         (x+460       ,y     ,height   ,height );
+		panel.add(new JLabel("Establecimiento:")).setBounds     (x           ,y+=25 ,width    ,height );
+		panel.add(cmbEstablecimiento).setBounds                 (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Departamento:")).setBounds        (x           ,y+=25 ,width    ,height );
+		panel.add(cmbDepartamento).setBounds                    (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Puesto:")).setBounds              (x           ,y+=25 ,width    ,height );
+		panel.add(cmbPuesto).setBounds                          (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("N° Seguro Social:")).setBounds    (x           ,y+=25 ,width/2  ,height );
+		panel.add(txtImss).setBounds                            (x+sep       ,y     ,width/2  ,height );
+		panel.add(cmbActivo_Inactivo).setBounds                 (x+290       ,y     ,width/2  ,height );
+		panel.add(new JLabel("N° Infonavit:")).setBounds        (x           ,y+=25 ,width    ,height );
+		panel.add(txtNumeroInfonavit).setBounds                 (x+sep       ,y     ,width/2  ,height );
+		panel.add(new JLabel("Últ.Vacaciones:")).setBounds      (x+290       ,y     ,width/2  ,height );
+		panel.add(txtFechaUltimasVacaciones).setBounds          (x+365       ,y     ,95       ,height );
+		panel.add(btnFechaUltimasVacaciones).setBounds          (x+462       ,y     ,height   ,height );
 		
-		x=515 ;y=245;width=150;sep=100;
-		panel.add(new JLabel("Tipo de horario:")).setBounds  (x           ,y     ,width   ,height );
-		panel.add(cmbHorarioRotativo).setBounds              (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Descanso:")).setBounds         (x           ,y+=25 ,width   ,height );
-		panel.add(txtDescanso).setBounds                     (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Día Dobla:")).setBounds        (x           ,y+=25 ,width   ,height );
-		panel.add(txtDobla).setBounds                        (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Vence La Licencia:")).setBounds(x           ,y+=25 ,width   ,height );
-		panel.add(txtVencimientoLicencia).setBounds          (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Fecha Ingreso:")).setBounds    (x           ,y+=25 ,width   ,height );
-		panel.add(txtIngreso).setBounds                      (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Fecha Baja:")).setBounds       (x           ,y+=25 ,width   ,height );
-		panel.add(txtBaja).setBounds                         (x+sep       ,y     ,width-20,height );
-		panel.add(btnFiniquito).setBounds                    (x+sep+130   ,y     ,height  ,height );
-		panel.add(new JLabel("Ingreso IMSS:")).setBounds     (x           ,y+=25 ,width   ,height );
-		panel.add(txtIngresoImss).setBounds                  (x+sep       ,y     ,width   ,height );
-		panel.add(new JLabel("Última incapacidad:")).setBounds(x          ,y+=25 ,width   ,height );
-		panel.add(txtFechaIncapacidad).setBounds             (x+sep       ,y     ,width-20,height );
-		panel.add(btnFechaIncapacidad).setBounds             (x+sep+130   ,y     ,height  ,height );
+		sep=100;
+		panel.add(new JLabel("Tipo de horario:")).setBounds     (x=515       ,y=245 ,width=150,height );
+		panel.add(cmbHorarioRotativo).setBounds                 (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Descanso:")).setBounds            (x           ,y+=25 ,width    ,height );
+		panel.add(txtDescanso).setBounds                        (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Día Dobla:")).setBounds           (x           ,y+=25 ,width    ,height );
+		panel.add(txtDobla).setBounds                           (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Vence La Licencia:")).setBounds   (x           ,y+=25 ,width    ,height );
+		panel.add(txtVencimientoLicencia).setBounds             (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Fecha Ingreso:")).setBounds       (x           ,y+=25 ,width    ,height );
+		panel.add(txtIngreso).setBounds                         (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Fecha Baja:")).setBounds          (x           ,y+=25 ,width    ,height );
+		panel.add(txtBaja).setBounds                            (x+sep       ,y     ,width-20 ,height );
+		panel.add(btnFiniquito).setBounds                       (x+sep+130   ,y     ,height   ,height );
+		panel.add(new JLabel("Ingreso IMSS:")).setBounds        (x           ,y+=25 ,width    ,height );
+		panel.add(txtIngresoImss).setBounds                     (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Última incapacidad:")).setBounds  (x           ,y+=25 ,width    ,height );
+		panel.add(txtFechaIncapacidad).setBounds                (x+sep       ,y     ,width-20 ,height );
+		panel.add(btnFechaIncapacidad).setBounds                (x+sep+130   ,y     ,height   ,height );
 		
-		x=800;y=245;sep=45;
-		
-		panel.add(new JLabel("Checador:")).setBounds         (x        	  ,y     ,130   ,20     );
-		panel.add(cmbStatusChecador).setBounds               (x+sep+15    ,y     ,130   ,20     );
-		
-		panel.add(new JLabel("Checa con:")).setBounds        (x        	  ,y+=25 ,130   ,20     );
-		panel.add(cmbChecaCon).setBounds               		 (x+sep+15    ,y     ,130   ,20     );
-		
-		panel.add(btnStatus).setBounds                       (x+60        ,y+=22 ,130   ,125    );
-		panel.add(new JLabel("Estatus:")).setBounds          (x           ,y+=128,130   ,height );
-		panel.add(cmbStatus).setBounds                       (x+sep+15    ,y     ,130   ,height );
-		panel.add(new JLabel("Contrato:")).setBounds         (x           ,y+=25 ,130   ,height );
-		panel.add(cmbContratacion).setBounds                 (x+sep+15    ,y     ,130   ,height );
+		sep=60;
+		panel.add(new JLabel("Checador:")).setBounds            (x=800       ,y=245 ,width=130,height );
+		panel.add(cmbStatusChecador).setBounds                  (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Checa con:")).setBounds           (x       	 ,y+=25 ,width    ,height );
+		panel.add(cmbChecaCon).setBounds               		    (x+sep       ,y     ,width    ,height );
+		panel.add(btnStatus).setBounds                          (x+sep       ,y+=22 ,width    ,125    );
+		panel.add(new JLabel("Estatus:")).setBounds             (x           ,y+=128,width    ,height );
+		panel.add(cmbStatus).setBounds                          (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Contrato:")).setBounds            (x           ,y+=25 ,width    ,height );
+		panel.add(cmbContratacion).setBounds                    (x+sep       ,y     ,width    ,height );
 		
 //TODO Percepciones y Deducciones ------------------------------------------------------------------------------------------------------------------------------------------		
-		x=17 ;y=475;sep=87;
-		panel.add(lblPercepciones).setBounds                   (x-7  ,y     ,700  ,190    );
-		panel.add(new JLabel("Salario Diario:")).setBounds     (x    ,y+=15 ,width,height );
-		panel.add(txtSalarioDiario).setBounds                  (x+sep,y     ,width,height );
-		panel.add(new JLabel("Salario D.I:")).setBounds        (x    ,y+=25 ,width,height );
-		panel.add(txtSalarioDiarioIntegrado).setBounds         (x+sep,y     ,width,height );
-		panel.add(new JLabel("Sueldo:")).setBounds             (x    ,y+=25 ,width,height );
-		panel.add(cmbSueldo).setBounds                         (x+sep,y     ,width,height );
-		panel.add(new JLabel("B.Complemento:")).setBounds               (x    ,y+=25 ,width,height );
-		panel.add(cmbBono).setBounds                           (x+sep,y     ,width,height );
-		panel.add(new JLabel("B.Asistencia:")).setBounds         (x    ,y+=25 ,width,height );
-		panel.add(cmbBonoAsistencia).setBounds                    (x+sep,y     ,width,height );
-		panel.add(new JLabel("B.Puntualidad:")).setBounds        (x    ,y+=25 ,width,height );
-		panel.add(cmbBonopuntualidad).setBounds                   (x+sep,y     ,width,height );
-		panel.add(new JLabel("Presencia Fisica:")).setBounds   (x    ,y+=25 ,width,height );
-		panel.add(cmbPresenciaFisica).setBounds                (x+sep,y     ,width,height );
+		x=17 ;sep=87;
+		panel.add(lblPercepciones).setBounds                    (x-7         ,y=475 ,700      ,190    );
+		panel.add(new JLabel("Salario Diario:")).setBounds      (x           ,y+=15 ,width=150,height );
+		panel.add(txtSalarioDiario).setBounds                   (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Salario D.I:")).setBounds         (x           ,y+=25 ,width    ,height );
+		panel.add(txtSalarioDiarioIntegrado).setBounds          (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Sueldo:")).setBounds              (x           ,y+=25 ,width    ,height );
+		panel.add(cmbSueldo).setBounds                          (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("B.Complemento:")).setBounds       (x           ,y+=25 ,width    ,height );
+		panel.add(cmbBono).setBounds                            (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("B.Asistencia:")).setBounds        (x           ,y+=25 ,width    ,height );
+		panel.add(cmbBonoAsistencia).setBounds                  (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("B.Puntualidad:")).setBounds       (x           ,y+=25 ,width    ,height );
+		panel.add(cmbBonopuntualidad).setBounds                 (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Presencia Fisica:")).setBounds    (x           ,y+=25 ,width    ,height );
+		panel.add(cmbPresenciaFisica).setBounds                 (x+sep       ,y     ,width    ,height );
 		
-		x=270; y=490; sep=97;
-		panel.add(new JLabel("Infonavit:")).setBounds          (x    ,y     ,width,height );
-		panel.add(txtInfonavit).setBounds                      (x+sep,y     ,width,height );
-		panel.add(new JLabel("Infonacot:")).setBounds          (x    ,y+=25 ,width,height );
-		panel.add(txtDInfonacot).setBounds                     (x+sep,y     ,width,height );
-		panel.add(new JLabel("Pensión Alimenticia:")).setBounds(x    ,y+=25 ,width,height );
-		panel.add(txtPensionAli).setBounds                     (x+sep,y     ,width,height );
-		panel.add(new JLabel("Rango de Prestamo:")).setBounds  (x    ,y+=25 ,width,height );
-		panel.add(cmbPrestamos).setBounds                      (x+sep,y     ,width,height );
-		panel.add(new JLabel("Tipo de Bancos:")).setBounds     (x    ,y+=25 ,width,height );
-		panel.add(cmbTipoBancos).setBounds                     (x+sep,y     ,width,height );
-		panel.add(new JLabel("Cuenta de Nómina:")).setBounds  (x    ,y+=25 ,width,height );
-		panel.add(txtTarjetaNomina).setBounds                  (x+sep,y     ,width,height );
-		panel.add(new JLabel("Forma de Pago:")).setBounds      (x    ,y+=25 ,width,height );
-		panel.add(txtFormaDePago).setBounds                    (x+sep,y     ,width,height );		
+		sep=97;
+		panel.add(new JLabel("Infonavit:")).setBounds           (x=270       ,y=490 ,width    ,height );
+		panel.add(txtInfonavit).setBounds                       (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Infonacot:")).setBounds           (x           ,y+=25 ,width    ,height );
+		panel.add(txtDInfonacot).setBounds                      (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Pensión Alimenticia:")).setBounds (x           ,y+=25 ,width    ,height );
+		panel.add(txtPensionAli).setBounds                      (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Rango de Prestamo:")).setBounds   (x           ,y+=25 ,width    ,height );
+		panel.add(cmbPrestamos).setBounds                       (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Tipo de Bancos:")).setBounds      (x           ,y+=25 ,width    ,height );
+		panel.add(cmbTipoBancos).setBounds                      (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Cuenta de Nómina:")).setBounds    (x           ,y+=25 ,width    ,height );
+		panel.add(txtTarjetaNomina).setBounds                   (x+sep       ,y     ,width    ,height );
+		panel.add(new JLabel("Forma de Pago:")).setBounds       (x           ,y+=25 ,width    ,height );
+		panel.add(txtFormaDePago).setBounds                     (x+sep       ,y     ,width    ,height );		
 		
-		x=535; y=y-=150;sep=95;
-		panel.add(chbGafete).setBounds                         (x    ,y     ,width,height );
-		panel.add(chbFuente_Sodas).setBounds                   (x    ,y+=25 ,width,height );
-		panel.add(new JLabel("Última Actualización:")).setBounds(x   ,y+=25 ,width,height );
-		panel.add(txtFechaActualizacion).setBounds              (x   ,y+=25 ,width,height );
-		panel.add(new JLabel("Último Usuario Actualizó:")).setBounds(x,y+=25,width,height );
-		panel.add(txtultimousuariomod).setBounds               (x    ,y+=25 ,width,height );
-		panel.add(chb_cuadrante_parcial).setBounds             (x    ,y+=25 ,width,height );
-		panel.add(Observasiones).setBounds                     (x+180,y-158 ,290  ,183    );
+		y=y-=150;
+		panel.add(chbGafete).setBounds                          (x=535       ,y     ,width    ,height );
+		panel.add(chbFuente_Sodas).setBounds                    (x           ,y+=25 ,width    ,height );
+		panel.add(new JLabel("Última Actualización:")).setBounds(x           ,y+=25 ,width    ,height );
+		panel.add(txtFechaActualizacion).setBounds              (x           ,y+=25 ,width    ,height );
+		panel.add(new JLabel("Último Usuario Actualizó:")).setBounds(x       ,y+=25 ,width    ,height );
+		panel.add(txtultimousuariomod).setBounds                (x           ,y+=25 ,width    ,height );
+		panel.add(chb_cuadrante_parcial).setBounds              (x           ,y+=25 ,width    ,height );
+		panel.add(Observasiones).setBounds                      (x+180       ,y-158 ,290      ,183    );
 		
-		x=17 ;y=668;width=110;sep=218;
-		panel.add(btnNuevo).setBounds                          (x     ,y    ,width,height );
-		panel.add(btnEditar).setBounds                         (x+=sep,y    ,width,height );
-		panel.add(btnGuardar).setBounds                        (x+=sep,y    ,width,height );
-		panel.add(btnDeshacer).setBounds                       (x+=sep,y    ,width,height );
-		panel.add(btnSalir).setBounds                          (x+=sep,y    ,width,height );
+		sep=218;
+		panel.add(btnNuevo).setBounds                           (x=17        ,y=668 ,width=110,height );
+		panel.add(btnEditar).setBounds                          (x+=sep      ,y     ,width    ,height );
+		panel.add(btnGuardar).setBounds                         (x+=sep      ,y     ,width    ,height );
+		panel.add(btnDeshacer).setBounds                        (x+=sep      ,y     ,width    ,height );
+		panel.add(btnSalir).setBounds                           (x+=sep      ,y     ,width    ,height );
 		
 		btnHuella.setEnabled(false);
 		btnEditar.setEnabled(false);
@@ -780,32 +748,18 @@ public class Cat_Empleados extends JFrame{
          Icon iconoStatus = new ImageIcon(file_status.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
          btnStatus.setIcon(iconoStatus);
         
-//       asigna el foco al JTextField deseado al arrancar la ventana
          this.addWindowListener(new WindowAdapter() {
-                 public void windowOpened( WindowEvent e ){
-                	 txtFolioEmpleado.requestFocus();
-              }
+                 public void windowOpened( WindowEvent e ){	 txtFolioEmpleado.requestFocus();  }
          });
 		
-	//  abre el filtro de busqueda de empleado al presionar la tecla f2
-	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-	       KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "foco");
-	    
-	    getRootPane().getActionMap().put("foco", new AbstractAction(){
-	        @Override
-	        public void actionPerformed(ActionEvent e)
-	        {	        	btnFiltro.doClick();    	     }
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put( KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "foco");	    
+	    getRootPane().getActionMap().put("foco", new AbstractAction(){    @Override
+	        public void actionPerformed(ActionEvent e) {	        	btnFiltro.doClick();    	     }
 	    });
 	    
-	    
-		//  abre el filtro de busqueda de Horario 
-	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-	       KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "horario");
-	    
-	    getRootPane().getActionMap().put("horario", new AbstractAction(){
-	        @Override
-	        public void actionPerformed(ActionEvent e)
-	        {    	        	btnHorarioNew.doClick();          }
+	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put( KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "horario");
+	    getRootPane().getActionMap().put("horario", new AbstractAction(){ @Override
+	        public void actionPerformed(ActionEvent e) {    	        	btnHorarioNew.doClick();          }
 	    });
 						  ///deshacer con escape
 						        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
@@ -861,7 +815,7 @@ public class Cat_Empleados extends JFrame{
 							                    	    }
 						                 });
 						                  
-                  btnFoto.addMouseWheelListener(buscarConRueda);//añadimos el MouseWheelListener al spinner
+//                  btnFoto.addMouseWheelListener(buscarConRueda);//añadimos el MouseWheelListener al spinner
                   
 	  	}
 	
@@ -872,34 +826,34 @@ public class Cat_Empleados extends JFrame{
 	};
 	
 	 int valor = 0;
-	MouseWheelListener buscarConRueda = new MouseWheelListener() {
-	    public void mouseWheelMoved(MouseWheelEvent e) {
-	    	
-	    	if(!txtNombre.isEnabled()){
-	    		
-			        int rueda = e.getWheelRotation();//tomamos el valor de la rueda al girar
-			       
-			        
-			        if (rueda < 0) {//si el valor es mas pequeño de 0 quiere decir que estamos subiendo
-			        	
-			            valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());//tomamos el valor del txt
-			            valor++;//aumentamos el valor  
-			            
-		                txtFolioEmpleado.setText(valor+"");//lo añadimos de nuevo al txt
-		                buscarEmpleado("rueda+"); //llamamos al metodo buscar
-			        } else {//Si es mayor de 0 es que estamos bajando
-			          
-			        	valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());
-			        	
-			            if (valor!=0){//En este caso no dejamos que baje de 0 el txt
-			                valor--;//Disminuimos el valor
-			            }
-			            txtFolioEmpleado.setText(valor==0?"":valor+"");//Y lo añadimos el txt (si es cero lo dejamos como vacio)
-			            buscarEmpleado("rueda-"); //llamamos al metodo buscar
-			        }
-			    }
-	 	  }
-	};
+//	MouseWheelListener buscarConRueda = new MouseWheelListener() {
+//	    public void mouseWheelMoved(MouseWheelEvent e) {
+//	    	
+//	    	if(!txtNombre.isEnabled()){
+//	    		
+//			        int rueda = e.getWheelRotation();//tomamos el valor de la rueda al girar
+//			       
+//			        
+//			        if (rueda < 0) {//si el valor es mas pequeño de 0 quiere decir que estamos subiendo
+//			        	
+//			            valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());//tomamos el valor del txt
+//			            valor++;//aumentamos el valor  
+//			            
+//		                txtFolioEmpleado.setText(valor+"");//lo añadimos de nuevo al txt
+//		                buscarEmpleado("rueda+"); //llamamos al metodo buscar
+//			        } else {//Si es mayor de 0 es que estamos bajando
+//			          
+//			        	valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());
+//			        	
+//			            if (valor!=0){//En este caso no dejamos que baje de 0 el txt
+//			                valor--;//Disminuimos el valor
+//			            }
+//			            txtFolioEmpleado.setText(valor==0?"":valor+"");//Y lo añadimos el txt (si es cero lo dejamos como vacio)
+//			            buscarEmpleado("rueda-"); //llamamos al metodo buscar
+//			        }
+//			    }
+//	 	  }
+//	};
 	
 	ActionListener opRAdeudo = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -1208,7 +1162,6 @@ public class Cat_Empleados extends JFrame{
 			}else{
 				try{
 					new Llamar_Camara().setVisible(true);
-//					new MainCamara("tmp.jpg").setVisible(true);
 				}catch(Exception ee){
 					JOptionPane.showMessageDialog(null, "Verifique si está conectada y configurada la camara", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -1228,247 +1181,149 @@ public class Cat_Empleados extends JFrame{
 				}
 			}
 		};
-	
+		
+	public Date fecha(String fechap) {
+		Date fecha = null;
+		try {if(fechap.equals("")){	fecha=null;	}else {	fecha=new SimpleDateFormat("dd/MM/yyyy").parse(fechap);	}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return fecha;
+	} 
+		
 	ActionListener buscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e){
-			txtHorario.setFont(new Font("ARIAL", Font.ITALIC, 9));
-			txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
-			txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
-			txtultimousuariomod.setFont(new Font("ARIAL", Font.TRUETYPE_FONT, 8));
-			buscarEmpleado("");
-		}
-	};
-
-	public void buscarEmpleado(String funcion){
-			
 			if(txtFolioEmpleado.getText().equals("")){
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
-				
-				re = re.buscar(Integer.parseInt(txtFolioEmpleado.getText()));
-				if(re.getFolio() != 0){			
-					txtFolioEmpleado.setText(re.getFolio()+"");
-					txtChecador.setText(re.getNo_checador()+"");
-					txtNombre.setText(re.getNombre()+"");
-					txtApPaterno.setText(re.getAp_paterno()+"");
-					txtApMaterno.setText(re.getAp_materno()+"");
-					
-					try {
-						Date date = new SimpleDateFormat("dd/MM/yyyy").parse(re.getFecha_nacimiento());
-						Date date_ingreso = new SimpleDateFormat("dd/MM/yyyy").parse(re.getFecha_ingreso());
-						
-						Date date_ingreso_imss = new SimpleDateFormat("dd/MM/yyyy").parse(re.getFecha_ingreso_imss());
-						Date date_vencimiento_licencia = new SimpleDateFormat("dd/MM/yyyy").parse(re.getFecha_vencimiento_licencia());
-						
-						Date date_ingreso_imss_comparacion = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/1900");
-						Date date_vencimiento_licencia_comparacion = new SimpleDateFormat("dd/MM/yyyy").parse("1/01/1900");
-						
-						txtFechaNacimiento.setDate(date);
-						txtIngreso.setDate(date_ingreso);
-						
-							txtIngresoImss.setDate(date_ingreso_imss_comparacion.before(date_ingreso_imss) ? date_ingreso_imss : null);
-							txtVencimientoLicencia.setDate(date_vencimiento_licencia_comparacion.before(date_vencimiento_licencia) ? date_vencimiento_licencia : null);
-					} catch (ParseException e1) {
-						e1.printStackTrace();
-					}
-					
-					txtCalle.setText(re.getCalle()+"");
-					txtColonia.setText(re.getColonia()+"");
-					txtPoblacion.setText(re.getPoblacion()+"");
-					txtTelefono_Familiar.setText(re.getTelefono_familiar()+"");
-					txtTelefono_Propio.setText(re.getTelefono_propio()+"");
-					
-					txtTelefono_Cuadrante.setText(re.getTelefono_cuadrante()==null ? "" : re.getTelefono_cuadrante()+"");
-					
-					txtRFC.setText(re.getRfc()+"");
-					txtCurp.setText(re.getCurp()+"");
-					cmbSexo.setSelectedItem(re.getSexo()==0 ? "MASCULINO" : "FEMENINO");
-					txtemailEmpresa.setText(re.getEmailEmpresa()+"");
-					txtemailPersonal.setText(re.getEmailPersonal()+"");
-					if(re.getEstado_civil().equals("0")){	cmbEstadoCivil.setSelectedIndex(0);		}else{	cmbEstadoCivil.setSelectedItem(re.getEstado_civil());	}
-					if(re.getTipo_sangre().equals("0")){	cmbTipoDeSangre.setSelectedIndex(0);	}else{	cmbTipoDeSangre.setSelectedItem(re.getTipo_sangre());	}
-					if(re.getEscolaridad().equals("0")){	cmbEscolaridad.setSelectedIndex(0);		}else{	cmbEscolaridad.setSelectedItem(re.getEscolaridad());	}
-					if(re.getContrato() == 0){	cmbContratacion.setSelectedItem("INDETERMINADO");	 }else{	cmbContratacion.setSelectedItem(re.getContrato()+" DIAS");	}
-					if(re.getPresencia_fisica() == 1){	cmbPresenciaFisica.setSelectedItem("Aplica");}else{	cmbPresenciaFisica.setSelectedItem("No Aplica");	}
-					
-					ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-			         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-			         btnFoto.setIcon(iconoDefault);
-			         
-			         Obj_Perfil_De_Puestos perfil = new Obj_Perfil_De_Puestos().buscar(re.getPerfil());
-			         lblFolioPerfil.setText(re.getPerfil()+"");
-			         txtPerfil.setText(perfil.getPerfil());
-					
-					Obj_Horario_Empleado comboFolioHorario = new Obj_Horario_Empleado().buscar_tur(re.getHorario());
-					lblFolioHorario1.setText(re.getHorario()>0 ? re.getHorario()+"" : "");
-					txtHorario.setText(comboFolioHorario.getNombre());
-					
-					Obj_Horario_Empleado comboFolioHorario2 = new Obj_Horario_Empleado().buscar_tur2(re.getHorario2());
-					lblFolioHorario2.setText(re.getHorario2()>0 ? re.getHorario2()+"" : "");
-					txtHorario2.setText(comboFolioHorario2.getNombre());
-					
-					Obj_Horario_Empleado comboFolioHorario3 = new Obj_Horario_Empleado().buscar_tur3(re.getHorario3());
-					lblFolioHorario3.setText(re.getHorario3()>0 ? re.getHorario3()+"" : "");
-					txtHorario3.setText(comboFolioHorario3.getNombre());
-					
-					if(re.getStatus_h1()==1){
-						rbHorario.setSelected(true);
-					}
-					if(re.getStatus_h2()==1){
-						rbHorario2.setSelected(true);
-					}
-					if(re.getStatus_h3()==1){
-						rbHorario3.setSelected(true);
-					}
-										
-					txtHorario.setToolTipText(comboFolioHorario.getNombre());
-					txtHorario2.setToolTipText(comboFolioHorario2.getNombre());
-					
-					txtDescanso.setText(re.getDescanso()+"");
-					txtDobla.setText(re.getDobla()+"");
-					
-//					switch(re.getStatus_rotativo()){
-//						case 0: cmbHorarioRotativo.setSelectedIndex(0); break;
-//						case 1: cmbHorarioRotativo.setSelectedIndex(1); break;
-//						case 2: cmbHorarioRotativo.setSelectedIndex(2); break;
-//					}
-					cmbHorarioRotativo.setSelectedIndex(re.getStatus_rotativo());
-					
-					cmbStatus.setSelectedIndex(re.getStatus()-1);
-					txtBaja.setText(re.getFecha_baja()+"");
-					chb_cuadrante_parcial.setSelected(re.isCuadrante_parcial());
-					
-					Obj_Departamento depart = new Obj_Departamento().buscar(re.getDepartameto());
-					cmbDepartamento.setSelectedItem(depart.getDepartamento());
-					
-					txtImss.setText(re.getImss()+"");
-					cmbActivo_Inactivo.setSelectedIndex(re.getStatus_imss());
-					txtNumeroInfonavit.setText(re.getNumero_infonavit()+"");
-					
-					Obj_Establecimiento comboNombreEsta = new Obj_Establecimiento().buscar_estab(re.getEstablecimiento());
-					cmbEstablecimiento.setSelectedItem(comboNombreEsta.getEstablecimiento());
-					
-					Obj_Puestos comboNombrePues = new Obj_Puestos().buscar_pues(re.getPuesto());
-					cmbPuesto.setSelectedItem(comboNombrePues.getPuesto());
-					
-					cmbStatusChecador.setSelectedItem(re.getStatus_checador());
-					cmbChecaCon.setSelectedItem(re.getForma_de_checar());
-					
-					txtSalarioDiario.setText(re.getSalario_diario()+"");
-					txtSalarioDiarioIntegrado.setText(re.getSalario_diario_integrado()+"");
-					txtFormaDePago.setText(re.getForma_pago()+"");
-					cmbSueldo.setSelectedItem(re.getSueldo()+"");
-					cmbBonopuntualidad.setSelectedItem(re.getBono_asistencia()+"");
-					cmbBonoAsistencia.setSelectedItem(re.getBono_puntualidad()+"");
-					
-					txtDInfonacot.setText(re.getInfonacot()+"");
-					txtultimousuariomod.setText(re.getUltimo_usuario_modifico());
-					
-					Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscar(re.getBono());
-					cmbBono.setSelectedItem(bono.getBono()+"");
+			txtHorario.setFont(new Font("ARIAL", Font.ITALIC, 9));
+			txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
+			txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
+			txtultimousuariomod.setFont(new Font("ARIAL", Font.TRUETYPE_FONT, 8));
+		
+			try {
+				tablacompleta = re.empleado_buscar_datos(txtFolioEmpleado.getText().toString().trim());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			//datos_personales
+			txtNombre.setText                 (tablacompleta[0][1].toString()         );
+			txtApPaterno.setText              (tablacompleta[0][2].toString()         );
+			txtApMaterno.setText              (tablacompleta[0][3].toString()         );
+			cmbSexo.setSelectedItem           (tablacompleta[0][4].toString()         );
+			txtFechaNacimiento.setDate        (fecha(tablacompleta[0][5].toString())  );
+            cmbEstadoCivil.setSelectedItem    (tablacompleta[0][6].toString()         );
+            txtCalle.setText                  (tablacompleta[0][7].toString()         );
+			txtColonia.setText                (tablacompleta[0][8].toString()         );
+			txtPoblacion.setText              (tablacompleta[0][9].toString()         );
+			cmbTipoDeSangre.setSelectedItem   (tablacompleta[0][10].toString()        );
+			txtTelefono_Familiar.setText      (tablacompleta[0][11].toString()        );
+            txtTelefono_Propio.setText        (tablacompleta[0][12].toString()        );
+            txtTelefono_Cuadrante.setText     (tablacompleta[0][13].toString()        );
+			cmbEscolaridad.setSelectedItem    (tablacompleta[0][14].toString()        );
+            txtRFC.setText                    (tablacompleta[0][15].toString()        );
+            txtCurp.setText                   (tablacompleta[0][16].toString()        );
+            txtemailPersonal.setText          (tablacompleta[0][17].toString()        );
+            if(Boolean.valueOf                (tablacompleta[0][18].toString()       )){
+            btnHuella.setBackground(Color.GREEN);btnHuella.setForeground(Color.BLACK);}
+            else{btnHuella.setBackground(Color.RED);	btnHuella.setForeground(Color.WHITE);}
+            btnHuella.setOpaque(true);
+            //datos_laborales
+            lblFolioPerfil.setText            (tablacompleta[0][19].toString()        );
+            txtPerfil.setText                 (tablacompleta[0][20].toString()        );
+            txtemailEmpresa.setText           (tablacompleta[0][21].toString()        );
+            lblFolioHorario1.setText          (tablacompleta[0][22].toString()        );
+            txtHorario.setText                (tablacompleta[0][23].toString()        );
+            rbHorario.setSelected(Boolean.valueOf(tablacompleta[0][24].toString())    );
+            cmbHorarioRotativo.setSelectedItem(tablacompleta[0][25].toString()        );
+            cmbStatusChecador.setSelectedItem (tablacompleta[0][26].toString()        );
+            lblFolioHorario2.setText          (tablacompleta[0][27].toString()        );
+            txtHorario2.setText               (tablacompleta[0][28].toString()        );
+            rbHorario2.setSelected(Boolean.valueOf(tablacompleta[0][29].toString())   );
+            txtDescanso.setText               (tablacompleta[0][30].toString()        );
+            cmbChecaCon.setSelectedItem       (tablacompleta[0][31].toString()        );
+            lblFolioHorario3.setText          (tablacompleta[0][32].toString()        );
+            txtHorario3.setText               (tablacompleta[0][33].toString()        );
+            rbHorario3.setSelected(Boolean.valueOf(tablacompleta[0][34].toString())   );
+            txtDobla.setText                  (tablacompleta[0][35].toString()        );
+            cmbEstablecimiento.setSelectedItem(tablacompleta[0][36].toString()        );
+            txtVencimientoLicencia.setDate    (fecha(tablacompleta[0][37].toString()) );
+            cmbDepartamento.setSelectedItem   (tablacompleta[0][38].toString()        );     
+            txtIngreso.setDate                (fecha(tablacompleta[0][39].toString()) );
+            cmbPuesto.setSelectedItem         (tablacompleta[0][40].toString()        );
+            txtBaja.setText                   (tablacompleta[0][41].toString()        );
+            txtImss.setText                   (tablacompleta[0][42].toString()        );
+            cmbActivo_Inactivo.setSelectedItem(tablacompleta[0][43].toString()        );
+            txtIngresoImss.setDate            (fecha(tablacompleta[0][44].toString()) );        
+             txtNumeroInfonavit.setText       (tablacompleta[0][45].toString()        );
+            txtFechaUltimasVacaciones.setText (tablacompleta[0][46].toString()        );
+            txtFechaIncapacidad.setText       (tablacompleta[0][47].toString()        );
+            cmbStatus.setSelectedItem         (tablacompleta[0][48].toString()        );
+            cmbContratacion.setSelectedItem   (tablacompleta[0][49].toString()        );
+//            //percepciones y deducciones
+            txtSalarioDiario.setText          (tablacompleta[0][50].toString()        );
+            txtInfonavit.setText              (tablacompleta[0][51].toString()        );
+            chbGafete.setSelected    (Boolean.valueOf(tablacompleta[0][52].toString()));
+            txaObservaciones.setText          (tablacompleta[0][53].toString()        );
+            txtSalarioDiarioIntegrado.setText (tablacompleta[0][54].toString()        );
+            txtDInfonacot.setText             (tablacompleta[0][55].toString()        );
+            chbFuente_Sodas.setSelected(Boolean.valueOf(tablacompleta[0][56].toString()));
+            cmbSueldo.setSelectedItem         (tablacompleta[0][57].toString()        );
+            txtPensionAli.setText             (tablacompleta[0][58].toString()        );
+            cmbBono.setSelectedItem           (tablacompleta[0][59].toString()        );
+            cmbPrestamos.setSelectedItem      (tablacompleta[0][60].toString()        );
+            txtFechaActualizacion.setText     (tablacompleta[0][61].toString()        );
+            cmbBonoAsistencia.setSelectedItem (tablacompleta[0][62].toString()        );
+            cmbTipoBancos.setSelectedItem     (tablacompleta[0][63].toString()        );
+            cmbBonopuntualidad.setSelectedItem(tablacompleta[0][64].toString()        );
+            txtTarjetaNomina.setText          (tablacompleta[0][65].toString()        );
+            txtultimousuariomod.setText       (tablacompleta[0][66].toString()        );          
+            cmbPresenciaFisica.setSelectedItem(tablacompleta[0][67].toString()        );   
+            txtFormaDePago.setText            (tablacompleta[0][68].toString()        );   
+            chb_cuadrante_parcial.setSelected(Boolean.valueOf(tablacompleta[0][69].toString()));
 
-					cmbPrestamos.setSelectedIndex(re.getPrestamo());
-					txtPensionAli.setText(re.getPension_alimenticia()+"");
-					txtInfonavit.setText(re.getInfonavit()+"");	
-					txtTarjetaNomina.setText(re.getTargeta_nomina()+"");
-					
-					Obj_Tipo_De_Bancos comboNombreBanco = new Obj_Tipo_De_Bancos().buscar_pues(re.getTipo_banco());
-					cmbTipoBancos.setSelectedItem(comboNombreBanco.getBanco());
-					
-					if(re.isGafete() == true){chbGafete.setSelected(true);}
-					else{chbGafete.setSelected(false);}
-					
-					if(re.isFuente_sodas() == true){chbFuente_Sodas.setSelected(true);}
-					else{chbFuente_Sodas.setSelected(false);}
-					
-//					txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((Date.parse(re.getFecha_actualizacion()))));
-					txtFechaActualizacion.setText(re.getFecha_actualizacion());
-					txaObservaciones.setText(re.getObservasiones());
-					
-					switch(cmbStatus.getSelectedIndex()+1){
-						case 1:btnStatus.setIcon(new ImageIcon("Imagen/vigente.png")); 
-							   btnEditar.setVisible(true);
-							   break;
-						case 2:btnStatus.setIcon(new ImageIcon("Imagen/vacaciones.png"));
-							   btnEditar.setVisible(true);
-							   break;
-						case 3:btnStatus.setIcon(new ImageIcon("Imagen/incapacidad.png"));
-							   btnEditar.setVisible(true);
-							   break;
-						case 4:btnStatus.setIcon(new ImageIcon("Imagen/baja.png")); 
-							   btnEditar.setVisible(true);
-							   break;
-						case 5:btnStatus.setIcon(new ImageIcon("Imagen/baja.png")); 
-							   btnEditar.setVisible(false); 
-							   break;
-						case 6:btnStatus.setIcon(new ImageIcon("Imagen/vigente.png")); 
-							   btnEditar.setVisible(true);
-							   break;
-						case 7:btnStatus.setIcon(new ImageIcon("Imagen/baja.png")); 
-							   btnEditar.setVisible(true);
-							   break;
-						case 8:btnStatus.setIcon(new ImageIcon("Imagen/vigente.png")); 
-							   btnEditar.setVisible(true);
-							   break;
-							   
-					}
-					
-					if(re.isTieneHuella()){
-						btnHuella.setBackground(Color.GREEN);
-						btnHuella.setForeground(Color.BLACK);
-						btnHuella.setOpaque(true);
-					}else{
-						btnHuella.setBackground(Color.RED);
-						btnHuella.setForeground(Color.WHITE);
-						btnHuella.setOpaque(true);
-					}
-					
-					
-				    btnNuevo.setEnabled(false);
-					panelEnabledFalse();
-					txtFolioEmpleado.setEditable(true);
-					txtFolioEmpleado.requestFocus();
-					btnEditar.setEnabled(true);
-					btnVerificar.setEnabled(false);
-					txtFolioEmpleado.setEditable(false);
-					btnBuscar.setEnabled(false);
-					btnFiltro.setEnabled(true);
-					btnLimpiarPerfil.setEnabled(false);
-					btnAgregarPerfil.setEnabled(false);
-					btnHorario.setEnabled(false);
-					btnHorarioNew.setEnabled(false);
-					cmbHorarioRotativo.setEnabled(false);
-				}else{
-					
-					
-					if(funcion.equals("rueda+")){
-						valor++;
-						txtFolioEmpleado.setText(valor+"");
-						buscarEmpleado("rueda+");
-						
-					}
-					
-					if(funcion.equals("rueda-")){
-						valor--;
-						txtFolioEmpleado.setText(valor+"");
-						buscarEmpleado("rueda-");
-					}
-					
-					if(funcion.equals("")){
-						JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
-						panelEnabledFalse();
-						txtFolioEmpleado.setEditable(true);
-						txtFolioEmpleado.requestFocus();
-						panelLimpiar();
-					}
-					
-					
-					
-					return;
-				}
+             ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+	         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+	         btnFoto.setIcon(iconoDefault);
+	   
+	         ImageIcon imagen_estatus = new ImageIcon(System.getProperty("user.dir")+"/"+tablacompleta[0][71].toString());
+	         Icon icono_estatus = new ImageIcon(imagen_estatus.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
+	         btnStatus.setIcon(icono_estatus);
+
+			btnEditar.setEnabled(true);
+			txtFolioEmpleado.setEnabled(false);
+//          // extras
+//			Matriz[i][72] = rs.getString(73);//huella_1
+//			Matriz[i][73] = rs.getString(74);//huella_2
+			}
 		}
-	}
+	};
+	
+	
+
+//	public void buscarEmpleado(String funcion){
+//					if(funcion.equals("rueda+")){
+//						valor++;
+//						txtFolioEmpleado.setText(valor+"");
+//						buscarEmpleado("rueda+");
+//						
+//					}
+//					
+//					if(funcion.equals("rueda-")){
+//						valor--;
+//						txtFolioEmpleado.setText(valor+"");
+//						buscarEmpleado("rueda-");
+//					}
+//					
+//					if(funcion.equals("")){
+//						JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
+//						panelEnabledFalse();
+//						txtFolioEmpleado.setEditable(true);
+//						txtFolioEmpleado.requestFocus();
+//						panelLimpiar();
+//					}
 	
 	public int validaIMSS(){
 		int valorIMSS = 0;
@@ -1504,13 +1359,7 @@ public class Cat_Empleados extends JFrame{
 	
    ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-//			  System.out.println("Actualizado-------------------");
-//			  System.out.println(datosHuella);
-//			  System.out.println(datosHuella2);
-//			  System.out.println(tamañoHuella);
-//			  System.out.println(tamañoHuella2);
-			
-			
+		
 			int horario=0,horario2=0,horario3=0;
 			 horario=lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText());
 			 horario2=lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText());
@@ -1521,7 +1370,6 @@ public class Cat_Empleados extends JFrame{
 				return;
 			}else{
 				
-			
 			if(cmbStatus.getSelectedItem().toString().trim().equals("Baja") || cmbStatus.getSelectedItem().toString().trim().equals("No Contratable") || cmbStatus.getSelectedItem().toString().trim().equals("Renuncia")){
 				if(new BuscarSQL().baja_en_catalogo_empleado()){
 						guardar_modificar_Empleado();
@@ -1632,12 +1480,7 @@ public void guardar_modificar_Empleado(){
 									empleado.setStatus_h2(0);
 									empleado.setStatus_h3(1);
 								}
-								
-//								switch(cmbHorarioRotativo.getSelectedIndex()){
-//									case 0: empleado.setStatus_rotativo(0); break;
-//									case 1: empleado.setStatus_rotativo(1); break;
-//									case 2: empleado.setStatus_rotativo(2); break;
-//								}
+
 								empleado.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
 								empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
 								
@@ -1873,51 +1716,43 @@ public void guardar_modificar_Empleado(){
 	ActionListener filtro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			btnBuscar.setEnabled(true);
+			btnDeshacer.doClick();
 			new Cat_Filtro_Empleado().setVisible(true);
 		}
 	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+		  if(cmbStatus.getSelectedItem().equals("No Contratable")) {
+				JOptionPane.showMessageDialog(null, "Esta Restringido El Acceso a Modificar Ex-Empleados Con Este Estatus, \nSolicite Autorizacion De Direccion y Presentela A Gerencia De Sistemas Para Un Cambio","Aviso de Restricción",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-busquedaicono-4661-64.png"));
+				return;  
+		  }else {
 			Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
-			if(empleado.getFolio() != 0){
 				
 				switch(empleado.getStatus_rotativo()){
 				
 					case 0: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(0);
-//							cmbHorarioRotativo.setEnabled(true);
 							rbHorario.setSelected(true);
 							break;
 							
 					case 1: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(1);
-//							cmbHorarioRotativo.setEnabled(true);
 							rbHorario2.setEnabled(true);
 							break;
 							
 					case 2: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(2);
-//							cmbHorarioRotativo.setEnabled(true);
 							rbHorario3.setEnabled(true);
 							break;
 				}
-//				btnLimpiarPerfil.setEnabled(true);
-//				btnAgregarPerfil.setEnabled(true);
 				txtFolioEmpleado.setEditable(false);
 				btnEditar.setEnabled(false);
 				btnNuevo.setEnabled(true);
-				
 				PerfilesActivos();
-				
-			}else{
-				JOptionPane.showMessageDialog(null,"El Registró Que Desea Editar no Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
-			}
+		  }		
 		}		
 	};
-	
-	
 	
 	public void PerfilesActivos(){
 		
@@ -2960,7 +2795,7 @@ public void guardar_modificar_Empleado(){
 		
 		KeyListener opFiltrof = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
-				ObjTabf.Obj_Filtro(tablaf, txtFolioFiltroEmpleado.getText().toUpperCase(), columnas);
+				ObjTabf.Obj_Filtro(tablaf, txtFolioFiltroEmpleado.getText().toUpperCase(), columnas,tablaf);
 			}
 			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
@@ -3329,20 +3164,20 @@ public void guardar_modificar_Empleado(){
 			this.setModal(true);
 			
 			int x=10,y=15,width=110,height=20;
-			panel.add(new JLabel("Folio Colaborador: ")).setBounds  (x       ,y     ,width    ,height   );
-			panel.add(txtFoliocolaborador).setBounds             (x+90    ,y     ,width    ,height   );
-			panel.add(new JLabel("Colaborador: ")).setBounds     (x       ,y+=25 ,width    ,height   );
-			panel.add(txtNombreColaborador).setBounds            (x+90    ,y     ,width*3  ,height   );
-			panel.add(new JLabel("Beneficiario: ")).setBounds    (x       ,y+=25 ,width    ,height   );
-			panel.add(txtNombreBeneficiario).setBounds           (x+90    ,y     ,width*3  ,height   );
-			panel.add(new JLabel("RFC Beneficiario: ")).setBounds(x       ,y+=25 ,width    ,height   );
-			panel.add(txtRFCBeneficiario).setBounds              (x+90    ,y     ,width*3  ,height   );
-			panel.add(new JLabel("Parentesco: ")).setBounds      (x       ,y+=25 ,width    ,height   );
-			panel.add(cmbParentesco).setBounds                   (x+90    ,y     ,width*3  ,height   );
-			panel.add(new JLabel("Fecha Nacimiento:")).setBounds (x       ,y+=25 ,width    ,height   );
-			panel.add(FechaNacimiento).setBounds                 (x+90    ,y     ,width    ,height   );
-			panel.add(btnEditarBen).setBounds                    (215     ,y     ,width-5 ,height   );
-			panel.add(btnGuardarBen).setBounds                   (325     ,y     ,width-5 ,height   );
+			panel.add(new JLabel("Folio Colaborador: ")).setBounds(x       ,y     ,width    ,height   );
+			panel.add(txtFoliocolaborador).setBounds              (x+90    ,y     ,width    ,height   );
+			panel.add(new JLabel("Colaborador: ")).setBounds      (x       ,y+=25 ,width    ,height   );
+			panel.add(txtNombreColaborador).setBounds             (x+90    ,y     ,width*3  ,height   );
+			panel.add(new JLabel("Beneficiario: ")).setBounds     (x       ,y+=25 ,width    ,height   );
+			panel.add(txtNombreBeneficiario).setBounds            (x+90    ,y     ,width*3  ,height   );
+			panel.add(new JLabel("RFC Beneficiario: ")).setBounds (x       ,y+=25 ,width    ,height   );
+			panel.add(txtRFCBeneficiario).setBounds               (x+90    ,y     ,width*3  ,height   );
+			panel.add(new JLabel("Parentesco: ")).setBounds       (x       ,y+=25 ,width    ,height   );
+			panel.add(cmbParentesco).setBounds                    (x+90    ,y     ,width*3  ,height   );
+			panel.add(new JLabel("Fecha Nacimiento:")).setBounds  (x       ,y+=25 ,width    ,height   );
+			panel.add(FechaNacimiento).setBounds                  (x+90    ,y     ,width    ,height   );
+			panel.add(btnEditarBen).setBounds                     (215     ,y     ,width-5  ,height   );
+			panel.add(btnGuardarBen).setBounds                    (325     ,y     ,width-5  ,height   );
 			
 			txtFoliocolaborador.setEditable(false);
 			txtNombreColaborador.setEditable(false);
@@ -3355,18 +3190,10 @@ public void guardar_modificar_Empleado(){
 			
 			txtFoliocolaborador.setText(txtFolioEmpleado.getText() );
 			txtNombreColaborador.setText(txtNombre.getText().trim()+" "+txtApPaterno.getText().trim()+" "+txtApMaterno.getText().trim());
-			txtNombreBeneficiario.setText(re.getNombre_beneficiario());
-			txtRFCBeneficiario.setText(re.getRfc_beneficiario());
-			cmbParentesco.setSelectedItem(re.getParentesco_beneficiario());
-			
-			Date fecha_nacimiento=null;
-			try {
-				fecha_nacimiento = new SimpleDateFormat("dd/MM/yyyy").parse(re.getFecha_nacimiento_beneficiario());
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			
-			FechaNacimiento.setDate(fecha_nacimiento);
+			txtNombreBeneficiario.setText(tablacompleta[0][74].toString());
+			txtRFCBeneficiario.setText(tablacompleta[0][75].toString());
+			cmbParentesco.setSelectedItem(tablacompleta[0][76].toString());
+			FechaNacimiento.setDate(fecha(tablacompleta[0][77].toString()) );
 			btnGuardarBen.addActionListener(opGuardar);
 			btnEditarBen.addActionListener(opEditarBen);
 			cont.add(panel);
@@ -3389,6 +3216,7 @@ public void guardar_modificar_Empleado(){
 									JOptionPane.showMessageDialog(null, validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 									return;
 							   }else{
+								   re.setFolio(Integer.valueOf(txtFolioEmpleado.getText().toString()));
 								   re.setNombre_beneficiario(txtNombreBeneficiario.getText().toUpperCase().trim());
 								   re.setRfc_beneficiario(txtRFCBeneficiario.getText().toUpperCase().trim());
 								   re.setParentesco_beneficiario(cmbParentesco.getSelectedItem().toString());
@@ -3396,6 +3224,7 @@ public void guardar_modificar_Empleado(){
 								   
 								   if(re.actualizarbeneficiario()){
 										JOptionPane.showMessageDialog(null, "Se Actualizaron Los Datos Del Beneficiario Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+										btnBuscar.doClick();
 										dispose();
 										txtFoliocolaborador.requestFocus();
 										return;
