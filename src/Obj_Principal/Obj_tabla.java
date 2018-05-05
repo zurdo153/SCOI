@@ -457,9 +457,10 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 			public void keyPressed(KeyEvent arg0) {}
 			@Override
 			public void keyReleased(KeyEvent e) {
+				
 				if(e.getKeyCode()==KeyEvent.VK_DOWN){
 					tablaparametro.requestFocus();
-					tablaparametro.getSelectionModel().setSelectionInterval(0,0);;
+					tablaparametro.getSelectionModel().setSelectionInterval(0,0);
 				}
 			}
 			@Override

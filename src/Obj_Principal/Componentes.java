@@ -150,13 +150,14 @@ public class Componentes {
 	
 	Obj_tabla ObjTab =new Obj_tabla();
 	public final JTextField textfiltro(final JTextField tmp, final String caption, final int longitud, final String tipo, JTable tabla,final int columnas){
+		
 		tmp.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent e) {
+			public void keyTyped(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
 				ObjTab.Obj_Filtro(tabla, tmp.getText().toUpperCase(), columnas,tmp);
 				funciones_validacion(tmp, longitud, e, tipo);
-			}
-			public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {}
+				}
 		});
 		
 
