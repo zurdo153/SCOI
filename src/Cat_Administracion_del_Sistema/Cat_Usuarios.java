@@ -131,6 +131,7 @@ public class Cat_Usuarios extends JFrame{
 	    new Obj_CheckBoxNode(Sub_Checador[14], false),
 	    new Obj_CheckBoxNode(Sub_Checador[15], false),
 	    new Obj_CheckBoxNode(Sub_Checador[16], false),
+	    new Obj_CheckBoxNode(Sub_Checador[17], false),
 	};
 	
 	@SuppressWarnings("rawtypes")
@@ -320,6 +321,9 @@ public class Cat_Usuarios extends JFrame{
 	Obj_CheckBoxNode Punto_de_Venta[] = {
 		new Obj_CheckBoxNode(Sub_Punto_de_Venta[0], false),
 		new Obj_CheckBoxNode(Sub_Punto_de_Venta[1], false),
+		new Obj_CheckBoxNode(Sub_Punto_de_Venta[2], false),
+		new Obj_CheckBoxNode(Sub_Punto_de_Venta[3], false),
+		new Obj_CheckBoxNode(Sub_Punto_de_Venta[4], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Vector_Punto_De_Venta = new Obj_NombreVector("Punto De Venta", Punto_de_Venta);

@@ -37,7 +37,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 
 public class Obj_tabla {
-	  Obj_Usuario usuario = new Obj_Usuario().buscar_Colores();
+	  Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	 ///fuente 
 	 int RFuente =usuario.getRFuente();
 	 int GFuente =usuario.getGFuente();

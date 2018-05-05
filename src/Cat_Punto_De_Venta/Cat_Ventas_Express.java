@@ -3,7 +3,6 @@ package Cat_Punto_De_Venta;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +40,6 @@ import javax.swing.table.TableRowSorter;
 import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
-import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Compras.Obj_Ubicaciones_De_Productos;
 import Obj_Principal.Componentes;
@@ -52,7 +50,7 @@ import Obj_Punto_De_Venta.Obj_Ventas_Express;
 import Obj_Servicios.Obj_Correos;
 
 @SuppressWarnings("serial")
-public class Cat_Servicio_De_Venta_Express extends JFrame{
+public class Cat_Ventas_Express extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
@@ -105,7 +103,7 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 	    	this.tabla2.getColumnModel().getColumn(4).setMinWidth(190);
 	    	this.tabla2.getColumnModel().getColumn(5).setMinWidth(190);
 	    	
-			String comando="exec venta_express_catalogo_de_productos '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'" ;
+			String comando="exec ventas_express_catalogo_de_productos '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'" ;
 			String basedatos="98",pintar="si";
 		
 			ObjTab.Obj_Refrescar(tabla2, modelo2, columnas2, comando, basedatos,pintar,checkbox);
@@ -138,7 +136,7 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento  = new JComboBox(establecimiento);
 	
-	String status[] = {"Vigente","Cancelado","Surtido"};
+	String status[] = {"Vigente","Cancelado","Surtido","Abono","Liquidado"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
 	
@@ -154,7 +152,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 	JCButton btnBuscarCte   = new JCButton("Buscar Cliente" ,"Usuario.png"                    ,"Azul");	
 	JCButton btnQuitarfila  = new JCButton("Eliminar"  ,"boton-rojo-menos-icono-5393-16.png"  ,"Azul");
 	JCButton btnVendedor    = new JCButton("Vendedor"  ,"clave.png"                           ,"Azul");
-	JCButton btnImprimir   = new JCButton("Imprimir"   ,"imprimir-16.png"                     ,"Azul");
 	
 	JTextField txtFolioVendedor  = new Componentes().text(new JCTextField() ,"Folio Vendedor"                ,16    ,"String" );
 	JTextField txtVendedor       = new Componentes().text(new JCTextField() ,"Vendedor"                      ,16    ,"String" );	
@@ -169,12 +166,12 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 	ButtonGroup  grupo           = new ButtonGroup();
     String guardar_actualizar="";
     
-	public Cat_Servicio_De_Venta_Express(){
+	public Cat_Ventas_Express(){
 		setSize(820,385);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Ventas Espress");
+		setTitle("Ventas Express");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Seleccione Establecimiento,Seleccione el Cliente y Capture Los Productos"));
 		
@@ -188,9 +185,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.add(btnGuardar  );
-		this.menu_toolbar.addSeparator(   );
-		this.menu_toolbar.addSeparator(   );
-		this.menu_toolbar.add(btnImprimir );
 		
 		this.menu_toolbar.setFloatable(false);
 		
@@ -224,8 +218,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 		panel.add(txtTotalImporte).setBounds                          	      (x+=90  ,y        ,width   ,20      );
 		
 		init_tabla_venta();
-		textareaajuste(txtNota);
-		
 		panel(false);
 		
 		txtFolioVendedor.setEditable(false);
@@ -237,7 +229,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 		cont.add(panel);
 		
 		btnBuscar.addActionListener     (opBuscarVenta_Express    );
-		btnImprimir.addActionListener   (opImprimir_Reporte       );
 		btnDeshacer.addActionListener   (opdeshacer               );
 		btnGuardar.addActionListener    (opguardar     			  );
 		btnNuevo.addActionListener      (opnuevo                  );
@@ -247,6 +238,8 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 		btnBuscarCte.addActionListener  (filtro_buscar_cliente    );
 		btnVendedor.addActionListener   (Clave_vendedor           );
 		txtcodigo_prod.addKeyListener   (Buscar_Datos_Producto    );
+		rbCliente.addActionListener     (opCambio_de_Cliente      );
+		rbCliente_SCOI.addActionListener(opCambio_de_Cliente      );
 		
 		try {
 			tablavendedores = Venta_Express.vededores_express(cmbEstablecimiento.getSelectedItem().toString().trim());
@@ -282,29 +275,21 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 		rbCliente.setSelected(true);
 		btnProducto.setEnabled(boleano);
 		btnBuscarCte.setEnabled(boleano);
+		btnQuitarfila.setEnabled(boleano);
 		txtNota.setEditable(boleano);
 		txtFolio.setEditable(boleano);
 		txtcodigo_prod.setEditable(boleano);
 		btnGuardar.setEnabled(boleano);
 		btnVendedor.setEnabled(boleano);
 	};
-	
-	ActionListener opImprimir_Reporte = new ActionListener(){
-  		public void actionPerformed(ActionEvent e){
-  			if(txtFolio.getText().equals("")) {
-  				JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Folio Antes De Dar Click A Imprimir","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-  			}else {
-	  			String basedatos="98";
-	  			String vista_previa_reporte="no";
-	  			int vista_previa_de_ventana=0;
-	  			String comando="venta_express_reporte_por_folio '"+txtFolio.getText().toString()+"'";
-	  			String reporte = "Obj_Reporte_De_Venta_Express.jrxml";
-	  			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-  		   } 
-  		}
-  	};
-	
   	
+  	ActionListener opCambio_de_Cliente = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		  txtFolio_cliente.setText("");
+		  txtNombre_cliente.setText("");
+		}
+	};
+	
 	ActionListener opBuscarVenta_Express = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		  new Cat_Filtro_Buscar_Venta_Express().setVisible(true);
@@ -349,7 +334,9 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 	};
 	
 	ActionListener opnuevo = new ActionListener() {
+		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
+			btnDeshacer.doClick();
 			String folio = "";
 			guardar_actualizar="N";
 			try {folio= new BuscarSQL().folio_siguiente(67+"");} catch (SQLException e1) {	e1.printStackTrace();}
@@ -362,6 +349,7 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 			btnQuitarfila.setEnabled(false);
 			txtcodigo_prod.setEditable(false);
 			txtcodigo_prod.requestFocus();
+     		tabla.enable(true);
 		}
 	};
 	
@@ -393,7 +381,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 				if(seleccion < tabla.getRowCount()){
 					modelo.removeRow(seleccion);
 					tabla.getSelectionModel().setSelectionInterval(seleccion, seleccion);
-					
 					if(tabla.getRowCount()>0) {
 						calculo();
 					}else {
@@ -467,14 +454,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 			}
 		}
 		txtTotalImporte.setText(Importe_Total+"");
-	}
-	
-	public void textareaajuste(final JTextArea parametro) {
-		parametro.setLineWrap(true); 
-		parametro.setWrapStyleWord(true);
-		parametro.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
-		Font font = new Font("Arial", Font.BOLD, 12);
-		parametro.setFont(font );
 	}
 	
 ////////////////////////////////////////////////////////////TODO FILTRO DE PRODUCTOS	
@@ -593,7 +572,7 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 				 String comandob=" " ;
 				switch(ref){
 				    case "Cliente"     :comandob = "select cod_cte,razon_social from bmsizagar.dbo.clientes order by razon_social"; break;
-			    	case "Cliente_SCOI":comandob = "select 0,'Cliente_SCOI' "; break;
+			    	case "Cliente_SCOI":comandob = "exec ventas_express_clientes_filtro "; break;
 			        }
 				String basedatos="98",pintar="si";
 				ObjTab.Obj_Refrescar(tablab,modelob,columnasb, comandob, basedatos,pintar,checkbox);
@@ -658,8 +637,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 		    }
 
 		    public void funcion_agregar() {
-				rbCliente.setEnabled(false);
-    			rbCliente_SCOI.setEnabled(false);
         		int fila = tablab.getSelectedRow();
         		txtFolio_cliente.setText (tablab.getValueAt(fila,0)+"");
         		txtNombre_cliente.setText (tablab.getValueAt(fila,1)+"");
@@ -821,8 +798,6 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 											                  "\n Para El Cliente:"+txtNombre_cliente.getText()+"\nEncargado Que Reviso y Autorizo: "+tablasupervisores [i][1].toString().trim()
 											                  +"\nProveedor Que Surtirá: "+txtNombre_Prv.getText().toString().trim();
 											new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"Venta Express Folio:"+Venta_Express.getFolio()+" cliente "+txtNombre_cliente.getText().toString(),"express");
-										    btnImprimir.setEnabled(true);
-											btnImprimir.doClick();
 											btnDeshacer.doClick();
 											guardar_actualizar="";
 											JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
@@ -910,7 +885,7 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 		    	this.tablab.getColumnModel().getColumn(14).setMinWidth(100);
 		    	this.tablab.getColumnModel().getColumn(15).setMinWidth(100);
 		    	
-				String comandob = "venta_express_filtro_select";
+				String comandob = "ventas_express_filtro_select";
 		    	String basedatos="98",pintar="si";
 				ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 		    }
@@ -952,19 +927,9 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 				this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,800 ,300 );
 				this.init_tablafp();
 				this.agregar(tablab);
-//				this.txtBuscarb.addKeyListener(PasarATabla);
 				contfb.add(panelfb);
 			}
-//			KeyListener PasarATabla = new KeyListener() {
-//			public void keyTyped(KeyEvent e){}
-//			public void keyReleased(KeyEvent e) {}
-//			public void keyPressed(KeyEvent e) {
-//				if(e.getKeyCode()==KeyEvent.VK_DOWN){
-//					tablab.requestFocus();
-//					tablab.getSelectionModel().setSelectionInterval(0,0);;
-//				}
-//			}
-//		};
+
 			private void agregar(final JTable tbl) {
 				tbl.addMouseListener(new MouseListener() {
 					public void mouseReleased(MouseEvent e) {
@@ -987,7 +952,8 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 				});
 		    }
 
-			 public void funcion_agregar() {
+			 @SuppressWarnings("deprecation")
+			public void funcion_agregar() {
 			   int fila = tablab.getSelectedRow();
 			    modelo.setRowCount(0);
 
@@ -1000,56 +966,28 @@ public class Cat_Servicio_De_Venta_Express extends JFrame{
 	       				modelo.addRow(vectortabla);
 	       			}
        		
-//	       	  Venta_Express.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));	
-//			  Venta_Express.setEstablecimiento(cmbEstablecimiento.getSelectedItem().toString().trim());
-//			  Venta_Express.setTipo_de_cliente(rbCliente.isSelected()?"B":"S");
-//			  Venta_Express.setFolio_cliente(txtFolio_cliente.getText().toString().trim());
-//			  Venta_Express.setNotas(txtNota.getText().toString());		
-//			  Venta_Express.setFolio_vendedor(txtFolioVendedor.getText().toString().trim());
-//			  Venta_Express.setTotal_venta(Double.valueOf(txtTotalImporte.getText().toString().trim()));
-//			  Venta_Express.setFolio_proveedor(txtcod_prv.getText().toString().trim());
-//			  Venta_Express.setFolio_supervisor_autoriza(tablasupervisores [i][0].toString().trim());	
-//			  Venta_Express.setTabla_prodcutos(tabla_guardado ); 
-//			  Venta_Express.setGuardar_actualizar(guardar_actualizar);
-//			  Venta_Express.setEstatus(cmb_status.getSelectedItem().toString().trim());
-			  
-       		
+              txtFolio.setText(tablacompleta[0][4].toString());
+              cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString().trim());
+              if(tablacompleta[0][7].toString().equals("BMS")) {rbCliente.setSelected(true);}else{rbCliente_SCOI.setSelected(true);};
+              txtFolio_cliente.setText  (tablacompleta[0][8].toString().trim()        );
+              txtNombre_cliente.setText (tablacompleta[0][9].toString().trim()        );
+              txtNota.setText           (tablacompleta[0][10].toString().trim()       );
+              txtFolioVendedor.setText  (tablacompleta[0][11].toString().trim()       );
+              txtVendedor.setText       (tablacompleta[0][12].toString().trim()       );
+              cmb_status.setSelectedItem(tablacompleta[0][19].toString().trim()       );
+              
+       		  panel(false);
+       		  tabla.enable(false);
        		calculo();
        		dispose();
        		
 		    }
-			 
-//			        		txtFolio.setText(tablacompleta[0][3].toString());
-//			        		txaUso.setText(tablacompleta[0][4].toString());
-//			        		cmbEstablecimiento.setSelectedItem(tablacompleta[0][6].toString());
-//			        		txtFolio_prv.setText (tablacompleta[0][7].toString());
-//			        		txtProveedor.setText (tablacompleta[0][8].toString());
-//			         		txtFoliosolicit.setText (tablacompleta[0][11].toString());
-//			        		txtSolicitante.setText (tablacompleta[0][14].toString());
-//			        		cmb_status.setSelectedItem(tablacompleta[0][15].toString());
-//			        		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {rbProveedor.setSelected(true); }else {rbProveedorCont.setSelected(true); };
-//			        		tabla.setEnabled(false );
-//			        		panel_booleano(false);
-//			        		
-//			        		if(tablacompleta[0][15].toString().equals("PENDIENTE")){btnModificar.setEnabled(true); }else{btnModificar.setEnabled(false);}
-//							btnImprimir.setEnabled(true);
-//							txtFolio.setEditable(false);
-//							calculo();
-//							dispose();
-//			        	}
-//			        }
-//		        });
-//		    }
-			 
 		    }
-		
-		
-		
 		
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Servicio_De_Venta_Express().setVisible(true);
+			new Cat_Ventas_Express().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

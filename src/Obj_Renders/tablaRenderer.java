@@ -18,7 +18,7 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 @SuppressWarnings("serial")
 public class tablaRenderer extends DefaultTableCellRenderer {
 	
-	  Obj_Usuario usuario = new Obj_Usuario().buscar_Colores();
+	  Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	 ///fuente 
 	 int RFuente =usuario.getRFuente();
 	 int GFuente =usuario.getGFuente();

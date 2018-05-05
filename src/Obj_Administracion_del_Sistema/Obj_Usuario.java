@@ -282,15 +282,6 @@ public class Obj_Usuario {
 		return null; 
 	}
 	
-	public Obj_Usuario buscar_Colores() {
-		try {
-			return new BuscarSQL().colores_usuario();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	public Obj_Usuario buscarMaximo() {
 		try {
 			return new BuscarSQL().Maximo();
@@ -299,7 +290,6 @@ public class Obj_Usuario {
 		}
 		return null;
 	}
-	
 	
 	@SuppressWarnings("rawtypes")
 	public boolean guardarPermisos(Vector Permisos){ 

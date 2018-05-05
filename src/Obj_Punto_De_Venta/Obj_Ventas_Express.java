@@ -22,6 +22,43 @@ public class Obj_Ventas_Express {
 	String Guardar_actualizar="";
 	String estatus="";
 	
+	double deuda_antes_de_abono=0;
+	double abono=0;
+	double saldo=0;
+	int folio_usuario_abono=0;
+	
+	public double getDeuda_antes_de_abono() {
+		return deuda_antes_de_abono;
+	}
+
+	public void setDeuda_antes_de_abono(double deuda_antes_de_abono) {
+		this.deuda_antes_de_abono = deuda_antes_de_abono;
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
+
+	public double getAbono() {
+		return abono;
+	}
+
+	public void setAbono(double abono) {
+		this.abono = abono;
+	}
+
+	public int getFolio_usuario_abono() {
+		return folio_usuario_abono;
+	}
+
+	public void setFolio_usuario_abono(int folio_usuario_abono) {
+		this.folio_usuario_abono = folio_usuario_abono;
+	}
+
 	public String getEstatus() {
 		return estatus;
 	}
@@ -122,8 +159,16 @@ public class Obj_Ventas_Express {
 	return new GuardarSQL().Guardar_Venta_Express(this); 
 	}
 	
+	public Obj_Ventas_Express GuardarLiquidacion(){ 
+		return new GuardarSQL().Guardar_Liquidacion_Venta_Express(this); 
+		}
+	
 	public String[][] consulta_venta_express(int folio){
 		return new BuscarSQL().Tabla_Venta_Express(folio);
+	}
+	
+	public String[][] consulta_Liquidacion_abono_venta_express(int folio){
+		return new BuscarSQL().Tabla_Venta_Express_consulta_abono_liquidacion(folio);
 	}
 	
 	public String[] Combo_Establecimientos() {try {

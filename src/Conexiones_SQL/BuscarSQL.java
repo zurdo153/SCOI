@@ -1365,7 +1365,7 @@ public class BuscarSQL {
 	
 	public Obj_Usuario Usuario(int folio) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
-		String query = "exec sp_select_usuario_login "+folio;
+		String query = "exec usuario_login "+folio;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -1378,6 +1378,19 @@ public class BuscarSQL {
 				usuario.setFecha_alta(rs.getString("fecha").trim());
 				usuario.setVista_previa_impresion(rs.getString("vista_previa_reportes"));
 				usuario.setStatus(rs.getInt("status"));
+				usuario.setRFuente(rs.getInt("RFuente"));
+				usuario.setGFuente(rs.getInt("GFuente"));
+				usuario.setBFuente(rs.getInt("BFuente"));
+				usuario.setRFuenteS(rs.getInt("RFuenteS"));
+				usuario.setGFuenteS(rs.getInt("GFuenteS"));
+				usuario.setBFuenteS(rs.getInt("BFuenteS"));
+				usuario.setRfila(rs.getInt("RFila"));				
+				usuario.setGfila(rs.getInt("GFila"));	
+				usuario.setBfila(rs.getInt("BFila"));	
+				usuario.setRfilaS(rs.getInt("RFilaS"));	
+				usuario.setGfilaS(rs.getInt("GFilaS"));	
+				usuario.setBfilaS(rs.getInt("BFilaS"));	
+				usuario.setTamanio_fuente(rs.getInt("tamanio_fuente"));	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1484,43 +1497,6 @@ public class BuscarSQL {
 		}
 		return usuario;
 	}
-	
-	public Obj_Usuario colores_usuario() throws SQLException{
-		Obj_Usuario usuario = new Obj_Usuario();
-		Obj_Usuario usuario_folio = new Obj_Usuario().LeerSession();
-				
-		String query = "exec sp_select_colores_del_usuario "+usuario_folio.getFolio();
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				usuario.setRFuente(rs.getInt("RFuente"));
-				usuario.setGFuente(rs.getInt("GFuente"));
-	          	usuario.setBFuente(rs.getInt("BFuente"));
-				usuario.setRFuenteS(rs.getInt("RFuenteS"));
-				usuario.setGFuenteS(rs.getInt("GFuenteS"));
-	          	usuario.setBFuenteS(rs.getInt("BFuenteS"));
-				usuario.setRfila(rs.getInt("RFila"));
-				usuario.setGfila(rs.getInt("GFila"));
-				usuario.setBfila(rs.getInt("BFila"));
-				usuario.setRfilaS(rs.getInt("RFilaS"));
-				usuario.setGfilaS(rs.getInt("GFilaS"));
-				usuario.setBfilaS(rs.getInt("BFilaS"));
-				usuario.setTamanio_fuente(rs.getInt("tamanio_fuente"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion Obj_Usuario colores_usuario \n SQLException: "+e.getMessage()+" \nprocedure: "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			return null;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return usuario;
-	}
-	
 	
 	public Obj_Fue_Sodas_DH MaximoFuente() throws SQLException{
 		Obj_Fue_Sodas_DH bono = new Obj_Fue_Sodas_DH();
@@ -3329,13 +3305,25 @@ public class BuscarSQL {
 				myVector.addElement(cadena);
 				usuario.setFolio(Integer.parseInt(myVector.get(0).toString()));
 				usuario.setNombre_completo(myVector.get(1).toString());
+				usuario.setRFuente(Integer.parseInt(myVector.get(2).toString()));
+				usuario.setGFuente(Integer.parseInt(myVector.get(3).toString()));
+				usuario.setBFuente(Integer.parseInt(myVector.get(4).toString()));
+				usuario.setRFuenteS(Integer.parseInt(myVector.get(5).toString()));
+				usuario.setGFuenteS(Integer.parseInt(myVector.get(6).toString()));
+				usuario.setBFuenteS(Integer.parseInt(myVector.get(7).toString()));
+				usuario.setRfila(Integer.parseInt(myVector.get(8).toString()));			
+				usuario.setGfila(Integer.parseInt(myVector.get(9).toString()));
+				usuario.setBfila(Integer.parseInt(myVector.get(10).toString()));
+				usuario.setRfilaS(Integer.parseInt(myVector.get(11).toString()));
+				usuario.setGfilaS(Integer.parseInt(myVector.get(12).toString()));
+				usuario.setBfilaS(Integer.parseInt(myVector.get(13).toString()));
+				usuario.setTamanio_fuente(Integer.parseInt(myVector.get(14).toString()));
 		}catch(FileNotFoundException e) {
 			System.out.println(e.getMessage());
 			return usuario=null;
 		}
 		return usuario;
 	}
-	
 	
 	public String[][] tabla_alimentacion_cuadrante_libre(String nombre, String dia){
 		String[][] Matriz = null;
@@ -10767,7 +10755,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public String[][] empleado_buscar_datos(String folio_empleado) throws IOException{
 		String[][] Matriz = null;
 		String query = "exec empleado_buscar_datos '"+folio_empleado+"'";
-		Matriz = new String[getFilas(query)][78];
+		Matriz = new String[getFilas(query)][79];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -10857,6 +10845,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][75] = rs.getString(76);//rfc_beneficiario
 				Matriz[i][76] = rs.getString(77);//parentesco
 				Matriz[i][77] = rs.getString(78);//fecha_nacimiento_beneficiario
+				Matriz[i][78] = rs.getString(79);//clave_checador
 				
 				 File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 			     FileOutputStream fos = new FileOutputStream(photo);
@@ -10930,7 +10919,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	 public String[][] Tabla_Venta_Express(int folio){
 			String[][] Matriz = null;
-			String query = "exec venta_express_select_por_folio "+folio;
+			String query = "exec ventas_express_select_por_folio "+folio;
 			Matriz = new String[getFilas(query)][20];
 			Statement s;
 			ResultSet rs;
@@ -10968,8 +10957,47 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return Matriz;
 		}
 
-	 
-	
+	 public String[][] Tabla_Venta_Express_consulta_abono_liquidacion(int folio){
+			String[][] Matriz = null;
+			String query = "exec ventas_express_liquidacion_saldo_select_por_folio "+folio;
+			Matriz = new String[getFilas(query)][22];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					Matriz[i][2]  = rs.getString( 3);
+					Matriz[i][3]  = rs.getString( 4);
+					Matriz[i][4]  = rs.getString( 5);
+					Matriz[i][5]  = rs.getString( 6);
+					Matriz[i][6]  = rs.getString( 7);
+					Matriz[i][7]  = rs.getString( 8);
+					Matriz[i][8]  = rs.getString( 9);
+					Matriz[i][9]  = rs.getString(10);
+					Matriz[i][10] = rs.getString(11);
+					Matriz[i][11] = rs.getString(12);
+					Matriz[i][12] = rs.getString(13);
+					Matriz[i][13] = rs.getString(14);
+					Matriz[i][14] = rs.getString(15);
+					Matriz[i][15] = rs.getString(16);
+					Matriz[i][16] = rs.getString(17);
+					Matriz[i][17] = rs.getString(18);
+					Matriz[i][18] = rs.getString(19);
+					Matriz[i][19] = rs.getString(20);
+					Matriz[i][20] = rs.getString(21);
+					Matriz[i][21] = rs.getString(22);
+					
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+		}	 
 	public Obj_Revision_De_Horario_Por_Nivel_Jerarquico buscar_colaborador(int folioColaborador){
 		Obj_Revision_De_Horario_Por_Nivel_Jerarquico datos = new Obj_Revision_De_Horario_Por_Nivel_Jerarquico();
 		String query = "declare @folio_colaborador int "
@@ -11069,7 +11097,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return datos;
 	}
 
-	
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";

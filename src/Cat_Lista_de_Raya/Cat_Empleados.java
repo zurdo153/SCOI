@@ -1283,6 +1283,7 @@ public class Cat_Empleados extends JFrame{
             cmbPresenciaFisica.setSelectedItem(tablacompleta[0][67].toString()        );   
             txtFormaDePago.setText            (tablacompleta[0][68].toString()        );   
             chb_cuadrante_parcial.setSelected(Boolean.valueOf(tablacompleta[0][69].toString()));
+            txtChecador.setText               (tablacompleta[0][78].toString()        );
 
              ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 	         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));

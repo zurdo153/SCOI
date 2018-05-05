@@ -114,6 +114,7 @@ import Obj_Planeacion.Obj_Prioridad_Y_Ponderacion;
 import Obj_Planeacion.Obj_Seleccion_De_Usuarios;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
+import Obj_Punto_De_Venta.Obj_Clientes_Ventas;
 import Obj_Punto_De_Venta.Obj_Ventas_Express;
 import Obj_Seguridad.Obj_Autorizacion_Acceso_Proveedores;
 import Obj_Seguridad.Obj_Registro_Proveedores;
@@ -2182,24 +2183,48 @@ public class GuardarSQL {
 	
 	public boolean Guardar_Sesion(Obj_Usuario usuario){
 		BufferedWriter bufferedWriter = null;
-		String nomArchivo = System.getProperty("user.dir")+"\\Config\\users";
+		String nomArchivo        = System.getProperty("user.dir")+"\\Config\\users";
 		try{
 			File archivo = new File(nomArchivo);
+			
 			if(archivo.exists()){
 				bufferedWriter = new BufferedWriter (new FileWriter(nomArchivo));
-							
 				bufferedWriter.write(usuario.getFolio()+    		"\n");
 				bufferedWriter.write(usuario.getNombre_completo()+	"\n");
+				bufferedWriter.write(usuario.getRFuente()+	"\n");
+				bufferedWriter.write(usuario.getGFuente()+	"\n");
+				bufferedWriter.write(usuario.getBFuente()+	"\n");
+				bufferedWriter.write(usuario.getRFuenteS()+	"\n");
+				bufferedWriter.write(usuario.getGFuenteS()+	"\n");
+				bufferedWriter.write(usuario.getBFuenteS()+	"\n");
+				bufferedWriter.write(usuario.getRfila()+	"\n");
+				bufferedWriter.write(usuario.getGfila()+	"\n");
+				bufferedWriter.write(usuario.getBfila()+	"\n");
+				bufferedWriter.write(usuario.getRfilaS()+	"\n");
+				bufferedWriter.write(usuario.getGfilaS()+	"\n");
+				bufferedWriter.write(usuario.getBfilaS()+	"\n");
+				bufferedWriter.write(usuario.getTamanio_fuente()+	"\n");
 				
 			}else{
 				File folder = new File(System.getProperty("user.dir")+"\\Config");
 				folder.mkdirs();
 				archivo.createNewFile();
 				bufferedWriter = new BufferedWriter (new FileWriter(nomArchivo));
-				
 				bufferedWriter.write(usuario.getFolio()+    		"\n");
 				bufferedWriter.write(usuario.getNombre_completo()+	"\n");
-				
+				bufferedWriter.write(usuario.getRFuente()+	"\n");
+				bufferedWriter.write(usuario.getGFuente()+	"\n");
+				bufferedWriter.write(usuario.getBFuente()+	"\n");
+				bufferedWriter.write(usuario.getRFuenteS()+	"\n");
+				bufferedWriter.write(usuario.getGFuenteS()+	"\n");
+				bufferedWriter.write(usuario.getBFuenteS()+	"\n");
+				bufferedWriter.write(usuario.getRfila()+	"\n");
+				bufferedWriter.write(usuario.getGfila()+	"\n");
+				bufferedWriter.write(usuario.getBfila()+	"\n");
+				bufferedWriter.write(usuario.getRfilaS()+	"\n");
+				bufferedWriter.write(usuario.getGfilaS()+	"\n");
+				bufferedWriter.write(usuario.getBfilaS()+	"\n");
+				bufferedWriter.write(usuario.getTamanio_fuente()+	"\n");
 			}
 			
 		}
@@ -7723,8 +7748,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 
 	public Obj_Ventas_Express Guardar_Venta_Express(Obj_Ventas_Express ventas_express){
 		int folio_transaccion=ventas_express.getFolio();
-		String querymod ="";
-				
 		if(ventas_express.getGuardar_actualizar().equals("N")){
 		  folio_transaccion=busca_y_actualiza_proximo_folio(67);
 		  ventas_express.setFolio(folio_transaccion);
@@ -7735,48 +7758,37 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		
 		try {
 			con.setAutoCommit(false);
-
-			PreparedStatement pstmtdel = con.prepareStatement(querymod);
-			pstmtdel.executeUpdate();
-			 con.commit();
-			 
 			PreparedStatement pstmt = con.prepareStatement(query);
 			for(int i=0; i<ventas_express.getTabla_prodcutos().length; i++){
-		
-//				 @folio int ,@establecimiento varchar(100),@tipo_de_cliente char(1),@folio_cliente varchar(15),@nota varchar(500),@folio_vendedor_bms char(15)
-//				 @total_venta numeric(15,2),@folio_proveedor_bms varchar(15),@folio_supervisor_autoriza varchar(15)
-//				 ,@cod_prod varchar(15),@precio numeric(15,2) ,@cantidad numeric(15,2),@guardar_actualizar char(1)				 
-				pstmt.setInt   (1 ,  folio_transaccion);
-				pstmt.setString(2 ,  ventas_express.getEstablecimiento().toString());
-				pstmt.setString(3 ,  ventas_express.getTipo_de_cliente().toString());
-				pstmt.setString(4 ,  ventas_express.getFolio_cliente().toString());
-				pstmt.setString(5 ,  ventas_express.getNotas().toString());
-				pstmt.setString(6 ,  ventas_express.getFolio_vendedor().toString());
-				
-				pstmt.setDouble(7 ,  ventas_express.getTotal_venta());
-				pstmt.setString(8 ,  ventas_express.getFolio_proveedor());
-				pstmt.setString(9 ,  ventas_express.getFolio_supervisor_autoriza());
-				
+				pstmt.setInt   (1  , folio_transaccion);
+				pstmt.setString(2  , ventas_express.getEstablecimiento().toString());
+				pstmt.setString(3  , ventas_express.getTipo_de_cliente().toString());
+				pstmt.setString(4  , ventas_express.getFolio_cliente().toString());
+				pstmt.setString(5  , ventas_express.getNotas().toString());
+				pstmt.setString(6  , ventas_express.getFolio_vendedor().toString());
+				pstmt.setDouble(7  , ventas_express.getTotal_venta());
+				pstmt.setString(8  , ventas_express.getFolio_proveedor());
+				pstmt.setString(9  , ventas_express.getFolio_supervisor_autoriza());
 				pstmt.setString(10 , ventas_express.getTabla_prodcutos()[i][0].toString().trim());
 				pstmt.setString(11 , ventas_express.getTabla_prodcutos()[i][2].toString().trim());
-				pstmt.setString(12 , ventas_express.getTabla_prodcutos()[i][3].toString().trim()); 			
-				pstmt.setString(13 , ventas_express.getGuardar_actualizar());
-				pstmt.setString(14 , ventas_express.getEstatus());
+				pstmt.setString(12 , ventas_express.getTabla_prodcutos()[i][3].toString().trim()); 	
+				pstmt.setString(13 , ventas_express.getEstatus());
+				pstmt.setString(14 , ventas_express.getGuardar_actualizar());
 				
 				pstmt.executeUpdate();
 			 con.commit();
 			}
 			
 		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				}catch(SQLException ex){
-					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 				}
 			}
 			return null;
@@ -7790,7 +7802,46 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return ventas_express;
 	}
 	
-
+	public Obj_Ventas_Express Guardar_Liquidacion_Venta_Express(Obj_Ventas_Express ventas_express){	
+		String query = "exec ventas_express_liquidacion_insert_y_actualiza ?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		try {con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement(query);
+				pstmt.setInt   (1 ,  ventas_express.getFolio());
+				pstmt.setDouble(2 , ventas_express.getDeuda_antes_de_abono());
+				pstmt.setDouble(3 , ventas_express.getAbono());
+				pstmt.setDouble(4 , ventas_express.getSaldo());
+				pstmt.setInt   (5 , ventas_express.getFolio_usuario_abono());
+				pstmt.setString(6 , ventas_express.getEstatus());
+				pstmt.setString(7 , ventas_express.getGuardar_actualizar());
+				
+				pstmt.executeUpdate();
+			 con.commit();
+				
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+query);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Liquidacion_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+query);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Liquidacion_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return null;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return ventas_express;
+	}
+	
+	
 	public boolean guardarRevision(Obj_Revision_De_Horario_Por_Nivel_Jerarquico revision){
 		
 		String query = "exec actualizar_horario_nivel_gerarquico ?,?,?,?,?";
@@ -7835,6 +7886,55 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			return true;
 	}
 
+	
+	public Obj_Clientes_Ventas Guardar_Venta_Express(Obj_Clientes_Ventas ventas_clientes){
+		int folio_transaccion=ventas_clientes.getFolio();
+		String querymod ="";
+				
+		if(ventas_clientes.getGuardar_actualizar().equals("N")){
+		  folio_transaccion=busca_y_actualiza_proximo_folio(66);
+		  ventas_clientes.setFolio(folio_transaccion);
+		}
+		String query = "exec ventas_express_clientes_insert_y_actualiza ?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement(query);
+				pstmt.setInt   (1 ,  folio_transaccion                          );
+				pstmt.setString(2 ,  ventas_clientes.getNombre().toString()     );
+				pstmt.setString(3 ,  ventas_clientes.getAp_paterno().toString() );
+				pstmt.setString(4 ,  ventas_clientes.getAp_materno().toString() );
+				pstmt.setString(5 ,  ventas_clientes.getDomicilio().toString()  );
+				pstmt.setString(6 ,  ventas_clientes.getTelefono().toString()   );
+				pstmt.setString(7 ,  ventas_clientes.getEstatus().toString()    );
+				pstmt.setString(8 ,  ventas_clientes.getGuardar_actualizar().toString()     );
+				pstmt.executeUpdate();
+			 con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage()+"\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [  Guardar_Venta_Express ]\n"+query+"\nSQLException:"+e.getMessage()+"\n"+querymod, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return null;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return ventas_clientes;
+	}
+	
 	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		

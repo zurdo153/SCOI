@@ -186,7 +186,7 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 							    }
 								
 								if(concepto.equals("Gastos Pendientes de Realizar Corte" )){
-									comando="exec ordenes_de_gasto_reporte_de_pagos_pendientes_de_rembolsar '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','ESTABLECIMIENTO','BENEFICIARIO','"+cmb_conceptosolicitud.getSelectedItem().toString()+"'";
+									comando="exec ordenes_de_gasto_reporte_de_pagos_pendientes_de_rembolsar '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+cmbEstablecimiento.getSelectedItem().toString()+"','BENEFICIARIO','"+cmb_conceptosolicitud.getSelectedItem().toString()+"'";
 									reporte ="Obj_Reporte_De_Banco_Interno_Ordenes_De_Gasto_Pendientes_De_Realizar_Corte.jrxml";
 							    }
 								
