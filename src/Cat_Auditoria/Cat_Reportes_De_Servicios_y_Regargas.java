@@ -1,4 +1,4 @@
-package Cat_Reportes;
+package Cat_Auditoria;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -171,8 +171,8 @@ public class Cat_Reportes_De_Servicios_y_Regargas extends JFrame {
 							 String concepto=cmbConcepto.getSelectedItem().toString().trim();
 							 String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 							 String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
-							 
-								if(concepto.equals("Servicios y Recargas En el Periodo De Fechas Vigentes Por Establecimiento")){
+
+							 if(concepto.equals("Servicios y Recargas En el Periodo De Fechas Vigentes Por Establecimiento")){
 									comando="exec sp_Reporte_de_Gesto_Pago '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+cmbEstatus.getSelectedItem().toString()+"','','"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'";
 									reporte ="Obj_Reporte_De_Venta_De_Productos_Servicios_y_Recargas.jrxml";
 							    }
@@ -182,7 +182,6 @@ public class Cat_Reportes_De_Servicios_y_Regargas extends JFrame {
 									comando="exec sp_Reporte_de_Gesto_Pago '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+cmbEstatus.getSelectedItem().toString()+"','"+txtAsignacion.getText().toString()+"','Selecciona un Establecimiento'";
 									reporte ="Obj_Reporte_De_Venta_De_Productos_Servicios_y_Recargas.jrxml";
 							    }
-								
 								
 						}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_campos(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
