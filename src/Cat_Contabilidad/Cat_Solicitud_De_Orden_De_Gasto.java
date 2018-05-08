@@ -1,5 +1,7 @@
 package Cat_Contabilidad;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;
@@ -11,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -34,6 +37,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.JTextComponent;
 
 import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.BuscarSQL;
@@ -61,6 +65,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
 
 	int columnas = 4,checkbox=-1;
+  	int fila=0,columna = 0;
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(500);	
     	this.tabla.getColumnModel().getColumn(1).setMinWidth(90);
@@ -208,7 +213,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		btnBuscar.addActionListener         (opFiltroBuscar_orden_pago );
 		btnImprimir.addActionListener       (opImprimir_Reporte        );   
         txtDescripcion.addKeyListener       (opAgregarConEnter         );
-		tabla.addKeyListener                (op_validanumero_en_celda  );
+		tabla.addKeyListener                (opKeyTable  );
 		
 		btnDeshacer.setToolTipText("<ESC> Tecla Directa");
 		btnGuardar.setToolTipText("<CTRL+G> Tecla Directa");
@@ -239,8 +244,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		cmbEstablecimiento.setEnabled(boleano);
 	    txtDescripcion.setEditable(boleano); 
 	    cmb_concepto.setEnabled(boleano);
-		txaUso.setLineWrap(true); 
-		txaUso.setWrapStyleWord(true);
 		txaUso.setEditable(boleano);
 		btnModificar.setEnabled(false);
 		txtFolio.setEditable(false);
@@ -265,41 +268,33 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		txtTotal.setText("");
 		rbProveedorCont.setSelected(true);
 		modelo.setRowCount(0);
+		txaUso.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
     }
     
 	
-	KeyListener op_validanumero_en_celda = new KeyListener() {
-		public void keyTyped(KeyEvent e) {}
-		public void keyReleased(KeyEvent e) {
-			int fila=tabla.getSelectedRow();
-			int columna=tabla.getSelectedColumn();
-			
-			if(fila==-1)fila=fila+1;
-			if(columna<1 )columna=1;
-
-			if(e.getKeyCode()==9&&columna>1) {
-				columna=1;
-			};
-			
-			if(ObjTab.validacelda(tabla,"decimal", fila,columna)){
-				calculo();
-						  if(ObjTab.RecorridoFocotabla_con_evento(tabla, fila,columna, "x",e).equals("si")){
-								txtDescripcion.requestFocus();
-						  };
-			}	
-		}
-		public void keyPressed(KeyEvent e) {}
-	};
+//	KeyListener op_validanumero_en_celda = new KeyListener() {
+//		public void keyTyped(KeyEvent e) {}
+//		public void keyReleased(KeyEvent e) {
+////			int fila=tabla.getSelectedRow();
+////			int columna=tabla.getSelectedColumn();
+//			
+////			if(fila==-1)fila=fila+1;
+////			if(columna<1 )columna=1;
+//
+//			if(e.getKeyCode()==9&&columna>1) {
+//				columna=1;
+//			};
+//			
+//			if(ObjTab.validacelda(tabla,"decimal", fila,columna)){
+//				calculo();
+//						  if(ObjTab.RecorridoFocotabla_con_evento(tabla, fila,columna, "x",e).equals("si")){
+//								txtDescripcion.requestFocus();
+//						  };
+//			}	
+//		}
+//		public void keyPressed(KeyEvent e) {}
+//	};
 	
-	public void calculo() {
-		float importe=0;
-		for(int i=0;i<tabla.getRowCount();i++) {
-			tabla.setValueAt(Float.valueOf(tabla.getValueAt(i, 1)+"") * Float.valueOf(tabla.getValueAt(i, 2)+""), i, 3);
-			importe=importe+Float.valueOf(tabla.getValueAt(i, 3)+"");
-		}
-		txtTotal.setText(importe+"");
-	};
-   
 	KeyListener opAgregarConEnter = new KeyListener() {
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {
@@ -363,8 +358,11 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 					Vector_Producto[3]="0";		
 					modelo.addRow(Vector_Producto);
 					txtDescripcion.setText("");
-					ObjTab.RecorridoFocotabla(tabla, modelo.getRowCount()-1, 1, "x");
-					tabla.setRowSelectionInterval(modelo.getRowCount()-1, modelo.getRowCount()-1);
+//					ObjTab.RecorridoFocotabla(tabla, modelo.getRowCount()-1, 1, "x");
+					fila = modelo.getRowCount()-1;
+					columna = 1;
+//					tabla.setRowSelectionInterval(fila, fila);
+					RecorridoFoco("click");
 				   return;	
 				}
 		  }
@@ -465,7 +463,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	
 	//TODO GUARDAR
 	ActionListener guardar = new ActionListener(){
-	@SuppressWarnings("unlikely-arg-type")
 	public void actionPerformed(ActionEvent e){
 			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 				if(tabla.isEditing()){	tabla.getCellEditor().stopCellEditing();}
@@ -514,6 +511,124 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			 }
 	  }			
     };
+//TODO(recorrido de tabla con foco) ---------------------------------------------------------------------------------------------------------------------------------------
+	KeyListener opKeyTable = new KeyListener() {
+		public void keyTyped(KeyEvent e) {		}
+		@SuppressWarnings("static-access")
+		public void keyReleased(KeyEvent e) {
+			
+			if(e.getKeyCode()==e.VK_ENTER){				
+				RecorridoFoco("darecha");
+			}
+			if(e.getKeyCode()==e.VK_DOWN){
+				RecorridoFoco("bajar");
+			}
+			if(e.getKeyCode()==e.VK_UP){
+				RecorridoFoco("subir");
+			}
+//			if(e.getKeyCode()==e.VK_LEFT){
+//				RecorridoFoco("izquierda");
+//			}
+//			if(e.getKeyCode()==e.VK_RIGHT){
+//				RecorridoFoco("derecha");
+//			}
+//			if(e.getKeyCode()==e.VK_END){
+//				RecorridoFoco("fin");
+//			}
+//			if(e.getKeyCode()==36){
+//				
+//				RecorridoFoco("inicio");
+//			}
+		}
+		public void keyPressed(KeyEvent e) {	}
+	};
+	
+	int indiceSeleccionado=0;
+	int[] columnasEditables = columnasEdit(tabla);
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public int[] columnasEdit(final JTable tbl){
+		Vector col = new Vector();
+		for(int i=0; i<tbl.getColumnCount(); i++){
+			if(tbl.isCellEditable(0, i)){
+				col.addElement(i);
+			}
+		}
+		
+		int[] columnasE = new int[col.size()];
+		
+		for(int i=0; i<col.size(); i++){
+			columnasE[i]=(int) col.get(i);
+		}
+		
+		return columnasE;
+	}
+	
+	public void CeldaSiguiente(final JTable tbl){
+		if(columna==columnasEditables[columnasEditables.length-1]){
+			indiceSeleccionado=0;
+			columna=columnasEditables[indiceSeleccionado];
+			fila = fila<tbl.getRowCount()-1 ? fila+1: fila ;
+		}else{
+			indiceSeleccionado++;
+			columna=columnasEditables[indiceSeleccionado];
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void RecorridoFoco(String mover){
+		
+		if(ObjTab.validacelda(tabla,"decimal", fila,columna)){
+			
+			calculo();
+			
+			int cantidadDeFilas = tabla.getRowCount();
+//			System.out.println(indiceSeleccionado+"<---- indice");
+			
+			switch(mover){
+				case "bajar": fila= (fila==cantidadDeFilas-1)?cantidadDeFilas-1:fila+1; break;
+				case "subir": fila= (fila==0)?0:fila-1; break;
+				case "izquierda": columna--; break;
+//				case "darecha": columna++; break;
+				case "darecha": CeldaSiguiente(tabla); break;
+				case "inicio": fila=0; break;
+				case "fin": fila=tabla.getRowCount()-1; break;
+			}
+			
+			String sacarFocoDeTabla = "no";
+			if(fila == cantidadDeFilas-1){
+				sacarFocoDeTabla="si";
+			}
+			else{
+				sacarFocoDeTabla = "no";
+			}
+			tabla.getSelectionModel().setSelectionInterval(fila, fila);
+			tabla.editCellAt(fila, columna);
+			  Component accion=tabla.getEditorComponent();
+			final JTextComponent jtc = (JTextComponent)accion;
+			  jtc.requestFocus();
+			  jtc.selectAll();	
+			
+			if(sacarFocoDeTabla.equals("si")){
+				tabla.lostFocus(null, null);
+//				.requestFocus();
+				tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+				tabla.getSelectionModel().clearSelection();
+			}
+		}
+
+	};    
+	
+	public void calculo() {
+		float importe=0;
+		for(int i=0;i<tabla.getRowCount();i++) {
+			tabla.setValueAt(Float.valueOf(tabla.getValueAt(i, 1)+"") * Float.valueOf(tabla.getValueAt(i, 2)+""), i, 3);
+			importe=importe+Float.valueOf(tabla.getValueAt(i, 3)+"");
+		}
+		txtTotal.setText(importe+"");
+	};
+	
+//TODO(fin recorrido de tabla)---------------------------------------------------------------------------------------------------------------------------------------------
 	
 	//TODO inicia filtro_Buscar PROVEEDOR	
 	public class Cat_Filtro_Buscar_Proveedor extends JDialog{
@@ -590,6 +705,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 						btnQuitarfila.setEnabled(true);
 						txaUso.setEditable(true);
 						txaUso.requestFocus();
+						txaUso.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
 						dispose();
 		        	}
 		        }

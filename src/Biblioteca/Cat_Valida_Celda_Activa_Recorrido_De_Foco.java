@@ -130,13 +130,13 @@ public class Cat_Valida_Celda_Activa_Recorrido_De_Foco extends JFrame{
 	};
 	
 	int indiceSeleccionado=0;
-	int[] columnasEditables = columnasEdit();
+	int[] columnasEditables = columnasEdit(tabla);
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public int[] columnasEdit(){
+	public int[] columnasEdit(final JTable tbl){
 		Vector col = new Vector();
-		for(int i=0; i<tabla.getColumnCount(); i++){
-			if(tabla.isCellEditable(0, i)){
+		for(int i=0; i<tbl.getColumnCount(); i++){
+			if(tbl.isCellEditable(0, i)){
 				col.addElement(i);
 			}
 		}
@@ -150,11 +150,11 @@ public class Cat_Valida_Celda_Activa_Recorrido_De_Foco extends JFrame{
 		return columnasE;
 	}
 	
-	public void CeldaSiguiente(){
+	public void CeldaSiguiente(final JTable tbl){
 		if(columna==columnasEditables[columnasEditables.length-1]){
 			indiceSeleccionado=0;
 			columna=columnasEditables[indiceSeleccionado];
-			fila = fila<tabla.getRowCount()-1 ? fila+1: fila ;
+			fila = fila<tbl.getRowCount()-1 ? fila+1: fila ;
 		}else{
 			indiceSeleccionado++;
 			columna=columnasEditables[indiceSeleccionado];
@@ -172,7 +172,7 @@ public class Cat_Valida_Celda_Activa_Recorrido_De_Foco extends JFrame{
 			case "subir": fila= (fila==0)?0:fila-1; break;
 			case "izquierda": columna--; break;
 //			case "darecha": columna++; break;
-			case "darecha": CeldaSiguiente(); break;
+			case "darecha": CeldaSiguiente(tabla); break;
 			case "inicio": fila=0; break;
 			case "fin": fila=tabla.getRowCount()-1; break;
 		}
