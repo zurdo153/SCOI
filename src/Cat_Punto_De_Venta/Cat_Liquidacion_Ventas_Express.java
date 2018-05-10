@@ -99,7 +99,9 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 	JCButton btnBuscar      = new JCButton("Buscar"    ,"Filter-List-icon16.png"              ,"Azul"); 
 	JCButton btnGuardar     = new JCButton("Guardar"   ,"Guardar.png"                         ,"Azul");
 	JCButton btnDeshacer    = new JCButton("Deshacer"  ,"deshacer16.png"                      ,"Azul");
-	JCButton btnImprimir    = new JCButton("Imprimir"   ,"imprimir-16.png"                     ,"Azul");
+	JCButton btnImprimir    = new JCButton("Imprimir"  ,"imprimir-16.png"                     ,"Azul");
+	JCButton btnLigarCompra = new JCButton("Ligar","tarjeta-de-informacion-del-usuario-icono-7370-16.png","Azul");
+	
 	
 	JTextField txtFolioVendedor  = new Componentes().text(new JCTextField() ,"Folio Vendedor"                ,16    ,"String" );
 	JTextField txtVendedor       = new Componentes().text(new JCTextField() ,"Vendedor"                      ,16    ,"String" );	
@@ -112,13 +114,18 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 	JTextField txtSaldo          = new Componentes().text(new JCTextField() , "Saldo Nuevo"                  ,16    ,"String" );
 	JTextField txtfolio_usuario  = new Componentes().text(new JCTextField() , "User"                         ,16    ,"String" );
 	JTextField txtUsuario        = new Componentes().text(new JCTextField() , "Nombre"                       ,300   ,"String" );
+	JTextField txtCod_Prv        = new Componentes().text(new JCTextField() , "Codigo Proveedor"             ,16    ,"String" );
+	JTextField txtProveedor      = new Componentes().text(new JCTextField() , "Nombre Proveedor"             ,300   ,"String" );
+	JTextField txtFecha          = new Componentes().text(new JCTextField() , "Fecha Compra"                 ,150   ,"String" );
+	JTextField txtTotalCompra    = new Componentes().text(new JCTextField() , "Compra"                       ,150   ,"String" );
+	JTextField txtFolio_Recepcion= new Componentes().text(new JCTextField() , "Folio Recepcion"              ,150   ,"String" );
 	
 	JRadioButton rbCliente_SCOI  = new JRadioButton("Cliente SCOI");
 	JRadioButton rbCliente       = new JRadioButton("Cliente");
 	ButtonGroup  grupo           = new ButtonGroup();
     
 	public Cat_Liquidacion_Ventas_Express(){
-		setSize(820,385);
+		setSize(820,410);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -157,16 +164,23 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 		panel.add(Notas).setBounds                                   	      (x      ,y+=15    ,795     ,60      );
 		panel.add(Scroll_Tabla).setBounds                                     (x=10   ,y+=65    ,795     ,150     );
 		panel.add(cmb_status).setBounds                                       (x      ,y+=150   ,70      ,height  );
-		panel.add(new JLabel("Total Venta:")).setBounds                  	  (x+=80  ,y        ,width   ,height  );
-		panel.add(txtTotalImporte).setBounds                          	      (x+=60  ,y        ,width   ,20      );
-		panel.add(new JLabel("Saldo:")).setBounds                        	  (x+=130 ,y        ,width   ,height  );
-		panel.add(txtSaldo_anterior).setBounds                                (x+=30  ,y        ,width   ,20      );
-		panel.add(new JLabel("Abono:$")).setBounds            	              (x+=150 ,y        ,width   ,height  );
-		panel.add(txtAbono).setBounds                               	      (x+=40  ,y        ,width   ,20      );
+		panel.add(new JLabel("Total Venta:")).setBounds                  	  (x+=75  ,y        ,width   ,height  );
+		panel.add(txtTotalImporte).setBounds                          	      (x+=60  ,y        ,width   ,height  );
+		panel.add(new JLabel("Saldo:")).setBounds                        	  (x+=125 ,y        ,width   ,height  );
+		panel.add(txtSaldo_anterior).setBounds                                (x+=30  ,y        ,width   ,height  );
+		panel.add(new JLabel("Abono:$")).setBounds            	              (x+=160 ,y        ,width   ,height  );
+		panel.add(txtAbono).setBounds                               	      (x+=40  ,y        ,width   ,height  );
 		panel.add(new JLabel("Saldo Nuevo:")).setBounds        	              (x+=125 ,y        ,width   ,height  );
-		panel.add(txtSaldo).setBounds                               	      (x+=65  ,y        ,width   ,20      );
-		panel.add(txtfolio_usuario).setBounds                                 (x=10   ,y+=25    ,70      ,20      );
-		panel.add(txtUsuario).setBounds                                       (x+=70  ,y        ,335     ,20      );		
+		panel.add(txtSaldo).setBounds                               	      (x+=65  ,y        ,width   ,height  );
+		panel.add(txtCod_Prv).setBounds                                       (x=10   ,y+=25    ,70      ,height  );
+		panel.add(txtProveedor).setBounds                                     (x+=70  ,y        ,335     ,height  );	
+		panel.add(btnLigarCompra).setBounds                                   (x+=335 ,y        ,90      ,height  );
+		panel.add(txtTotalCompra).setBounds                                   (x+=90  ,y        ,90      ,height  );
+		panel.add(txtFecha).setBounds                                         (x+=90 ,y         ,120     ,height  );	
+		panel.add(txtFolio_Recepcion).setBounds                               (x+=120 ,y        ,90     ,height  );	
+		 
+		panel.add(txtfolio_usuario).setBounds                                 (x=10   ,y+=25    ,70      ,height  );
+		panel.add(txtUsuario).setBounds                                       (x+=70  ,y        ,335     ,height  );		
 		
 		txtfolio_usuario.setText(usuario.getFolio()+"");
 		txtUsuario.setText(usuario.getNombre_completo()+"");
@@ -176,11 +190,12 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 	
 		cont.add(panel);
 		
-		btnBuscar.addActionListener     (opBuscarVenta_Express );
-		btnImprimir.addActionListener   (opImprimir_Reporte    );
-		btnDeshacer.addActionListener   (opdeshacer            );
-		btnGuardar.addActionListener    (opguardar     		   );
-        txtAbono.addKeyListener         (opcalculo             );
+		btnBuscar.addActionListener     (opBuscarVenta_Express         );
+		btnImprimir.addActionListener   (opImprimir_Reporte            );
+		btnDeshacer.addActionListener   (opdeshacer                    );
+		btnGuardar.addActionListener    (opguardar     		           );
+        txtAbono.addKeyListener         (opcalculo                     );
+        btnLigarCompra.addActionListener(opBuscarRecepcion_De_Mercancia);
         
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
         getRootPane().getActionMap().put("escape", new AbstractAction(){ public void actionPerformed(ActionEvent e){ btnDeshacer.doClick();} });
@@ -199,11 +214,25 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 	    if(abono>importe) {
 		  JOptionPane.showMessageDialog(null, "Está Intentando Pagar Más Del Valor Total Del Saldo De La Cuenta \nEl Importe Maximo Que Puede Abonar Es:$"+importe,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-icono-noes_usuario9131-64.png"));
 		  txtAbono.setText(txtSaldo_anterior.getText());
+          if(Double.valueOf(txtSaldo.getText().toString().trim())==0.0) {
+        	    btnLigarCompra.setEnabled(true );
+          }else{txtFolio_Recepcion.setText("");
+                txtFecha.setText("");
+                txtTotalCompra.setText("");
+        	    btnLigarCompra.setEnabled(false);}	  
 		  return;		
 	    }else {
 		  txtSaldo.setText((importe-abono)+"");	
+          if(Double.valueOf(txtSaldo.getText().toString().trim())==0.0) {
+        	    btnLigarCompra.setEnabled(true );
+          }else{txtFolio_Recepcion.setText("");
+                txtFecha.setText("");
+                txtTotalCompra.setText("");
+  	            btnLigarCompra.setEnabled(false);}	    
 		  return;	
 	    }
+	    
+	    
 	}
 	
 	KeyListener opcalculo = new KeyListener() {
@@ -229,25 +258,40 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
   	
 	ActionListener opBuscarVenta_Express = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+//			btnLigarCompra.setEnabled(true);
 		  new Cat_Filtro_Buscar_Venta_Express().setVisible(true);
+		}
+	};
+	
+	ActionListener opBuscarRecepcion_De_Mercancia = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		  new Cat_Filtro_Buscar_Recepcion_De_Mercancia().setVisible(true);
 		}
 	};
 	
 	ActionListener opguardar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			calculo();
-		 if(txtAbono.getText().equals("")||Float.valueOf(txtAbono.getText())==0){	
+
+		 if((txtAbono.getText().equals("")||Float.valueOf(txtAbono.getText())==0)&& txtTotalCompra.getText().equals("")    ){	
 			JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Una Venta Express y Teclee su Abono","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 			txtAbono.requestFocus();
 		   return;
 		 }else{	 
-			 Venta_Express.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));	
-			 Venta_Express.setDeuda_antes_de_abono(Double.valueOf(txtTotalImporte.getText().toString().trim()));	
-			 Venta_Express.setAbono(Double.valueOf(txtAbono.getText().toString().trim()));	
-			 Venta_Express.setSaldo(Double.valueOf(txtSaldo.getText().toString().trim()));	
-			 Venta_Express.setFolio_usuario_abono(Integer.valueOf(txtfolio_usuario.getText().toString().trim()));	
-			 Venta_Express.setGuardar_actualizar("A");
-			 Venta_Express.setEstatus(cmb_status.getSelectedItem().toString().trim());
+				 if((txtTotalCompra.getText().toString().equals("")?0:Double.valueOf(txtTotalCompra.getText().toString()))>0    ) {
+					 Venta_Express.setEstatus("Surtido");
+					 txtAbono.setText("0");
+				 }else {
+					 Venta_Express.setEstatus(cmb_status.getSelectedItem().toString().trim()); 
+				 }
+				 Venta_Express.setFolio_recepcion_de_compra( txtTotalCompra.getText().toString().equals("")?"":txtFolio_Recepcion.getText().toString());
+				 Venta_Express.setFolio(Integer.valueOf(txtFolio.getText().toString().trim()));	
+				 Venta_Express.setDeuda_antes_de_abono(Double.valueOf(txtTotalImporte.getText().toString().trim()));	
+				 Venta_Express.setAbono(Double.valueOf(txtAbono.getText().toString().trim()));	
+				 Venta_Express.setSaldo(Double.valueOf(txtSaldo.getText().toString().trim()));	
+				 Venta_Express.setFolio_usuario_abono(Integer.valueOf(txtfolio_usuario.getText().toString().trim()));	
+				 Venta_Express.setGuardar_actualizar("A");
+
 			  if(Venta_Express.GuardarLiquidacion().getFolio()>0){	
 				    btnImprimir.setEnabled(true);
 					btnImprimir.doClick();
@@ -274,6 +318,12 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 			txtAbono.setText          ("");
 			txtSaldo_anterior.setText ("");
 			txtSaldo.setText          ("");
+			txtCod_Prv.setText        ("");
+			txtProveedor.setText      ("");
+			txtFecha.setText          ("");
+			txtFolio_Recepcion.setText("");
+			txtTotalCompra.setText    ("");
+			
 			txtNota.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
 			modelo.setRowCount(0);
 		   return;	
@@ -296,6 +346,12 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 		cmbEstablecimiento.setEnabled(boleano);
 		rbCliente.setEnabled(boleano);
 		rbCliente_SCOI.setEnabled(boleano);
+		txtCod_Prv.setEditable(boleano);
+		txtProveedor.setEditable(boleano);
+		txtFolio_Recepcion.setEditable(boleano);
+		txtFecha.setEditable(boleano);
+		txtTotalCompra.setEditable(boleano);
+		btnLigarCompra.setEnabled(boleano);
 	};
 	
 	public void calculo() {
@@ -430,15 +486,109 @@ public class Cat_Liquidacion_Ventas_Express extends JFrame{
 	              txtFolioVendedor.setText  (tablacompleta[0][11].toString().trim()       );
 	              txtVendedor.setText       (tablacompleta[0][12].toString().trim()       );
 	              txtTotalImporte.setText   (tablacompleta[0][13].toString().trim()       );
+	              txtCod_Prv.setText        (tablacompleta[0][14].toString().trim()       );
+	              txtProveedor.setText      (tablacompleta[0][15].toString().trim()       );
 	              cmb_status.setSelectedItem(tablacompleta[0][19].toString().trim()       );
 	              txtSaldo_anterior.setText (tablacompleta[0][21].toString().trim()       );             
 	              calculo();
-	              txtAbono.requestFocus();              
+	              calculo_saldo();
+	              txtAbono.requestFocus();             
               if(tablacompleta[0][19].toString().trim().equals("Liquidado")){ btnGuardar.setEnabled(false); }else { btnGuardar.setEnabled(true); }
                dispose();
 			 }
 		    }
-		
+	
+//////////////////////TODO inicia filtro_Buscar Recepcion De Mercancia
+public class Cat_Filtro_Buscar_Recepcion_De_Mercancia extends JDialog{
+Container contfb = getContentPane();
+JLayeredPane panelfb = new JLayeredPane();
+Connexion con = new Connexion();
+Obj_tabla ObjTab =new Obj_tabla();
+int columnasb = 4,checkbox=-1;
+public void init_tablafp(){
+	this.tablave.getColumnModel().getColumn( 0).setMinWidth(60 );
+	this.tablave.getColumnModel().getColumn( 0).setMaxWidth(60 );
+	this.tablave.getColumnModel().getColumn( 1).setMinWidth(380);
+	this.tablave.getColumnModel().getColumn( 2).setMinWidth(150);
+	this.tablave.getColumnModel().getColumn( 3).setMinWidth(100);		    	
+	
+	String comandob = "ventas_express_select_recepcion_de_mercancia '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"','"+txtCod_Prv.getText().toString().trim()+"'";
+	String basedatos="98",pintar="si";
+	ObjTab.Obj_Refrescar(tablave,modelob, columnasb, comandob, basedatos,pintar,checkbox);
+}
+
+@SuppressWarnings("rawtypes")
+public Class[] base (){
+	Class[] types = new Class[columnasb];
+	for(int i = 0; i<columnasb; i++){types[i]= java.lang.Object.class;}
+	 return types;
+}
+
+public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{  "Folio","Proveedor", "Fecha", "Total"}){
+	 @SuppressWarnings("rawtypes")
+		Class[] types = base();
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+		public boolean isCellEditable(int fila, int columna){return false;}
+};
+
+JTable tablave = new JTable(modelob);
+public JScrollPane scroll_tablab = new JScrollPane(tablave);
+@SuppressWarnings({ "rawtypes" })
+private TableRowSorter trsfiltro;
+   
+JTextField txtBuscarb  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String",tablave,columnasb);
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public Cat_Filtro_Buscar_Recepcion_De_Mercancia(){
+	this.setSize(725,250);
+	this.setResizable(false);
+	this.setLocationRelativeTo(null);
+	this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	this.setModal(true);
+	this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+	this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
+	this.setTitle("Recepcion De Mercancia");
+	trsfiltro = new TableRowSorter(modelob); 
+	tablave.setRowSorter(trsfiltro);
+	this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,700 , 20 );
+	this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,700 ,170 );
+	this.init_tablafp();
+	this.agregar(tablave);
+	contfb.add(panelfb);
+}
+
+private void agregar(final JTable tbl) {
+	tbl.addMouseListener(new MouseListener() {
+		public void mouseReleased(MouseEvent e) {
+	 	 if(e.getClickCount() == 1){funcion_agregar();}
+		}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseExited(MouseEvent e)  {}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseClicked(MouseEvent e) {}
+	});
+	
+	tbl.addKeyListener(new KeyListener() {
+		public void keyPressed(KeyEvent e)  {
+			if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				funcion_agregar();	
+			}
+		}
+		public void keyReleased(KeyEvent e)   {}
+		public void keyTyped   (KeyEvent e)   {}
+	});
+}
+
+ public void funcion_agregar() {
+	 int fila = tablave.getSelectedRow();
+	  txtFolio_Recepcion.setText(tablave.getValueAt(fila, 0).toString());	
+	  txtFecha.setText(tablave.getValueAt(fila, 2).toString());
+	  txtTotalCompra.setText(tablave.getValueAt(fila, 3).toString());
+	  btnGuardar.setEnabled(true);
+	  dispose();
+ }
+}
+
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
