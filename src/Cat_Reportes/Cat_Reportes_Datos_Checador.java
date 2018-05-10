@@ -45,7 +45,6 @@ public class Cat_Reportes_Datos_Checador extends JFrame {
 	JDateChooser c_final = new JDateChooser();
 	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
