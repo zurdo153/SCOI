@@ -45,7 +45,7 @@ import Obj_Renders.tablaRenderer;
 public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 
 	Container cont = getContentPane();
-JTabbedPane pestanas = new JTabbedPane();
+	JTabbedPane pestanas = new JTabbedPane();
 	
 	JLayeredPane panel1 = new JLayeredPane();
 	JLayeredPane panel2 = new JLayeredPane();
@@ -166,7 +166,7 @@ JTabbedPane pestanas = new JTabbedPane();
 		JLabel lblDirectos = new JLabel("Directos:");
 		JLabel lblIndirectos = new JLabel("Indirectos:");
 		
-		JLabel lblInteraccionesDelPuesto = new JLabel("Indique las principales interacciones del puesto y seleccione si tipo de relación:");
+		JLabel lblInteraccionesDelPuesto = new JLabel("Indique las principales interacciones del puesto y seleccione su tipo de relación:");
 		JLabel lblExternas = new JLabel("Externas:");
 		JLabel lblInternas = new JLabel("Internas:");
 		
@@ -191,7 +191,7 @@ JTabbedPane pestanas = new JTabbedPane();
 		JTextField txtIndirectos = new Componentes().text(new JCTextField(), "", 10, "Int");
 		
 		JCButton btnExaminar = new JCButton("Organigrama", "buscar.png", "Azul");
-		JLabel lblRutaOrganigrama = new JLabel("C:/Ruta_Del_Organigrama");
+		JLabel lblRutaOrganigrama = new JLabel("");
 		
 //		JTextArea txaOrganigrama = new Componentes().textArea(new JTextArea(), "", 200);
 		
@@ -362,7 +362,7 @@ JTabbedPane pestanas = new JTabbedPane();
 		panel2.add(txtIndirectos).setBounds(x+ancho*2, y, 35, 20);
 		
 		panel2.add(btnExaminar).setBounds(x, y+=25, ancho+60, 20);
-		panel2.add(lblRutaOrganigrama).setBounds(x+ancho*2, y, ancho+60, 20);
+		panel2.add(lblRutaOrganigrama).setBounds(x+ancho*2, y, ancho*10, 20);
 		
 		panel2.add(scrollOrganigrama).setBounds(x, y+=20, ancho*11+50, 180);
 		
@@ -543,6 +543,7 @@ JTabbedPane pestanas = new JTabbedPane();
                 }else{
          				if(pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("JPG") || pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("PNG")){
          					rutaImagen = pathArchivo;
+         					lblRutaOrganigrama.setText(rutaImagen);
          					ImageIcon tmpIconDefault = new ImageIcon(rutaImagen);
          					
 //         					int anchoRealDeImagen = tmpIconDefault.getIconWidth();

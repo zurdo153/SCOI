@@ -514,9 +514,15 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 //TODO(recorrido de tabla con foco) ---------------------------------------------------------------------------------------------------------------------------------------
 	KeyListener opKeyTable = new KeyListener() {
 		public void keyTyped(KeyEvent e) {		}
-		@SuppressWarnings("static-access")
+		@SuppressWarnings({ "static-access", "deprecation" })
 		public void keyReleased(KeyEvent e) {
 			
+			if(e.getKeyCode()==e.VK_ESCAPE){
+				tabla.lostFocus(null, null);
+				txtDescripcion.requestFocus();
+				tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+				tabla.getSelectionModel().clearSelection();
+			}
 			if(e.getKeyCode()==e.VK_ENTER){				
 				RecorridoFoco("darecha");
 			}
