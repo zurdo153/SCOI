@@ -849,6 +849,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	    	
 			String comando="exec orden_de_gasto_pago_en_efectivo_filtro '"+fechaInicial+"'";
 			
+			System.out.println(comando);
 			String basedatos="26",pintar="si";
 			Objetotabla.Obj_Refrescar(tabla_Filtro_Ref,modelo_Filtro_Ref, columnas, comando, basedatos,pintar,checkbox);
 	    }

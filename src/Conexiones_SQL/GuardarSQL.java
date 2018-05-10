@@ -7803,17 +7803,18 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	}
 	
 	public Obj_Ventas_Express Guardar_Liquidacion_Venta_Express(Obj_Ventas_Express ventas_express){	
-		String query = "exec ventas_express_liquidacion_insert_y_actualiza ?,?,?,?,?,?,?";
+		String query = "exec ventas_express_liquidacion_insert_y_actualiza ?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		try {con.setAutoCommit(false);
 			PreparedStatement pstmt = con.prepareStatement(query);
-				pstmt.setInt   (1 ,  ventas_express.getFolio());
+				pstmt.setInt   (1 , ventas_express.getFolio());
 				pstmt.setDouble(2 , ventas_express.getDeuda_antes_de_abono());
 				pstmt.setDouble(3 , ventas_express.getAbono());
 				pstmt.setDouble(4 , ventas_express.getSaldo());
 				pstmt.setInt   (5 , ventas_express.getFolio_usuario_abono());
 				pstmt.setString(6 , ventas_express.getEstatus());
 				pstmt.setString(7 , ventas_express.getGuardar_actualizar());
+				pstmt.setString(8 , ventas_express.getFolio_recepcion_de_compra());
 				
 				pstmt.executeUpdate();
 			 con.commit();

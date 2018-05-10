@@ -21,11 +21,19 @@ public class Obj_Ventas_Express {
 	String folio_supervisor_autoriza="";
 	String Guardar_actualizar="";
 	String estatus="";
-	
+	String folio_recepcion_de_compra="";
 	double deuda_antes_de_abono=0;
 	double abono=0;
 	double saldo=0;
 	int folio_usuario_abono=0;
+	
+	public String getFolio_recepcion_de_compra() {
+		return folio_recepcion_de_compra;
+	}
+
+	public void setFolio_recepcion_de_compra(String folio_recepcion_de_compra) {
+		this.folio_recepcion_de_compra = folio_recepcion_de_compra;
+	}
 	
 	public double getDeuda_antes_de_abono() {
 		return deuda_antes_de_abono;
