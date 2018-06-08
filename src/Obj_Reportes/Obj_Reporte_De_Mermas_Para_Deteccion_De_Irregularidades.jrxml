@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2018-04-21T14:12:33 -->
+<!-- 2018-05-18T17:42:51 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Mermas_Para_Deteccion_De_Irregularidades" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e003ee81-ae2f-4fa1-8908-f15849b44047">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -213,10 +213,6 @@
 					</textElement>
 					<text><![CDATA[Reporte De Irregularidades En Mermas]]></text>
 				</staticText>
-				<image>
-					<reportElement x="712" y="0" width="90" height="60" uuid="924fbbc6-3fd9-44f6-a08f-d3121437d4b7"/>
-					<imageExpression><![CDATA["C:/SCOI/imagen/control de mermas.PNG"]]></imageExpression>
-				</image>
 			</frame>
 		</band>
 	</title>

@@ -70,6 +70,7 @@ import Obj_Cuadrantes.Obj_Nivel_Critico;
 import Obj_Evaluaciones.Obj_Asignacion_De_Cuestionarios;
 import Obj_Evaluaciones.Obj_Contestacion_De_Cuestionario;
 import Obj_Evaluaciones.Obj_Cuestionarios;
+import Obj_Evaluaciones.Obj_Descripcion_De_Puestos_y_Responsabilidades;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
@@ -7880,7 +7881,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 					con.close();
 				} catch(SQLException e){
 					e.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Huella ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarRevision ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}		
@@ -7936,6 +7937,141 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return ventas_clientes;
 	}
 	
+	public boolean guardarDPR(Obj_Descripcion_De_Puestos_y_Responsabilidades dpr, String movimiento){
+		
+		System.out.println(dpr.getXmlResponsabilidadesPuesto());
+		String query = "exec sp_guardar_dpr ?,?,?,?,?,?,?,?,?,?,"
+										+ " ?,?,?,?,?,?,?,?,?,?,"
+										+ " ?,?,?,?,?,?,?,?,?,?,"
+										+ " ?,?,?,?,?,?,?,?";//38------?
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+	     try {
+	    	 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 
+			 int i=0;
+			 
+			 pstmt.setString(i++,movimiento);
+			 pstmt.setInt(i++,dpr.getFolio());
+			 pstmt.setInt(i++,dpr.getFolioPuesto());
+			 pstmt.setString(i++,dpr.getUnidadNegocio());
+			 pstmt.setString(i++,dpr.getEstablecimiento());
+			 pstmt.setString(i++,dpr.getDepartamento());
+			 pstmt.setInt(i++,dpr.getEdadIn());
+			 pstmt.setInt(i++,dpr.getEdadFin());
+			 pstmt.setInt(i++,dpr.getFolioReportaA());
+			 pstmt.setString(i++,dpr.getSexo());
+			 pstmt.setString(i++,dpr.getEstadoCivil());
+			 
+			 pstmt.setString(i++,dpr.getObjetivoPuesto());
+			 
+//--- convertir a XML -------------------------------------------------------------------------------------------------------------------------				
+			 pstmt.setString(i++,dpr.getXmlResponsabilidadesPuesto());	
+			
+			 pstmt.setString(i++,dpr.getNivelEstudios());
+			 pstmt.setString(i++,dpr.getListaDeEspecificaciones());
+			 pstmt.setString(i++,dpr.getCursosHabilidades());
+			 pstmt.setString(i++,dpr.getEsperienciaGeneral());
+			 pstmt.setString(i++,dpr.getEsperienciaEspecifica());
+			 pstmt.setInt(i++,dpr.getFacultamientosDirectos());
+			 pstmt.setInt(i++,dpr.getFacultamientosIndirectos());
+			 
+//--- imagen de organigrama -------------------------------------------------------------------------------------------------------------------------				
+			 FileInputStream stream_foto = new FileInputStream(dpr.getOrganigrama());
+			 pstmt.setBinaryStream(i++, stream_foto, dpr.getOrganigrama().length());	
+
+			 pstmt.setInt(i++,dpr.getInteracionDelPuestoExternas());
+			 pstmt.setString(i++,dpr.getRelacionDelPuestoExternas());
+			 pstmt.setInt(i++,dpr.getInteracionDelPuestoInternas());
+			 pstmt.setString(i++,dpr.getRelacionDelPuestoInternas());
+				
+			 pstmt.setString(i++,dpr.getAmbienteDeTrabajo());
+			 pstmt.setString(i++,dpr.getEsfuerzoFisico());
+			 
+			 pstmt.setBoolean(i++,dpr.isViaje());
+			 
+			 pstmt.setBoolean(i++,dpr.isLaptop());
+			 pstmt.setBoolean(i++,dpr.isPc());
+			 pstmt.setBoolean(i++,dpr.isCelular());
+			 pstmt.setBoolean(i++,dpr.isExtencion());
+			 pstmt.setBoolean(i++,dpr.isAutoPropio());
+			 pstmt.setBoolean(i++,dpr.isAutoEmpresa());
+			 pstmt.setBoolean(i++,dpr.isLicencia());
+			 pstmt.setBoolean(i++,dpr.isLargaDistancia());
+			 pstmt.setBoolean(i++,dpr.isOtro());
+			 
+			 pstmt.setString(i++,dpr.getNotaOtro());
+				
+////------------------------------------------------------------------------------------------------------------------------------------------------------------
+	    	 pstmt.executeUpdate();
+				con.commit();
+				
+			}catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarDPR ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarDPR ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				return false;
+			}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarDPR ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}		
+			return true;
+	}
+
+	public boolean reactivarMerma(int folio_de_merma){
+		
+		String query = "exec merma_reactivar_folio "+folio_de_merma;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+	     try {
+	    	 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 
+//	    	 pstmt.setInt(1,folio_de_merma);
+	    	 
+	    	 pstmt.executeUpdate();
+				con.commit();
+				
+			}catch (Exception e) {
+				System.out.println("SQLException: "+e.getMessage());
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ reactivarMerma ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				if(con != null){
+					try{
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+					}catch(SQLException ex){
+						System.out.println(ex.getMessage());
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ reactivarMerma ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				return false;
+			}finally{
+				try {
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ reactivarMerma ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}		
+			return true;
+	}
 	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		

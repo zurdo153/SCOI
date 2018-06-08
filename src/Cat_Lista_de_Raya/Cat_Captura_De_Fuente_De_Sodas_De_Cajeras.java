@@ -511,9 +511,13 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
  	         archivo = new File ("Config/users");
  	         fr = new FileReader (archivo);
  	         br = new BufferedReader(fr);
- 	         String linea;
- 	         while((linea=br.readLine())!=null)
- 	        	lblUsuario.setText(linea);
+ 	        
+ 	         br.readLine();
+ 	        lblUsuario.setText(br.readLine());
+// 	         String linea;
+ 	         
+// 	         while((linea=br.readLine())!=null)
+// 	        	lblUsuario.setText(linea);
  	      }
  	      catch(Exception e){
  	         e.printStackTrace();
