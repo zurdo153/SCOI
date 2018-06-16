@@ -1,6 +1,7 @@
 package Conexiones_SQL;
 
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -8,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
@@ -7939,75 +7943,82 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 	public boolean guardarDPR(Obj_Descripcion_De_Puestos_y_Responsabilidades dpr, String movimiento){
 		
-		System.out.println(dpr.getXmlResponsabilidadesPuesto());
 		String query = "exec sp_guardar_dpr ?,?,?,?,?,?,?,?,?,?,"
 										+ " ?,?,?,?,?,?,?,?,?,?,"
 										+ " ?,?,?,?,?,?,?,?,?,?,"
-										+ " ?,?,?,?,?,?,?,?";//38------?
+										+ " ?,?,?,?,?,?,?,'"+dpr.getXmlResponsabilidadesPuesto()+"'";//38------?
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 	     try {
 	    	 con.setAutoCommit(false);
 			 pstmt = con.prepareStatement(query);
 			 
-			 int i=0;
+			 int i=1;
 			 
-			 pstmt.setString(i++,movimiento);
-			 pstmt.setInt(i++,dpr.getFolio());
-			 pstmt.setInt(i++,dpr.getFolioPuesto());
-			 pstmt.setString(i++,dpr.getUnidadNegocio());
-			 pstmt.setString(i++,dpr.getEstablecimiento());
-			 pstmt.setString(i++,dpr.getDepartamento());
-			 pstmt.setInt(i++,dpr.getEdadIn());
-			 pstmt.setInt(i++,dpr.getEdadFin());
-			 pstmt.setInt(i++,dpr.getFolioReportaA());
-			 pstmt.setString(i++,dpr.getSexo());
-			 pstmt.setString(i++,dpr.getEstadoCivil());
+			 pstmt.setString(i,movimiento);
+			 pstmt.setInt(i+=1,dpr.getFolio());
+			 pstmt.setInt(i+=1,dpr.getFolioPuesto());
+			 pstmt.setString(i+=1,dpr.getUnidadNegocio());
+			 pstmt.setString(i+=1,dpr.getEstablecimiento());
+			 pstmt.setString(i+=1,dpr.getDepartamento());
+			 pstmt.setInt(i+=1,dpr.getEdadIn());
+			 pstmt.setInt(i+=1,dpr.getEdadFin());
+			 pstmt.setInt(i+=1,dpr.getFolioReportaA());
+			 pstmt.setString(i+=1,dpr.getSexo());
+			 pstmt.setString(i+=1,dpr.getEstadoCivil());
 			 
-			 pstmt.setString(i++,dpr.getObjetivoPuesto());
+			 pstmt.setString(i+=1,dpr.getObjetivoPuesto());
 			 
-//--- convertir a XML -------------------------------------------------------------------------------------------------------------------------				
-			 pstmt.setString(i++,dpr.getXmlResponsabilidadesPuesto());	
-			
-			 pstmt.setString(i++,dpr.getNivelEstudios());
-			 pstmt.setString(i++,dpr.getListaDeEspecificaciones());
-			 pstmt.setString(i++,dpr.getCursosHabilidades());
-			 pstmt.setString(i++,dpr.getEsperienciaGeneral());
-			 pstmt.setString(i++,dpr.getEsperienciaEspecifica());
-			 pstmt.setInt(i++,dpr.getFacultamientosDirectos());
-			 pstmt.setInt(i++,dpr.getFacultamientosIndirectos());
+			 pstmt.setString(i+=1,dpr.getNivelEstudios());
+			 pstmt.setString(i+=1,dpr.getListaDeEspecificaciones());
+			 pstmt.setString(i+=1,dpr.getCursosHabilidades());
+			 pstmt.setString(i+=1,dpr.getEsperienciaGeneral());
+			 pstmt.setString(i+=1,dpr.getEsperienciaEspecifica());
+			 pstmt.setInt(i+=1,dpr.getFacultamientosDirectos());
+			 pstmt.setInt(i+=1,dpr.getFacultamientosIndirectos());
 			 
-//--- imagen de organigrama -------------------------------------------------------------------------------------------------------------------------				
-			 FileInputStream stream_foto = new FileInputStream(dpr.getOrganigrama());
-			 pstmt.setBinaryStream(i++, stream_foto, dpr.getOrganigrama().length());	
-
-			 pstmt.setInt(i++,dpr.getInteracionDelPuestoExternas());
-			 pstmt.setString(i++,dpr.getRelacionDelPuestoExternas());
-			 pstmt.setInt(i++,dpr.getInteracionDelPuestoInternas());
-			 pstmt.setString(i++,dpr.getRelacionDelPuestoInternas());
+			 pstmt.setInt(i+=1,dpr.getInteracionDelPuestoExternas());
+			 pstmt.setString(i+=1,dpr.getRelacionDelPuestoExternas());
+			 pstmt.setInt(i+=1,dpr.getInteracionDelPuestoInternas());
+			 pstmt.setString(i+=1,dpr.getRelacionDelPuestoInternas());
 				
-			 pstmt.setString(i++,dpr.getAmbienteDeTrabajo());
-			 pstmt.setString(i++,dpr.getEsfuerzoFisico());
+			 pstmt.setString(i+=1,dpr.getAmbienteDeTrabajo());
+			 pstmt.setString(i+=1,dpr.getEsfuerzoFisico());
 			 
-			 pstmt.setBoolean(i++,dpr.isViaje());
+			 pstmt.setBoolean(i+=1,dpr.isViaje());
 			 
-			 pstmt.setBoolean(i++,dpr.isLaptop());
-			 pstmt.setBoolean(i++,dpr.isPc());
-			 pstmt.setBoolean(i++,dpr.isCelular());
-			 pstmt.setBoolean(i++,dpr.isExtencion());
-			 pstmt.setBoolean(i++,dpr.isAutoPropio());
-			 pstmt.setBoolean(i++,dpr.isAutoEmpresa());
-			 pstmt.setBoolean(i++,dpr.isLicencia());
-			 pstmt.setBoolean(i++,dpr.isLargaDistancia());
-			 pstmt.setBoolean(i++,dpr.isOtro());
+			 pstmt.setBoolean(i+=1,dpr.isLaptop());
+			 pstmt.setBoolean(i+=1,dpr.isPc());
+			 pstmt.setBoolean(i+=1,dpr.isCelular());
+			 pstmt.setBoolean(i+=1,dpr.isExtencion());
+			 pstmt.setBoolean(i+=1,dpr.isAutoPropio());
+			 pstmt.setBoolean(i+=1,dpr.isAutoEmpresa());
+			 pstmt.setBoolean(i+=1,dpr.isLicencia());
+			 pstmt.setBoolean(i+=1,dpr.isLargaDistancia());
+			 pstmt.setBoolean(i+=1,dpr.isOtro());
 			 
-			 pstmt.setString(i++,dpr.getNotaOtro());
+			 pstmt.setString(i+=1,dpr.getNotaOtro());
+			 
+//			 System.out.println(dpr.getOrganigramaB());
+			 
+			 InputStream input = new ByteArrayInputStream(dpr.getOrganigramaB());
+//			 pstmt.setBinaryStream(i+=1, input,433);
+			 pstmt.setBinaryStream(i+=1, input, dpr.getOrganigramaB().length );
+			 
+			 
+//			//--- imagen de organigrama -------------------------------------------------------------------------------------------------------------------------				
+//			 ByteArrayInputStream stream_foto = null;
+//			stream_foto = new ByteArrayInputStream(dpr.getOrganigramaB());
+//			
+//			 pstmt.setBinaryStream(i+=1, stream_foto, 70110);
+//			 
+			 
 				
 ////------------------------------------------------------------------------------------------------------------------------------------------------------------
 	    	 pstmt.executeUpdate();
 				con.commit();
 				
-			}catch (Exception e) {
+			}catch (SQLException e) {
 				System.out.println("SQLException: "+e.getMessage());
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ guardarDPR ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 
@@ -8032,7 +8043,22 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			}		
 			return true;
 	}
+	
+	public String readIt(InputStream is) throws IOException {
+	    if (is != null) {
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
 
+	        StringBuilder sb = new StringBuilder();
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            sb.append(line).append("\n");
+	        }
+	        is.close();
+	        return sb.toString();
+	    }
+	    return "error: ";
+	}
+	
 	public boolean reactivarMerma(int folio_de_merma){
 		
 		String query = "exec merma_reactivar_folio "+folio_de_merma;

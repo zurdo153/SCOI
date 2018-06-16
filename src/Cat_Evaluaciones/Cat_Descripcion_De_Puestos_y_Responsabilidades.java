@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -33,6 +36,9 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPTemplate;
+
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Descripcion_De_Puestos_y_Responsabilidades;
@@ -49,6 +55,9 @@ import Obj_Xml.CrearXmlString;
 @SuppressWarnings("serial")
 public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 
+	private DPFPTemplate template;
+	public String TEMPLATE_PROPERTY = "template";
+	
 	Container cont = getContentPane();
 	JTabbedPane pestanas = new JTabbedPane();
 	
@@ -98,6 +107,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio DPR", 10, "Int");
 	JTextField txtFolioPuesto = new Componentes().text(new JCTextField(), "Folio", 10, "Int");
 	JTextField txtPuesto = new Componentes().text(new JCTextField(), "Nombre De Puesto", 120, "String");
+	JCButton btnPuesto = new JCButton("", "buscar.png", "Azul");
 	
 	
 	String[] UN = new Obj_Descripcion_De_Puestos_y_Responsabilidades().Combo_Unidad_De_Negocio();
@@ -130,7 +140,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	JTextArea txaObjectivoDelPuesto = new Componentes().textArea(new JTextArea(), "Objectivo Del Puesto", 200);
 	JScrollPane scrollObjectivoDelPuesto = new JScrollPane(txaObjectivoDelPuesto);
 	
-	JTextField txtResponsabilidad = new Componentes().text(new JCTextField(), "Ingresar Responsabilidad", 200, "String");//TODO se agregara a una tabla
+	JTextField txtResponsabilidad = new Componentes().text(new JCTextField(), "Ingresar Responsabilidad", 200, "String");
 	JCButton btnAgregarResponsabilidad = new JCButton("Agregar", "", "Azul");
 	JCButton btnSubir = new JCButton("", "Up.png", "Azul");
 	JCButton btnBajar = new JCButton("", "Down.png", "Azul");
@@ -239,14 +249,16 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		JLabel lblRutaOrganigrama = new JLabel("");
 		
 		String rutaImagen = "";
+		File fi = null;
+		byte[] imagB = null;
 		JLabel lblImage = new JLabel(rutaImagen);
 		JScrollPane scrollOrganigrama = new JScrollPane(lblImage);
 //pagina 3 (fin)------------------------------------------------------------------------------------------------------------------------------------------
 	Border blackline;
 	
-	String movimiento = "MODFICAR";
+	String movimiento = "";
 	
-	boolean mostrarPuestosDisponibles = false;
+//	boolean mostrarPuestosDisponibles = false;
 	public Cat_Descripcion_De_Puestos_y_Responsabilidades() {
 		
 		this.panelBase.setBorder(BorderFactory.createTitledBorder(blackline, "Ingresar Datos DPR"));
@@ -292,12 +304,16 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		
 		camposActivosDefault();
 		
+		txtOtro.setEnabled(!chbOtro.isEnabled()?false:(chbOtro.isSelected()?true:false));
+		
 		init_tabla(tablaResponsabilidadesDelPuesto);
 		
 		btnNuevo.addActionListener(opNuevo);
+		btnEditar.addActionListener(opEdit);
 		btnDeshacer.addActionListener(opDeshacer);
 		
 		btnBuscarPuesto.addActionListener(opFiltroPuestos);
+		btnPuesto.addActionListener(opPuesto);
 		btnReporteA.addActionListener(opFiltroReporteA);
 		
 		txtResponsabilidad.addActionListener(opAgregarResponsabilidadesDelPuesto);
@@ -311,16 +327,32 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		
 		btnExaminar.addActionListener(opCargarArchivo);
 		btnGuardar.addActionListener(opGuardar);
+		chbOtro.addActionListener(opChbOtro);
 		
 		cont.add(panelBase);
 	}
+	
+	ActionListener opEdit = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			camposActivos(true);
+		}
+	};
+	
+	ActionListener opChbOtro = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			txtOtro.setEnabled(!chbOtro.isEnabled()?false:(chbOtro.isSelected()?true:false));
+			txtOtro.setText(!chbOtro.isEnabled()?"":(chbOtro.isSelected()?"Lo que tenía":""));
+		}
+	};
 	
 	ActionListener opNuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			movimiento = "GUARDAR";
 			txtFolio.setText(new BuscarSQL().buscar_folio_consecutivo_por_folio_de_transaccion(89));
 			camposActivos(true);
+			btnBuscarPuesto.setEnabled(false);
 //			mostrarPuestosDisponibles = true;
+			btnEditar.setEnabled(false);
 		}
 	};
 	
@@ -328,6 +360,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			limpiarCampos();
 			camposActivos(false);
+			btnBuscarPuesto.setEnabled(true);
 //			mostrarPuestosDisponibles = false;
 		}
 	};
@@ -338,6 +371,9 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			
 			if(validarCampos.equals("")){
 				if(txtFolioPuesto.getText().trim().equals(txtFolioReportaA.getText().trim())){
+					limpiarCampos();
+					camposActivos(false);
+					btnBuscarPuesto.setEnabled(true);
 					JOptionPane.showMessageDialog(null, "Los Campos De Puesto Y Reporta A, No Pueden Ser Iguales\n(Los Puestos No Pueden Reportar A Sí Mismos)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}else{
@@ -381,7 +417,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		dpr.setFacultamientosDirectos(Integer.valueOf(txtDirectos.getText().trim()));
 		dpr.setFacultamientosIndirectos(Integer.valueOf(txtIndirectos.getText().trim()));
 		
-		dpr.setOrganigrama(new File(rutaImagen));
+		dpr.setOrganigrama(fi);
+		dpr.setOrganigramaB(imagB);
 
 		dpr.setInteracionDelPuestoExternas(Integer.valueOf(txtPorcentajeExterno.getText().trim()));
 		dpr.setRelacionDelPuestoExternas(txtInteraccionesEsternasPuesto.getText().trim().toUpperCase());
@@ -453,7 +490,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		lista+= txtDirectos.getText().equals("")?"- Directos\n":"";
 		lista+= txtIndirectos.getText().equals("")?"- Indirectos\n":"";
 		
-		lista+= rutaImagen.equals("")?"- Se Requiere Seleccionar Organigrama\n":"";
+//		lista+= rutaImagen.equals("")?"- Se Requiere Seleccionar Organigrama\n":"";
+//		lista+= !fi.exists()?"- Se Requiere Seleccionar Organigrama\n":"";
 		
 		lista+= txtEdadIn.getText().equals("")?"- Edad In\n":"";
 		lista+= txtEdadFin.getText().equals("")?"- Edad Fin\n":"";
@@ -473,7 +511,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	
 	public void limpiarCampos(){
 		
-		movimiento = "MODFICAR";
+		movimiento = "";
 		
 		txtFolio.setText("");
 		txtFolioPuesto.setText("");
@@ -557,6 +595,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		
 		txtFolioReportaA.setEditable(false);
 		txtReporteA.setEditable(false);
+		btnPuesto.setEnabled(false);
 		btnReporteA.setEnabled(false);
 		
 		txtEdadIn.setEditable(false);
@@ -611,8 +650,9 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	
 	public void camposActivos(boolean status){
 		btnNuevo.setEnabled(!status);
+		btnEditar.setEnabled(status);
 		btnDeshacer.setEnabled(status);
-		btnEditar.setEnabled(!status);
+//		btnEditar.setEnabled(!status);
 		btnGuardar.setEnabled(status);
 		
 		cmbUnidadDeNegocio.setEnabled(status);
@@ -620,6 +660,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		cmbEstablecimiento.setEnabled(status);
 		cmbDepartamento.setEnabled(status);
 		
+		btnPuesto.setEnabled(status);
 		btnReporteA.setEnabled(status);
 		
 		txtEdadIn.setEditable(status);
@@ -722,14 +763,18 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	        public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount() == 1){
 	        		
-	        		filaResponabilidadSeleccionada = tbl.getSelectedRow();
-	        		columnaResponabilidadSeleccionada = tbl.getSelectedColumn();
-	        		
-	        		if(columnaResponabilidadSeleccionada<2){
-	        			responsabilidadSeleccionada = tbl.getValueAt(filaResponabilidadSeleccionada, 1).toString().trim();
-	        			tbl.setRowSelectionInterval(filaResponabilidadSeleccionada, filaResponabilidadSeleccionada);
+	        			if(tbl.isEnabled()){
+	        				filaResponabilidadSeleccionada = tbl.getSelectedRow();
+			        		columnaResponabilidadSeleccionada = tbl.getSelectedColumn();
+			        		
+			        		if(columnaResponabilidadSeleccionada<2){
+			        			responsabilidadSeleccionada = tbl.getValueAt(filaResponabilidadSeleccionada, 1).toString().trim();
+			        			tbl.setRowSelectionInterval(filaResponabilidadSeleccionada, filaResponabilidadSeleccionada);
+			        		}
+			        	}
 	        		}
-	        	}
+	        		
+	        		
 	        }
         });
     }
@@ -782,7 +827,13 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	
 	ActionListener opFiltroPuestos = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			mostrarPuestosDisponibles = txtFolio.getText().equals("")?false:true;
+//			mostrarPuestosDisponibles = txtFolio.getText().equals("")?false:true;
+			new Cat_Filtro_Puestos("Filtro").setVisible(true);
+		}
+	};
+	
+	ActionListener opPuesto = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
 			new Cat_Filtro_Puestos("Puesto").setVisible(true);
 		}
 	};
@@ -816,27 +867,60 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 //         				if(pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("JPG") || pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("PNG")){
      					if(pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("JPG") ){
 
-         					rutaImagen = pathArchivo;
-         					lblRutaOrganigrama.setText(rutaImagen);
-         					ImageIcon tmpIconDefault = new ImageIcon(rutaImagen);
-         					
-//         					int anchoRealDeImagen = tmpIconDefault.getIconWidth();
-         					int altoRealDeImg = tmpIconDefault.getIconHeight();
-         					int anchoDeImagenEscala = txaObjectivoDelPuesto.getWidth()-20;
-         					int altoDeImgagenEscala = (altoRealDeImg*anchoDeImagenEscala)/anchoDeImagenEscala;
-         					
-         					Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
-         					lblImage.setIcon(iconoDefault);
+                        		rutaImagen = pathArchivo;
+                        		fi = new File(rutaImagen);
+             					lblRutaOrganigrama.setText(rutaImagen);
+        						lblImage.setIcon(crearIcon());
          					
          				}else{
          					JOptionPane.showMessageDialog(null, "Solo Se Pueden Cargar Imagenes Con Extencion JPG.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
             				return;
          				}
-//                	ArchivosCargados();
                 }
              }
 		}
 	};
+	
+	public Icon crearIcon(byte[] imag){
+		ImageIcon tmpIconDefault= new ImageIcon(imag);
+		
+//		fi= tmpIconDefault.getImage();
+//		new File(tmpIconDefault);
+		
+			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+			int altoRealDeImg = tmpIconDefault.getIconHeight();
+			int anchoDeImagenEscala = (txaObjectivoDelPuesto.getWidth()-20);
+			int altoDeImgagenEscala = (altoRealDeImg*anchoDeImagenEscala)/anchoRealDeImagen;
+		 
+			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
+	}
+	
+	public Icon crearIcon(){
+		System.out.println(rutaImagen);
+		ImageIcon tmpIconDefault= crearImagIcon();
+		
+			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+			int altoRealDeImg = tmpIconDefault.getIconHeight();
+			int anchoDeImagenEscala = (txaObjectivoDelPuesto.getWidth()-20);
+			int altoDeImgagenEscala = (altoRealDeImg*anchoDeImagenEscala)/anchoRealDeImagen;
+		 
+			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
+	}
+	
+	public ImageIcon crearImagIcon(){
+		
+		byte[] fileContent = null;
+		
+		try {
+			fileContent = Files.readAllBytes(fi.toPath());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		return new ImageIcon(fileContent);
+	}
+//	C:\SCOI_SRC\SCOI\tmp\dpr2.jpg
+//	C:\SCOI_SRC\SCOI\tmp\dpr_2.jpg
 
 	
 	public void pagina1(){
@@ -848,6 +932,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		panel1.add(lblPuesto).setBounds(x, y+=25, ancho+20, 20);
 		panel1.add(txtFolioPuesto).setBounds(x+ancho+20, y, 40, 20);
 		panel1.add(txtPuesto).setBounds(x+ancho+60, y, ancho*5-40, 20);
+		panel1.add(btnPuesto).setBounds(x+ancho*6+20, y, 30, 20);
 		
 		panel1.add(lblUnidadDeNegocio).setBounds(x, y+=25, ancho*3, 20);
 		panel1.add(cmbUnidadDeNegocio).setBounds(x+ancho+20, y, ancho*3, 20);
@@ -973,7 +1058,6 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		panel3.add(scrollOrganigrama).setBounds(x, y+=20, ancho*11+50, 540);
 	}
 	
-	
 	public void init_tabla(JTable tabla){
     	tabla.getColumnModel().getColumn(0).setMinWidth(30);	
     	tabla.getColumnModel().getColumn(1).setMinWidth(800);
@@ -997,7 +1081,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		    	this.tablafp.getColumnModel().getColumn(0).setMinWidth(55);
 		    	this.tablafp.getColumnModel().getColumn(1).setMinWidth(375);
 		    	
-		    	String comandof="exec filtro_puestos_para_dpr "+(mostrarPuestosDisponibles?"LIMITAR":"TODOS");
+		    	String filtrar = parametro.equals("Filtro")? "Filtro" : (parametro.equals("Puesto") ? "DISPONIBLES" : "TODOS");
+		    	
+		    	String comandof="exec filtro_puestos_para_dpr '"+filtrar+"'";
+		    	System.out.println(comandof);
 				String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablafp,modelof, columnasp, comandof, basedatos,pintar,checkbox);
 		    }
@@ -1048,31 +1135,112 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			
 			private void agregar(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-					@SuppressWarnings("unused")
 					public void mouseClicked(MouseEvent e) {
 			        	if(e.getClickCount()==2){
 			        			int fila = tablafp.getSelectedRow();
 							    
-			        			if(parametro.equals("Puesto")){
+			        			if(parametro.equals("Filtro")){
 			        				
-//			        				buscar en tabla dpr, si existe: llena catalogo, de lo contrario llenar solo capo de puesto
-			        				if(false){
-//			        					llenar catalogo completo
-			        					btnEditar.setEnabled(true);
-			        				}else{
-			        					//verificar si el campo folio esta lleno
-			        					if(!txtFolio.getText().equals("")){
-			        						txtFolioPuesto.setText   (tablafp.getValueAt(fila,0)+"");
-			        						txtPuesto.setText   (tablafp.getValueAt(fila,1)+"");
-			        					}else{
-//			        						Se Requiere Crear Un Registro Nuevo Para El Puesto Seleccionado(no existe DPR para el puesto seleccionado)
-			        					}
-			        					
-			        				}
+			        						movimiento = "MODIFICAR";
+			        						btnEditar.setEnabled(true);
+			        						Obj_Descripcion_De_Puestos_y_Responsabilidades dpr = new Obj_Descripcion_De_Puestos_y_Responsabilidades().buscar(Integer.valueOf(tablafp.getValueAt(fila,0).toString().trim()));
+			        						
+			        						txtFolio.setText(dpr.getFolio()+"");
+			        						
+			        						txtFolioPuesto.setText (dpr.getFolioPuesto()+"");
+			        						txtPuesto.setText   (dpr.getPuesto()+"");
+			        						
+			        						cmbUnidadDeNegocio.setSelectedItem(dpr.getUnidadNegocio());
+			        						cmbEstablecimiento.setSelectedItem(dpr.getEstablecimiento());
+			        						cmbDepartamento.setSelectedItem(dpr.getDepartamento());
+			        						
+			        						txtFolioReportaA.setText(dpr.getFolioReportaA()+"");
+			        						txtReporteA.setText(dpr.getReportaA());
+			        						
+			        						txtEdadIn.setText(dpr.getEdadIn()+"");
+			        						txtEdadFin.setText(dpr.getEdadFin()+"");
+
+			        						cmbSexo.setSelectedItem(dpr.getSexo());
+			        						cmbEstadoCivil.setSelectedItem(dpr.getEstadoCivil());
+			        						txaObjectivoDelPuesto.setText(dpr.getObjetivoPuesto());
+
+			        						modeloResponsabilidadesDelPuesto.setRowCount(0);
+			        						for(Object[] reg: dpr.getResponsabilidadesPuesto()){
+			        							modeloResponsabilidadesDelPuesto.addRow(reg);
+			        						}
+			        						
+			        						cmbEscolaridad.setSelectedItem(dpr.getNivelEstudios());
+			        						txaRequisitos.setText(dpr.getListaDeEspecificaciones());
+			        						txaCursosHabilidades.setText(dpr.getCursosHabilidades());
+			        						txaExperienciaGeneral.setText(dpr.getEsperienciaGeneral());
+			        						txaExperienciaEspecifica.setText(dpr.getEsperienciaEspecifica());
+			        						txtDirectos.setText(dpr.getFacultamientosDirectos()+"");
+			        						txtIndirectos.setText(dpr.getFacultamientosIndirectos()+"");
+
+//			        						fi=dpr.getOrganigrama();
+			        						imagB = dpr.getOrganigramaB();
+			        						System.out.println(imagB.length);
+			        						
+			        						//Crea una nueva plantilla a partir de la guardada en la base de datos
+			        				        DPFPTemplate referenceTemplate1 = DPFPGlobal.getTemplateFactory().createTemplate(imagB);
+			        				        //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
+			        				        setTemplate(referenceTemplate1);
+			        						System.out.println(template.serialize().length);
+			        						
+			        						
+			        						
+//			        						fi = File.createTempFile("tmp", ".txt", new File("C:/"));
+////			        						byte[] bytes = ...;
+////			        						Path path = Paths.get("C:\myfile.pdf");
+//			        						fi.write(File.createTempFile("tmp", ".txt", new File("C:/")), imagB);
+			        						
+//			        						File f = null;
+//			        						FileOutputStream stream;
+//											try {
+//												File.createTempFile("tmp", ".jpg", new File("C:/"));
+//												stream = new FileOutputStream(f);
+//												stream.write(imagB);
+//												fi = new File("C:/tmp.jpg");
+//											} catch (IOException e2) {
+//												// TODO Auto-generated catch block
+//												e2.printStackTrace();
+//											}
+			        						
+			        						
+											fi=new File(System.getProperty("user.dir")+"/tmp/dpr_"+txtFolio.getText().trim()+".jpg");
+			        						
+			        						lblImage.setIcon(crearIcon());
+
+			        						txtPorcentajeExterno.setText(dpr.getInteracionDelPuestoExternas()+"");
+			        						txtInteraccionesEsternasPuesto.setText(dpr.getRelacionDelPuestoExternas());
+			        						txtPorcentajeInterno.setText(dpr.getInteracionDelPuestoInternas()+"");
+			        						txtInteraccionesInternasPuesto.setText(dpr.getRelacionDelPuestoInternas());
+			        						
+			        						txtAmbienteDeTrabajo.setText(dpr.getAmbienteDeTrabajo());
+			        						txtEsfuerzoFisico.setText(dpr.getEsfuerzoFisico());
+			        						
+			        						rbSi.setSelected(dpr.isViaje());  
+			        						rbNo.setSelected(!dpr.isViaje());  
+			        						
+			        						chbLaptop.setSelected(dpr.isLaptop());  
+			        						chbPc.setSelected(dpr.isPc());  
+			        						chbCelular.setSelected(dpr.isCelular());  
+			        						chbExtension.setSelected(dpr.isExtencion());  
+			        						chbAutoPropio.setSelected(dpr.isAutoPropio());  
+			        						chbAutoDeCompania.setSelected(dpr.isAutoEmpresa());  
+			        						chbLicenciaConducir.setSelected(dpr.isLicencia());  
+			        						chbCelLargaDistancia.setSelected(dpr.isLargaDistancia());  
+			        						chbOtro.setSelected(dpr.isOtro());  
+			        						txtOtro.setText(dpr.getNotaOtro());  
 			        				
 			        				btnNuevo.setEnabled(false);
 			        				btnDeshacer.setEnabled(true);
-			        			}else{
+			        			}
+			        			if(parametro.equals("Puesto")){
+			        				txtFolioPuesto.setText   (tablafp.getValueAt(fila,0)+"");
+			        				txtPuesto.setText   (tablafp.getValueAt(fila,1)+"");
+			        			}
+			        			if(parametro.equals("Reporta")){
 			        				txtFolioReportaA.setText   (tablafp.getValueAt(fila,0)+"");
 			        				txtReporteA.setText   (tablafp.getValueAt(fila,1)+"");
 			        			}
@@ -1082,7 +1250,17 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		        });
 		    }
 		}//termina filtro puestos
-	
+		
+		public DPFPTemplate getTemplate() {
+	        return template;
+	    }
+		
+		public void setTemplate(DPFPTemplate template) {
+	        DPFPTemplate old = this.template;
+	        this.template = template;
+	        firePropertyChange(TEMPLATE_PROPERTY, old, template);
+	    }
+		
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

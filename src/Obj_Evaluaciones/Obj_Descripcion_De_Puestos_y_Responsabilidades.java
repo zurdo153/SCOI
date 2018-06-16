@@ -3,6 +3,7 @@ package Obj_Evaluaciones;
 import java.io.File;
 import java.sql.SQLException;
 
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 
@@ -38,6 +39,7 @@ public class Obj_Descripcion_De_Puestos_y_Responsabilidades {
 	int facultamientosIndirectos;
 	
 	File organigrama;
+	byte[] organigramaB;
 	
 	int interacionDelPuestoExternas;
 	String relacionDelPuestoExternas;
@@ -277,6 +279,14 @@ public class Obj_Descripcion_De_Puestos_y_Responsabilidades {
 		this.organigrama = organigrama;
 	}
 
+	public byte[] getOrganigramaB() {
+		return organigramaB;
+	}
+
+	public void setOrganigramaB(byte[] organigramaB) {
+		this.organigramaB = organigramaB;
+	}
+
 	public int getInteracionDelPuestoExternas() {
 		return interacionDelPuestoExternas;
 	}
@@ -406,5 +416,15 @@ public class Obj_Descripcion_De_Puestos_y_Responsabilidades {
 
 	public boolean guardar(String movimiento){
 		return new GuardarSQL().guardarDPR(this, movimiento);
+	}
+	
+	public Obj_Descripcion_De_Puestos_y_Responsabilidades buscar(int folioP){
+		try {
+			return new BuscarSQL().buscarDPR(folioP);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

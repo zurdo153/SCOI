@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +25,8 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import org.apache.poi.util.IOUtils;
 
 import IZAGAR_Obj.Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad;
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
@@ -70,6 +74,7 @@ import Obj_Cuadrantes.Obj_Actividad;
 import Obj_Evaluaciones.Obj_Asignacion_De_Cuestionarios;
 import Obj_Evaluaciones.Obj_Contestacion_De_Cuestionario;
 import Obj_Evaluaciones.Obj_Cuestionarios;
+import Obj_Evaluaciones.Obj_Descripcion_De_Puestos_y_Responsabilidades;
 import Obj_Evaluaciones.Obj_Directorios;
 import Obj_Evaluaciones.Obj_Equipo_De_Trabajo;
 import Obj_Evaluaciones.Obj_Nivel_Jerarquico;
@@ -116,6 +121,7 @@ import Obj_Servicios.Obj_Catalogo_Servicios;
 import Obj_Servicios.Obj_Correos;
 import Obj_Servicios.Obj_Administracion_De_Activos;
 import Obj_Servicios.Obj_Servicios;
+import Obj_Xml.LeerXml;
 
 public class BuscarSQL {
 	
@@ -11097,6 +11103,121 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return datos;
 	}
 
+	public Obj_Descripcion_De_Puestos_y_Responsabilidades buscarDPR(int folioPuesto) throws SQLException{
+		Obj_Descripcion_De_Puestos_y_Responsabilidades dpr = new Obj_Descripcion_De_Puestos_y_Responsabilidades();
+		String query = "exec dpr_buscar "+folioPuesto;
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				
+				dpr.setFolio(rs.getInt("folio"));
+				dpr.setFolioPuesto(rs.getInt("folioPuesto"));
+				dpr.setPuesto(rs.getString("Puesto"));
+				dpr.setUnidadNegocio(rs.getString("unidadDeNegocio"));
+				dpr.setEstablecimiento(rs.getString("establecimiento"));
+				dpr.setDepartamento(rs.getString("departamento"));
+				dpr.setFolioReportaA(rs.getInt("folioReportaA"));
+				dpr.setReportaA(rs.getString("reportaA"));
+				dpr.setEdadIn(rs.getInt("edadIn"));
+				dpr.setEdadFin(rs.getInt("edadFin"));
+				dpr.setSexo(rs.getString("sexo"));
+				dpr.setEstadoCivil(rs.getString("estado"));
+				dpr.setObjetivoPuesto(rs.getString("objectivoPuesto"));
+				
+				dpr.setNivelEstudios(rs.getString("escolaridad"));
+				dpr.setListaDeEspecificaciones(rs.getString("listaDeEspecificaciones"));
+				dpr.setCursosHabilidades(rs.getString("cursosHabilidades"));
+				dpr.setEsperienciaGeneral(rs.getString("esperienciaGeneral"));
+				dpr.setEsperienciaEspecifica(rs.getString("esperienciaEspecifica"));
+				dpr.setFacultamientosDirectos(rs.getInt("facultamientosDirectos"));
+				dpr.setFacultamientosIndirectos(rs.getInt("facultaminetosIndirectos"));
+				
+				dpr.setInteracionDelPuestoExternas(rs.getInt("interacionDelPuestoExternas"));
+				dpr.setRelacionDelPuestoExternas(rs.getString("relacionDelPuestoExternas"));
+				dpr.setInteracionDelPuestoInternas(rs.getInt("interacionDelPuestoInternas"));
+				dpr.setRelacionDelPuestoInternas(rs.getString("relacionDelPuestoInternas"));
+				
+				dpr.setAmbienteDeTrabajo(rs.getString("ambienteDeTrabajo"));
+				dpr.setEsfuerzoFisico(rs.getString("esfuerzoFisico"));
+				
+				dpr.setViaje(rs.getBoolean("viaje"));
+				
+				dpr.setLaptop(rs.getBoolean("laptop"));
+				dpr.setPc(rs.getBoolean("pc"));
+				dpr.setCelular(rs.getBoolean("celular"));
+				dpr.setExtencion(rs.getBoolean("extencion"));
+				dpr.setAutoPropio(rs.getBoolean("autoPropio"));
+				dpr.setAutoEmpresa(rs.getBoolean("autoEmpresa"));
+				dpr.setLicencia(rs.getBoolean("licencia"));
+				dpr.setLargaDistancia(rs.getBoolean("largaDistancia"));
+				dpr.setOtro(rs.getBoolean("otro"));
+				
+				dpr.setNotaOtro(rs.getString("notaOtro"));
+				
+// contrulle imagen en ruta de pc --------------------------------------------------------------------------------------------------------------				
+//				File photo = new File(System.getProperty("user.dir")+"/tmp/dpr_"+dpr.getFolio()+".jpg");
+//				FileOutputStream fos = new FileOutputStream(photo);
+//				
+//		            byte[] buffer = new byte[1];
+//		            InputStream is = rs.getBinaryStream("archivo");
+//		            while (is.read(buffer) > 0) {
+//		                fos.write(buffer);
+//		            }
+//		            fos.close();
+//--------------------------------------------------------------------------------------------------------------			
+				
+//				File photo = null;
+//				FileOutputStream fos = new FileOutputStream(photo);
+//				
+//		            byte[] buffer = new byte[1];
+//		            InputStream is = rs.getBinaryStream("archivo");
+//		            while (is.read(buffer) > 0) {
+//		                fos.write(buffer);
+//		            }
+//		            fos.close();
+		            
+				InputStream InStr = null;
+	            byte[] bytes = null;
+	    		try {
+	    			InStr = rs.getBinaryStream("archivo");
+	    			bytes = IOUtils.toByteArray(InStr);
+	    			
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+		        
+	            dpr.setOrganigramaB(bytes);
+				
+				dpr.setResponsabilidadesPuesto(new LeerXml().arregloLleno(rs.getString("ResponsabilidadesPuesto")));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return dpr;
+	}
+	
+//	public ImageIcon crearImagIcon(){
+//		
+//		byte[] fileContent = null;
+//		
+//		try {
+//			fileContent = Files.readAllBytes(fi.toPath());
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//		
+//		return new ImageIcon(fileContent);
+//	}
+	
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";
