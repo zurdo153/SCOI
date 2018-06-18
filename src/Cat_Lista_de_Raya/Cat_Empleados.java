@@ -22,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -127,7 +129,10 @@ import Cat_Camaras.Cat_Camara;
 
 @SuppressWarnings({ "serial", "unchecked" })
 public class Cat_Empleados extends JFrame{
-	String[][] tablacompleta = null;
+	
+	byte[] imagB = null;
+	
+	Object[][] tablacompleta = null;
 	
 	Runtime R = Runtime.getRuntime();
 	Container cont = getContentPane();
@@ -740,9 +745,13 @@ public class Cat_Empleados extends JFrame{
 		txtTelefono_Cuadrante.setEnabled(false);
 		txtultimousuariomod.setEditable(false);
 		
-		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
-         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-         btnFoto.setIcon(iconoDefault);
+		try {
+			imagB  = Files.readAllBytes(Paths.get(System.getProperty("user.dir")+"/Iconos/Un.JPG")); 
+			btnFoto.setIcon(crearIcon(imagB));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
          
 		 ImageIcon file_status = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Vigente.png");
          Icon iconoStatus = new ImageIcon(file_status.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
@@ -824,6 +833,17 @@ public class Cat_Empleados extends JFrame{
 			new Cat_Huellas_Personalizado().setVisible(true);
 		}
 	};
+	
+	public Icon crearIcon(byte[] bs){
+		ImageIcon tmpIconDefault= new ImageIcon(bs);
+		
+//			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+//			int altoRealDeImg = tmpIconDefault.getIconHeight();
+			int anchoDeImagenEscala = (btnFoto.getWidth());
+			int altoDeImgagenEscala = (btnFoto.getHeight());
+		 
+			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
+	}
 	
 	 int valor = 0;
 //	MouseWheelListener buscarConRueda = new MouseWheelListener() {
@@ -1285,9 +1305,12 @@ public class Cat_Empleados extends JFrame{
             chb_cuadrante_parcial.setSelected(Boolean.valueOf(tablacompleta[0][69].toString()));
             txtChecador.setText               (tablacompleta[0][78].toString()        );
 
-             ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-	         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-	         btnFoto.setIcon(iconoDefault);
+            imagB = (byte[]) tablacompleta[0][70];
+			btnFoto.setIcon(crearIcon(imagB));
+			
+//             ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+//	         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//	         btnFoto.setIcon(iconoDefault);
 	   
 	         ImageIcon imagen_estatus = new ImageIcon(System.getProperty("user.dir")+"/"+tablacompleta[0][71].toString());
 	         Icon icono_estatus = new ImageIcon(imagen_estatus.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
@@ -1459,7 +1482,9 @@ public void guardar_modificar_Empleado(){
 								empleado.setEmailEmpresa(txtemailEmpresa.getText().toString().toLowerCase().trim());
 								empleado.setEmailPersonal(txtemailPersonal.getText().toString().toLowerCase().trim());
 								
-								empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
+//								imagB = dpr.getOrganigramaB();
+//        						lblImage.setIcon(crearIcon(imagB));
+								empleado.setFotoB(imagB);
 								empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
 		//				laboral
 								empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
@@ -1604,7 +1629,8 @@ public void guardar_modificar_Empleado(){
 							empleado.setEmailEmpresa(txtemailEmpresa.getText().toString().toLowerCase().trim());
 							empleado.setEmailPersonal(txtemailPersonal.getText().toString().toLowerCase().trim());
 							
-							empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
+							empleado.setFotoB(imagB);
+//							empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
 							empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
 	//				laboral
 							empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
@@ -1992,9 +2018,17 @@ public void guardar_modificar_Empleado(){
 		cmbContratacion.setSelectedIndex(0);
 		cmbPresenciaFisica.setSelectedIndex(0);
 	    
-		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
-         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-         btnFoto.setIcon(iconoDefault);
+		try {
+			imagB  = Files.readAllBytes(Paths.get(System.getProperty("user.dir")+"/Iconos/Un.JPG")); 
+			btnFoto.setIcon(crearIcon(imagB));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+//		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
+//         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//         btnFoto.setIcon(iconoDefault);
          
 		 ImageIcon file_status = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Vigente.png");
          Icon iconoStatus = new ImageIcon(file_status.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
@@ -2026,9 +2060,16 @@ public void guardar_modificar_Empleado(){
 					txtNombre.requestFocus();
 					txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
 					
-					 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
-			         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-			         btnFoto.setIcon(iconoDefault);
+					try {
+						imagB  = Files.readAllBytes(Paths.get(System.getProperty("user.dir")+"/Iconos/Un.JPG")); 
+						btnFoto.setIcon(crearIcon(imagB));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+//					 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
+//			         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//			         btnFoto.setIcon(iconoDefault);
 			         
 			         
 //	copiar archivo de un directorio a otro --------------------------------------------------------------------------------------------------------------------
@@ -2457,11 +2498,19 @@ public void guardar_modificar_Empleado(){
 						imagenCargada = true ;
 						System.out.println(rutaFoto);
 						
-						ImageIcon tmpIconDefault = new ImageIcon(rutaFoto+"tmp.jpg");
-				        Icon btnIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-				        btnFoto.setIcon(btnIconoDefault);
-				        Icon lblIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
-				        lblVistaPrevia.setIcon(lblIconoDefault);
+						try {
+							imagB  = Files.readAllBytes(Paths.get(rutaFoto+"tmp.jpg"));
+							btnFoto.setIcon(crearIcon(imagB));
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+     					
+//						ImageIcon tmpIconDefault = new ImageIcon(rutaFoto+"tmp.jpg");
+//				        Icon btnIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//				        btnFoto.setIcon(btnIconoDefault);
+				        
+//				        Icon lblIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
+				        lblVistaPrevia.setIcon(crearIcon(imagB));
 						
 					} catch (Exception ex) {
 						imagenCargada = false ;

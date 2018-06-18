@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10758,10 +10756,10 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	}		
 		
 	
-	public String[][] empleado_buscar_datos(String folio_empleado) throws IOException{
-		String[][] Matriz = null;
+	public Object[][] empleado_buscar_datos(String folio_empleado) throws IOException{
+		Object[][] Matriz = null;
 		String query = "exec empleado_buscar_datos '"+folio_empleado+"'";
-		Matriz = new String[getFilas(query)][79];
+		Matriz = new Object[getFilas(query)][79];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -10843,7 +10841,11 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][68] = rs.getString(69);//forma_pago
 				Matriz[i][69] = rs.getString(70);//permite_cuadrante_parcial
                 // extras
-				Matriz[i][70] = rs.getString(71);//foto
+
+				InputStream is = rs.getBinaryStream(71);
+			    byte[] bytes = IOUtils.toByteArray(is);
+				Matriz[i][70] = bytes;//foto
+				
 				Matriz[i][71] = rs.getString(72);//ruta_foto_estatus
 				Matriz[i][72] = rs.getString(73);//huella_1
 				Matriz[i][73] = rs.getString(74);//huella_2
@@ -10853,15 +10855,16 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][77] = rs.getString(78);//fecha_nacimiento_beneficiario
 				Matriz[i][78] = rs.getString(79);//clave_checador
 				
-				 File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-			     FileOutputStream fos = new FileOutputStream(photo);
-				
-		            byte[] buffer = new byte[1];
-		            InputStream is = rs.getBinaryStream(71);//foto
-		            while (is.read(buffer) > 0) {
-		                fos.write(buffer);
-		            }
-		            fos.close();
+//				 File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+//			     FileOutputStream fos = new FileOutputStream(photo);
+//				
+//		            byte[] buffer = new byte[1];
+//		            InputStream is = rs.getBinaryStream(71);//foto
+//		            while (is.read(buffer) > 0) {
+//		                fos.write(buffer);
+//		            }
+//		            fos.close();
+	            
 				i++;
 			}
 			
@@ -11158,38 +11161,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				
 				dpr.setNotaOtro(rs.getString("notaOtro"));
 				
-// contrulle imagen en ruta de pc --------------------------------------------------------------------------------------------------------------				
-//				File photo = new File(System.getProperty("user.dir")+"/tmp/dpr_"+dpr.getFolio()+".jpg");
-//				FileOutputStream fos = new FileOutputStream(photo);
-//				
-//		            byte[] buffer = new byte[1];
-//		            InputStream is = rs.getBinaryStream("archivo");
-//		            while (is.read(buffer) > 0) {
-//		                fos.write(buffer);
-//		            }
-//		            fos.close();
-//--------------------------------------------------------------------------------------------------------------			
-				
-//				File photo = null;
-//				FileOutputStream fos = new FileOutputStream(photo);
-//				
-//		            byte[] buffer = new byte[1];
-//		            InputStream is = rs.getBinaryStream("archivo");
-//		            while (is.read(buffer) > 0) {
-//		                fos.write(buffer);
-//		            }
-//		            fos.close();
-		            
-				InputStream InStr = null;
-	            byte[] bytes = null;
-	    		try {
-	    			InStr = rs.getBinaryStream("archivo");
-	    			bytes = IOUtils.toByteArray(InStr);
-	    			
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-		        
+				InputStream is = rs.getBinaryStream("archivo");;
+			    byte[] bytes = IOUtils.toByteArray(is);
 	            dpr.setOrganigramaB(bytes);
 				
 				dpr.setResponsabilidadesPuesto(new LeerXml().arregloLleno(rs.getString("ResponsabilidadesPuesto")));

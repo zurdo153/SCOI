@@ -6,6 +6,7 @@ package Conexiones_SQL;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -205,8 +206,11 @@ public class ActualizarSQL {
 			pstmt.setString(i+=1, 	empleado.getCurp().toUpperCase());
 			pstmt.setInt(i+=1, 		empleado.getSexo());
 			pstmt.setString(i+=1, 	empleado.getEmailEmpresa());
-			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
-			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
+			
+//			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
+//			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
+			InputStream input = new ByteArrayInputStream(empleado.getFotoB());
+			 pstmt.setBinaryStream(i+=1, input, empleado.getFotoB().length);
 			
 //			laboral
 			pstmt.setInt(i+=1, 		empleado.getHorario());

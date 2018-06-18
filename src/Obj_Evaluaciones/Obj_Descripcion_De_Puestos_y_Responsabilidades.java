@@ -1,6 +1,5 @@
 package Obj_Evaluaciones;
 
-import java.io.File;
 import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
@@ -38,7 +37,6 @@ public class Obj_Descripcion_De_Puestos_y_Responsabilidades {
 	int facultamientosDirectos;
 	int facultamientosIndirectos;
 	
-	File organigrama;
 	byte[] organigramaB;
 	
 	int interacionDelPuestoExternas;
@@ -91,8 +89,6 @@ public class Obj_Descripcion_De_Puestos_y_Responsabilidades {
 		
 		facultamientosDirectos=0;
 		facultamientosIndirectos=0;
-		
-		organigrama=null;
 		
 		interacionDelPuestoExternas=0;
 		relacionDelPuestoExternas="";
@@ -270,13 +266,6 @@ public class Obj_Descripcion_De_Puestos_y_Responsabilidades {
 	}
 	public void setFacultamientosIndirectos(int facultamientosIndirectos) {
 		this.facultamientosIndirectos = facultamientosIndirectos;
-	}
-
-	public File getOrganigrama() {
-		return organigrama;
-	}
-	public void setOrganigrama(File organigrama) {
-		this.organigrama = organigrama;
 	}
 
 	public byte[] getOrganigramaB() {

@@ -1,7 +1,6 @@
 package Conexiones_SQL;
 
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -10,8 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
@@ -181,8 +178,10 @@ public class GuardarSQL {
 			pstmt.setInt(i+=1, 		empleado.getSexo());
 			pstmt.setString(i+=1, 	empleado.getEmailEmpresa());
 			
-			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
-			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
+//			FileInputStream stream_foto = new FileInputStream(empleado.getFotoB());
+//			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFotoB().length());
+			 InputStream input = new ByteArrayInputStream(empleado.getFotoB());
+			 pstmt.setBinaryStream(i+=1, input, empleado.getFotoB().length);
 			
 //			laboral
 			pstmt.setInt(i+=1, 		empleado.getHorario());
@@ -7999,22 +7998,9 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 
 			 pstmt.setString(i+=1,dpr.getNotaOtro());
 			 
-//			 System.out.println(dpr.getOrganigramaB());
-			 
 			 InputStream input = new ByteArrayInputStream(dpr.getOrganigramaB());
-//			 pstmt.setBinaryStream(i+=1, input,433);
-			 pstmt.setBinaryStream(i+=1, input, dpr.getOrganigramaB().length );
+			 pstmt.setBinaryStream(i+=1, input,dpr.getOrganigramaB().length);
 			 
-			 
-//			//--- imagen de organigrama -------------------------------------------------------------------------------------------------------------------------				
-//			 ByteArrayInputStream stream_foto = null;
-//			stream_foto = new ByteArrayInputStream(dpr.getOrganigramaB());
-//			
-//			 pstmt.setBinaryStream(i+=1, stream_foto, 70110);
-//			 
-			 
-				
-////------------------------------------------------------------------------------------------------------------------------------------------------------------
 	    	 pstmt.executeUpdate();
 				con.commit();
 				
@@ -8044,20 +8030,20 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			return true;
 	}
 	
-	public String readIt(InputStream is) throws IOException {
-	    if (is != null) {
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
-
-	        StringBuilder sb = new StringBuilder();
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            sb.append(line).append("\n");
-	        }
-	        is.close();
-	        return sb.toString();
-	    }
-	    return "error: ";
-	}
+//	public String readIt(InputStream is) throws IOException {
+//	    if (is != null) {
+//	        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
+//
+//	        StringBuilder sb = new StringBuilder();
+//	        String line;
+//	        while ((line = reader.readLine()) != null) {
+//	            sb.append(line).append("\n");
+//	        }
+//	        is.close();
+//	        return sb.toString();
+//	    }
+//	    return "error: ";
+//	}
 	
 	public boolean reactivarMerma(int folio_de_merma){
 		

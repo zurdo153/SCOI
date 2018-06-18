@@ -1,7 +1,6 @@
 package Obj_Lista_de_Raya;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -31,7 +30,8 @@ public class Obj_Empleados {
 	private String estado_civil;
 	private String tipo_sangre;
 	private String escolaridad;	
-	private File foto;
+//	private File foto;
+	private byte[] fotoB;
 	private String emailEmpresa;
 	private String emailPersonal;
 	
@@ -105,7 +105,7 @@ public class Obj_Empleados {
 	
 	public Obj_Empleados(){
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
-		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; foto=null; emailEmpresa="";
+		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; fotoB=null; emailEmpresa="";
 		emailPersonal="";
 		
 		status_checador = "";	forma_de_checar=""; 	tieneHuella=false;
@@ -343,16 +343,24 @@ public class Obj_Empleados {
 		this.sexo = sexo;
 	}
 
-	public File getFoto() {
-		return foto;
-	}
-
-	public void setFoto(File foto) {
-		this.foto = foto;
-	}
+//	public File getFoto() {
+//		return foto;
+//	}
+//
+//	public void setFoto(File foto) {
+//		this.foto = foto;
+//	}
 
 	public int getPerfil() {
 		return perfil;
+	}
+
+	public byte[] getFotoB() {
+		return fotoB;
+	}
+
+	public void setFotoB(byte[] fotoB) {
+		this.fotoB = fotoB;
 	}
 
 	public void setPerfil(int perfil) {
@@ -783,7 +791,7 @@ public class Obj_Empleados {
 		return null;
 	}
 	
-	public String[][] empleado_buscar_datos(String folio_empleado) throws IOException{
+	public Object[][] empleado_buscar_datos(String folio_empleado) throws IOException{
 		return new BuscarSQL().empleado_buscar_datos(folio_empleado);
 	}
 	

@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -36,9 +36,6 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import com.digitalpersona.onetouch.DPFPGlobal;
-import com.digitalpersona.onetouch.DPFPTemplate;
-
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Evaluaciones.Obj_Descripcion_De_Puestos_y_Responsabilidades;
@@ -50,14 +47,13 @@ import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
+import Obj_Tratamiento_De_Imagenes.Obj_Formato_De_Imagen;
 import Obj_Xml.CrearXmlString;
 
 @SuppressWarnings("serial")
 public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 
-	private DPFPTemplate template;
-	public String TEMPLATE_PROPERTY = "template";
-	
+	Obj_Formato_De_Imagen formatoDeImagen = new Obj_Formato_De_Imagen();
 	Container cont = getContentPane();
 	JTabbedPane pestanas = new JTabbedPane();
 	
@@ -248,10 +244,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		JCButton btnExaminar = new JCButton("Organigrama", "buscar.png", "Azul");
 		JLabel lblRutaOrganigrama = new JLabel("");
 		
-		String rutaImagen = "";
-		File fi = null;
+//		String rutaImagen = "";
+//		File fi = null;
 		byte[] imagB = null;
-		JLabel lblImage = new JLabel(rutaImagen);
+		JLabel lblImage = new JLabel("");
 		JScrollPane scrollOrganigrama = new JScrollPane(lblImage);
 //pagina 3 (fin)------------------------------------------------------------------------------------------------------------------------------------------
 	Border blackline;
@@ -351,7 +347,6 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			txtFolio.setText(new BuscarSQL().buscar_folio_consecutivo_por_folio_de_transaccion(89));
 			camposActivos(true);
 			btnBuscarPuesto.setEnabled(false);
-//			mostrarPuestosDisponibles = true;
 			btnEditar.setEnabled(false);
 		}
 	};
@@ -361,7 +356,6 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			limpiarCampos();
 			camposActivos(false);
 			btnBuscarPuesto.setEnabled(true);
-//			mostrarPuestosDisponibles = false;
 		}
 	};
 	
@@ -379,8 +373,6 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 				}else{
 					guardado();
 				}
-				
-//				mostrarPuestosDisponibles = false;
 			}else{
 				JOptionPane.showMessageDialog(null, "Los Siguietes Campos Son Requeridos:\n"+validarCampos, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -405,7 +397,6 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		dpr.setEstadoCivil(cmbEstadoCivil.getSelectedItem().toString().trim().toUpperCase());
 		dpr.setObjetivoPuesto(txaObjectivoDelPuesto.getText().trim().toUpperCase());
 		
-//		dpr.setResponsabilidadesPuesto(arreglo());
 		int[] ignorarColumnas = {2};
 		dpr.setXmlResponsabilidadesPuesto(new CrearXmlString().CadenaXML(tablaResponsabilidadesDelPuesto, ignorarColumnas));
 		
@@ -417,9 +408,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		dpr.setFacultamientosDirectos(Integer.valueOf(txtDirectos.getText().trim()));
 		dpr.setFacultamientosIndirectos(Integer.valueOf(txtIndirectos.getText().trim()));
 		
-		dpr.setOrganigrama(fi);
+//		dpr.setOrganigrama(fi);
 		dpr.setOrganigramaB(imagB);
-
+//		dpr.setOrganigramaB(base64);
+		
 		dpr.setInteracionDelPuestoExternas(Integer.valueOf(txtPorcentajeExterno.getText().trim()));
 		dpr.setRelacionDelPuestoExternas(txtInteraccionesEsternasPuesto.getText().trim().toUpperCase());
 		dpr.setInteracionDelPuestoInternas(Integer.valueOf(txtPorcentajeInterno.getText().trim()));
@@ -444,21 +436,13 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		
 		if(dpr.guardar(movimiento)){
 			limpiarCampos();
+			camposActivos(false);
+			btnBuscarPuesto.setEnabled(true);
 			JOptionPane.showMessageDialog(null, "Registro Guardado Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		}else{
 			JOptionPane.showMessageDialog(null,"Error al Intentar Guardar","Aviso",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
-//	public Object[][] arreglo(){
-//		Object[][] reg = new Object[modeloResponsabilidadesDelPuesto.getRowCount()][2];
-//		
-//		for(int i=0; i<modeloResponsabilidadesDelPuesto.getRowCount(); i++){
-//			reg[i][0]=modeloResponsabilidadesDelPuesto.getValueAt(i, 0);
-//			reg[i][1]=modeloResponsabilidadesDelPuesto.getValueAt(i, 1);
-//		}
-//		return reg;
-//	}
 	
 	public String validaCampos(){
 		String lista = "";
@@ -572,9 +556,9 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		
 		txtOtro.setText("");
 		
-		rutaImagen = "";
-		lblRutaOrganigrama.setText(rutaImagen);
+		lblRutaOrganigrama.setText("");
 		lblImage.setIcon(null);
+		imagB = null;
 	}
 	
 	public void camposActivosDefault(){
@@ -867,10 +851,16 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 //         				if(pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("JPG") || pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("PNG")){
      					if(pathArchivo.substring(pathArchivo.indexOf(".")+1, pathArchivo.length()).trim().toUpperCase().equals("JPG") ){
 
-                        		rutaImagen = pathArchivo;
-                        		fi = new File(rutaImagen);
-             					lblRutaOrganigrama.setText(rutaImagen);
-        						lblImage.setIcon(crearIcon());
+             					lblRutaOrganigrama.setText(pathArchivo);
+
+             					try {
+									imagB  = Files.readAllBytes(Paths.get(pathArchivo));
+									lblImage.setIcon(crearIcon(imagB));
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+             					
+        						
          					
          				}else{
          					JOptionPane.showMessageDialog(null, "Solo Se Pueden Cargar Imagenes Con Extencion JPG.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -881,11 +871,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		}
 	};
 	
-	public Icon crearIcon(byte[] imag){
-		ImageIcon tmpIconDefault= new ImageIcon(imag);
-		
-//		fi= tmpIconDefault.getImage();
-//		new File(tmpIconDefault);
+	public Icon crearIcon(byte[] bs){
+		ImageIcon tmpIconDefault= new ImageIcon(bs);
 		
 			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
 			int altoRealDeImg = tmpIconDefault.getIconHeight();
@@ -894,34 +881,6 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		 
 			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
 	}
-	
-	public Icon crearIcon(){
-		System.out.println(rutaImagen);
-		ImageIcon tmpIconDefault= crearImagIcon();
-		
-			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
-			int altoRealDeImg = tmpIconDefault.getIconHeight();
-			int anchoDeImagenEscala = (txaObjectivoDelPuesto.getWidth()-20);
-			int altoDeImgagenEscala = (altoRealDeImg*anchoDeImagenEscala)/anchoRealDeImagen;
-		 
-			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
-	}
-	
-	public ImageIcon crearImagIcon(){
-		
-		byte[] fileContent = null;
-		
-		try {
-			fileContent = Files.readAllBytes(fi.toPath());
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-		return new ImageIcon(fileContent);
-	}
-//	C:\SCOI_SRC\SCOI\tmp\dpr2.jpg
-//	C:\SCOI_SRC\SCOI\tmp\dpr_2.jpg
-
 	
 	public void pagina1(){
 		
@@ -1176,41 +1135,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			        						txaExperienciaEspecifica.setText(dpr.getEsperienciaEspecifica());
 			        						txtDirectos.setText(dpr.getFacultamientosDirectos()+"");
 			        						txtIndirectos.setText(dpr.getFacultamientosIndirectos()+"");
-
-//			        						fi=dpr.getOrganigrama();
+			        						
 			        						imagB = dpr.getOrganigramaB();
-			        						System.out.println(imagB.length);
+			        						lblImage.setIcon(crearIcon(imagB));
 			        						
-			        						//Crea una nueva plantilla a partir de la guardada en la base de datos
-			        				        DPFPTemplate referenceTemplate1 = DPFPGlobal.getTemplateFactory().createTemplate(imagB);
-			        				        //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
-			        				        setTemplate(referenceTemplate1);
-			        						System.out.println(template.serialize().length);
-			        						
-			        						
-			        						
-//			        						fi = File.createTempFile("tmp", ".txt", new File("C:/"));
-////			        						byte[] bytes = ...;
-////			        						Path path = Paths.get("C:\myfile.pdf");
-//			        						fi.write(File.createTempFile("tmp", ".txt", new File("C:/")), imagB);
-			        						
-//			        						File f = null;
-//			        						FileOutputStream stream;
-//											try {
-//												File.createTempFile("tmp", ".jpg", new File("C:/"));
-//												stream = new FileOutputStream(f);
-//												stream.write(imagB);
-//												fi = new File("C:/tmp.jpg");
-//											} catch (IOException e2) {
-//												// TODO Auto-generated catch block
-//												e2.printStackTrace();
-//											}
-			        						
-			        						
-											fi=new File(System.getProperty("user.dir")+"/tmp/dpr_"+txtFolio.getText().trim()+".jpg");
-			        						
-			        						lblImage.setIcon(crearIcon());
-
 			        						txtPorcentajeExterno.setText(dpr.getInteracionDelPuestoExternas()+"");
 			        						txtInteraccionesEsternasPuesto.setText(dpr.getRelacionDelPuestoExternas());
 			        						txtPorcentajeInterno.setText(dpr.getInteracionDelPuestoInternas()+"");
@@ -1250,16 +1178,6 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		        });
 		    }
 		}//termina filtro puestos
-		
-		public DPFPTemplate getTemplate() {
-	        return template;
-	    }
-		
-		public void setTemplate(DPFPTemplate template) {
-	        DPFPTemplate old = this.template;
-	        this.template = template;
-	        firePropertyChange(TEMPLATE_PROPERTY, old, template);
-	    }
 		
 	public static void main(String[] args) {
 		try{
