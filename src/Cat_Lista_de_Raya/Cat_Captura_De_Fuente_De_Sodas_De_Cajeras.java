@@ -511,9 +511,6 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame{
 		}
 	}
 	
-
- 	
-	
 	KeyListener numerico_action_punto = new KeyListener() {
 		public void keyTyped(KeyEvent e){
 			char caracter = e.getKeyChar();

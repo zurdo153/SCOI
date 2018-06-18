@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -116,8 +117,13 @@ public class Cat_Reportes_De_Irregularidades_En_Mermas extends JFrame {
 				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
 				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+				Date fecha1 = sdf.parse(fecha_inicio , new ParsePosition(0));
+				Date fecha2 = sdf.parse(fecha_final , new ParsePosition(0));
+				
 			
-				if(c_inicio.getDate().before(c_final.getDate())){
+				if(fecha1.before(fecha2)){
 					   reporte = "Obj_Reporte_De_Mermas_Para_Deteccion_De_Irregularidades.jrxml";
 					   comando = "exec sp_reporte_de_mermas_con_irregularidades '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"'";
 				   

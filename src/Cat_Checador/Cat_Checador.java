@@ -459,10 +459,12 @@ public class Cat_Checador extends JFrame {
 				                        	
 				                           		switch (checador.getStatus()){
 				                                         case 1: if(checador.getNo_checador().equals(codigoBarrar)){
-				                                            		 		registrarEntrada("-");
+//				                                            		 		registrarEntrada("-");
+				                                            		 		registrarChecada("-", checador.getForma_de_checar());
 				                                            	 }else{
 				                                            		 if(checador.getMaster_key().equals(claveMaster)){
-				                                            			 	registrarEntrada("MASTER");
+//				                                            			 	registrarEntrada("MASTER");
+				                                            			 	registrarChecada("MASTER", checador.getForma_de_checar());
 				                                            		 }else{
 					                                            			 lblSemaforoRojo.setEnabled(true);
 					                                                         lblSemaforoVerde.setEnabled(false);
@@ -498,10 +500,12 @@ public class Cat_Checador extends JFrame {
 				                                                                         txtClaveReal.requestFocus();
 				                                          break;
 				                                          case 6: if(checador.getNo_checador().equals(codigoBarrar)){
-						                                          		 		registrarEntrada("-");
+//						                                          		 		registrarEntrada("-");
+						                                          		 		registrarChecada("-", checador.getForma_de_checar());
 						                                          	 }else{
 						                                          		 if(checador.getMaster_key().equals(claveMaster)){
-						                                          			 	registrarEntrada("MASTER");
+//						                                          			 	registrarEntrada("MASTER");
+						                                          			 	registrarChecada("MASTER", checador.getForma_de_checar());
 						                                          		 }else{
 						                                          			 
 						                                            			 lblSemaforoRojo.setEnabled(true);
@@ -544,8 +548,28 @@ public class Cat_Checador extends JFrame {
 			 }
         }
         
+        public void registrarChecada(String checador, String checaCon){
+        	if(huellaAceptada){
+        		huellaAceptada=false;
+        		registrarEntrada(checador);
+        		System.out.println("entro en el if");
+        	}else{
+        		
+        		if(checaCon.equals("GH")){
+        			JOptionPane.showMessageDialog(null, "Es Necesario Ingresar La Huella","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+		  		    txtClaveReal.setText("");
+		  		    txtClaveReal.requestFocus();
+                return;
+        		}else{
+        			registrarEntrada(checador);
+        			System.out.println("entro en el else");
+        		}
+        	}
+        }
+        
         @SuppressWarnings("deprecation")
         public void registrarEntrada(String checada){
+//        	huellaAceptada=false;
 //----------------------------------------------------------------------------------------------------------------------        
 ////meter split para que extraiga el puro numero
 ////                        declarar variable que cachara el valor real de la clave
@@ -583,7 +607,7 @@ public class Cat_Checador extends JFrame {
                            return;
              	}
 //                if(new Obj_Entosal().buscar_colicion(folio_empleado)){
-                	if (checador.isValida_chequeo_duplicado()){
+            	if (checador.isValida_chequeo_duplicado()){
                 	lblSemaforoRojo.setEnabled(true);
                     lblSemaforoVerde.setEnabled(false);
                     JOptionPane.showMessageDialog(null, "Estas Intentando Checar 2 Veces En Menos\n De 1 Minuto Espere Un Momento y Reintente","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -1353,6 +1377,9 @@ public class Cat_Checador extends JFrame {
 	 	    			muestra2 = checador.getHuella_2();
  	    		}
     	    	 
+    	    	System.out.println(muestra1);
+    	    	System.out.println(muestra2);
+    	    	 
     	        //Lee la plantilla de la base de datos
     	        byte[] templateBuffer1 = muestra1;
     	        //Crea una nueva plantilla a partir de la guardada en la base de datos
@@ -1369,12 +1396,15 @@ public class Cat_Checador extends JFrame {
 
     	        // Compara las caracteriticas de la huella recientemente capturda con la
     	        // plantilla guardada al usuario especifico en la base de datos
-    	        DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
-    	        DPFPVerificationResult result2 = Verificador.verify(featuresverificacion, getTemplate2());
+    	        DPFPVerificationResult result = Verificador.verify(muestra1==null?null:featuresverificacion, getTemplate());
+    	        DPFPVerificationResult result2 = Verificador.verify(muestra2==null?null:featuresverificacion, getTemplate2());
 
+    	        System.out.println(result.isVerified());
+    	        System.out.println(result2.isVerified());
     	        //compara las plantilas (actual vs bd)
     	        if (result.isVerified() || result2.isVerified()){
     	        	huellaAceptada=true;
+    	        	
     	        	 if(checoCon.equals("CLAVE MASTER")){
     	        		 txtClaveReal.setText(folio_emp+"C"+masterKey);
     	   	    		 	checar();
