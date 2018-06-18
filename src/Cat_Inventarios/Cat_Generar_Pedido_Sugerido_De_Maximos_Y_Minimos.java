@@ -70,8 +70,8 @@ public class Cat_Generar_Pedido_Sugerido_De_Maximos_Y_Minimos extends JFrame{
 		panel.add(new JLabel("Piezas:")).setBounds(x, y+=25, ancho, 20);
 		panel.add(lblCantPz).setBounds(x+ancho, y, ancho, 20);
 		
-		panel.add(btnGenerarPedidoNuevo).setBounds(x+ancho-40, y+=45, ancho+30, 40);
-		panel.add(btnCargarPedido).setBounds(x+ancho*2, y, ancho, 40);
+		panel.add(btnGenerarPedidoNuevo).setBounds(x=15  ,y+=45 ,210 ,40);
+		panel.add(btnCargarPedido).setBounds      (x+220 ,y     ,200 ,40);
 		
 		cont.add(panel);
 		
@@ -85,7 +85,6 @@ public class Cat_Generar_Pedido_Sugerido_De_Maximos_Y_Minimos extends JFrame{
 	
 	ActionListener opButton = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-			System.out.println(e.getActionCommand());
 			
 			//Buscar--------------------------------------------------------------------------------------------------------------
 			if(e.getActionCommand().toString().trim().equals("Buscar")){

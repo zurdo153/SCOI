@@ -1,6 +1,8 @@
 package Biblioteca;
 
+import java.awt.AWTException;
 import java.awt.Container;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import com.sun.glass.events.KeyEvent;
 
 @SuppressWarnings("serial")
 public class Borrar_Y_Agregar_Columnas_En_JTable extends JFrame{
@@ -65,6 +69,17 @@ public class Borrar_Y_Agregar_Columnas_En_JTable extends JFrame{
 				tabla.moveColumn(4, 2);
 			}
 		};
+		
+		public void enterauto(){
+		Robot robot;
+		try {
+            robot = new Robot();
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+     };
 		
 	public static void main(String [] args)
 	{

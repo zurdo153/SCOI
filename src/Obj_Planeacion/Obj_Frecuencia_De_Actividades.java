@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import Conexiones_SQL.BuscarSQL;
 
 public class Obj_Frecuencia_De_Actividades {
+
 	String tipo_de_frecuencia = "UNA VEZ";
 	boolean seleccion_hasta_que_se_cumpla = true;
 	boolean seleccion_en_la_fecha_indicada = false;
@@ -15,11 +16,12 @@ public class Obj_Frecuencia_De_Actividades {
 	String hora_unica_repeticion = "23:59:00";
 	
 //frecuencia
-	String sucede="DIARIA";
+	String sucede="SEMANA";
 	boolean selecciona_dia_del_mes=true;
 	int dias_a_repetir_por_suceso_de_dias=1;		
 	int dias_a_repetir_por_suceso_de_semanas=0;	//dependen del tipo de suceso
-	int dias_a_repetir_por_suceso_de_meses=0;		
+	int dias_a_repetir_por_suceso_de_meses=0;	
+	int se_repite_cada=1;	
 	int mes1=1;
 	
 	boolean selecciona_dia_de_la_semana=false;
@@ -45,7 +47,21 @@ public class Obj_Frecuencia_De_Actividades {
 	String fecha_final_duracion=cargar_fechas(-365);
 	boolean seleccion_sin_fecha_final=true;
 	
-	
+	public int getSe_repite_cada() {
+		return se_repite_cada;
+	}
+
+
+	public void setSe_repite_cada(int se_repite_cada) {
+		this.se_repite_cada = se_repite_cada;
+	}
+
+
+	public void setDia_de_la_semana(int dia_de_la_semana) {
+		this.dia_de_la_semana = dia_de_la_semana;
+	}
+
+
 	public String getTipo_de_frecuencia() {
 		return tipo_de_frecuencia;
 	}

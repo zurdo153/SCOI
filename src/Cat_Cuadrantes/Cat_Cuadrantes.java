@@ -1716,13 +1716,13 @@ public class Cat_Cuadrantes extends JFrame{
 		        	if(e.getClickCount()==1){
 		        		if(parametro.equals("Puesto")){
 		        			int fila = tablafp2.getSelectedRow();
-		        			if(!tablafp2.getValueAt(fila,2).equals("0")){
-								JOptionPane.showMessageDialog(null, "Este Puesto Ya esta En Uso En El Cuadrante \n"+tablafp2.getValueAt(fila,3)+" \n Selecione Otro", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-								txtBuscarfp.requestFocus();
-								return;
-		        			}else{		        			
+//		        			if(!tablafp2.getValueAt(fila,2).equals("0")){
+//								JOptionPane.showMessageDialog(null, "Este Puesto Ya esta En Uso En El Cuadrante \n"+tablafp2.getValueAt(fila,3)+" \n Selecione Otro", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//								txtBuscarfp.requestFocus();
+//								return;
+//		        			}else{		        			
 						    txtPuesto.setText   (tablafp2.getValueAt(fila,1)+"");
-		        			}
+//		        			}
 						    
 		        		}else{
 		        			int fila = tablafp.getSelectedRow();

@@ -1,6 +1,7 @@
 package Cat_Contabilidad;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Robot;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -56,7 +58,6 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
-import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Correos;
@@ -265,42 +266,25 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		rbProveedor.addKeyListener(enterpasarafiltroBeneficiario);
 		txtBeneficiario.addKeyListener(enterpasaracantidad);
 		
-		///guardar con control+G
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscarbtn");
+         getRootPane().getActionMap().put("buscarbtn", new AbstractAction(){
+             public void actionPerformed(ActionEvent e)
+             {                 	    btnBuscar.doClick();                   	    }	                 });
+         
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "referencia");
+        getRootPane().getActionMap().put("referencia", new AbstractAction(){public void actionPerformed(ActionEvent e) {   btnBuscarBen.doClick();         }     });
+         
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
-             getRootPane().getActionMap().put("guardar", new AbstractAction(){
-                 public void actionPerformed(ActionEvent e)
-                 {                 	    btnGuardar.doClick();
-               	    }
-            });
+        getRootPane().getActionMap().put("guardar", new AbstractAction(){   public void actionPerformed(ActionEvent e) {   btnGuardar.doClick();           }     });
              
-        ///guardar con control+P
-             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P,Event.CTRL_MASK),"proveedor");
-                  getRootPane().getActionMap().put("proveedor", new AbstractAction(){
-                      public void actionPerformed(ActionEvent e)
-                      {                 	    btnAltaproveedor.doClick();
-                    	    }
-                 });
-        ///guardar con F12
-             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
-                 getRootPane().getActionMap().put("guardar", new AbstractAction(){
-                     public void actionPerformed(ActionEvent e)
-                     {                 	    btnGuardar.doClick();
-	                    	    }
-                });
-        ///buscar Referencia f2
-                 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "referencia");
- 	                  getRootPane().getActionMap().put("referencia", new AbstractAction(){
- 	                      public void actionPerformed(ActionEvent e)
- 	                      {                 	    btnBuscarBen.doClick();
- 		                    	    }
- 	                 });
- 	     //deshacer con escape
- 	                 getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
- 	                   getRootPane().getActionMap().put("escape", new AbstractAction(){
- 	                  public void actionPerformed(ActionEvent e)
- 	                  {                 	    btnDeshacer.doClick();
- 	                	    }
- 	              });
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P,Event.CTRL_MASK),"proveedor");
+        getRootPane().getActionMap().put("proveedor", new AbstractAction(){ public void actionPerformed(ActionEvent e) {  btnAltaproveedor.doClick();      }     });
+        
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+        getRootPane().getActionMap().put("guardar", new AbstractAction(){   public void actionPerformed(ActionEvent e){    btnGuardar.doClick();   	       }     });
+                 
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+        getRootPane().getActionMap().put("escape", new AbstractAction(){    public void actionPerformed(ActionEvent e)  {    btnDeshacer.doClick();        }     });
                  
 		 this.addWindowListener(new WindowAdapter() {
              public void windowOpened( WindowEvent e ){
@@ -356,7 +340,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			cmbConcepto.setSelectedIndex(0);
 			rbProveedor.setSelected(true);
 			btnAltaproveedor.setSelected(true);
-			
+			txaConcepto.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
 			txtCantidad.requestFocus();
 			cargar_datos_iniciales(); 
 			Guardar_actualizar="";
@@ -527,7 +511,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			    	this.tablab.getColumnModel().getColumn( 8).setMinWidth(130);
 			    	this.tablab.getColumnModel().getColumn( 9).setMinWidth(130);
 			    	
-					String comandob = "orden_de_gasto_filtro";
+					String comandob = "orden_de_gasto_filtro_pago";
 			    	String basedatos="26",pintar="si";
 					ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 			    }
@@ -552,7 +536,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			     @SuppressWarnings({ "rawtypes" })
 			    private TableRowSorter trsfiltro;
 				     
-				JTextField txtBuscarb  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String");
+				JTextField txtBuscarb  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String",tablab,columnasb);
 				@SuppressWarnings({ "rawtypes", "unchecked" })
 				public Cat_Filtro_Buscar_Orden_De_Gasto(){
 					this.setSize(825,400);
@@ -569,105 +553,75 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 					this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,800 ,300 );
 					this.init_tablafp();
 					this.agregar(tablab);
-					this.txtBuscarb.addKeyListener  (opFiltropuestos );
-					this.txtBuscarb.addKeyListener(PasarATabla);
-//					this.tablab.addKeyListener(agregarcon_enter);
+					
 					contfb.add(panelfb);
+					
+		            getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+		            getRootPane().getActionMap().put("escape", new AbstractAction(){ public void actionPerformed(ActionEvent e)  {    txtBuscarb.requestFocus();       	    }             });      
 				}
 				
-				KeyListener PasarATabla = new KeyListener() {
-					public void keyTyped(KeyEvent e){}
-					public void keyReleased(KeyEvent e) {}
-					public void keyPressed(KeyEvent e) {
-						if(e.getKeyCode()==KeyEvent.VK_DOWN){
-							tablab.requestFocus();
-							tablab.getSelectionModel().setSelectionInterval(0,0);;
-						}
-					}
-				};
-		 	     
 				private void agregar(final JTable tbl) {
-			        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-						public void mouseClicked(MouseEvent e) {
-				        	if(e.getClickCount()==1){
-
-				        		modelog.setRowCount(0);
-				        		int fila = tablab.getSelectedRow();
-				        		String[][] tablacompleta=gasto.consulta_orden_de_gasto(Integer.valueOf(tablab.getValueAt(fila,0)+""));
-				        	    Object[]   vectortabla = new Object[3];
-				        		for(int i=0;i<tablacompleta.length;i++){
-				        				for(int j=0;j<3;j++){
-				        				  vectortabla[j] = tablacompleta[i][j].toString();
-				        				}
-				        				modelog.addRow(vectortabla);
-				        		}
-				        		
-				        			for(int i=0;i<tablaog.getRowCount();i++) {
-				        				tablaog.setValueAt(Float.valueOf(tablaog.getValueAt(i, 1)+"") * Float.valueOf(tablaog.getValueAt(i, 2)+"")   , i, 3);
-				        			}
-				        		
-				        		
-				        		if(tablab.getValueAt(fila,  8).toString().equals("AUTORIZADO")){
-				        			txtFolioSolicitud.setText         (tablab.getValueAt(fila,  0).toString());
-					        		txtProveedor.setText              (tablab.getValueAt(fila,  1).toString());
-					        		txtaUso.setText                   (tablab.getValueAt(fila,  3).toString());
-					        		cmbEstablecimiento.setSelectedItem(tablab.getValueAt(fila,  4).toString());
-					        		txtCantidad.setText               (tablab.getValueAt(fila,  5).toString());
-					        		txtSolicitante.setText            (tablab.getValueAt(fila,  6).toString());
-					        		txtFechaSolicito.setText          (tablab.getValueAt(fila,  7).toString());
-					        		txtFechaAutorizo.setText          (tablab.getValueAt(fila,  9).toString());
-					        		txtautorizo.setText               (tablab.getValueAt(fila, 10).toString());	
-					        		cargar_datos_iniciales();
-					        		Guardar_actualizar="N";
-					        		cmbConcepto.requestFocus();
-					        		cmbConcepto.showPopup();
-					        		dispose();
-				        		}else{
-									JOptionPane.showMessageDialog(null, "Para Que Un Registro Sea Agregado Para Pago Es Requerido Que Este Haya Sido Autorizado\nEl Que Esta Seleccionando Tiene Estatus De "+tablab.getValueAt(fila,  8).toString(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-				        		 return;
-				        		}
-				        	}
-				        }
-			        });
+					tbl.addMouseListener(new MouseListener() {
+						public void mouseReleased(MouseEvent e) {
+					 	 if(e.getClickCount() == 1){funcion_agregar();}
+						}
+						public void mousePressed(MouseEvent e) {}
+						public void mouseExited(MouseEvent e)  {}
+						public void mouseEntered(MouseEvent e) {}
+						public void mouseClicked(MouseEvent e) {}
+					});
+					
+					tbl.addKeyListener(new KeyListener() {
+						public void keyPressed(KeyEvent e)  {
+							if(e.getKeyCode()==KeyEvent.VK_ENTER){
+								funcion_agregar();	
+							}
+						}
+						public void keyReleased(KeyEvent e)   {}
+						public void keyTyped   (KeyEvent e)   {}
+					});
 			    }
-				
-//				KeyListener agregarcon_enter = new KeyListener() {
-//					public void keyTyped(KeyEvent e){}
-//					public void keyReleased(KeyEvent e) {}
-//					public void keyPressed(KeyEvent e) {
-//						if(e.getKeyCode()==KeyEvent.VK_ENTER){
-//			        		int fila = tablab.getSelectedRow();
-//			        		if(tablab.getValueAt(fila,  8).toString().equals("AUTORIZADO")){
-//			        			txtFolioSolicitud.setText         (tablab.getValueAt(fila,  0).toString());
-//				        		txtProveedor.setText              (tablab.getValueAt(fila,  1).toString());
-//				        		txtaUso.setText                   (tablab.getValueAt(fila,  3).toString());
-//				        		cmbEstablecimiento.setSelectedItem(tablab.getValueAt(fila,  4).toString());
-//				        		txtCantidad.setText               (tablab.getValueAt(fila,  5).toString());
-//				        		txtSolicitante.setText            (tablab.getValueAt(fila,  6).toString());
-//				        		txtFechaSolicito.setText          (tablab.getValueAt(fila,  7).toString());
-//				        		txtFechaAutorizo.setText          (tablab.getValueAt(fila,  9).toString());
-//				        		txtautorizo.setText               (tablab.getValueAt(fila, 10).toString());	
-//				        		cargar_datos_iniciales();
-//				        		Guardar_actualizar="N";
-//				        		cmbConcepto.requestFocus();
-//				        		cmbConcepto.showPopup();
-//				        		dispose();
-//			        		}else{
-//								JOptionPane.showMessageDialog(null, "Para Que Un Registro Sea Agregado Para Pago Es Requerido Que Este Haya Sido Autorizado\nEl Que Esta Seleccionando Tiene Estatus De "+tablab.getValueAt(fila,  8).toString(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-//			        		 return;
-//			        		}
-//						}
-//					}
-//				};
-				
-				
-		        private KeyListener opFiltropuestos = new KeyListener(){
-					public void keyReleased(KeyEvent arg0) {
-						ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
-					}
-					public void keyTyped(KeyEvent arg0) {}
-					public void keyPressed(KeyEvent arg0) {}		
-				};
+
+				public void funcion_agregar() {
+				   int fila = tablab.getSelectedRow();
+				   modelog.setRowCount(0);
+	        		String[][] tablacompleta=gasto.consulta_orden_de_gasto(Integer.valueOf(tablab.getValueAt(fila,0)+""));
+	        	    Object[]   vectortabla = new Object[3];
+	        		for(int i=0;i<tablacompleta.length;i++){
+	        				for(int j=0;j<3;j++){
+	        				  vectortabla[j] = tablacompleta[i][j].toString();
+	        				}
+	        				modelog.addRow(vectortabla);
+	        		}
+	        		
+	        			for(int i=0;i<tablaog.getRowCount();i++) {
+	        				tablaog.setValueAt(Float.valueOf(tablaog.getValueAt(i, 1)+"") * Float.valueOf(tablaog.getValueAt(i, 2)+"")   , i, 3);
+	        			}
+	        		
+	        		
+	        		if(tablab.getValueAt(fila,  8).toString().equals("AUTORIZADO")){
+	        			txtFolioSolicitud.setText         (tablab.getValueAt(fila,  0).toString());
+		        		txtProveedor.setText              (tablab.getValueAt(fila,  1).toString());
+		        		txtaUso.setText                   (tablab.getValueAt(fila,  3).toString());
+		        		cmbEstablecimiento.setSelectedItem(tablab.getValueAt(fila,  4).toString());
+		        		txtCantidad.setText               (tablab.getValueAt(fila,  5).toString());
+		        		txtSolicitante.setText            (tablab.getValueAt(fila,  6).toString());
+		        		txtFechaSolicito.setText          (tablab.getValueAt(fila,  7).toString());
+		        		txtFechaAutorizo.setText          (tablab.getValueAt(fila,  9).toString());
+		        		txtautorizo.setText               (tablab.getValueAt(fila, 10).toString());	
+		        		cargar_datos_iniciales();
+		        		Guardar_actualizar="N";
+		        		cmbConcepto.requestFocus();
+		        		cmbConcepto.showPopup();
+		        		txaConcepto.setBackground(new Color(254,254,254));
+		        		dispose();
+	        		}else{
+						JOptionPane.showMessageDialog(null, "Para Que Un Registro Sea Agregado Para Pago Es Requerido Que Este Haya Sido Autorizado\nEl Que Esta Seleccionando Tiene Estatus De "+tablab.getValueAt(fila,  8).toString(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+	        		 return;
+	        		}
+	       		
+			    }
+				 
 			}
 			
 /////termina filtro busqueda de orden de gasto		
@@ -676,7 +630,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	public class Cat_Filtro_Referencia extends JDialog{
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
-		
         Obj_tabla  Objetotabla = new Obj_tabla();
 		
 		int columnas = 2,checkbox=-1;
@@ -692,9 +645,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			Objetotabla.Obj_Refrescar(tabla_Filtro_Ref,modelo_Filtro_Ref, columnas, comando, basedatos,pintar,checkbox);
 	    }
 		
-		DefaultTableModel modelo_Filtro_Ref = new DefaultTableModel(null,
-	            new String[]{"Folio", "Nombre"}
-				){
+		DefaultTableModel modelo_Filtro_Ref = new DefaultTableModel(null,new String[]{"Folio", "Nombre"}){
 		     @SuppressWarnings("rawtypes")
 			Class[] types = new Class[]{
 		    	java.lang.String.class,
@@ -715,40 +666,31 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		JTable tabla_Filtro_Ref = new JTable(modelo_Filtro_Ref);
 	    JScrollPane scroll_Filtro_Ref = new JScrollPane(tabla_Filtro_Ref);
 		
-		JTextField txtCodigo = new JTextField();
-		JTextField txtDescripcion = new JTextField();
-		
+		JTextField txtDescripcion  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String",tabla_Filtro_Ref,columnas);
 		public Cat_Filtro_Referencia() throws SQLException{
-			
+			this.setSize(510,650);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setModal(true);
 			
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
 			this.setTitle("Filtro De Beneficiario De La Orden De Pago En Efectivo");
 			campo.setBorder(BorderFactory.createTitledBorder("Selecciona El Beneficiario"));
 			campo.add(scroll_Filtro_Ref).setBounds(15,42,470,565);
-			campo.add(txtCodigo).setBounds(15,20,90,20);
-			campo.add(txtDescripcion).setBounds(104,20,360,20);
+			campo.add(txtDescripcion).setBounds(15,20,470,20);
 			
 			init_tabla();
 			agregar(tabla_Filtro_Ref);
 			cont.add(campo);
-			new Obj_Filtro_Dinamico(tabla_Filtro_Ref,"Codigo", txtCodigo.getText().toUpperCase(),"Nombre",txtDescripcion.getText(), "", "", "", "");
-			txtCodigo.addKeyListener(opFiltroLoco);
-			txtDescripcion.addKeyListener(opFiltroLoco);
-			txtDescripcion.addKeyListener(enterpasaraTabla);
-			txtDescripcion.addKeyListener(enterpasaraTablaENTER);
-			tabla_Filtro_Ref.addKeyListener(enterpasaraaOrden_Pago);
-
-			this.setSize(510,650);
-			this.setResizable(false);
-			this.setLocationRelativeTo(null);
-			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			
             this.addWindowListener(new WindowAdapter() {
                     public void windowOpened( WindowEvent e ){
                     	txtDescripcion.requestFocus();
                  }
             });
+            
+            getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+            getRootPane().getActionMap().put("escape", new AbstractAction(){ public void actionPerformed(ActionEvent e)  {    txtDescripcion.requestFocus();       	    }             });            
 		}
 		
 		public Object[][] Filtro_Cuentas( ){
@@ -759,78 +701,38 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			}
 			return null;
 	}
-		
 		private void agregar(final JTable tbl) {
-	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-		        public void mouseClicked(MouseEvent e) {
-		        	
-		        	if(e.getClickCount() == 2){
-		    			fila = tabla_Filtro_Ref.getSelectedRow();
-		    			int folio =  Integer.valueOf(tabla_Filtro_Ref.getValueAt(fila, 0).toString().trim());
-		    			folioBeneficiario= folio;
-		    			txtBeneficiario.setText(tabla_Filtro_Ref.getValueAt(fila, 1).toString());
-		    			dispose();
-		        	}
-		        }
-	        });
+			tbl.addMouseListener(new MouseListener() {
+				public void mouseReleased(MouseEvent e) {
+			 	 if(e.getClickCount() == 1){funcion_agregar();}
+				}
+				public void mousePressed(MouseEvent e) {}
+				public void mouseExited(MouseEvent e)  {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) {}
+			});
+			
+			tbl.addKeyListener(new KeyListener() {
+				public void keyPressed(KeyEvent e)  {
+					if(e.getKeyCode()==KeyEvent.VK_ENTER){
+						funcion_agregar();	
+					}
+				}
+				public void keyReleased(KeyEvent e)   {}
+				public void keyTyped   (KeyEvent e)   {}
+			});
 	    }
-		
-		int fila=0;
-		public void iniciarSeleccionConTeclado(){
-			Robot robot;
-			try {
-	            robot = new Robot();
-	            robot.keyPress(KeyEvent.VK_A);
-	            robot.keyRelease(KeyEvent.VK_A);
-	        } catch (AWTException e) {
-	            e.printStackTrace();
-	        }
- 	     };
- 	     
-		KeyListener opFiltroLoco = new KeyListener(){
-			public void keyReleased(KeyEvent arg0) {
-				new Obj_Filtro_Dinamico(tabla_Filtro_Ref,"Folio", txtCodigo.getText().toUpperCase(),"Nombre",txtDescripcion.getText(), "", "", "", "");
-			}
-			public void keyTyped(KeyEvent arg0) {}
-			public void keyPressed(KeyEvent arg0) {}		
-		};
-		
-		KeyListener enterpasaraTabla = new KeyListener() {
-			public void keyTyped(KeyEvent e){}
-			public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_DOWN){
-					tabla_Filtro_Ref.requestFocus();
-					tabla_Filtro_Ref.getSelectionModel().setSelectionInterval(0,0);;
-				}
-			}
-		};
-		
-		KeyListener enterpasaraTablaENTER = new KeyListener() {
-			public void keyTyped(KeyEvent e){}
-			public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER){
-					tabla_Filtro_Ref.requestFocus();
-					tabla_Filtro_Ref.getSelectionModel().setSelectionInterval(0,0);;
-				}
-			}
-		};
-		
-		KeyListener enterpasaraaOrden_Pago = new KeyListener() {
-			public void keyTyped(KeyEvent e){}
-			public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER){
-					fila = tabla_Filtro_Ref.getSelectedRow();
-	    			int folio =  Integer.valueOf(tabla_Filtro_Ref.getValueAt(fila, 0).toString().trim());
-	    			folioBeneficiario= folio;
-	    			txtBeneficiario.setText(tabla_Filtro_Ref.getValueAt(fila, 1).toString());
-	    			dispose();
-	    			txtBeneficiario.requestFocus();
-				}
-			}
-		};
+
+		public void funcion_agregar() {
+		   int fila = tabla_Filtro_Ref.getSelectedRow();
+		   fila = tabla_Filtro_Ref.getSelectedRow();
+			int folio =  Integer.valueOf(tabla_Filtro_Ref.getValueAt(fila, 0).toString().trim());
+			folioBeneficiario= folio;
+			txtBeneficiario.setText(tabla_Filtro_Ref.getValueAt(fila, 1).toString());
+			txaConcepto.requestFocus();
+   		    dispose();
+	    }
+		 
 	}
 	
 	//TODO FILTRO ORDEN DE PAGO
@@ -846,10 +748,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(1).setMinWidth(130);
 	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(3).setMinWidth(240);
 	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(4).setMinWidth(350);
-	    	
 			String comando="exec orden_de_gasto_pago_en_efectivo_filtro '"+fechaInicial+"'";
-			
-			System.out.println(comando);
 			String basedatos="26",pintar="si";
 			Objetotabla.Obj_Refrescar(tabla_Filtro_Ref,modelo_Filtro_Ref, columnas, comando, basedatos,pintar,checkbox);
 	    }

@@ -29,7 +29,7 @@ public class Cat_Aviso_Vencimiento_De_Contrato extends JDialog{
 	JTextField txtFiltrof = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
 	Connexion con = new Connexion();
 	Obj_tabla ObjTabf =new Obj_tabla();
-	int columnas = 9,checkbox=-1;
+	int columnas = 10,checkbox=-1;
 	public void init_tabla(){
     	this.tabla.getColumnModel().getColumn(0).setMinWidth(50);
     	this.tabla.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -38,9 +38,10 @@ public class Cat_Aviso_Vencimiento_De_Contrato extends JDialog{
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(80);
     	this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
     	this.tabla.getColumnModel().getColumn(5).setMinWidth(95);
-    	this.tabla.getColumnModel().getColumn(6).setMinWidth(200);
-    	this.tabla.getColumnModel().getColumn(7).setMinWidth(200);
-    	this.tabla.getColumnModel().getColumn(8).setMinWidth(350);
+    	this.tabla.getColumnModel().getColumn(6).setMinWidth(130);
+    	this.tabla.getColumnModel().getColumn(7).setMinWidth(180);
+    	this.tabla.getColumnModel().getColumn(8).setMinWidth(300);
+    	this.tabla.getColumnModel().getColumn(9).setMinWidth(350);
 		String comandof="exec sp_select_contratos_proximos_a_terminar";
 		String basedatos="26",pintar="si";
 		ObjTabf.Obj_Refrescar(tabla,modelo, columnas, comandof, basedatos,pintar,checkbox);
@@ -53,7 +54,7 @@ public class Cat_Aviso_Vencimiento_De_Contrato extends JDialog{
 		return types;
 	}
 	
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Empleado", "Fecha Ingreso","Contrato","Finaliza Contrato","Dias Trabajados","Establecimiento","Departamento","Puesto"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Empleado", "Fecha Ingreso","Contrato","Finaliza Contrato","Dias Trabajados","Establecimiento","Departamento","Puesto", "Tipo Incidencia"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -73,19 +74,14 @@ public class Cat_Aviso_Vencimiento_De_Contrato extends JDialog{
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setModal(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/list-icon-1440-32px.png"));
-		this.panel.setBorder(BorderFactory.createTitledBorder("Contratos Proximos A Terminar"));
-		this.setTitle("Colaboradores Con Contrato Proximo A Terminar");
-		
+		this.panel.setBorder(BorderFactory.createTitledBorder("Incidencias"));
+		this.setTitle("Colaboradores Con Pendiente >>Desarrollo Humano");
 		this.panel.add(txtFiltrof).setBounds  (5 ,15 ,ancho-15,20 ); 
 		this.panel.add(scroll_tabla).setBounds(5 ,35 ,ancho-15,530);
-		
 		init_tabla();
-		
 		cont.setBackground(Color.white);
 		txtFiltrof.addKeyListener(opFiltroNombre);
-	
 		cont.add(panel);
-		
 	}
 	
 	KeyListener opFiltroNombre = new KeyListener(){

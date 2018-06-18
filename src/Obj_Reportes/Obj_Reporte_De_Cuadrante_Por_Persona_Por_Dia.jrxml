@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Meta_y_Establecimiento.jrxml" language="groovy" pageWidth="226" pageHeight="790" columnWidth="226" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Meta_y_Establecimiento.jrxml" pageWidth="226" pageHeight="790" columnWidth="226" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
@@ -13,31 +13,98 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString language="SQL">
-		<![CDATA[exec reporte_de_cuadrante_por_folio_de_colaborador  1847,1]]>
+		<![CDATA[exec cuadrantes_reporte_por_folio_de_colaborador  1847,1]]>
 	</queryString>
-	<field name="establecimiento" class="java.lang.String"/>
-	<field name="folio" class="java.lang.Integer"/>
-	<field name="departamento" class="java.lang.String"/>
-	<field name="nombre_colaborador" class="java.lang.String"/>
-	<field name="puesto" class="java.lang.String"/>
-	<field name="folio_cuadrante" class="java.lang.Integer"/>
-	<field name="nombre_cuadrante" class="java.lang.String"/>
-	<field name="actividad" class="java.lang.String"/>
-	<field name="tipo_de_respuesta" class="java.lang.String"/>
-	<field name="hora_inicio" class="java.lang.String"/>
-	<field name="hora_final" class="java.lang.String"/>
-	<field name="tolerancia" class="java.lang.String"/>
-	<field name="temporada" class="java.lang.String"/>
-	<field name="estatus_colaborador" class="java.lang.String"/>
-	<field name="puesto_reporta" class="java.lang.String"/>
-	<field name="responsabilidades" class="java.lang.String"/>
-	<field name="objetivos" class="java.lang.String"/>
-	<field name="fecha_ultima_modificacion_cuadrante" class="java.lang.String"/>
-	<field name="usuario_ultima_modificacion" class="java.lang.Integer"/>
-	<field name="fecha_generacion_reporte" class="java.lang.String"/>
-	<field name="entradahoradiahorario" class="java.lang.String"/>
-	<field name="salida" class="java.lang.String"/>
-	<field name="tiempo_comida" class="java.lang.String"/>
+	<field name="orden" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="orden"/>
+	</field>
+	<field name="folio_actividad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_actividad"/>
+	</field>
+	<field name="actividad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="actividad"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	</field>
+	<field name="hora_inicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hora_inicio"/>
+	</field>
+	<field name="hora_final" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hora_final"/>
+	</field>
+	<field name="dia_semana" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.label" value="dia_semana"/>
+	</field>
+	<field name="folio_cuadrante" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_cuadrante"/>
+	</field>
+	<field name="nombre_cuadrante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_cuadrante"/>
+	</field>
+	<field name="establecimiento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="establecimiento"/>
+	</field>
+	<field name="departamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="departamento"/>
+	</field>
+	<field name="puesto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="puesto"/>
+	</field>
+	<field name="puesto_reporta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="puesto_reporta"/>
+	</field>
+	<field name="responsabilidades" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="responsabilidades"/>
+	</field>
+	<field name="objetivos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="objetivos"/>
+	</field>
+	<field name="folio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+	</field>
+	<field name="nombre_colaborador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_colaborador"/>
+	</field>
+	<field name="tipo_de_respuesta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_de_respuesta"/>
+	</field>
+	<field name="tolerancia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tolerancia"/>
+	</field>
+	<field name="temporada" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="temporada"/>
+	</field>
+	<field name="estatus_colaborador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estatus_colaborador"/>
+	</field>
+	<field name="COLUMN_22" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="puesto_reporta"/>
+	</field>
+	<field name="entradahoradiahorario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="entradahoradiahorario"/>
+	</field>
+	<field name="salida" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="salida"/>
+	</field>
+	<field name="tiempo_comida" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tiempo_comida"/>
+	</field>
+	<field name="dia_actual" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="dia_actual"/>
+	</field>
+	<field name="dia_descanso" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="dia_descanso"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="respuesta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="respuesta"/>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="observacion"/>
+	</field>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{temporada}]]></groupExpression>
 		<groupHeader>
@@ -167,7 +234,7 @@
 				<text><![CDATA[Actividad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="143" width="20" height="16" uuid="56df0e92-78e6-4d19-83a4-265db4394887"/>
+				<reportElement x="165" y="143" width="20" height="16" uuid="56df0e92-78e6-4d19-83a4-265db4394887"/>
 				<textElement textAlignment="Center">
 					<font size="6" isBold="true"/>
 				</textElement>
@@ -183,13 +250,14 @@ Fin]]></text>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="26" splitType="Prevent">
+		<band height="25" splitType="Prevent">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="12" y="1" width="153" height="24" uuid="9d079bbf-cfcf-4225-a380-20e31385f631"/>
 				<textElement>
-					<font size="9"/>
+					<font size="8" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
 			</textField>
@@ -216,15 +284,17 @@ Fin]]></text>
 				<textFieldExpression><![CDATA[$F{hora_final}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="185" y="-1" width="34" height="26" uuid="ccf14329-d1d2-460d-845a-7583f01f68bb">
+				<reportElement x="185" y="-1" width="26" height="26" uuid="ccf14329-d1d2-460d-845a-7583f01f68bb">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Left"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{tipo_de_respuesta}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="12" y="25" width="213" height="1" uuid="6407e8b8-f8ec-4394-84fa-c9577068c24b">
+				<reportElement x="12" y="0" width="213" height="1" uuid="6407e8b8-f8ec-4394-84fa-c9577068c24b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>

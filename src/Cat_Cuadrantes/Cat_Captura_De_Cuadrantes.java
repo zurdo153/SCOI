@@ -172,13 +172,13 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
     JTable tablaDomingo = new JTable(modelDomingo);
     public JScrollPane Scroll_TablaDomingo = new JScrollPane(tablaDomingo);
 	
-	JTextField txtBuscarLunes    = new Componentes().text(new JCTextField()  , ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Lunes<<<"    , 300, "String");
-	JTextField txtBuscarMartes   = new Componentes().text(new JCTextField()  , ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Martes<<<"   , 300, "String");
-	JTextField txtBuscarMiercoles= new Componentes().text(new JCTextField()  , ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Miercoles<<<", 300, "String");
-	JTextField txtBuscarJueves   = new Componentes().text(new JCTextField()  , ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Jueves<<<"   , 300, "String");
-	JTextField txtBuscarViernes  = new Componentes().text(new JCTextField()  , ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Viernes<<<"  , 300, "String");
-	JTextField txtBuscarSabado   = new Componentes().text(new JCTextField()  , ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Sabado<<<"   , 300, "String");
-	JTextField txtBuscarDomingo  = new Componentes().text(new JCTextField()  , ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Domingo<<<"  , 300, "String");
+	JTextField txtBuscarLunes      = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Lunes<<<"    ,500 , "String",tablaLunes    ,columnas );
+	JTextField txtBuscarMartes     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Martes<<<"   ,500 , "String",tablaMartes   ,columnas );
+	JTextField txtBuscarMiercoles  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Miercoles<<<",500 , "String",tablaMiercoles,columnas );
+	JTextField txtBuscarJueves     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Jueves<<<"   ,500 , "String",tablaJueves   ,columnas );
+	JTextField txtBuscarViernes    = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Viernes<<<"  ,500 , "String",tablaViernes  ,columnas );
+	JTextField txtBuscarSabado     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Sabado<<<"   ,500 , "String",tablaSabado   ,columnas );
+	JTextField txtBuscarDomingo    = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Domingo<<<"  ,500 , "String",tablaDomingo  ,columnas );
 	
 	JPasswordField txtFolio = new Componentes().textPassword(new JPasswordField(), "Clave", 100);
 			
@@ -203,7 +203,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	JCButton btnCapturaPersonal = new JCButton("Captura De Mi Cuadrante Personal"  ,"Usuario.png"                                                      ,"Azul");
 	JCButton btnCapturaNivelJera= new JCButton("Captura De Cuadrante Por Nivel Jerarquico","plan-de-organizacion-de-la-red-de-sitio-icono-5788-16.png" ,"Azul");
 	JCButton btnMenuPrincipal   = new JCButton("Volver Al Menu Principal","folder-home-home-icone-5663-16.png"                                         ,"Azul");
-	JCButton btnGenerarRPersonal= new JCButton("Imprimir Cuadrante De Hoy"   ,"How-to.png"                                                             ,"Azul"); 
+ 	JCButton btnGenerar         = new JCButton("Cuadrante Personal Actividad"      ,"Lista.png"                                                        ,"Azul"); 
+ 	JCButton btnGenerarDetalle  = new JCButton("Cuadrante Personal Descripcion"    ,"Lista.png"                                                        ,"Azul"); 
 	
 	JToolBar toolbarLunes         = new JToolBar();
 	JCButton btnAgregLunes        = new JCButton("Agregar Actividad Lunes","double-arrow-icone-3883-16.png"  ,"Azul" );
@@ -300,12 +301,15 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			this.menu_toolbar.add(btnMenuPrincipal);
 			this.menu_toolbar.addSeparator(       );
 			this.menu_toolbar.addSeparator(       );
-			this.menu_toolbar.add(btnGenerarRPersonal);
+			this.menu_toolbar.add(btnGenerar      );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.add(btnGenerarDetalle);
 			this.menu_toolbar.setFloatable(false);
 			
 			this.panel.add(new JLabel("Folio:")).setBounds              (x     ,y      ,width      ,height );
 			this.panel.add(txtFolio).setBounds                          (x+=30 ,y      ,width      ,height );
-			this.panel.add(menu_toolbar).setBounds                      (x+=120,y      ,width*5    ,height );
+			this.panel.add(menu_toolbar).setBounds                      (x+=120,y      ,width*7    ,height );
 			getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape"                );
 	        getRootPane().getActionMap().put("escape", new AbstractAction(){ public void actionPerformed(ActionEvent e){ btnDeshacer.doClick(); }  });
 		   }
@@ -317,9 +321,12 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			this.menu_toolbar.add(btnMenuPrincipal);
 			this.menu_toolbar.addSeparator(       );
 			this.menu_toolbar.addSeparator(       );
-			this.menu_toolbar.add(btnGenerarRPersonal);
+			this.menu_toolbar.add(btnGenerar      );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.addSeparator(       );
+			this.menu_toolbar.add(btnGenerarDetalle);
 			this.menu_toolbar.setFloatable(false);
-			this.panel.add(menu_toolbar).setBounds                      (x     ,y      ,width*4      ,height );
+			this.panel.add(menu_toolbar).setBounds                      (x     ,y      ,width*7      ,height );
 		   }
 			this.panel.add(pestanas).setBounds                          (x=15  ,y+=30  ,990        ,590    );
 			this.Principal.add(new JLabel("Colaborador:")).setBounds    (x     ,y      ,width=100  ,height );
@@ -363,7 +370,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		this.btnDeshacer.addActionListener  (deshacer                 );
 		this.txtFolio.addKeyListener        (busqueda_datos_por_gafete); 
 		this.btnMenuPrincipal.addActionListener(volver_al_menu_principal);
-        this.btnGenerarRPersonal.addActionListener(opGenerar);
+        this.btnGenerar.addActionListener(opGenerar);
+        this.btnGenerarDetalle.addActionListener(opGenerar);
 		cont.add(panel);
 		Seleccionar_Respuesta(tablaLunes);
 		Seleccionar_Respuesta(tablaMartes);
@@ -382,18 +390,25 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 		 cargar_datos_tablas();
 		 panelEnabledTrue();
 	}
+	
 	ActionListener opGenerar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			String basedatos="2.26";
 			String vista_previa_reporte="si";
 			int vista_previa_de_ventana=0;
-			String comando="exec reporte_de_cuadrante_por_folio_de_colaborador "+txtfolioColaborado.getText()+","+0;
-			String reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia.jrxml";
+			String reporte ="";
+			String comando="exec cuadrantes_reporte_por_folio_de_colaborador "+txtfolioColaborado.getText()+","+0;
+
+			if(e.getActionCommand().equals("Cuadrante Personal Actividad")) {		
+			  reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia.jrxml";
+			}else {
+			  reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia_Detalle_Descripcion.jrxml";
+			}
 			
-				     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-				     return;
+		     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+		      return;
 		     }
-	};		
+	};	
 	
 	public void init_tablalunes(){
 		ObjTab.tabla_mascara(tablaLunes,-1,-1);
@@ -534,7 +549,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 			    tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 					@SuppressWarnings("deprecation")
 					public void mousePressed(MouseEvent e) {
-			        	if(e.getClickCount()==1){
+			        	if(e.getClickCount()!=0){
 	                         if(tbl.getSelectedColumn()==5){
 	     		        		int fila =tbl.getSelectedRow();
 	    		    	    	if(tbl.getValueAt(fila,8).equals("Extra") ){
@@ -654,7 +669,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 				};		
 				
 				
-		private class CargaDatosDelCombo extends DefaultCellEditor{
+	 private class CargaDatosDelCombo extends DefaultCellEditor{
 	        @SuppressWarnings("rawtypes")
 			public CargaDatosDelCombo(){
 	        	super(new JComboBox());
@@ -1034,8 +1049,8 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 				return;	
 	    	}
 	    	
-	    	if(tablaparametro.getValueAt(tablaparametro.getSelectedRow(),8).equals("Cuadrante") ){
-				JOptionPane.showMessageDialog(null, "Esta Fila Es Una Actividad De Tu Cuadrante , Solo Puedes Eliminar Actividades Extras", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	    	if(tablaparametro.getValueAt(tablaparametro.getSelectedRow(),8).equals("Cuadrante")||tablaparametro.getValueAt(tablaparametro.getSelectedRow(),8).equals("Asignada") ){
+				JOptionPane.showMessageDialog(null, "Esta Fila Es Una Actividad De Tu Cuadrante y/o Asignada \n Solo Puedes Eliminar Actividades Extras", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;	
 	    	}
 	    	
@@ -1519,8 +1534,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 				Grupodias.add(chbSabado);
 				Grupodias.add(chbDomingo);
 			
-			txa_Resultado_Configuracion.setLineWrap(true); 
-			txa_Resultado_Configuracion.setWrapStyleWord(true);
+			txa_Resultado_Configuracion.setBackground(new Color(255,255,255));
 			
 			btnAprovar.addActionListener(aceptar);
 	        

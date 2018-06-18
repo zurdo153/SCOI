@@ -44,10 +44,8 @@ public class Generacion_Reportes {
 				Statement stmt = null;
 				
 				if (vista_previa_de_ventana==0){
-					vista_previa_reporte=usuario.buscar(usuario.LeerSession().getFolio()).getVista_previa_impresion();
+					vista_previa_reporte=usuario.buscar(usuario.LeerSession().getFolio(),"").getVista_previa_impresion();
 				}
-	
-					
 				
 				if (basedatos=="2.200"){
 					try {
@@ -195,7 +193,7 @@ public class Generacion_Reportes {
 		Statement stmt = null;
 		
 		if (vista_previa_de_ventana==0){
-			vista_previa_reporte=usuario.buscar(usuario.LeerSession().getFolio()).getVista_previa_impresion();
+			vista_previa_reporte=usuario.buscar(usuario.LeerSession().getFolio(),"").getVista_previa_impresion();
 		}
 		
 		if (basedatos=="2.200"){

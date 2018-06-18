@@ -12,6 +12,7 @@ import javax.swing.JToolBar;
 
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Root extends JFrame {
@@ -28,7 +29,7 @@ public class Cat_Root extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
 	
-	public JButton btn_guardar = new JButton("Guardar",new ImageIcon("Imagen/Guardar.png"));
+	public JCButton btn_guardar     = new JCButton("Guardar"   ,"Guardar.png"                         ,"Azul");
 	public JButton btn_refrescar = new JButton(new ImageIcon("Imagen/refrescar-volver-a-cargar-las-flechas-icono-4094-16.png"));
 	
 	public Cat_Root(){

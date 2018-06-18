@@ -18,6 +18,8 @@ public class Obj_Reportes_De_Ventas {
 	String presentado        ;
 	String tallas        ;
 	String asignaciones  ;
+	String localizaciones  ;
+	String pasillos  ;
 	                         
 	public Obj_Reportes_De_Ventas(){
 		  fecha_inicio 	 ="";
@@ -33,8 +35,30 @@ public class Obj_Reportes_De_Ventas {
 		  presentado    = "";
 		  tallas		= "";
 	      asignaciones  = "";
+	      localizaciones= "";
+	      pasillos      = "";
+	      
 	}
 
+
+	public String getLocalizaciones() {
+		return localizaciones;
+	}
+
+
+	public void setLocalizaciones(String localizaciones) {
+		this.localizaciones = localizaciones;
+	}
+
+
+	public String getPasillos() {
+		return pasillos;
+	}
+
+
+	public void setPasillos(String pasillos) {
+		this.pasillos = pasillos;
+	}
 
 
 	public String getPresentado() {
@@ -137,8 +161,8 @@ public class Obj_Reportes_De_Ventas {
 		return new BuscarSQL().Reporte_De_Ventas(this);
 	}
 	
-	public Object[][] reporte_de_competencias(int cantidad_de_columnas, int tipo) throws SQLException{
-		return new BuscarSQL().Reporte_De_Competencia(this,cantidad_de_columnas,tipo);
+	public Object[][] reporte_de_competencias(int cantidad_de_columnas, int tipo,String establecimiento) throws SQLException{
+		return new BuscarSQL().Reporte_De_Competencia(this,cantidad_de_columnas,tipo,establecimiento);
 	}
 	public int cantidad_de_competidores(){
 		return new BuscarSQL().Numero_De_Competidores();

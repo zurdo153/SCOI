@@ -368,15 +368,15 @@ public class Cat_Retiros_A_Cajeros extends JFrame {
 /////////CONSULTA EL DE LOS RETIROS YA GUARDADOS
    	public float Consulta_El_Importe__de_los_Retiros_Guardados(){
    		importe_retiros_guardados=0;
-   		String query_importe_retiros="exec sp_consulta_acumulado_de_retiros_a_cajeros_del_dia_2 "+folio_empleado+",'"+Asignacion.trim()+"'";
+   		String query_importe_retiros="exec retiros_a_cajeros_consulta_acumulado_de_retiros_de_dia "+folio_empleado+",'"+Asignacion.trim()+"'";
 		Statement s;
-		ResultSet rs2;
-		
+		ResultSet rs2;		
+
 		try {
 			s = new Connexion().conexion().createStatement();
 			rs2 = s.executeQuery(query_importe_retiros);
 			while(rs2.next()){
-				importe_retiros_guardados = rs2.getFloat("importe_retiro");
+				importe_retiros_guardados = rs2.getFloat(1);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -446,9 +446,9 @@ importe_nuevo_devuelto           = Consulta_de_Importe_Nuevo();
 importe_retiros_guardados        = Consulta_El_Importe__de_los_Retiros_Guardados();	
 valor_a_retirar_deacuerdo_al_dia = Consulta_del_Importe_del_retiro_del_dia();
 
-//System.out.println("importe_retiros_guardados:"+importe_retiros_guardados);
-//System.out.println("importe_nuevo_devuelto:"+importe_nuevo_devuelto);
-//System.out.println("valor_a_retirar_deacuerdo_al_dia:"+valor_a_retirar_deacuerdo_al_dia);
+System.out.println("importe_retiros_guardados:"+importe_retiros_guardados);
+System.out.println("importe_nuevo_devuelto:"+importe_nuevo_devuelto);
+System.out.println("valor_a_retirar_deacuerdo_al_dia:"+valor_a_retirar_deacuerdo_al_dia);
 
 if(importe_nuevo_devuelto-importe_retiros_guardados >= valor_a_retirar_deacuerdo_al_dia){
 	
@@ -1018,9 +1018,7 @@ JOptionPane.showMessageDialog(null, "Error en Cat_Consulta_De_Status_De_Pedidos_
 			
 			public CapturarPedido(int folioEmp,String empleado, String status_pedido, String tipo_usuario){
 				activarColumna = status_pedido;
-				
-//				pedirRecibir = true     --->   activar recibir pedido	
-//				pedirRecibir = true     --->   activar realizar pedido
+
 				boolean entregoMonedas = false;
 				switch(tipo_usuario){
 					case "CAJERA":	this.setTitle(status_pedido.equals("RECIBIDO")?"Recibir Pedido De Monedas ("+tipo_usuario+")":"Realizar Pedido De Monedas ("+tipo_usuario+")");break;

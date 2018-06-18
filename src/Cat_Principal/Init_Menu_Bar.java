@@ -26,7 +26,7 @@ public class Init_Menu_Bar extends Init_Login{
     	JMenuBar Barra = new JMenuBar();
 	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.274");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.286");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/LOGO SCOI 64 X 64  PIX-01.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -197,7 +197,7 @@ public class Init_Menu_Bar extends Init_Login{
 		public void actionPerformed(ActionEvent arg0) {
 			if(txtContrasena.getText().length() != 0){
 				 Obj_MD5 algoritmo = new Obj_MD5();
-			 	 Obj_Usuario user = new Obj_Usuario().buscar(Integer.parseInt(txtFolio.getText()));
+			 	 Obj_Usuario user = new Obj_Usuario().buscar(Integer.parseInt(txtFolio.getText()),cmbcolores.getSelectedItem().toString().trim());
 				if(!algoritmo.cryptMD5(txtContrasena.getText(), "izagar").trim().equals(user.getContrasena().trim())){
 					JOptionPane.showMessageDialog(null, "La Contraseña No Es Válida...","Aviso",JOptionPane.WARNING_MESSAGE , new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					txtContrasena.setText("");
@@ -223,6 +223,7 @@ public class Init_Menu_Bar extends Init_Login{
 	    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
 	    	 		fotolb.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(140, 110, Image.SCALE_DEFAULT)));
 	    	 		
+	    	 		cmbcolores.setVisible(false);
 					if(Integer.valueOf(buscarRegistro_Contrato()[0])>0){
 						if(Integer.valueOf(buscarRegistro_Contrato()[1])>0){
 							new Cat_Aviso_Vencimiento_De_Contrato().setVisible(true);
@@ -318,7 +319,6 @@ public class Init_Menu_Bar extends Init_Login{
 			btnAceptar.setEnabled(false);
 			btnBuscar.setEnabled(true);
             btnBanco.setEnabled(false);
-			btnInasistencia.setEnabled(false);
 			btnCaja.setEnabled(false);
 			btnSolSer.setEnabled(false);
 			btnCortes_Cajeros.setEnabled(false);

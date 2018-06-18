@@ -218,10 +218,10 @@ public class Cat_Clientes_Ventas extends JFrame{
 				return;
 			}else{	
 				 clientes.setFolio      (Integer.valueOf(txtFolio.getText()));
-			     clientes.setNombre     (txtNombre.getText());    
-			     clientes.setAp_paterno (txtAp_Paterno.getText());  
-			     clientes.setAp_materno (txtAp_Materno.getText());  
-			     clientes.setDomicilio  (txtDomicilio.getText());  
+			     clientes.setNombre     (txtNombre.getText().toUpperCase().trim());    
+			     clientes.setAp_paterno (txtAp_Paterno.getText().toUpperCase().trim());  
+			     clientes.setAp_materno (txtAp_Materno.getText().toUpperCase().trim());  
+			     clientes.setDomicilio  (txtDomicilio.getText().toUpperCase().trim());  
 			     clientes.setTelefono   (txtTelefono.getText());  
 			     clientes.setEstatus    (cmb_status.getSelectedItem().toString());  
 			     clientes.setGuardar_actualizar(guardar_actualizar);

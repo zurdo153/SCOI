@@ -267,10 +267,6 @@ public class Cat_Actividades_Relacionadas extends JFrame{
 						return;
 					}
 				}else{
-					if(new Obj_Actividades_Relacionadas().existe(txtProyecto.getText().toUpperCase().trim())){
-						JOptionPane.showMessageDialog(null,"EL cuadrante con el nombre ya existe debe cambiar el nombre", "Aviso!", JOptionPane.ERROR_MESSAGE);
-						return;
-					}else{
 						Obj_Actividades_Relacionadas ralacion = new Obj_Actividades_Relacionadas();
 						
 						ralacion.setFolio(Integer.parseInt(txtFolioProyecto.getText()));
@@ -287,7 +283,6 @@ public class Cat_Actividades_Relacionadas extends JFrame{
 							JOptionPane.showMessageDialog(null,"Ha ocurrido un error mientras se intentaba guardar el registro","Error",JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-					}
 				}
 			}else{
 				JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+ValidaError(), "Aviso", JOptionPane.WARNING_MESSAGE);

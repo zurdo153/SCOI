@@ -2,7 +2,6 @@ package Obj_Lista_de_Raya;
 
 import java.sql.SQLException;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
@@ -15,10 +14,10 @@ public class Obj_Prestamos {
     private double saldo;
     private double abonos;
     private String fecha;
-    private int status;
+    private String status;
     private int status_descuento;
     private int tipo_prestamo;
-
+    private String Nuevo_Modificar;
 
 	public Obj_Prestamos(){
     	this.folio_empleado=0;
@@ -26,13 +25,21 @@ public class Obj_Prestamos {
     	this.cantidad =0.0;
     	this.descuento=0.0;
     	this.fecha = "";
-    	this.status=0;
+    	this.status="";
     	this.saldo=0.0;
     	this.abonos=0.0;
     	this.status_descuento=0;
     	this.tipo_prestamo=0;
-
+    	this.Nuevo_Modificar="";
     }
+
+	public String getNuevo_Modificar() {
+		return Nuevo_Modificar;
+	}
+
+	public void setNuevo_Modificar(String nuevo_Modificar) {
+		Nuevo_Modificar = nuevo_Modificar;
+	}
 
 	public int getFolio() {
 		return folio;
@@ -107,14 +114,14 @@ public class Obj_Prestamos {
 		this.fecha = fecha;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public int getStatus_descuento() {
 		return status_descuento;
 	}
@@ -131,14 +138,7 @@ public class Obj_Prestamos {
 		this.tipo_prestamo = tipo_prestamo;
 	}
 	
-	
 	public boolean guardar(){ return new GuardarSQL().Guardar_prestamo(this); }
-	
-	
-	public Obj_Prestamos buscar(int folio) throws SQLException{ return new BuscarSQL().Prestamo(folio); }
-	
-	public boolean actualizar(int folio){ return new ActualizarSQL().prestamo(this,folio); }
-	
 	public Obj_Prestamos maximo() throws SQLException{ return new BuscarSQL().maximoPrestamo(); }
 
 }

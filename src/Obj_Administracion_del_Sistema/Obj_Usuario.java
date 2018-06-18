@@ -19,6 +19,7 @@ public class Obj_Usuario {
 	private String vista_previa_impresion;
 	private int status;
 	private int acceso_a_costos_y_precio_de_venta;
+	private String color;
 	
 	 int RFuente;
 	 int GFuente;
@@ -38,6 +39,16 @@ public class Obj_Usuario {
 	 
 	 int tamanio_fuente;
 	
+	public String getColor() {
+		return color;
+	}
+
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
 	public int getTamanio_fuente() {
 		return tamanio_fuente;
 	}
@@ -273,9 +284,9 @@ public class Obj_Usuario {
 
 	public boolean guardar(){ return new GuardarSQL().Guardar_Usuario(this); }
 	
-	public Obj_Usuario buscar(int folio){ 
+	public Obj_Usuario buscar(int folio, String Color){ 
 		try {
-			return new BuscarSQL().Usuario(folio);
+			return new BuscarSQL().Usuario(folio, Color);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -26,7 +26,6 @@ import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_3;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
@@ -630,87 +629,6 @@ public class GuardarSQL {
 		return true;
 	}
 	
-	public boolean Guardar_Proyecto(Obj_Actividades_Por_Proyecto proyec){
-		String query = "exec sp_insert_proyecto ?,?,?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setInt	(1, proyec.getFolio());
-			pstmt.setString	(2, proyec.getProyecto().toUpperCase().trim());
-			pstmt.setString	(3, proyec.getDescripcion().toUpperCase().trim());
-			pstmt.setString	(4, proyec.getNivel_critico().trim());
-			pstmt.setInt	(5, proyec.getStatus());
-			pstmt.setString	(6, proyec.getFecha_inicial());
-			pstmt.setString	(7, proyec.getFecha_final());
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto ] Insert  SQLException: sp_insert_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto ] Insert  SQLException: sp_insert_proyecto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto ] Insert  SQLException: sp_insert_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Guardar_Proyecto_Tabla(Obj_Actividades_Por_Proyecto proyect, String[][] tabla){
-		String querytabla = "exec sp_insert_tabla_proyecto ?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtTabla = null;
-		try {
-			con.setAutoCommit(false);
-			pstmtTabla = con.prepareStatement(querytabla);
-			for(int i=0; i<tabla.length; i++){
-				pstmtTabla.setInt(1, proyect.getFolio());
-				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmtTabla.setString(3, tabla[i][3].toString().trim().toUpperCase());
-				pstmtTabla.setString(4, tabla[i][4].toString().trim());
-				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][2]) ? 1 : 0);
-				pstmtTabla.executeUpdate();
-			}
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada Guardar_Proyecto_Tabla");
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Proyecto_Tabla ] Insert  SQLException: sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}		
-		return true;
-	}
-	
 	public boolean opcion_respuesta(Obj_Opciones_De_Respuestas respuesta){
 		String query = "exec sp_insert_opciones_respuesta	?,?,?";
 		Connection con = new Connexion().conexion();
@@ -1227,23 +1145,25 @@ public class GuardarSQL {
 	}
 	
 	public boolean Guardar_prestamo(Obj_Prestamos pres){
-		String query = "exec sp_insert_prestamo ?,?,?,?,?,?,?,?,?,?";
+		String query = "exec prestamo_guardar_actualizar ?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			pstmt.setInt(1,pres.getFolio_empleado());
-			pstmt.setString(2, pres.getNombre_Completo().toUpperCase());
-			pstmt.setString(3, pres.getFecha());
-			pstmt.setDouble(4, pres.getCantidad());
-			pstmt.setDouble(5, pres.getDescuento());
+			pstmt.setInt    (1,  pres.getFolio_empleado());
+			pstmt.setString (2,  pres.getNombre_Completo().toUpperCase());
+			pstmt.setString (3,  pres.getFecha());
+			pstmt.setDouble (4,  pres.getCantidad());
+			pstmt.setDouble (5,  pres.getDescuento());
 			
-			pstmt.setString(6, "1");
-			pstmt.setDouble(7, pres.getSaldo());
-			pstmt.setString(8, "1");
-			pstmt.setDouble(9, 0);
-			pstmt.setDouble(10, pres.getTipo_prestamo());
+			pstmt.setString (6,  pres.getStatus());
+			pstmt.setDouble (7,  pres.getSaldo());
+			pstmt.setInt    (8,  pres.getStatus_descuento());
+			pstmt.setDouble (9,  pres.getAbonos());
+			pstmt.setDouble (10, pres.getTipo_prestamo());
+			pstmt.setString (11, pres.getNuevo_Modificar());
+			
 			pstmt.executeUpdate();
 			con.commit();
 			
@@ -3768,22 +3688,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	}
 	
 	public boolean Guardar_captura_de_competencia(Obj_Cotizaciones_De_Un_Producto Cotizacion_Producto, String[][] comp){
-//			String query = "exec sp_insert_cotizacion_de_un_productos_en_proveedores ?,?,?,?,?,?,?,?,?,?,?,? ";
-		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?,?";
-		
-		System.out.print(query);
-			
-		
-		System.out.println(Cotizacion_Producto.getCod_Prod().toUpperCase().trim());
-		System.out.println(Cotizacion_Producto.getUltimo_Costo());
-		System.out.println(Cotizacion_Producto.getCosto_Promedio());
-		System.out.println(Cotizacion_Producto.getPrecio_de_venta());
-		System.out.println("1");
-		System.out.println("22.1");
-		System.out.println(usuario.getFolio());
-		System.out.println(Cotizacion_Producto.getFecha().toString().trim());
-		System.out.println(Cotizacion_Producto.getPrecio_de_venta_normal());
-		
+		String query = "exec sp_insert_precios_competencia ?,?,?,?,?,?,?,?,?,?";		
 		
 			Connection con = new Connexion().conexion_IZAGAR();
 			PreparedStatement pstmt = null;
@@ -3805,6 +3710,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 				        pstmt.setInt(7,  usuario.getFolio());   
 				        pstmt.setString(8, Cotizacion_Producto.getFecha().toString().trim());
 				        pstmt.setDouble(9, Cotizacion_Producto.getPrecio_de_venta_normal());
+				        pstmt.setString(10, String.valueOf(comp[i][2].toString())); 
 				        
 						pstmt.executeUpdate();
 					}
@@ -6648,7 +6554,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		int cantidad_filas=cuadrante.getTabla_actividades().length;	
 		int dia=0;
 		String query1 = "exec cuadrantes_captura_borrado_para_actualizacion ?,?" ;
-		String query = "EXEC cuadrantes_captura_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
+		String query  = "exec cuadrantes_captura_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmt1 = null;
@@ -7936,6 +7842,125 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return ventas_clientes;
 	}
 	
+	public boolean Guardar_Actividad_de_cuadrante_jerarquico(Obj_Actividades_De_Una_Planeacion Actividades_plan, Obj_Opciones_De_Respuesta opRespuesta, Obj_Prioridad_Y_Ponderacion opPonderacion, Obj_Seleccion_De_Usuarios usuarios, Obj_Frecuencia_De_Actividades frecuencia, int folio_empleado){
+//		int folio_actividad=;
+		 String hasta_que_se_cumpla=(String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"H":"E";
+		 String fecha_de_inicio=(frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?frecuencia.getFh_unica_repeticion().toString().trim():(frecuencia.getFecha_inicio_duracion().toString().trim()) ;
+		Actividades_plan.setFolio( busca_y_actualiza_proximo_folio(64) );
+		String query ="exec cuadrantes_actividades_asignacion_jerarquica_insert_y_actualiza ?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?,?,?,?,? ,?";
+
+		String querytabla ="  DECLARE @fecha_final_insert datetime ,@tipo_programacion char(1)='"+frecuencia.getTipo_de_frecuencia().toString()+"' ,@hasta_que_se_cumpla_en char(1)='"+hasta_que_se_cumpla
+				          +"'        ,@fecha_inicio datetime='"+fecha_de_inicio
+		  		          +"'         ,@fecha_final datetime='"+frecuencia.getFecha_final_duracion().toString().trim()
+		  		          +"'  select @fecha_final_insert=case when @tipo_programacion='U'  and @hasta_que_se_cumpla_en='E' then convert(varchar(15),@fecha_inicio,103)+' 23:59:59' else @fecha_final  end"
+		  		          +"     INSERT INTO cuadrantes_actividades_asignadas_por_jerarquia_colaboradores (folio_actividad                ,folio_empleado ,fecha_final         )"+ 
+				                                                                             "     VALUES ("+Actividades_plan.getFolio()+",?              ,@fecha_final_insert )";
+		Connection con = new Connexion().conexion();  
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement pstmt     = con.prepareStatement(query     );
+			PreparedStatement pstmtabla = con.prepareStatement(querytabla);
+			
+			//@folio_actividad int, @descripcion_de_la_actividad varchar(250), @hora_inicio time(2), @hora_final time(2), @usuario_asigna int, @status_actividad char(1),
+			//@tipo_programacion char(1), @hasta_que_se_cumpla_en char(1), @fecha_inicio datetime, @fecha_final datetime, @sucede char(1), @se_repite_cada tinyint, @el_dia tinyint, 
+			//@domingo bit, @lunes bit, @martes bit, @miercoles bit, @jueves bit, @viernes bit, @sabado bit,
+			//@tipo_respuesta tinyint, @exige_evidencia char(1), @exige_observacion char(1), @prioridad char(1), @ponderacion tinyint, @Guardar_Actualizar char(1)
+			//actividades
+//			System.out.println(Actividades_plan.getFolio() );;
+//			System.out.println(Actividades_plan.getDescripcion_de_la_actividad().toString()  );;
+//			System.out.println(Actividades_plan.getHora_inicia().toString()   );;
+//			System.out.println(Actividades_plan.getHora_termina().toString()  );;
+//			System.out.println(usuario.getFolio()    );;
+//			System.out.println(Actividades_plan.getEstatus_Actividad().toString() );;
+//			System.out.println("////////Frecuencia"    );;
+//			System.out.println(frecuencia.getTipo_de_frecuencia().toString()  );;
+//			System.out.println((String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"H":"E" );;
+//			System.out.println((frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?frecuencia.getHora_unica_repeticion().toString().trim():(frecuencia.getFecha_inicio_duracion().toString().trim()) );;
+//			System.out.println(frecuencia.getFecha_final_duracion().toString().trim()  );;
+//			System.out.println(frecuencia.getSucede().toString().trim() );;
+//			System.out.println(frecuencia.getSe_repite_cada()   );;
+//			System.out.println(Integer.valueOf(frecuencia.getMes1())  );;
+//			
+//			System.out.println((String.valueOf(frecuencia.isDomingo()).toString().equals("true"))  ?"1":"0"  );;
+//			System.out.println((String.valueOf(frecuencia.isLunes()).toString().equals("true"))    ?"1":"0"  );;
+//			System.out.println((String.valueOf(frecuencia.isMartes()).toString().equals("true"))   ?"1":"0"  );;
+//			System.out.println((String.valueOf(frecuencia.isMiercoles()).toString().equals("true"))?"1":"0"  );;
+//			System.out.println((String.valueOf(frecuencia.isJueves()).toString().equals("true"))   ?"1":"0"  );;
+//			System.out.println((String.valueOf(frecuencia.isViernes()).toString().equals("true"))  ?"1":"0"  );;
+//			System.out.println((String.valueOf(frecuencia.isSabado()).toString().equals("true"))   ?"1":"0"  );;
+//			
+//			System.out.println((opRespuesta.getPendiente().toString().equals("true"))?"2":"1"    );;
+//			System.out.println( (opRespuesta.getExige_Evidencia().toString().equals("true"))?"S":"N"   );;
+//			System.out.println((opRespuesta.getExigeObservacion().toString().equals("true"))?"S":"N" );;
+//			
+//			System.out.println((opPonderacion.getImportante().toString().equals("true"))?"I":(opPonderacion.getUrgente().toString().equals("true"))?"U":(opPonderacion.getPreventivo().toString().equals("true"))?"P":"N"  );;
+//			System.out.println(Integer.valueOf(opPonderacion.getPonderacion().toString()) );;
+//			System.out.println(Actividades_plan.getGuardar_actualizar().toString().trim()  );;
+			
+
+			pstmt.setInt    (1,  Actividades_plan.getFolio()                                                                        );//folio_actividad
+			pstmt.setString (2,  Actividades_plan.getDescripcion_de_la_actividad().toString()                                       );//descripcion_de_la_actividad
+			pstmt.setString (3,  Actividades_plan.getHora_inicia().toString()                                                       );//hora_inicio
+			pstmt.setString (4,  Actividades_plan.getHora_termina().toString()                                                      );//hora_final
+			pstmt.setInt    (5,  usuario.getFolio()                                                                                 );//usuario_asigna
+			pstmt.setString (6,  Actividades_plan.getEstatus_Actividad().toString()                                                 );//status_actividad
+			//frecuencia
+			pstmt.setString (7,  frecuencia.getTipo_de_frecuencia().toString()                                                      );//tipo_programacion
+			pstmt.setString (8,  (String.valueOf(frecuencia.isSeleccion_hasta_que_se_cumpla()).toString().equals("true"))?"H":"E"   );//hasta_que_se_cumpla_en
+			pstmt.setString (9,  (frecuencia.getTipo_de_frecuencia().toString().equals("UNA VEZ"))?frecuencia.getFh_unica_repeticion().toString().trim():(frecuencia.getFecha_inicio_duracion().toString().trim()) );//fecha_inicio
+			pstmt.setString (10, frecuencia.getFecha_final_duracion().toString().trim()                                             );//fecha_final_duracion
+			pstmt.setString (11, frecuencia.getSucede().toString().trim()                                                           );//sucede			
+			pstmt.setInt    (12, frecuencia.getSe_repite_cada()                                                                     );//dias_a_repetir_por_suceso_de_dias
+			pstmt.setInt    (13, Integer.valueOf(frecuencia.getMes1())                                                              );//el_dia_del_mes
+			
+			pstmt.setString (14,  (String.valueOf(frecuencia.isDomingo()).toString().equals("true"))  ?"1":"0"                      );//domingo			
+			pstmt.setString (15,  (String.valueOf(frecuencia.isLunes()).toString().equals("true"))    ?"1":"0"                      );//lunes		
+			pstmt.setString (16,  (String.valueOf(frecuencia.isMartes()).toString().equals("true"))   ?"1":"0"                      );//martes		
+			pstmt.setString (17,  (String.valueOf(frecuencia.isMiercoles()).toString().equals("true"))?"1":"0"                      );//miercoles		
+			pstmt.setString (18,  (String.valueOf(frecuencia.isJueves()).toString().equals("true"))   ?"1":"0"                      );//jueves		
+			pstmt.setString (19,  (String.valueOf(frecuencia.isViernes()).toString().equals("true"))  ?"1":"0"                      );//viernes		
+			pstmt.setString (20,  (String.valueOf(frecuencia.isSabado()).toString().equals("true"))   ?"1":"0"                      );//sabado	
+			//opciones_respuesta
+			pstmt.setString (21,  (opRespuesta.getPendiente().toString().equals("true"))?"2":"1"                                    );//tipo_respuesta     no aplica:si aplica
+			pstmt.setString (22,  (opRespuesta.getExige_Evidencia().toString().equals("true"))?"S":"N"                              );//exige_evidencia
+			pstmt.setString (23,  (opRespuesta.getExigeObservacion().toString().equals("true"))?"S":"N"                             );//exige_observacion
+			//ponderacion
+			pstmt.setString (24, (opPonderacion.getImportante().toString().equals("true"))?"I":(opPonderacion.getUrgente().toString().equals("true"))?"U":(opPonderacion.getPreventivo().toString().equals("true"))?"P":"N" );//prioridad
+			pstmt.setInt    (25,  Integer.valueOf(opPonderacion.getPonderacion().toString())                                        );//Ponderacion
+			pstmt.setString (26,  Actividades_plan.getGuardar_actualizar().toString().trim()                                        );//Guardar_Actualizar
+		
+			for(int i=0; i<usuarios.getUsuarios_nombres().length; i++){
+				if(usuarios.getUsuarios_nombres()[i][5].toString().trim().equals("true")) {
+					pstmtabla.setString(1, usuarios.getUsuarios_nombres()[i][0].toString().trim());
+					pstmtabla.executeUpdate();
+				}
+			}
+			
+			pstmt.executeUpdate();
+			con.commit();
+			
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"\n"+querytabla);
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Actividad_de_cuadrante_jerarquico ]\n"+query+"\n"+querytabla+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Actividad_de_cuadrante_jerarquico ]\n"+query+"\n"+querytabla+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		
