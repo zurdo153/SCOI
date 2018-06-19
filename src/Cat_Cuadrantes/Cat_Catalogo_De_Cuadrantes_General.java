@@ -28,7 +28,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
+public class Cat_Catalogo_De_Cuadrantes_General extends JFrame{
 			
 	Container contfb = getContentPane();
 	JLayeredPane panelfb = new JLayeredPane();
@@ -83,14 +83,14 @@ public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
 	JTextField txtcolaborador = new Componentes().text(new JCTextField(), "Selecione a Un Colaborador De La Tabla", 500, "String");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Cat_Reportes_De_Cuadrante_Personal(){
+	public Cat_Catalogo_De_Cuadrantes_General(){
 		this.setSize(1024,520);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 		this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Una Fila y De Click a Generar"));
-		this.setTitle("Reporte De Cuadrante Personal");
+		this.setTitle("Catalogo De Cuadrantes General");
 		trsfiltro = new TableRowSorter(modelob); 
 		tablab.setRowSorter(trsfiltro);
 		int x=10,y=20;
@@ -136,140 +136,25 @@ public class Cat_Reportes_De_Cuadrante_Personal extends JFrame{
 				JOptionPane.showMessageDialog(null, "Es requerido Seleccione un Colaborador Primero Para Poder Generar El Reporte", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
-			
 			String basedatos="2.26";
 			String vista_previa_reporte="si";
 			int vista_previa_de_ventana=0;
 			String reporte ="";
-			String comando="exec reporte_de_cuadrante_por_folio_de_colaborador "+txtfolio.getText()+","+0;
+			String comando="exec cuadrantes_reporte_por_folio_de_colaborador "+txtfolio.getText()+","+0;
 			
 			if(e.getActionCommand().equals("Cuadrante Personal Actividad")) {		
 			  reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia.jrxml";
 			}else {
 			  reporte = "Obj_Reporte_De_Cuadrante_Por_Persona_Por_Dia_Detalle_Descripcion.jrxml";
 			}
-			
 		     new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		      return;
 		     }
 	};		
-			
-//	public int valida_cantidad_seleccion (){
-//		int i=0;
-//		for (int y=0; y<tablaFiltro.getRowCount(); y=y+1){
-//			if(Boolean.parseBoolean(modeloFiltro.getValueAt(y,5).toString().trim())){
-//				i=i+1;
-//				folio_empleado= Integer.valueOf(modeloFiltro.getValueAt(y, 0).toString());
-//				
-//			}
-//		}
-//		return i;	
-//	}
-//	
-//	public void obtieneNombre_empleado(){
-//		
-//		for (int y=0; y<tablaFiltro.getRowCount(); y=y+1){
-//			if(Boolean.parseBoolean(modeloFiltro.getValueAt(y,5).toString().trim())){
-//					nombre_completo= modeloFiltro.getValueAt(y, 1).toString().trim();
-//				}
-//		}
-//	}
-//		
-//	public  int [] Obtener_empleados_seleccionados (){
-//		
-//		int [] vector_seleccionados=new int[1] ;
-//		int i=0;
-//		for (int y=0; y<tablaFiltro.getRowCount(); y=y+1){
-//			if(Boolean.parseBoolean(modeloFiltro.getValueAt(y,5).toString().trim()) == true){
-//				vector_seleccionados[i]=Integer.parseInt(modeloFiltro.getValueAt(y,0).toString().trim());
-//				i++;
-//			}
-//		}
-//		return vector_seleccionados;
-//	}
-	
-	//TODO REVISAR PARA ELIMINAR
-//	ActionListener opimprimircuadrante = new ActionListener() {
-//		public void actionPerformed(ActionEvent e) {
-//			if(valida_cantidad_seleccion ()==1){
-//			String query = "exec sp_Reporte_Impresion_Cuadrante_del_dia '"+folio_empleado+"'" ;
-//				Statement stmt = null;
-//				try {
-//					stmt =  new Connexion().conexion().createStatement();
-//				    ResultSet rs = stmt.executeQuery(query);
-//					JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Impresion_De_Cuadrante.jrxml");
-//					JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);
-//					@SuppressWarnings({ "rawtypes", "unchecked" })
-//					JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-//					JasperViewer.viewReport(print, false);
-//				} catch (Exception e1) {
-//					System.out.println(e1.getMessage());
-//				}
-//				}
-//			}
-//	};
-//
-//	ActionListener opReporteCaptura = new ActionListener() {
-//		@SuppressWarnings({ })
-//		public void actionPerformed(ActionEvent arg0) {
-//			
-//			txtFolio.setText("");
-//			txtNombre_Completo.setText("");
-//			
-//			if(tablaFiltro.isEditing()){
-//				tablaFiltro.getCellEditor().stopCellEditing();
-//			}
-//	
-//			if(valida_cantidad_seleccion ()==1){
-//	
-//	
-//	//REVISAR PARA BORRAR EL OBJETO Y EL PROCEDIMIENTO						
-//	//						if (new Obj_Imprimir_Cuadrante().Obj_Imprimir_Cuadrante_Update_Folio(folio_empleado)) {
-//	
-//			  		
-//					new Cat_Reporte_De_Cuadrantes("scoi", "scoif",
-//							   0, "0",
-//							1,"(''" +folio_empleado+"'')",
-//							0,"0",
-//							0,"0",
-//							0,"0",
-//							0,"0",
-//							0,"0",
-//							0);
-//	//					}
-//			
-//			}
-//			else{JOptionPane.showMessageDialog(null,"Debe de Seleccionar Un Empleado","Aviso",JOptionPane.NO_OPTION);
-//			}				
-//		}
-//	};
-//	ActionListener opReporteCaptura7 = new ActionListener() {
-//		public void actionPerformed(ActionEvent arg0) {
-//			txtFolio.setText("");
-//			txtNombre_Completo.setText("");
-//			
-//			if(tablaFiltro.isEditing())
-//				tablaFiltro.getCellEditor().stopCellEditing();
-//	
-//			if(valida_cantidad_seleccion()==1){
-//				new Cat_Reporte_De_Cuadrantes("scoi7", "scoif7",
-//						0, "0",
-//						1,"(''" +folio_empleado+"'')",
-//						0,"0",
-//						0,"0",
-//						0,"0",
-//						0,"0",
-//						0,"0",
-//				0);
-//			}else{
-//				JOptionPane.showMessageDialog(null,"Debe de Seleccionar Un Empleado","Aviso",JOptionPane.NO_OPTION);
-//			}
-//		}
-//				
-//	};
+
 	public static void main(String args[]){
 		try{UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reportes_De_Cuadrante_Personal().setVisible(true);
+			new Cat_Catalogo_De_Cuadrantes_General().setVisible(true);
 		}catch(Exception e){System.err.println("Error en Main: "+e.getMessage());
 		}
 	}

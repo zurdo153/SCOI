@@ -138,7 +138,6 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	JCButton btnGuardar   = new JCButton("Guardar"      ,"Guardar.png","Azul");
 	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
 	
-	
 	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_valida_permiso_cambio_de_establecimiento();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
@@ -1133,8 +1132,6 @@ public  Cat_Alimentacion_De_Mermas(){
 				
   				cmbEstablecimiento.setSelectedItem(estab);
   				lblNota.setText(nta);
-//  				txaNota.setText(nta);
-
 				
 //		       asigna el foco al JTextField deseado al arrancar la ventana
 		         this.addWindowListener(new WindowAdapter() {

@@ -76,15 +76,6 @@ public class Obj_Actividades_Relacionadas {
 		return false;
 	}
 	
-	public boolean existe(String proyecto){
-		try {
-			return new BuscarSQL().existeProyecto(proyecto);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
 	public boolean guardar(String[][] tabla){
 		boolean registro = new GuardarSQL().Guardar_Relacion_Actividades(this); 
 		boolean tabla1 = new GuardarSQL().Guardar_Relacion_Tabla(this, tabla);

@@ -1,5 +1,6 @@
 package Cat_Servicios;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -146,7 +147,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	JScrollPane scrollDetalle   = new JScrollPane(txaDetalle);
 	JScrollPane scrollNotas     = new JScrollPane(txaNotas);
 	
-	String[] status = {"SOLICITADO Y EN PROCESO","SOLICITADO","EN PROCESO","TERMINADO","CANCELADO","NEGADO","MIS SERVICIOS ASIGNADOS"};
+	String[] status = {"MIS SERVICIOS ASIGNADOS","SOLICITADO Y EN PROCESO","SOLICITADO","EN PROCESO","TERMINADO","CANCELADO","NEGADO"};
 	  @SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstatus = new JComboBox(status);
 	
@@ -454,6 +455,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	                    	cmbEstatusCo.setEnabled(true);
 	                    	txtCosto.setEditable(true);
 	                    	txaNotas.setEditable(true);
+	                    	txaNotas.setBackground(new Color(254,254,254));
 	                    	btnAtendio.setEnabled(true);
 	                    	btnAsignado.setEnabled(true);
 	                    	btnGuardar.setEnabled(true);
@@ -543,6 +545,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 			panelEnabledFalse();
 			init_tabla(cmbEstatusFiltrado.getSelectedItem().toString().trim());
 			txtFiltro.requestFocus();
+        	txaNotas.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
 		}
 	};
 	

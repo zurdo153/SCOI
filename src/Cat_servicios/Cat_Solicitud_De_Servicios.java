@@ -1,5 +1,6 @@
 package Cat_Servicios;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;
@@ -410,6 +411,8 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 			txaDetalle.setText("");
 			servicios_solicitud.setGuardar_actualizar("S");//guardar
 			cmbEstablecimiento.setSelectedItem(cmbEstablecimientof.getSelectedItem().toString());
+			
+			txaDetalle.setBackground(new Color(254,254,254));
 			
 			this.txtFolio.setEditable(false);
 			

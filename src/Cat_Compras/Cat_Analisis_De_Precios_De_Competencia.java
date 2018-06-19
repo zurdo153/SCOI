@@ -12,9 +12,7 @@ import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -28,17 +26,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
+import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 import Obj_Reportes.Obj_Reportes_De_Ventas;
 
@@ -51,7 +51,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
 	
-	JDateChooser c_inicio = new JDateChooser();
+	JDateChooser c_inicio = new Componentes().jchooser(new JDateChooser()  ,"",0);
 	
 	String operadorProducto[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -77,6 +77,19 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbOperador_Talla = new JComboBox(operadorTalla);
 	
+	String operadorLocalizacion[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbOperador_Localizacion = new JComboBox(operadorLocalizacion);
+	
+	String operadorPasillo[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	JComboBox cmbOperador_Pasillo = new JComboBox(operadorPasillo);
+	
+	
+	String establecimientosbms[] = new Obj_Establecimiento().Combo_Establecimiento201();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbEstablecimiento = new JComboBox(establecimientosbms);
+	
 	JButton btnFiltroProducto = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroProducto = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
@@ -95,23 +108,32 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	JButton btnFiltroTalla = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
 	JButton btnLimpiarFiltroTalla = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
 	
-	JButton btn_buscar = new JButton  ("Buscar Productos",new ImageIcon("imagen/buscar.png"));
-	JButton btn_buscar_ultimos_mov = new JButton  ("",new ImageIcon("imagen/editar-sustituir-la-busqueda-icono-8072-16.png"));
+	JButton btnFiltroLocalizaciones = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
+	JButton btnLimpiarFiltroLocalizaciones = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
+	
+	JButton btnFiltroPasillo = new JButton(new ImageIcon("Imagen/Filter-List-icon16.png"));
+	JButton btnLimpiarFiltroPasillo = new JButton(new ImageIcon("Imagen/clear-brush-broom-sweeping-change-icone-7230-16.png"));
+	
+	JCButton btn_buscar             = new JCButton("Buscar Productos"  ,"buscar.png"                         ,"Azul");
+	JCButton btn_buscar_ultimos_mov = new JCButton(""  ,"editar-sustituir-la-busqueda-icono-8072-16.png"     ,"Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBTipoPrecio= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBdescripcion= new JLabel();
 	
-	JTextField txtcod_prod = new Componentes().text(new JTextField(), "Codigo del Producto", 15, "String");
-	JTextField txtFiltroProducto = new JTextField("");
-	JTextField txtFiltroClase = new JTextField("");
-	JTextField txtFiltroCategoria = new JTextField("");
-	JTextField txtFiltroFamilia = new JTextField("");
-	JTextField txtFiltroLinea = new JTextField("");
-	JTextField txtFiltroTalla = new JTextField("");
+	JTextField txtcod_prod     = new Componentes().text(new JCTextField()  , "Codigo del Producto"    , 20      , "String");
 	
-	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+8);
+	JTextField txtFiltroProducto     = new Componentes().text(new JCTextField()  , "Filtro Producto"    , 500      , "String");
+	JTextField txtFiltroClase        = new Componentes().text(new JCTextField()  , "Filtro Clase   "    , 500      , "String");
+	JTextField txtFiltroCategoria    = new Componentes().text(new JCTextField()  , "Filtro Categoria"   , 500      , "String");
+	JTextField txtFiltroFamilia      = new Componentes().text(new JCTextField()  , "Filtro Familia"     , 500      , "String");
+	JTextField txtFiltroTalla        = new Componentes().text(new JCTextField()  , "Filtro Talla"       , 500      , "String");
+	JTextField txtFiltroLinea        = new Componentes().text(new JCTextField()  , "Filtro Linea"       , 500      , "String");
+	JTextField txtFiltroLocalizacion = new Componentes().text(new JCTextField()  , "Filtro Localizacion", 500      , "String");
+	JTextField txtFiltroPasillo      = new Componentes().text(new JCTextField()  , "Filtro Pasillo"     , 500      , "String");
+	
+	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+10);
 	DefaultTableModel model = new DefaultTableModel(0,cantidad_de_columnas){
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
@@ -143,29 +165,31 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		tabla.getColumnModel().getColumn(1).setHeaderValue("Descripcion");
 		tabla.getColumnModel().getColumn(1).setMaxWidth(b*2+a);
 		tabla.getColumnModel().getColumn(1).setMinWidth(b+a);
-		tabla.getColumnModel().getColumn(2).setHeaderValue("Ultimo Costo");
+		tabla.getColumnModel().getColumn(2).setHeaderValue("Costo Promedio");
 		tabla.getColumnModel().getColumn(2).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(2).setMinWidth(a);
-		tabla.getColumnModel().getColumn(3).setHeaderValue("Costo Promedio");
+		tabla.getColumnModel().getColumn(3).setHeaderValue("Ultimo Costo");
 		tabla.getColumnModel().getColumn(3).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(3).setMinWidth(a);
 		tabla.getColumnModel().getColumn(4).setHeaderValue("Precio De Venta");
 		tabla.getColumnModel().getColumn(4).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(4).setMinWidth(a);
-		tabla.getColumnModel().getColumn(5).setHeaderValue("Markup");
+		tabla.getColumnModel().getColumn(5).setHeaderValue("Margen");
 		tabla.getColumnModel().getColumn(5).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(5).setMinWidth(a);
-		tabla.getColumnModel().getColumn(6).setHeaderValue("Precio Normal");
-		tabla.getColumnModel().getColumn(6).setMaxWidth(a);
+		tabla.getColumnModel().getColumn(6).setHeaderValue("Margen Meta Familia");
 		tabla.getColumnModel().getColumn(6).setMinWidth(a);
-		tabla.getColumnModel().getColumn(7).setHeaderValue("Markup Normal");
-		tabla.getColumnModel().getColumn(7).setMaxWidth(a);
+		tabla.getColumnModel().getColumn(7).setHeaderValue("Localización");
 		tabla.getColumnModel().getColumn(7).setMinWidth(a);
+		tabla.getColumnModel().getColumn(8).setHeaderValue("Pasillo");
+		tabla.getColumnModel().getColumn(8).setMinWidth(a);
+		tabla.getColumnModel().getColumn(9).setHeaderValue("Precio de Venta Captura");
+		tabla.getColumnModel().getColumn(9).setMinWidth(a);
 		
 		try {
 			String[] competidor = new Obj_Reportes_De_Ventas().lista_de_competidores();
-			for(int i=8; i<cantidad_de_columnas; i++){
-				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-8)].toString());
+			for(int i=10; i<cantidad_de_columnas; i++){
+				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-10)].toString());
 				tabla.getColumnModel().getColumn(i).setMaxWidth(a+20);
 				tabla.getColumnModel().getColumn(i).setMinWidth(a+20);
 			}
@@ -199,70 +223,74 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		setTitle("Analisis De Precios De Competencia");
 		panel.setBorder(BorderFactory.createTitledBorder("Analisis De Precios De Competencia"));
 		
-		btn_buscar_ultimos_mov.setText(	"<html> <FONT FACE="+"arial"+" SIZE=3 COLOR=BLACk>" +
-				"<CENTER><p>Buscar Ultimas Cotizaciones Del Producto</p></CENTER></FONT></html>"); 
+		btn_buscar_ultimos_mov.setText(	"<html><FONT FACE=arial black SIZE=3 COLOR=WHITE><CENTER><p>Buscar Ultimas Cotizaciones Del Producto</p></CENTER></FONT></html>"); 
 		
 		int x=15 ;
 		int y=20 ;
 		int l=100;
 		int a=20;
 
-		panel.add(new JLabel("Fecha:")).setBounds(x,y,l,a);
-		panel.add(c_inicio).setBounds(x+=60,y,l-10,a);
-		
-		panel.add(txtcod_prod ).setBounds(x+=105,y,l-12,a);;
-		panel.add(JLBdescripcion).setBounds(x+100,y,l+350,a);
-        panel.add(btn_buscar_ultimos_mov).setBounds(x+570,y,200,40);
+		panel.add(new JLabel("Fecha De Inicio De Busqueda De Datos:")).setBounds  (x     ,y ,200 ,a);
+		panel.add(c_inicio).setBounds                                             (x+=185,y ,90  ,a);
+		panel.add(txtcod_prod ).setBounds                                         (x+=105,y ,120 ,a);
+		panel.add(JLBdescripcion).setBounds                                       (x+130 ,y ,450 ,a);
+
 		
 		x=100;
-		panel.add(new JLabel("Filtro De Productos:")).setBounds(x-85,y+=30,l+50,a);
-		panel.add(cmbOperador_Productos				).setBounds(x+80,y,l-12,a);
-		
-        panel.add(txtFiltroProducto					).setBounds(x+170,y,l*4+20,a);
-        panel.add(btnFiltroProducto					).setBounds(x+590,y,a,a);
-        panel.add(btnLimpiarFiltroProducto			).setBounds(x+613,y,a,a);
+		panel.add(new JLabel("Filtro De Productos:")             ).setBounds(x-85,y+=30,l+50,a);
+		panel.add(cmbOperador_Productos				             ).setBounds(x+80,y,l-12,a);
+        panel.add(btnFiltroProducto					             ).setBounds(x+170,y,a,a);		
+        panel.add(txtFiltroProducto			            		 ).setBounds(x+190,y,l*4+20,a);
+        panel.add(btnLimpiarFiltroProducto			             ).setBounds(x+613,y,a,a);
         
-		panel.add(new JLabel("Filtro De Clase De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Clase							 ).setBounds(x+80,y,l-12,a);  
-		                                                                                  
-        panel.add(txtFiltroClase							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroClase							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroClase						 ).setBounds(x+613,y,a,a);    
+		panel.add(new JLabel("Filtro De Clase De Productos:")    ).setBounds(x-85,y+=30,l+50,a); 
+		panel.add(cmbOperador_Clase							     ).setBounds(x+80,y,l-12,a);  
+        panel.add(btnFiltroClase							     ).setBounds(x+170,y,a,a);                                                                                      
+        panel.add(txtFiltroClase							     ).setBounds(x+190,y,l*4+20,a);  
+        panel.add(btnLimpiarFiltroClase						     ).setBounds(x+613,y,a,a);    
         
 		panel.add(new JLabel("Filtro De Categoria De Productos:")).setBounds(x-85,y+=30,l+70,a); 
 		panel.add(cmbOperador_Categoria							 ).setBounds(x+80,y,l-12,a);  
-		                                                                                      
-        panel.add(txtFiltroCategoria							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroCategoria							 ).setBounds(x+590,y,a,a);    
+        panel.add(btnFiltroCategoria							 ).setBounds(x+170,y,a,a);    	                                                                                      
+        panel.add(txtFiltroCategoria							 ).setBounds(x+190,y,l*4+20,a);  
         panel.add(btnLimpiarFiltroCategoria						 ).setBounds(x+613,y,a,a);    
         
-		panel.add(new JLabel("Filtro Familia De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Familia						).setBounds(x+80,y,l-12,a);  
-		                                                                                 
-        panel.add(txtFiltroFamilia							).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroFamilia							).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroFamilia					).setBounds(x+613,y,a,a);    
+		panel.add(new JLabel("Filtro Familia De Productos:")     ).setBounds(x-85,y+=30,l+50,a); 
+		panel.add(cmbOperador_Familia						     ).setBounds(x+80,y,l-12,a);  
+        panel.add(btnFiltroFamilia						 	     ).setBounds(x+170,y,a,a);                                                                                   
+        panel.add(txtFiltroFamilia							     ).setBounds(x+190,y,l*4+20,a);  
+        panel.add(btnLimpiarFiltroFamilia					     ).setBounds(x+613,y,a,a);    
         
-		panel.add(new JLabel("Filtro De Linea De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Linea					 ).setBounds(x+80,y,l-12,a);  
-		                                                                                  
-        panel.add(txtFiltroLinea							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroLinea							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroLinea						 ).setBounds(x+613,y,a,a);    
+		panel.add(new JLabel("Filtro De Linea De Productos:")    ).setBounds(x-85,y+=30,l+50,a); 
+		panel.add(cmbOperador_Linea					             ).setBounds(x+80,y,l-12,a);  
+        panel.add(btnFiltroLinea							     ).setBounds(x+170,y,a,a);  	                                                                                  
+        panel.add(txtFiltroLinea							     ).setBounds(x+190,y,l*4+20,a);  
+        panel.add(btnLimpiarFiltroLinea						     ).setBounds(x+613,y,a,a);    
         
-        panel.add(new JLabel("Filtro De Talla De Productos:")).setBounds(x-85,y+=30,l+50,a); 
-		panel.add(cmbOperador_Talla							 ).setBounds(x+80,y,l-12,a);  
-        panel.add(txtFiltroTalla							 ).setBounds(x+170,y,l*4+20,a);  
-        panel.add(btnFiltroTalla							 ).setBounds(x+590,y,a,a);    
-        panel.add(btnLimpiarFiltroTalla						 ).setBounds(x+613,y,a,a); 
-       
-
+        panel.add(new JLabel("Filtro De Talla De Productos:")    ).setBounds(x-85,y+=30,l+50,a); 
+		panel.add(cmbOperador_Talla							     ).setBounds(x+80,y,l-12,a);  
+        panel.add(btnFiltroTalla							     ).setBounds(x+170,y,a,a); 
+        panel.add(txtFiltroTalla							     ).setBounds(x+190,y,l*4+20,a);  
+        panel.add(btnLimpiarFiltroTalla						     ).setBounds(x+613,y,a,a); 
         
-        panel.add(btn_buscar).setBounds(x+650,y,200,a);
+        panel.add(new JLabel("Filtro De Localizaciones:")        ).setBounds(x-85,y+=30,l+50,a); 
+		panel.add(cmbOperador_Localizacion						 ).setBounds(x+80,y,l-12,a);  
+        panel.add(btnFiltroLocalizaciones						 ).setBounds(x+170,y,a,a); 
+        panel.add(txtFiltroLocalizacion							 ).setBounds(x+190,y,l*4+20,a);  
+        panel.add(btnLimpiarFiltroLocalizaciones    			 ).setBounds(x+613,y,a,a); 
+ 
+        panel.add(new JLabel("Filtro De Pasillos:")              ).setBounds(x-85,y+=30,l+50,a); 
+		panel.add(cmbOperador_Pasillo							 ).setBounds(x+80,y,l-12,a); 
+        panel.add(btnFiltroPasillo							     ).setBounds(x+170,y,a,a); 
+        panel.add(txtFiltroPasillo 							     ).setBounds(x+190,y,l*4+20,a);  
+        panel.add(btnLimpiarFiltroPasillo					     ).setBounds(x+613,y,a,a); 
         
-        panel.add(getPanelTabla()).setBounds(10,y+=50,ancho-30,alto-y-75);
+        panel.add(getPanelTabla()).setBounds             (10,y+=50,ancho-30,alto-y-75);
         
-        c_inicio.setDate(cargar_fechas(0));
+        panel.add(btn_buscar_ultimos_mov).setBounds      (x+650 ,y=50  ,200 ,50);
+        panel.add(cmbEstablecimiento).setBounds          (x+650 ,y+=70 ,200 ,a );      
+        panel.add(btn_buscar).setBounds                  (x+650 ,y+=50 ,200 ,a );
+        
         render_tabla();
         
         txtFiltroProducto.setEditable(false); 
@@ -271,12 +299,14 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
         txtFiltroFamilia.setEditable(false);
         txtFiltroLinea.setEditable(false);
         txtFiltroTalla.setEditable(false);
+        txtFiltroLocalizacion.setEditable(false);
+        txtFiltroPasillo.setEditable(false);
+        
     	btn_buscar_ultimos_mov.setEnabled(false);
 
         String operador_simbolo = "";
         
         if(!parametro.equals("")){
-        	
             switch(operador){
 	    		case "Igual"		:operador_simbolo=" = "; break;
 	    		case "Esta en lista":operador_simbolo=" in "; break;
@@ -301,14 +331,18 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
         btnFiltroFamilia.addActionListener(op_filtro_familias);
         btnFiltroLinea.addActionListener(op_filtro_lineas);
         btnFiltroTalla.addActionListener(op_filtro_talla);
-		
+        btnFiltroLocalizaciones.addActionListener(op_filtro_localizacion);
+        btnFiltroPasillo.addActionListener(op_filtro_pasillo);
+                
 		btnLimpiarFiltroProducto.addActionListener(limpiar_filtro_productos);
 		btnLimpiarFiltroClase.addActionListener(limpiar_filtro_claces);
         btnLimpiarFiltroCategoria.addActionListener(limpiar_filtro_categorias);
         btnLimpiarFiltroFamilia.addActionListener(limpiar_filtro_familias);
         btnLimpiarFiltroLinea.addActionListener(limpiar_filtro_lineas);
         btnLimpiarFiltroTalla.addActionListener(limpiar_filtro_talla);
-	        
+        btnLimpiarFiltroLocalizaciones.addActionListener(limpiar_filtro_productos);
+        btnLimpiarFiltroPasillo.addActionListener(limpiar_filtro_productos);
+        
 		btn_buscar.addActionListener(op_generar);
 		btn_buscar_ultimos_mov.addActionListener(op_generar);
 		
@@ -332,27 +366,13 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		txtFiltroProducto.setText(cadena);
 	}
 
-	public String validar_fechas(){
+	public String validar(){
 		String error = "";
 		String fechainicioNull = c_inicio.getDate()+"";
 	    if(fechainicioNull.equals("null"))error+= "Fecha  inicio\n";
-		
+	    if(cmbEstablecimiento.getSelectedIndex()==0)error+= "Establecimiento\n";
 		return error;
 	}
-	
-	public Date cargar_fechas(int dias){
-		Date date = null;
-				  try {
-					date = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date;
-	};
-	
-
 	
 	ActionListener op_filtro_productos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -417,6 +437,36 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		}
 	};
 	
+	ActionListener op_filtro_localizacion = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(cmbEstablecimiento.getSelectedIndex()==0) {			
+				JOptionPane.showMessageDialog(null, "Es Requerido Seleccionar Un Establecimiento", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			return;
+			}
+			if(!cmbOperador_Localizacion.getSelectedItem().toString().equals("Todos")){
+				new Cat_Filtro_Dinamico(cmbOperador_Localizacion.getSelectedItem().toString(),"localizacion","localizacion").setVisible(true);
+			}else{
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+		}
+	};
+	
+	ActionListener op_filtro_pasillo = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(cmbEstablecimiento.getSelectedIndex()==0) {			
+				JOptionPane.showMessageDialog(null, "Es Requerido Seleccionar Un Establecimiento", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			return;
+			}
+			if(!cmbOperador_Pasillo.getSelectedItem().toString().equals("Todos")){
+				new Cat_Filtro_Dinamico(cmbOperador_Pasillo.getSelectedItem().toString(),"pasillo","pasillo").setVisible(true);
+			}else{
+				JOptionPane.showMessageDialog(null, "El Operador Para Este Filtro Es ( Todos ) Por Lo Que No Es Necesario Abrir El Filtro", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+		}
+	};
+	
 //LIMPIAR ----------------------------------------------------------------------------------------------------------------------------	
 	ActionListener limpiar_filtro_productos = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -426,6 +476,8 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
             txtFiltroFamilia.setText("");
             txtFiltroLinea.setText("");
             txtFiltroTalla.setText("");
+            txtFiltroLocalizacion.setText("");
+            txtFiltroPasillo.setText("");
         	panelEnableTrue();
         	Lista="";
         	limpiar_vacios("");
@@ -439,6 +491,8 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
             txtFiltroCategoria.setText("");
             txtFiltroFamilia.setText("");
             txtFiltroLinea.setText("");
+            txtFiltroLocalizacion.setText("");
+            txtFiltroPasillo.setText("");
         	panelEnableTrue();
         	Lista="";
         	limpiar_vacios("");
@@ -447,7 +501,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	ActionListener limpiar_filtro_categorias = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-            
 			panelEnableFalse();
 			txtFiltroCategoria.setText("");
 			limpiar_vacios("");
@@ -456,7 +509,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	ActionListener limpiar_filtro_familias = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-           
 			panelEnableFalse();
 			txtFiltroFamilia.setText("");
 			limpiar_vacios("");
@@ -465,7 +517,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	ActionListener limpiar_filtro_lineas = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
 			panelEnableFalse();
 			txtFiltroLinea.setText("");
 			limpiar_vacios("");
@@ -474,7 +525,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	ActionListener limpiar_filtro_talla = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
 			panelEnableFalse();
 			txtFiltroTalla.setText("");
 			limpiar_vacios("boton talla");
@@ -489,9 +539,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			if(e.getKeyCode()==KeyEvent.VK_ENTER){
 				try {
 						if(new Obj_Cotizaciones_De_Un_Producto().Existe_Producto(txtcod_prod.getText().toUpperCase().trim())){
-							
-						      Obj_Cotizaciones_De_Un_Producto  Datos_Producto= new Obj_Cotizaciones_De_Un_Producto().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"");
-					            
+						       Obj_Cotizaciones_De_Un_Producto  Datos_Producto= new Obj_Cotizaciones_De_Un_Producto().buscardatos_producto(txtcod_prod.getText().trim().toUpperCase()+"");
 								 if(!Datos_Producto.getDescripcion_Prod().toString().trim().equals("") || !txtcod_prod.getText().equals("")){
 										cmbOperador_Productos.setSelectedItem("Igual");
 								 }else{
@@ -510,7 +558,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				txtcod_prod.setText("");
 				panelEnableFalse();
 				btn_buscar_ultimos_mov.setEnabled(true);
-				
 			}
 		}
 	};
@@ -554,6 +601,8 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
         	cmbOperador_Familia.setSelectedIndex(0);
         	cmbOperador_Linea.setSelectedIndex(0);
         	cmbOperador_Talla.setSelectedIndex(0);
+        	cmbOperador_Localizacion.setSelectedIndex(0);
+        	cmbOperador_Pasillo.setSelectedIndex(0);
         	
         	Lista="";
 	}
@@ -562,23 +611,25 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	ActionListener op_generar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if(validar_fechas().equals("")){
-				
-				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());//+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_inicio.getValue())+" "+sphora_inicio.getValue()+":00";
-				String productos 	= txtFiltroProducto.getText();
-				String clases 		= txtFiltroClase.getText();
-				String categorias 	= txtFiltroCategoria.getText();
-				String familias 	= txtFiltroFamilia.getText();
-				String lineas 		= txtFiltroLinea.getText();
-				String tallas 		= txtFiltroTalla.getText();
+			model.setRowCount(0);
+			if(validar().equals("")){
+				model.setRowCount(0);
+				String fecha_inicio  = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate());//+" "+new SimpleDateFormat("hh:mm:ss").format(sphora_inicio.getValue())+" "+sphora_inicio.getValue()+":00";
+				String productos 	 = txtFiltroProducto.getText();
+				String clases 		 = txtFiltroClase.getText();
+				String categorias 	 = txtFiltroCategoria.getText();
+				String familias 	 = txtFiltroFamilia.getText();
+				String lineas 		 = txtFiltroLinea.getText();
+				String tallas 		 = txtFiltroTalla.getText();
+				String localizaciones= txtFiltroLocalizacion.getText();
+				String pasillos  	 = txtFiltroPasillo.getText();
 				
 				int tipo =0;
-				
-				if(e.getActionCommand().toString().trim().equals("<html> <FONT FACE=arial SIZE=3 COLOR=BLACk><CENTER><p>Buscar Ultimas Cotizaciones Del Producto</p></CENTER></FONT></html>")){
+				if(e.getActionCommand().toString().trim().equals("<html><FONT FACE=arial black SIZE=3 COLOR=WHITE><CENTER><p>Buscar Ultimas Cotizaciones Del Producto</p></CENTER></FONT></html>")){
 					tipo=1;
 				}
 				
-				if((productos+clases+categorias+familias+lineas+tallas).length() > 0 ){
+				if((productos+clases+categorias+familias+lineas+tallas+localizaciones+pasillos).length() > 0 ){
 						Obj_Reportes_De_Ventas ventas = new Obj_Reportes_De_Ventas();
 						
 						ventas.setFecha_inicio(fecha_inicio);
@@ -588,10 +639,10 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 						ventas.setFamilias(familias);
 						ventas.setLineas(lineas);
 						ventas.setTallas(tallas);
-						
+						ventas.setLocalizaciones(localizaciones);
+                        ventas.setPasillos(pasillos);  						
 						try {
-							while(tabla.getRowCount()>0){model.removeRow(0);}
-							Object[][] matriz_reporte_de_ventas = ventas.reporte_de_competencias(cantidad_de_columnas, tipo);
+							Object[][] matriz_reporte_de_ventas = ventas.reporte_de_competencias(cantidad_de_columnas, tipo,cmbEstablecimiento.getSelectedItem().toString().trim());
 							if(matriz_reporte_de_ventas.length==0){
 								JOptionPane.showMessageDialog(null, "No se encontraron registros con las condiciones de busqueda proporcionada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 								return;
@@ -608,12 +659,13 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 						} catch (SQLException e2) {
 							e2.printStackTrace();
 						}
+						
 					} else{
 						JOptionPane.showMessageDialog(null, "Para visualizar el reporte es necesario agregar un filtro","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}	
 			}else{
-				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar_fechas(),"Aviso!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Los siguientes campos están vacíos: "+validar(),"Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}
 		}
@@ -648,7 +700,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
     	btnLimpiarFiltroTalla.setEnabled(true);
 	}
 	
-// FILTRO
+//TODO FILTRO DE  CLASIFICADORES
 		 	public class Cat_Filtro_Dinamico extends JDialog {
 				
 				Container cont = getContentPane();
@@ -707,17 +759,18 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				@SuppressWarnings("rawtypes")
 				private TableRowSorter trsfiltro;
 				
-				JTextField txtFolio = new JTextField();
-				JTextField txtNombre_Completo = new JTextField();
+				JTextField txtNombre_Completo      = new Componentes().textfiltro(new JCTextField(), "Teclea Aqui Para Realizar La Busqueda En La Tabla"    ,350 , "String",tablaFiltro    ,2 );
 				
-				JButton btnAgregar = new JButton(new ImageIcon("Iconos/agregar.png"));
-				
-				String folio_columna = "";
+			 	JCButton btnAgregar  = new JCButton("Agregar"    ,"Aplicar.png"            ,"Azul"); 
+
+			 	String folio_columna = "";
 				@SuppressWarnings({ "unchecked", "rawtypes" })
 				public Cat_Filtro_Dinamico(String operad, String nombre_de_tabla,String folio_colum){
-					
+					setSize(425,450);
+					setResizable(false);
+					setLocationRelativeTo(null);
 					this.setModal(true);
-					setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+					setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
 					setTitle("Filtro de "+nombre_de_tabla);
 					campo.setBorder(BorderFactory.createTitledBorder("Seleccion "+folio_colum));
 					trsfiltro = new TableRowSorter(modeloFiltro); 
@@ -728,17 +781,13 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 
 					btnAgregar.setToolTipText("Agregar");
 					
-					campo.add(scroll).setBounds(15,43,364,360);
-					
-					campo.add(txtFolio).setBounds(15,20,40,20);
-					campo.add(txtNombre_Completo).setBounds(56,20,280,20);
-					campo.add(btnAgregar).setBounds(340,20,50,20);
+					campo.add(txtNombre_Completo).setBounds(10  ,20 ,296 ,20);
+					campo.add(btnAgregar).setBounds        (305 ,20 ,105 ,20);
+					campo.add(scroll).setBounds            (10  ,41 ,400 ,360);
 					
 					cont.add(campo);
 					
-					while(tablaFiltro.getRowCount()>0){
-							modeloFiltro.removeRow(0);
-	                }
+					modeloFiltro.setRowCount(0);
                 
 					Object[][] getTablaFiltro = getTablaFiltro(operad,nombre_de_tabla);
 					String[] fila = new String[3];
@@ -748,25 +797,13 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
                                 fila[2] = "false";
                                 modeloFiltro.addRow(fila);
                         }
-					
 					llamar_render();
-					
-					txtFolio.addKeyListener(opFiltroFolio);
-					txtNombre_Completo.addKeyListener(opFiltroNombre);
-					
 					btnAgregar.addActionListener(opAgregar);
-					
-					setSize(405,450);
-					setResizable(false);
-					setLocationRelativeTo(null);
 				}
 				
 				public void llamar_render(){
-					
-					tablaFiltro.getColumnModel().getColumn(0).setMaxWidth(40);
 					tablaFiltro.getColumnModel().getColumn(0).setMinWidth(40);
-					tablaFiltro.getColumnModel().getColumn(1).setMaxWidth(280);
-					tablaFiltro.getColumnModel().getColumn(1).setMinWidth(280);
+					tablaFiltro.getColumnModel().getColumn(1).setMinWidth(310);
 					tablaFiltro.getColumnModel().getColumn(2).setMaxWidth(30);
 					tablaFiltro.getColumnModel().getColumn(2).setMinWidth(30);
 					
@@ -776,18 +813,11 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				}
 				
 				ActionListener opAgregar = new ActionListener() {
-					@SuppressWarnings({ "unchecked" })
 					public void actionPerformed(ActionEvent arg0) {
-						
-						if(tablaFiltro.isEditing()){
-				 			tablaFiltro.getCellEditor().stopCellEditing();
-						}
-						trsfiltro.setRowFilter(RowFilter.regexFilter("", 0));
-						trsfiltro.setRowFilter(RowFilter.regexFilter("", 1));
-						
-						txtFolio.setText("");
 						txtNombre_Completo.setText("");
-						
+						int[] columnas = {0,1};
+						new Obj_Filtro_Dinamico_Plus(tablaFiltro,"", columnas);
+
 						int contador=0;
 				 		 Lista="('";	
 				 			for(int i=0; i<tablaFiltro.getRowCount(); i++){
@@ -892,6 +922,31 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 							 										btnLimpiarFiltroTalla.setEnabled(true);
 	 										                      }
 	 										break;
+	 										
+							 				case "localizacion":			txtFiltroLocalizacion.setText(Lista)		;
+						 					if(!txtFiltroLocalizacion.getText().equals("")){
+						 						txtcod_prod.setText("");
+						 						txtFiltroProducto.setText("");
+						 						txtFiltroCategoria.setText("");
+						 						txtFiltroClase.setText("");
+						 						txtFiltroFamilia.setText("");
+						 						txtFiltroLinea.setText("");		 										
+		 										btnLimpiarFiltroLocalizaciones.setEnabled(true);
+							                      }
+						 					break;
+						 					
+							 				case "pasillo":			txtFiltroPasillo.setText(Lista)		;
+						 					if(!txtFiltroPasillo.getText().equals("")){
+						 						txtcod_prod.setText("");
+						 						txtFiltroProducto.setText("");
+						 						txtFiltroCategoria.setText("");
+						 						txtFiltroClase.setText("");
+						 						txtFiltroFamilia.setText("");
+						 						txtFiltroLinea.setText("");
+		 										btnLimpiarFiltroPasillo.setEnabled(true);
+		 										}
+							                break;
+							
 				 				}
 					 			dispose();
 				 			}
@@ -899,41 +954,25 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				};
 				
 				
-				KeyListener opFiltroFolio = new KeyListener(){
-					@SuppressWarnings("unchecked")
-					public void keyReleased(KeyEvent arg0) {
-						trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 0));
-					}
-					public void keyTyped(KeyEvent arg0) {
-						char caracter = arg0.getKeyChar();
-						if(((caracter < '0') ||
-							(caracter > '9')) &&
-						    (caracter != KeyEvent.VK_BACK_SPACE)){
-							arg0.consume(); 
-						}	
-					}
-					public void keyPressed(KeyEvent arg0) {}		
-				};
-				
-				KeyListener opFiltroNombre = new KeyListener(){
-					@SuppressWarnings("unchecked")
-					public void keyReleased(KeyEvent arg0) {
-						trsfiltro.setRowFilter(RowFilter.regexFilter(txtNombre_Completo.getText().toUpperCase().trim(), 1));
-					}
-					public void keyTyped(KeyEvent arg0) {}
-					public void keyPressed(KeyEvent arg0) {}		
-				};
-				
-				
 			   	public Object[][] getTablaFiltro(String operador, String nombre_de_tabla){
 			   		String condicion = "";
-			   		
+			   		String todos ="";
 			   		if(!Lista.equals("")){
 			   			condicion = " where jerarquia "+Lista.replace("''","'");
 			   		}
-					String todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
-					
-					Statement s;
+			   		
+			   		if(nombre_de_tabla.equals("localizacion")) {
+			   		 todos = "	   select DISTINCT upper(localizacion),upper(localizacion)as nombre from [BMSIZAGAR].dbo.localizaciones_surtido_productos where cod_estab=(select cod_estab from [BMSIZAGAR].dbo.establecimientos where nombre ='"+cmbEstablecimiento.getSelectedItem().toString()+"') order by nombre";	
+			   		}else {
+			   			
+			   			if(nombre_de_tabla.equals("pasillo")) {
+					   		 todos = "	   select DISTINCT isnull(SUBSTRING(upper(localizacion),3,3),0)as pasillo,upper(localizacion)as nombre from [BMSIZAGAR].dbo.localizaciones_surtido_productos where cod_estab=(select cod_estab from [BMSIZAGAR].dbo.establecimientos where nombre ='"+cmbEstablecimiento.getSelectedItem().toString()+"') order by pasillo";	
+					   		}else {
+					          todos = "select "+folio_columna+" as folio,upper(nombre) from "+nombre_de_tabla+condicion+" order by nombre";
+					   		}
+			   		}
+			   		
+			   		Statement s;
 					ResultSet rs;
 					try {
 						s = new Connexion().conexion_IZAGAR().createStatement();
@@ -964,48 +1003,11 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 						while(rs.next()){
 							filas++;
 						}
-						
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
 					return filas;
 				}	
-
-				KeyListener validaCantidad = new KeyListener() {
-					@Override
-					public void keyTyped(KeyEvent e){
-						char caracter = e.getKeyChar();				
-						if(((caracter < '0') ||	
-						    	(caracter > '9')) && 
-						    	(caracter != '.' )){
-						    	e.consume();
-						    	}
-					}
-					@Override
-					public void keyReleased(KeyEvent e) {	
-					}
-					@Override
-					public void keyPressed(KeyEvent arg0) {
-					}	
-				};
-				
-				KeyListener validaNumericoConPunto = new KeyListener() {
-					@Override
-					public void keyTyped(KeyEvent e) {
-						char caracter = e.getKeyChar();
-						
-					    if(((caracter < '0') ||	
-					    	(caracter > '9')) && 
-					    	(caracter != '.')){
-					    	e.consume();
-					    	}
-					}
-					@Override
-					public void keyPressed(KeyEvent e){}
-					@Override
-					public void keyReleased(KeyEvent e){}
-											
-				};
 				
 			}
 	

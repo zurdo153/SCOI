@@ -16,58 +16,6 @@ public class BuscarTablasModel {
 	
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public Object[][] tabla_model_bancos(){
-		String query_lista = "exec sp_lista_banco";
-		Object[][] matriz = new Object[get_filas(query_lista)][6];
-		try {
-			Statement stmt = new Connexion().conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query_lista);
-			
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getInt(1)+" ";
-				matriz[i][1] = "   "+rs.getString(2);
-				matriz[i][2] = "   "+rs.getString(3);
-				
-				matriz[i][3] = rs.getString(4);
-				matriz[i][4] = rs.getFloat(5) ==  Float.parseFloat("0.0") ? "" : rs.getFloat(5) ;
-				matriz[i][5] = rs.getFloat(6) == Float.parseFloat("0.0") ? "" : rs.getFloat(6) ;
-//				matriz[i][5] = rs.getFloat(6) == Float.parseFloat("0.0") ? "" :Decimal( rs.getFloat(6)) ;
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_bancos  procedimiento almacenado sp_lista_banco SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-	    return matriz; 
-	}
-	
-	
-	
-	public Object[][] tabla_model_bancos_empleados(){
-		String query_lista = "select nombre from tb_tipo_banco";
-		Object[][] matriz = new Object[get_filas(query_lista)+1][2];
-		try {
-			Statement stmt = new Connexion().conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query_lista);
-			
-			int i = 0;
-			while(rs.next()){
-				matriz[i][0] = rs.getString(1);
-				matriz[i][1] = "";
-				i++;
-			}
-			matriz[i][0] = "TOTAL";
-			matriz[i][1] = "";
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion tabla_model_bancos  procedimiento almacenado sp_lista_banco SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-		}
-	    return matriz; 
-	}
-	
-	
 	public Object[][] tabla_model_deduccion_y_percepcionesde_lista_de_raya(){
 		String query_lista = "exec sp_select_deduccion_y_percepciones_de_lista_de_raya";
 		Object[][] matriz = new Object[get_filas(query_lista)][15];
@@ -1579,32 +1527,6 @@ public String[][] tabla_filtro_de_asignaciones_para_corregir_asignacion_ieps(){
 	} catch (SQLException e1) {
 		e1.printStackTrace();
 		JOptionPane.showMessageDialog(null, "Error en BuscarTablaModel  en la funcion tabla_filtro_de_asignaciones_para_ajuste_de_ticket "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-	}
-    return matriz; 
-}
-
-
-
-public Object[][] tabla_model_competencia(){
-	
-	String query = "select folio_competencia, competencia  from tb_competencias where status = 1 order by folio_competencia asc";
-	
-	Object[][] matriz = new Object[get_filas(query)][3];
-	try {
-		Statement stmt = new Connexion().conexion().createStatement();
-		ResultSet rs = stmt.executeQuery(query);
-		
-		int i = 0;
-		while(rs.next()){
-			matriz[i][0] =rs.getString(1);
-			matriz[i][1] = "   "+rs.getString(2);
-			matriz[i][2] = "";
-			
-			i++;
-		}
-
-	} catch (SQLException e1) {
-		e1.printStackTrace();
 	}
     return matriz; 
 }

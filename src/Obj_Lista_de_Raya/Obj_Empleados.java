@@ -101,16 +101,14 @@ public class Obj_Empleados {
 	private String rfc_beneficiario;
 	private String parentesco_beneficiario;
 	private String fecha_nacimiento_beneficiario;
-	
+	private String Guardar_Modificar;
 	
 	public Obj_Empleados(){
 		folio=0; no_checador=""; nombre=""; ap_paterno=""; ap_materno=""; fecha_nacimiento=""; calle=""; colonia=""; poblacion=""; telefono_familiar="";
 		telefono_propio=""; telefono_cuadrante=""; rfc=""; curp=""; sexo=0; estado_civil=""; tipo_sangre=""; escolaridad=""; fotoB=null; emailEmpresa="";
 		emailPersonal="";
-		
 		status_checador = "";	forma_de_checar=""; 	tieneHuella=false;
-		
-		perfil = 0;
+		perfil = 0;Guardar_Modificar="";
 		
 		horario=0; horario2=0; horario2=0; status_h1=0; status_h2=0; status_h3=0; status_rotativo=0; contrato=0; descanso=""; dobla=""; fecha_ingreso=""; status=0; fecha_baja=""; cuadrante_parcial=false;
 		departameto=0; imss=""; status_imss=0; numero_infonavit=""; establecimiento=0; puesto=0;
@@ -119,6 +117,14 @@ public class Obj_Empleados {
 		nombre_beneficiario=""; rfc_beneficiario="";parentesco_beneficiario="";fecha_nacimiento_beneficiario="";
 	}
 	
+	public String getGuardar_Modificar() {
+		return Guardar_Modificar;
+	}
+
+	public void setGuardar_Modificar(String guardar_Modificar) {
+		Guardar_Modificar = guardar_Modificar;
+	}
+
 	public String getNombre_beneficiario() {
 		return nombre_beneficiario;
 	}
@@ -691,7 +697,6 @@ public class Obj_Empleados {
 			return new GuardarSQL().Guardar_Empleado(this, datosHuella, datosHuella2, tamañoHuella, tamañoHuella2); 
 		}
 	
-	
 	public Obj_Empleados buscar(int folio){ 
 		try {
 			return new BuscarSQL().Empleado(folio);
@@ -700,7 +705,6 @@ public class Obj_Empleados {
 		}
 	return null; 
 	}
-	
 	
 	public boolean actualizar(int folio, ByteArrayInputStream datosHuella, ByteArrayInputStream datosHuella2, int tamañoHuella, int tamañoHuella2){
 		return new ActualizarSQL().Empleado(this,folio, datosHuella, datosHuella2, tamañoHuella, tamañoHuella2); 

@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -56,6 +57,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
@@ -84,8 +86,6 @@ import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Checador.Obj_Horario_Empleado;
-import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;
-import Obj_Lista_de_Raya.Obj_Autorizacion_Finanzas;
 import Obj_Lista_de_Raya.Obj_Bono_Complemento_Sueldo;
 import Obj_Lista_de_Raya.Obj_Bono_Puntualidad_Y_Asistencia;
 import Obj_Lista_de_Raya.Obj_Departamento;
@@ -132,7 +132,8 @@ public class Cat_Empleados extends JFrame{
 	
 	byte[] imagB = null;
 	
-	Object[][] tablacompleta = null;
+	Object[][] tabla_empleado_consulta = null;
+	Obj_Empleados re = new Obj_Empleados();
 	
 	Runtime R = Runtime.getRuntime();
 	Container cont = getContentPane();
@@ -141,58 +142,99 @@ public class Cat_Empleados extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	JLayeredPane panelReporte = new JLayeredPane();
 	
+	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
+	
 	JLabel lblDatosPersonales = new JLabel();
 	JLabel lblLaboral = new JLabel();
 	JLabel lblPercepciones = new JLabel();
 	JLabel lblFolioHorario1 = new JLabel("");
 	JLabel lblFolioHorario2 = new JLabel("");
 	JLabel lblFolioHorario3 = new JLabel("");
-	
-	JButton btnLimpiarPerfil  = new JButton(".");
-	JButton btnAgregarPerfil   = new JButton(".");
 	JLabel lblFolioPerfil = new JLabel("");
-	JTextField txtPerfil = new Componentes().text(new JTextField(), "Perfil De Puesto", 250, "String");
-	
-	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
 
-	JTextField txtFolioEmpleado = new Componentes().text( new JCTextField(), "Folio Colaborador", 9, "Int");
-	JTextField txtNombre = new Componentes().text( new JTextField(), "Nombre de Empleado", 70, "String");
-	JTextField txtApPaterno = new Componentes().text( new JTextField(), "Apellido Paterno", 20, "String");
-	JTextField txtApMaterno = new Componentes().text( new JTextField(), "Apellido Materno", 20, "String");
-	JTextField txtFechaActualizacion = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
+	JTextField txtPerfil                 = new Componentes().text(new JTextField(), "Perfil De Puesto", 250, "String");
+	JTextField txtFechaActualizacion     = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
+	JTextField txtFolioEmpleado          = new Componentes().text(new JCTextField(),"Folio Colaborador"           ,9       ,"Int"   );
+	JTextField txtNombre                 = new Componentes().text(new JCTextField(),"Nombre de Empleado"          ,70      ,"String");
+	JTextField txtApPaterno              = new Componentes().text(new JCTextField(),"Apellido Paterno"            ,20      ,"String");
+	JTextField txtApMaterno              = new Componentes().text(new JCTextField(),"Apellido Materno"            ,20      ,"String");
+	JTextField txtTelefono_Familiar      = new Componentes().text(new JCTextField(),"Teléfono Familiar"           ,10      ,"Int"   );
+	JTextField txtTelefono_Propio        = new Componentes().text(new JCTextField(),"Teléfono Propio"             ,10      ,"Int"   );
+	JTextField txtTelefono_Cuadrante     = new Componentes().text(new JCTextField(),"Teléfono Cuadrante"          ,10      ,"Int"   ); 
+	JTextField txtPoblacion              = new Componentes().text(new JCTextField(),"Población"                   ,20      ,"String");
+	JTextField txtRFC                    = new Componentes().text(new JCTextField(),"RFC"                         ,25      ,"String");
+	JTextField txtCurp                   = new Componentes().text(new JCTextField(),"Curp"                        ,25      ,"String");  
+	JTextField txtBaja                   = new Componentes().text(new JCTextField(),"Fecha De Baja"               ,30      ,"String");
+	JTextField txtColonia                = new Componentes().text(new JCTextField(),"Colonia"                     ,30      ,"String");
+	JTextField txtCalle                  = new Componentes().text(new JCTextField(),"Calle"                       ,30      ,"String");
+	JTextField txtemailEmpresa           = new Componentes().text(new JCTextField(),"@email empresa"              ,150     ,"String");
+	JTextField txtemailPersonal          = new Componentes().text(new JCTextField(),"@email personal"             ,150     ,"String");
+	JTextField txtDescanso               = new Componentes().text(new JCTextField(),"Dia De Descanso"             ,100     ,"String");
+	JTextField txtDobla                  = new Componentes().text(new JCTextField(),"Dia Dobla"                   ,100     ,"String");
+	JTextField txtFechaUltimasVacaciones = new Componentes().text(new JCTextField(),"Ultimas Vaciones"            ,100     ,"String");
+	JTextField txtFechaIncapacidad       = new Componentes().text(new JCTextField(),"Fecha De Incapacidad"        ,100     ,"String");
+	JTextField txtImss                   = new Componentes().text(new JCTextField(),"Número de Seguro Social"     ,11      ,"Int"   );
+	JTextField txtNumeroInfonavit        = new Componentes().text(new JCTextField(),"Número de Infonavit"         ,15      ,"Int"   );
+	JTextField txtHorario                = new Componentes().text(new JCTextField(),"Horario Principal Asignado"  ,300     ,"String");
+	JTextField txtHorario2               = new Componentes().text(new JCTextField(),"Horario Secundario Asignado" ,300     ,"String");
+	JTextField txtHorario3               = new Componentes().text(new JCTextField(),"Horario Terciario Asignado"  ,300     ,"String");
+	JTextField txtSalarioDiario          = new Componentes().text(new JCTextField(),"Salario Diario"              ,15      ,"Double");
+	JTextField txtSalarioDiarioIntegrado = new Componentes().text(new JCTextField(),"Salario Diario Integrado"    ,15      ,"Double");
+	JTextField txtInfonavit              = new Componentes().text(new JCTextField(),"Descuento a Infonavit"       ,15      ,"Double");
+	JTextField txtDInfonacot             = new Componentes().text(new JCTextField(),"Infonacot"                   ,15      ,"Double");
+	JTextField txtPensionAli             = new Componentes().text(new JCTextField(),"Pension Alimenticia"         ,15      ,"Double");
+	JTextField txtTarjetaNomina          = new Componentes().text(new JCTextField(),"Cuenta de Nómina"            ,19      ,"Int"   );
+	JTextField txtultimousuariomod       = new Componentes().text(new JCTextField(),"Último Usuario Actualizó"    ,300     ,"String");
+	JTextField txtFormaDePago            = new Componentes().text(new JCTextField(),"Forma de Pago"               ,15      ,"String");
 	
-	JTextField txtTelefono_Familiar = new Componentes().text( new JTextField(), "Teléfono Familiar", 10, "Int");
-	JTextField txtTelefono_Propio = new Componentes().text( new JTextField(), "Teléfono Propio", 10, "Int");
-	JTextField txtTelefono_Cuadrante = new JTextField();  
-	JTextField txtPoblacion = new Componentes().text( new JTextField(), "Población", 20, "String");
-	JTextField txtRFC = new Componentes().text(new JTextField(), "RFC", 25, "String");
-	JTextField txtCurp = new Componentes().text(new JTextField(), "Curp", 25, "String");  
-	JTextField txtBaja = new JTextField();
-	JTextField txtColonia = new Componentes().text( new JTextField(), "Colonia", 30, "String");
-	JTextField txtCalle = new Componentes().text( new JTextField(), "Calle", 30, "String");
+	JCButton btnBuscar              = new JCButton("Buscar"                                ,"buscar.png","Azul");
+	JCButton btnFiltro              = new JCButton("Filtro"                                ,"Filter-List-icon16.png","Azul");
+	JCButton btnNuevo               = new JCButton("Nuevo"                                 ,"Nuevo.png","Azul");
+	JCButton btnEditar              = new JCButton("Editar"                                ,"editara.png","Azul");
+	JCButton btnGuardar             = new JCButton("Guardar"                               ,"Guardar.png","Azul");
+	JCButton btnDeshacer            = new JCButton("Deshacer"                              ,"deshacer16.png","Azul");
+	JCButton btnVerificar           = new JCButton("Verificar Nombre Del Nuevo Colaborador","","AzulC");
+	JCButton btnHorario             = new JCButton(""                                      ,"buscar.png","Verde");
+	JCButton btnHorario2            = new JCButton(""                                      ,"buscar.png","Verde");
+	JCButton btnHorario3            = new JCButton(""                                      ,"buscar.png","Verde");
+	JCButton btnPuesto              = new JCButton(""                                      ,"P1-icon.png","Verde");
+	JCButton btnHorarioNew          = new JCButton(""                                      ,"Filter-List-icon16.png","AzulO");
+	JCButton btnLimpiarH2           = new JCButton(""                                      ,"goma-de-borrar.png","AzulO");
+	JCButton btnLimpiarH3           = new JCButton(""                                      ,"goma-de-borrar.png","AzulO");
+	JCButton btnCamara              = new JCButton("320 x 240"                             ,"camara_icon&16.png","Azul");
+	JCButton btnContratacion        = new JCButton("Contratacion"                          ,"contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","AzulO");
+	JCButton btnDocumentacion       = new JCButton("Documentación"                         ,"carpeta-de-correo-icono-4002-16.png","AzulO");
+	JCButton btnEncuentaDeSalida    = new JCButton("Encuesta De Salida"                    ,"Lista.png","AzulO");
+	JCButton btnBeneficiario        = new JCButton("Beneficiario"                          ,"Usuario.png","AzulO");
+	JCButton btnIncontratables      = new JCButton("No Contratables"                       ,"tarjeta-de-informacion-del-usuario-icono-7370-32.png","Azul");
+	JCButton btnLicencias           = new JCButton("Licencias"                             ,"camion-icono-6226-32.png","Azul");
+	JCButton btnCumpleaños_del_Mes  = new JCButton("Cumpleaños"                            ,"pastel-icono-5242-32.png","Azul");
+	JCButton btnAusentismo		    = new JCButton("Ausentismo"                            ,"inasistencia32.png","Azul");
+	JCButton btn_Adeudo        		= new JCButton("Adeudos"                               ,"deuda.png","Azul");
+	JCButton btnReporteSalida		= new JCButton("Encuesta De Salida"                    ,"mail-replylist-icono-7882-32.png","Azul");
+	JCButton btnReporteRenuncia		= new JCButton("Renuncia"                              ,"baja32.png","Azul");
+	JCButton btnImp_Datos_Completos = new JCButton("Datos Colaborador"                     ,"informacion-del-usuario-icono-8370-32.png","Azul");
+	JCButton btnAltasBajas          = new JCButton("Rotacion"                              ,"arrow1_405291532.png","Azul");
+	JCButton btnAsistencia_Empleado = new JCButton("Asistencia"                            ,"archivo-icono-8809-16.png","Azul"); 
+	JCButton btnCortes              = new JCButton("Cortes"                                ,"dinero-icono-8797-32.png","Azul"); 
+	JCButton btn_plantilla          = new JCButton("Plantilla"                             ,"plan-icono-5073-16.png","Azul");
+	JCButton btn_R_horarios         = new JCButton("Horarios"                              ,"reloj-icono-9211-32.png","Azul");
+	JCButton btn_Huellas         	= new JCButton("Datos Checador"                        ,"huella_cargada_32.png","Azul");
+	JCButton btn_movimientos        = new JCButton("Percepcion y Deducciones"              ,"percepciones_y_deducciones32.png","Azul");
 	
-	JTextField txtemailEmpresa           = new Componentes().text(new JCTextField(),"@email empresa", 150, "String");
-	JTextField txtemailPersonal          = new Componentes().text(new JCTextField(),"@email personal", 150, "String");
-	JTextField txtDescanso               = new Componentes().text(new JCTextField(),"Dia De Descanso", 100, "String");
-	JTextField txtDobla                  = new Componentes().text(new JCTextField(),"Dia Dobla", 100, "String");
-	JTextField txtFechaUltimasVacaciones = new Componentes().text(new JCTextField(),"Ultimas Vaciones", 100, "String");
-	JTextField txtFechaIncapacidad       = new JTextField();
+	JButton btnFechaUltimasVacaciones = new JButton();
+	JButton btnFechaIncapacidad       = new JButton();
+	JButton btnFiniquito              = new JButton();
+	JButton btnFoto                   = new JButton();
+	JButton btnStatus                 = new JButton();
+	JButton btnLimpiarPerfil          = new JButton(".");
+	JButton btnAgregarPerfil          = new JButton(".");
+//	JButton btnExaminar = new JButton("Examinar");
 	
-	JTextField txtImss                   = new Componentes().text(new JCTextField(),"Número de Seguro Social", 11, "Int");
-	JTextField txtNumeroInfonavit        = new Componentes().text(new JCTextField(), "Número de Infonavit", 15, "Int");
-	JTextField txtHorario                = new Componentes().text(new JCTextField(), "Horario Principal Asignado",300, "String");
-	JTextField txtHorario2               = new Componentes().text(new JCTextField(), "Horario Secundario Asignado",300, "String");
-	JTextField txtHorario3               = new Componentes().text(new JCTextField(), "Horario Terciario Asignado",300, "String");
-	
-	JTextField txtSalarioDiario          = new Componentes().text(new JCTextField(), "Salario Diario"          , 15, "Double");
-	JTextField txtSalarioDiarioIntegrado = new Componentes().text(new JCTextField(), "Salario Diario Integrado", 15, "Double");
-	
-	JTextField txtInfonavit              = new Componentes().text(new JCTextField(), "Descuento a Infonavit"   , 15, "Double");
-	JTextField txtDInfonacot             = new Componentes().text(new JCTextField(), "Infonacot"               , 15, "Double");
-	JTextField txtPensionAli             = new Componentes().text(new JCTextField(), "Pension Alimenticia"     , 15, "Double");
-	JTextField txtTarjetaNomina          = new Componentes().text(new JCTextField(), "Cuenta de Nómina"       , 19, "Int"   );
-	JTextField txtultimousuariomod       = new Componentes().text(new JCTextField(), "Último Usuario Actualizó",300, "String");
-	JTextField txtFormaDePago            = new Componentes().text(new JCTextField(), "Forma de Pago"           , 15, "String");
+	JDateChooser txtFechaNacimiento = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser txtIngreso = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser txtIngresoImss = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser txtVencimientoLicencia = new Componentes().jchooser(new JDateChooser()  ,"",0);
 	
 //	JToggleButton btnTrueFoto = new JToggleButton("Para actualizar la foto Presiona aquí !!!");
 	JToggleButton btnTrueFoto = new JToggleButton("Actualizar Foto !!!");
@@ -245,65 +287,10 @@ public class Cat_Empleados extends JFrame{
 	
 	JCheckBox chb_cuadrante_parcial = new JCheckBox("Permite Cuadrante Parcial",false);
 	
-	JCButton btnBuscar    = new JCButton("Buscar","buscar.png","Azul");
-	JCButton btnFiltro    = new JCButton("Filtro","Filter-List-icon16.png","Azul");
-	JCButton btnNuevo     = new JCButton("Nuevo","Nuevo.png","Azul");
-	JCButton btnEditar    = new JCButton("Editar","editara.png","Azul");
-	JCButton btnSalir     = new JCButton("Salir","salir16.png","Azul");
-	JCButton btnGuardar   = new JCButton("Guardar","Guardar.png","Azul");
-	JCButton btnDeshacer  = new JCButton("Deshacer","deshacer16.png","Azul");
-	JCButton btnVerificar = new JCButton("Verificar Nombre Del Nuevo Colaborador","","AzulC");
-	
-	JCButton btnHorario    = new JCButton("","buscar.png","Azul");
-	JCButton btnHorario2   = new JCButton("","buscar.png","Azul");
-	JCButton btnHorario3   = new JCButton("","buscar.png","Azul");
-	JCButton btnHorarioNew = new JCButton("","Filter-List-icon16.png","AzulO");
-	
-	JCButton btnLimpiarH2   = new JCButton("","goma-de-borrar.png","AzulO");
-	JCButton btnLimpiarH3 = new JCButton("","goma-de-borrar.png","AzulO");
-	
-	JButton btnFechaUltimasVacaciones = new JButton();
-	JButton btnFechaIncapacidad = new JButton();
-	JButton btnFiniquito  = new JButton();
-	
-	JButton btnFoto = new JButton();
-	JButton btnStatus = new JButton();
-//	JButton btnExaminar = new JButton("Examinar");
-	JCButton btnCamara = new JCButton("320 x 240","camara_icon&16.png","Azul");
-
-	JCButton btnContratacion        = new JCButton("Contratacion","contrato-de-acuerdo-de-acuerdo-de-la-mano-encuentros-socio-icono-7428-16.png","AzulO");
-	JCButton btnDocumentacion       = new JCButton("Documentación","carpeta-de-correo-icono-4002-16.png","AzulO");
-	JCButton btnEncuentaDeSalida    = new JCButton("Encuesta De Salida","Lista.png","AzulO");
-	JCButton btnBeneficiario        = new JCButton("Beneficiario","Usuario.png","AzulO");
-	
-	JCButton btnIncontratables      = new JCButton("No Contratables","tarjeta-de-informacion-del-usuario-icono-7370-32.png","Azul");
-	JCButton btnLicencias           = new JCButton("Licencias","camion-icono-6226-32.png","Azul");
-	JCButton btnCumpleaños_del_Mes  = new JCButton("Cumpleaños","pastel-icono-5242-32.png","Azul");
-	JCButton btnAusentismo		    = new JCButton("Ausentismo","inasistencia32.png","Azul");
-	JCButton btn_Adeudo        		= new JCButton("Adeudos","deuda.png","Azul");
-	JCButton btnReporteSalida		= new JCButton("Encuesta De Salida","mail-replylist-icono-7882-32.png","Azul");
-	JCButton btnReporteRenuncia		= new JCButton("Renuncia","baja32.png","Azul");
-	JCButton btnImp_Datos_Completos = new JCButton("Datos Colaborador","informacion-del-usuario-icono-8370-32.png","Azul");
-	
-	JCButton btnAltasBajas          = new JCButton("Rotacion","arrow1_405291532.png","Azul");
-	JCButton btnAsistencia_Empleado = new JCButton("Asistencia","archivo-icono-8809-16.png","Azul"); 
-	JCButton btnCortes              = new JCButton("Cortes","dinero-icono-8797-32.png","Azul"); 
-	JCButton btn_plantilla          = new JCButton("Plantilla","plan-icono-5073-16.png","Azul");
-	JCButton btn_R_horarios         = new JCButton("Horarios","reloj-icono-9211-32.png","Azul");
-	JCButton btn_Huellas         	= new JCButton("Datos Checador","huella_cargada_32.png","Azul");
-	
-	JCButton btn_movimientos        = new JCButton("Percepcion y Deducciones","percepciones_y_deducciones32.png","Azul");
-	
 	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
-	
-	JDateChooser txtFechaNacimiento = new Componentes().jchooser(new JDateChooser()  ,"",0);
-	JDateChooser txtIngreso = new Componentes().jchooser(new JDateChooser()  ,"",0);
-	JDateChooser txtIngresoImss = new Componentes().jchooser(new JDateChooser()  ,"",0);
-	JDateChooser txtVencimientoLicencia = new Componentes().jchooser(new JDateChooser()  ,"",0);
-	
 
-	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO"};
+	String sexo[] = {"Selecciona un Genero","MASCULINO","FEMENINO"};
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbSexo = new JComboBox(sexo);
 	
@@ -327,7 +314,7 @@ public class Cat_Empleados extends JFrame{
 	@SuppressWarnings("rawtypes")
 	JComboBox cmbContratacion = new JComboBox(contratacion);
 	
-	 private ButtonGroup bgHorarios = new ButtonGroup();
+	 private ButtonGroup  bgHorarios = new ButtonGroup();
 	 private JRadioButton rbHorario = new JRadioButton("",true);
 	 private JRadioButton rbHorario2 = new JRadioButton("",false);
 	 private JRadioButton rbHorario3 = new JRadioButton("",false);
@@ -356,10 +343,9 @@ public class Cat_Empleados extends JFrame{
 	ByteArrayInputStream datosHuella2 = null;
 	int tamañoHuella = 0;
 	int tamañoHuella2 = 0;
-	
-	
-	Obj_Empleados re = new Obj_Empleados();
-	
+    String NuevoModificar="";
+    int valor = 0;
+	JToolBar menu_toolbar   = new JToolBar();
 	public Cat_Empleados() {
 		getContenedor();
 	}
@@ -369,65 +355,60 @@ public class Cat_Empleados extends JFrame{
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/usuario-grupo-icono-5183-64.png"));
+		this.setTitle("Alta de Empleados");
+		this.pestanas.addTab("Empleados", panel);
+		this.pestanas.addTab("Reportes", panelReporte);
 		
-		pestanas.addTab("Empleados", panel);
-		pestanas.addTab("Reportes", panelReporte);
-		
-//		pendientes en funcionalidad----------------------------------------------------
-		txtFechaUltimasVacaciones.setEnabled(false);
-		btnFechaUltimasVacaciones.setEnabled(false);
-		txtFechaIncapacidad.setEnabled(false);
-		btnFechaIncapacidad.setEnabled(false);
-		btnFiniquito.setEnabled(false);
-//		------------------------------------------------------------------------------
-//		efectos de bordes
-		blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
+		this.panelReporte.setBorder(BorderFactory.createTitledBorder(blackline, "Reportes de Colaboradores"));
+		this.lblDatosPersonales.setBorder(BorderFactory.createTitledBorder(blackline,"Datos Personales"));
+		this.btnFoto.setBorder(blackline);
+		this.lblLaboral.setBorder(BorderFactory.createTitledBorder(blackline, "Laboral"));
+		this.lblPercepciones.setBorder(BorderFactory.createTitledBorder(blackline,"Percepciones y Deducciones"));
+		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 //		etched = BorderFactory.createEtchedBorder();
 //		raisedbevel = BorderFactory.createRaisedBevelBorder();
 //		loweredbevel = BorderFactory.createLoweredBevelBorder();
 //		empty = BorderFactory.createEmptyBorder();
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/usuario-grupo-icono-5183-64.png"));
-		this.setTitle("Alta de Empleados");
-		
-		this.panel.setBorder(BorderFactory.createTitledBorder(blackline, "Datos del Colaborador"));
-		this.panelReporte.setBorder(BorderFactory.createTitledBorder(blackline, "Reportes de Colaboradores"));
-		
-//		asignacion de bordes
-		this.lblDatosPersonales.setBorder(BorderFactory.createTitledBorder(blackline,"Datos Personales"));
-		this.btnFoto.setBorder(blackline);
-		this.lblLaboral.setBorder(BorderFactory.createTitledBorder(blackline, "Laboral"));
-		this.lblPercepciones.setBorder(BorderFactory.createTitledBorder(blackline,"Percepciones y Deducciones"));
+		this.menu_toolbar.add(btnBuscar   );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnFiltro   );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnNuevo    );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnEditar   );
+	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnDeshacer );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnGuardar  );
+		this.menu_toolbar.setFloatable(false);
 		
 		this.btnVerificar.setToolTipText("Verificar Nombre");
-		
 		this.btnLimpiarPerfil.setToolTipText("Limpiar Perfil");
 		this.btnAgregarPerfil.setToolTipText("Agregar Perfil");
-		
 		this.btnHorarioNew.setToolTipText("Generar Horario");
 		this.btnHorario.setToolTipText("Asignar Horario");
 		this.btnHorario2.setToolTipText("Asignar Segundo Horario");
 		this.btnHorario3.setToolTipText("Asignar Tercer Horario");
+		this.btnFechaUltimasVacaciones.setToolTipText("Alimentacion de vacaciones");
+		this.btnFechaIncapacidad.setToolTipText("Alimentacion de incapacidad");
 		
 		this.txtFechaUltimasVacaciones.setToolTipText("Fecha de vacaciones");
 		this.txtFechaIncapacidad.setToolTipText("Fecha de incapacidad");
-		
-		this.btnFechaUltimasVacaciones.setToolTipText("Alimentacion de vacaciones");
-		this.btnFechaIncapacidad.setToolTipText("Alimentacion de incapacidad");
-			
 		this.txaObservaciones.setBorder(BorderFactory.createTitledBorder(blackline));
 		
 		this.bgHorarios.add(rbHorario);
 		this.bgHorarios.add(rbHorario2);
 		this.bgHorarios.add(rbHorario3);
 		
-		this.txtFechaNacimiento.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
-		this.txtIngreso.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
-		this.txtIngresoImss.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
-		this.txtVencimientoLicencia.setIcon(new ImageIcon("Iconos/calendar_icon&16.png"));
-		
 		int x = 11, y=20, ancho=140,width=190,height=35,sep=202;
-		
 		panelReporte.add(btnAsistencia_Empleado).setBounds  (x	   ,y    ,width,height);
 	    panelReporte.add(btn_R_horarios).setBounds          (x+=sep,y    ,width,height);
 		panelReporte.add(btn_movimientos).setBounds  		(x+=sep,y    ,width,height);
@@ -446,7 +427,7 @@ public class Cat_Empleados extends JFrame{
 		panelReporte.add(btnReporteSalida).setBounds   		(x+=sep,y    ,width,height);
 		panelReporte.add(btnReporteRenuncia).setBounds      (x+=sep,y    ,width,height);
 		panelReporte.add(btnAltasBajas).setBounds       	(x+=sep,y    ,width,height);
-		panelReporte.add(btn_Huellas).setBounds	(x+=sep,y    ,width,height);
+		panelReporte.add(btn_Huellas).setBounds	            (x+=sep,y    ,width,height);
 		
 		x = 10;y = 20;height=20;width=170;sep=190;
 		panel.add(btnContratacion).setBounds                (x	   ,y    ,width,height);
@@ -457,12 +438,10 @@ public class Cat_Empleados extends JFrame{
 		x=20; y=y+=38;sep=202;
 //Datos personales ----------------------------------------------------------------------------------------------------------------------------		
 		panel.add(lblDatosPersonales).setBounds(10,y-15,997,190);
-		panel.add(new JLabel("Folio:")).setBounds(x,y,ancho,20);
-		panel.add(txtFolioEmpleado).setBounds(ancho-60,y,ancho-15,20);
-		
-		panel.add(btnBuscar).setBounds(ancho*2-67,y,100,20);
-		panel.add(btnFiltro).setBounds(ancho*2+35,y,100,20);
-	
+
+		panel.add(new JLabel("Folio:")).setBounds (x          ,y   ,ancho    ,20);
+		panel.add(txtFolioEmpleado).setBounds     (ancho-60   ,y   ,ancho-15 ,20);
+		panel.add(menu_toolbar).setBounds         (ancho*2-67 ,y   ,480      ,20);
 		panel.add(btnFoto).setBounds(ancho*6,y,ancho+15,120);
 		panel.add(btnTrueFoto).setBounds(ancho*6, y+120,ancho+15,20);
 		panel.add(btnCamara).setBounds(ancho*6, y+140,ancho+15,20);
@@ -550,6 +529,7 @@ public class Cat_Empleados extends JFrame{
 		panel.add(cmbDepartamento).setBounds                    (x+sep       ,y     ,width    ,height );
 		panel.add(new JLabel("Puesto:")).setBounds              (x           ,y+=25 ,width    ,height );
 		panel.add(cmbPuesto).setBounds                          (x+sep       ,y     ,width    ,height );
+		panel.add(btnPuesto).setBounds                          (x+460       ,y     ,height   ,height );
 		panel.add(new JLabel("N° Seguro Social:")).setBounds    (x           ,y+=25 ,width/2  ,height );
 		panel.add(txtImss).setBounds                            (x+sep       ,y     ,width/2  ,height );
 		panel.add(cmbActivo_Inactivo).setBounds                 (x+290       ,y     ,width/2  ,height );
@@ -634,13 +614,6 @@ public class Cat_Empleados extends JFrame{
 		panel.add(chb_cuadrante_parcial).setBounds              (x           ,y+=25 ,width    ,height );
 		panel.add(Observasiones).setBounds                      (x+180       ,y-158 ,290      ,183    );
 		
-		sep=218;
-		panel.add(btnNuevo).setBounds                           (x=17        ,y=668 ,width=110,height );
-		panel.add(btnEditar).setBounds                          (x+=sep      ,y     ,width    ,height );
-		panel.add(btnGuardar).setBounds                         (x+=sep      ,y     ,width    ,height );
-		panel.add(btnDeshacer).setBounds                        (x+=sep      ,y     ,width    ,height );
-		panel.add(btnSalir).setBounds                           (x+=sep      ,y     ,width    ,height );
-		
 		btnHuella.setEnabled(false);
 		btnEditar.setEnabled(false);
 		txaObservaciones.setLineWrap(true); 
@@ -650,14 +623,13 @@ public class Cat_Empleados extends JFrame{
 		btnEditar.addActionListener(editar);
 		btnBuscar.addActionListener(buscar);
 		btnGuardar.addActionListener(guardar);
-		btnSalir.addActionListener(salir);
 		btnNuevo.addActionListener(nuevo);
 		btnDeshacer.addActionListener(deshacer);
 		btnFiltro.addActionListener(filtro);
 		btnCamara.addActionListener(opFoto);
 		btnVerificar.addActionListener(opVerificar);
 		btnTrueFoto.addActionListener(opPresionFoto);
-		
+		btnPuesto.addActionListener(opBuscar_Puesto);
         btnImp_Datos_Completos.addActionListener(opImprimir_Datos);
 		btnContratacion.addActionListener(opContratacion);
 		btnAsistencia_Empleado.addActionListener(opAsistenciaEmpleado);	
@@ -680,7 +652,6 @@ public class Cat_Empleados extends JFrame{
 		btnBeneficiario.addActionListener(opBeneficiario);
 		btnReporteSalida.addActionListener(opReporteDeEncuesta);
 
-//		btnExaminar.addActionListener(opExaminar);
 		btnLimpiarPerfil.addActionListener(opLimpiarPerfil);
 		btnAgregarPerfil.addActionListener(opPerfil);
 		btnHorarioNew.addActionListener(opGenerarHorairo);
@@ -708,29 +679,23 @@ public class Cat_Empleados extends JFrame{
 		
 		cont.add(pestanas);
 		
-//		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
-		
-		txtPerfil.setEnabled(false);
-		
 		btnHorario.setEnabled(false);
 		btnHorario2.setEnabled(false);
 		btnHorario3.setEnabled(false);
-		
 		btnLimpiarH2.setEnabled(false);
 		btnLimpiarH3.setEnabled(false);
-		
 		btnHorarioNew.setEnabled(false);
-		txtHorario.setEditable(false);
-		txtHorario2.setEditable(false);
-		txtHorario3.setEditable(false);
-		
+        btnPuesto.setEnabled(false);
 		cmbHorarioRotativo.setEnabled(false);
-		
 		cmbEstablecimiento.setEnabled(false);
 		cmbDepartamento.setEnabled(false);
 		cmbPuesto.setEnabled(false);
 		
+		txtPerfil.setEnabled(false);
+		txtHorario.setEditable(false);
+		txtHorario2.setEditable(false);
+		txtHorario3.setEditable(false);
 		txtDescanso.setEnabled(false);
 		txtemailEmpresa.setEditable(false);
 		txtemailPersonal.setEditable(false);
@@ -738,6 +703,13 @@ public class Cat_Empleados extends JFrame{
 		txtChecador.setEnabled(false);
 		txtChecador.setVisible(false);
 		txtFechaActualizacion.setEnabled(false);
+		
+//		pendientes en funcionalidad----------------------------------------------------
+		txtFechaUltimasVacaciones.setEnabled(false);
+		btnFechaUltimasVacaciones.setEnabled(false);
+		txtFechaIncapacidad.setEnabled(false);
+		btnFechaIncapacidad.setEnabled(false);
+		btnFiniquito.setEnabled(false);
 		
 		panelEnabledFalse();
 		txtFolioEmpleado.setEditable(true);
@@ -752,6 +724,10 @@ public class Cat_Empleados extends JFrame{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+//		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
+//         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//         btnFoto.setIcon(iconoDefault);
          
 		 ImageIcon file_status = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Vigente.png");
          Icon iconoStatus = new ImageIcon(file_status.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
@@ -761,71 +737,36 @@ public class Cat_Empleados extends JFrame{
                  public void windowOpened( WindowEvent e ){	 txtFolioEmpleado.requestFocus();  }
          });
 		
+ 		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+ 		getRootPane().getActionMap().put("escape", new AbstractAction(){   public void actionPerformed(ActionEvent e) {  btnDeshacer.doClick(); txtFolioEmpleado.requestFocus();   }    });
+ 		
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D,Event.CTRL_MASK),"deshacer");
+        getRootPane().getActionMap().put("deshacer", new AbstractAction(){ public void actionPerformed(ActionEvent e) {  btnDeshacer.doClick(); txtFolioEmpleado.requestFocus();   }   });
+         
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put( KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "foco");	    
-	    getRootPane().getActionMap().put("foco", new AbstractAction(){    @Override
-	        public void actionPerformed(ActionEvent e) {	        	btnFiltro.doClick();    	     }
-	    });
+	    getRootPane().getActionMap().put("foco", new AbstractAction(){     public void actionPerformed(ActionEvent e) {  btnFiltro.doClick();    	       }   });
 	    
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put( KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "horario");
-	    getRootPane().getActionMap().put("horario", new AbstractAction(){ @Override
-	        public void actionPerformed(ActionEvent e) {    	        	btnHorarioNew.doClick();          }
-	    });
-						  ///deshacer con escape
-						        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
-						        getRootPane().getActionMap().put("escape", new AbstractAction(){
-						            public void actionPerformed(ActionEvent e)
-						            {                 	    btnDeshacer.doClick();
-						                                    txtFolioEmpleado.requestFocus(); 
-						          	    }
-						        });
-						///guardar con control+G
-						        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
-						             getRootPane().getActionMap().put("guardar", new AbstractAction(){
-						                 public void actionPerformed(ActionEvent e)
-						                 {                 	    btnGuardar.doClick();
-						               	    }
-						            });
-						///guardar con F12
-						             getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
-						                 getRootPane().getActionMap().put("guardar", new AbstractAction(){
-						                     public void actionPerformed(ActionEvent e)
-						                     {                 	    btnGuardar.doClick();
-							                    	    }
-						                });
+	    getRootPane().getActionMap().put("horario", new AbstractAction(){  public void actionPerformed(ActionEvent e) {  btnHorarioNew.doClick();          }   });
+	    
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G,Event.CTRL_MASK),"guardar");
+		getRootPane().getActionMap().put("guardar", new AbstractAction(){  public void actionPerformed(ActionEvent e) {  btnGuardar.doClick();       	   }   });
+		
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "guardar");
+		getRootPane().getActionMap().put("guardar", new AbstractAction(){  public void actionPerformed(ActionEvent e) {  btnGuardar.doClick();       	   }   });
 						             
-						///nuevo con F9
-						         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
-						             getRootPane().getActionMap().put("nuevo", new AbstractAction(){
-						                 public void actionPerformed(ActionEvent e)
-						                 {                 	    btnNuevo.doClick();
-						                   	    }
-						            });
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "nuevo");
+        getRootPane().getActionMap().put("nuevo", new AbstractAction(){    public void actionPerformed(ActionEvent e) {  btnNuevo.doClick();          	   }   });
 						             
-						///nuevo con control+N
-						         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
-						              getRootPane().getActionMap().put("nuevo", new AbstractAction(){
-						                  public void actionPerformed(ActionEvent e)
-						                  {                 	    btnNuevo.doClick();
-						                   	    }
-						            });
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,Event.CTRL_MASK),"nuevo");
+        getRootPane().getActionMap().put("nuevo", new AbstractAction(){    public void actionPerformed(ActionEvent e) {  btnNuevo.doClick();        	   }   });
 						              
-						///editar con F10
-						              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
-						                  getRootPane().getActionMap().put("editar", new AbstractAction(){
-						                      public void actionPerformed(ActionEvent e)
-						                      {                 	    btnEditar.doClick();
-							                    	    }
-						                 });
-					    ///editar con Ctrl+E
-						              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
-						                  getRootPane().getActionMap().put("editar", new AbstractAction(){
-						                      public void actionPerformed(ActionEvent e)
-						                      {                 	    btnEditar.doClick();
-							                    	    }
-						                 });
-						                  
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "editar");
+        getRootPane().getActionMap().put("editar", new AbstractAction(){   public void actionPerformed(ActionEvent e) {  btnEditar.doClick();       	   }   });
+
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,Event.CTRL_MASK), "editar");
+        getRootPane().getActionMap().put("editar", new AbstractAction(){   public void actionPerformed(ActionEvent e) {  btnEditar.doClick();         	   }   });
 //                  btnFoto.addMouseWheelListener(buscarConRueda);//añadimos el MouseWheelListener al spinner
-                  
 	  	}
 	
 	ActionListener opCapturarHuella = new ActionListener() {
@@ -845,35 +786,11 @@ public class Cat_Empleados extends JFrame{
 			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
 	}
 	
-	 int valor = 0;
-//	MouseWheelListener buscarConRueda = new MouseWheelListener() {
-//	    public void mouseWheelMoved(MouseWheelEvent e) {
-//	    	
-//	    	if(!txtNombre.isEnabled()){
-//	    		
-//			        int rueda = e.getWheelRotation();//tomamos el valor de la rueda al girar
-//			       
-//			        
-//			        if (rueda < 0) {//si el valor es mas pequeño de 0 quiere decir que estamos subiendo
-//			        	
-//			            valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());//tomamos el valor del txt
-//			            valor++;//aumentamos el valor  
-//			            
-//		                txtFolioEmpleado.setText(valor+"");//lo añadimos de nuevo al txt
-//		                buscarEmpleado("rueda+"); //llamamos al metodo buscar
-//			        } else {//Si es mayor de 0 es que estamos bajando
-//			          
-//			        	valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());
-//			        	
-//			            if (valor!=0){//En este caso no dejamos que baje de 0 el txt
-//			                valor--;//Disminuimos el valor
-//			            }
-//			            txtFolioEmpleado.setText(valor==0?"":valor+"");//Y lo añadimos el txt (si es cero lo dejamos como vacio)
-//			            buscarEmpleado("rueda-"); //llamamos al metodo buscar
-//			        }
-//			    }
-//	 	  }
-//	};
+	ActionListener opBuscar_Puesto = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			new Cat_Filtro_Puestos().setVisible(true);
+		}
+	};
 	
 	ActionListener opRAdeudo = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
@@ -884,7 +801,6 @@ public class Cat_Empleados extends JFrame{
 				String comando="exec sp_select_deducciones_de_empleado_pendientes "+txtFolioEmpleado.getText()+",'"+new Obj_Usuario().LeerSession().getNombre_completo().toString().trim()+"'";
 				String reporte = "Obj_Reporte_De_Deuda_Por_Empleado.jrxml";
 							 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-						
 			}
 		}
 	};
@@ -917,21 +833,17 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener opCargarPerfil = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			
-			
 //			buscar perfil y llenar objeto
 //			Obj_Perfil_De_Puestos perfil = new Obj_Perfil_De_Puestos().buscar(folio)
 //			modificar estab,depto y puesto
 			if(JOptionPane.showConfirmDialog(null, "Desea Asignar Los Sueldos Y Bonos Del Perfil Al Empleado?") == 0){
 //				cambiar los campos de sueldos y bonos
 			}
-		
 		}
 	};
 	
 	ActionListener opReporteDeEncuesta = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			
 			if(!txtNombre.getText().trim().equals("")){
 				String basedatos="2.26";
 				String vista_previa_reporte="si";
@@ -1033,39 +945,61 @@ public class Cat_Empleados extends JFrame{
 	ActionListener opPresionFoto = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(btnTrueFoto.isSelected()){
-//				btnExaminar.setEnabled(true);
 				btnCamara.setEnabled(true);
 			}else{
-//				btnExaminar.setEnabled(false);
 				btnCamara.setEnabled(false);
 			}
-	
 		}
 	};
 	
 	ActionListener opRButton = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			
 			if(rbHorario.isSelected()==true){
-//				buscar horario 1 y asignar dia de descanso y dobla
 				Obj_Horario_Empleado descanso = new Obj_Horario_Empleado().buscar_tur(txtHorario.getText());
 				txtDescanso.setText(descanso.getDescanso());
 				txtDobla.setText(descanso.getDobla());
 			}
 			if(rbHorario2.isSelected()==true){
-//				buscar horario 2 y asignar dia de descanso y dobla
 				Obj_Horario_Empleado descanso = new Obj_Horario_Empleado().buscar_tur(txtHorario2.getText());
 				txtDescanso.setText(descanso.getDescanso());
 				txtDobla.setText(descanso.getDobla());
 			}
 			if(rbHorario3.isSelected()==true){
-//				buscar horario 3 y asignar dia de descanso y dobla
 				Obj_Horario_Empleado descanso = new Obj_Horario_Empleado().buscar_tur(txtHorario3.getText());
 				txtDescanso.setText(descanso.getDescanso());
 				txtDobla.setText(descanso.getDobla());
 			}
 		}
 	};
+
+//	MouseWheelListener buscarConRueda = new MouseWheelListener() {
+//    public void mouseWheelMoved(MouseWheelEvent e) {
+//    	
+//    	if(!txtNombre.isEnabled()){
+//    		
+//		        int rueda = e.getWheelRotation();//tomamos el valor de la rueda al girar
+//		       
+//		        
+//		        if (rueda < 0) {//si el valor es mas pequeño de 0 quiere decir que estamos subiendo
+//		        	
+//		            valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());//tomamos el valor del txt
+//		            valor++;//aumentamos el valor  
+//		            
+//	                txtFolioEmpleado.setText(valor+"");//lo añadimos de nuevo al txt
+//	                buscarEmpleado("rueda+"); //llamamos al metodo buscar
+//		        } else {//Si es mayor de 0 es que estamos bajando
+//		          
+//		        	valor = Integer.valueOf(txtFolioEmpleado.getText().equals("")?"0":txtFolioEmpleado.getText());
+//		        	
+//		            if (valor!=0){//En este caso no dejamos que baje de 0 el txt
+//		                valor--;//Disminuimos el valor
+//		            }
+//		            txtFolioEmpleado.setText(valor==0?"":valor+"");//Y lo añadimos el txt (si es cero lo dejamos como vacio)
+//		            buscarEmpleado("rueda-"); //llamamos al metodo buscar
+//		        }
+//		    }
+// 	  }
+//};
 	
 //	ActionListener opExaminar = new ActionListener(){
 //		public void actionPerformed(ActionEvent e) {
@@ -1145,18 +1079,20 @@ public class Cat_Empleados extends JFrame{
 					cmbSueldo.setSelectedIndex(0) ;
 					cmbBono.setSelectedIndex(0);
 					JOptionPane.showMessageDialog(null,"El Colaborador Ya Existe Busquelo \n En el Filtro y Modifiquelo Para Que No lo Duplique","Aviso!", JOptionPane.WARNING_MESSAGE, new ImageIcon("imagen/circulo-rojo-icono-9411-128.png"));
-					
 				}else{
 					btnVerificar.setBackground(Color.blue);
 					panelEnabledTrue();
-					cmbSueldo.setSelectedItem("0.0");
-					cmbBono.setSelectedItem("0.0");
+					cmbSueldo.setEnabled(true);
+					cmbSueldo.setSelectedItem("0.00");
+					cmbBono.setSelectedItem("0.00");
+					cmbBonoAsistencia.setSelectedItem("0.00");
+					cmbBonopuntualidad.setSelectedItem("0.00");
 					cmbBono.setEnabled(false);
 					cmbSueldo.setEnabled(false);
 					cmbBonoAsistencia.setEnabled(false);
 					cmbBonopuntualidad.setEnabled(false);
+					cmbPresenciaFisica.setSelectedIndex(1);
 					cmbActivo_Inactivo.setSelectedIndex(1);
-					
 					PerfilesActivos();
 				}
 			}
@@ -1191,7 +1127,6 @@ public class Cat_Empleados extends JFrame{
 	
 	ActionListener opDocumentacion = new ActionListener() {
 		public void actionPerformed(ActionEvent e){
-			
 				if(!txtApPaterno.getText().equals("")){
 					new Cat_Documentacion_De_Empleado(txtFolioEmpleado.getText(),txtNombre.getText()+" "+txtApPaterno.getText()+" "+txtApMaterno.getText(),cmbEstablecimiento.getSelectedItem()+"",cmbPuesto.getSelectedItem()+"").setVisible(true);
 				}else{
@@ -1200,7 +1135,7 @@ public class Cat_Empleados extends JFrame{
 					return;
 				}
 			}
-		};
+	};
 		
 	public Date fecha(String fechap) {
 		Date fecha = null;
@@ -1217,153 +1152,116 @@ public class Cat_Empleados extends JFrame{
 				JOptionPane.showMessageDialog(null,"Necesita Seleccionar Primero Un Colaborador", "Mensaje!",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
 			}else{
+			cmbHorarioRotativo.removeActionListener(opCmbHorarioRotarivo);
+				
 			txtHorario.setFont(new Font("ARIAL", Font.ITALIC, 9));
 			txtHorario2.setFont(new Font("ARIAL", Font.ITALIC, 9));
 			txtHorario3.setFont(new Font("ARIAL", Font.ITALIC, 9));
 			txtultimousuariomod.setFont(new Font("ARIAL", Font.TRUETYPE_FONT, 8));
 		
 			try {
-				tablacompleta = re.empleado_buscar_datos(txtFolioEmpleado.getText().toString().trim());
+				tabla_empleado_consulta = re.empleado_buscar_datos(txtFolioEmpleado.getText().toString().trim());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
+			NuevoModificar="M";
 			//datos_personales
-			txtNombre.setText                 (tablacompleta[0][1].toString()         );
-			txtApPaterno.setText              (tablacompleta[0][2].toString()         );
-			txtApMaterno.setText              (tablacompleta[0][3].toString()         );
-			cmbSexo.setSelectedItem           (tablacompleta[0][4].toString()         );
-			txtFechaNacimiento.setDate        (fecha(tablacompleta[0][5].toString())  );
-            cmbEstadoCivil.setSelectedItem    (tablacompleta[0][6].toString()         );
-            txtCalle.setText                  (tablacompleta[0][7].toString()         );
-			txtColonia.setText                (tablacompleta[0][8].toString()         );
-			txtPoblacion.setText              (tablacompleta[0][9].toString()         );
-			cmbTipoDeSangre.setSelectedItem   (tablacompleta[0][10].toString()        );
-			txtTelefono_Familiar.setText      (tablacompleta[0][11].toString()        );
-            txtTelefono_Propio.setText        (tablacompleta[0][12].toString()        );
-            txtTelefono_Cuadrante.setText     (tablacompleta[0][13].toString()        );
-			cmbEscolaridad.setSelectedItem    (tablacompleta[0][14].toString()        );
-            txtRFC.setText                    (tablacompleta[0][15].toString()        );
-            txtCurp.setText                   (tablacompleta[0][16].toString()        );
-            txtemailPersonal.setText          (tablacompleta[0][17].toString()        );
-            if(Boolean.valueOf                (tablacompleta[0][18].toString()       )){
+			txtNombre.setText                 (tabla_empleado_consulta[0][1].toString()         );
+			txtApPaterno.setText              (tabla_empleado_consulta[0][2].toString()         );
+			txtApMaterno.setText              (tabla_empleado_consulta[0][3].toString()         );
+			cmbSexo.setSelectedItem           (tabla_empleado_consulta[0][4].toString()         );
+			txtFechaNacimiento.setDate        (fecha(tabla_empleado_consulta[0][5].toString())  );
+            cmbEstadoCivil.setSelectedItem    (tabla_empleado_consulta[0][6].toString()         );
+            txtCalle.setText                  (tabla_empleado_consulta[0][7].toString()         );
+			txtColonia.setText                (tabla_empleado_consulta[0][8].toString()         );
+			txtPoblacion.setText              (tabla_empleado_consulta[0][9].toString()         );
+			cmbTipoDeSangre.setSelectedItem   (tabla_empleado_consulta[0][10].toString()        );
+			txtTelefono_Familiar.setText      (tabla_empleado_consulta[0][11].toString()        );
+            txtTelefono_Propio.setText        (tabla_empleado_consulta[0][12].toString()        );
+            txtTelefono_Cuadrante.setText     (tabla_empleado_consulta[0][13].toString()        );
+			cmbEscolaridad.setSelectedItem    (tabla_empleado_consulta[0][14].toString()        );
+            txtRFC.setText                    (tabla_empleado_consulta[0][15].toString()        );
+            txtCurp.setText                   (tabla_empleado_consulta[0][16].toString()        );
+            txtemailPersonal.setText          (tabla_empleado_consulta[0][17].toString()        );
+            if(Boolean.valueOf                (tabla_empleado_consulta[0][18].toString()       )){
             btnHuella.setBackground(Color.GREEN);btnHuella.setForeground(Color.BLACK);}
             else{btnHuella.setBackground(Color.RED);	btnHuella.setForeground(Color.WHITE);}
             btnHuella.setOpaque(true);
             //datos_laborales
-            lblFolioPerfil.setText            (tablacompleta[0][19].toString()        );
-            txtPerfil.setText                 (tablacompleta[0][20].toString()        );
-            txtemailEmpresa.setText           (tablacompleta[0][21].toString()        );
-            lblFolioHorario1.setText          (tablacompleta[0][22].toString()        );
-            txtHorario.setText                (tablacompleta[0][23].toString()        );
-            rbHorario.setSelected(Boolean.valueOf(tablacompleta[0][24].toString())    );
-            cmbHorarioRotativo.setSelectedItem(tablacompleta[0][25].toString()        );
-            cmbStatusChecador.setSelectedItem (tablacompleta[0][26].toString()        );
-            lblFolioHorario2.setText          (tablacompleta[0][27].toString()        );
-            txtHorario2.setText               (tablacompleta[0][28].toString()        );
-            rbHorario2.setSelected(Boolean.valueOf(tablacompleta[0][29].toString())   );
-            txtDescanso.setText               (tablacompleta[0][30].toString()        );
-            cmbChecaCon.setSelectedItem       (tablacompleta[0][31].toString()        );
-            lblFolioHorario3.setText          (tablacompleta[0][32].toString()        );
-            txtHorario3.setText               (tablacompleta[0][33].toString()        );
-            rbHorario3.setSelected(Boolean.valueOf(tablacompleta[0][34].toString())   );
-            txtDobla.setText                  (tablacompleta[0][35].toString()        );
-            cmbEstablecimiento.setSelectedItem(tablacompleta[0][36].toString()        );
-            txtVencimientoLicencia.setDate    (fecha(tablacompleta[0][37].toString()) );
-            cmbDepartamento.setSelectedItem   (tablacompleta[0][38].toString()        );     
-            txtIngreso.setDate                (fecha(tablacompleta[0][39].toString()) );
-            cmbPuesto.setSelectedItem         (tablacompleta[0][40].toString()        );
-            txtBaja.setText                   (tablacompleta[0][41].toString()        );
-            txtImss.setText                   (tablacompleta[0][42].toString()        );
-            cmbActivo_Inactivo.setSelectedItem(tablacompleta[0][43].toString()        );
-            txtIngresoImss.setDate            (fecha(tablacompleta[0][44].toString()) );        
-             txtNumeroInfonavit.setText       (tablacompleta[0][45].toString()        );
-            txtFechaUltimasVacaciones.setText (tablacompleta[0][46].toString()        );
-            txtFechaIncapacidad.setText       (tablacompleta[0][47].toString()        );
-            cmbStatus.setSelectedItem         (tablacompleta[0][48].toString()        );
-            cmbContratacion.setSelectedItem   (tablacompleta[0][49].toString()        );
-//            //percepciones y deducciones
-            txtSalarioDiario.setText          (tablacompleta[0][50].toString()        );
-            txtInfonavit.setText              (tablacompleta[0][51].toString()        );
-            chbGafete.setSelected    (Boolean.valueOf(tablacompleta[0][52].toString()));
-            txaObservaciones.setText          (tablacompleta[0][53].toString()        );
-            txtSalarioDiarioIntegrado.setText (tablacompleta[0][54].toString()        );
-            txtDInfonacot.setText             (tablacompleta[0][55].toString()        );
-            chbFuente_Sodas.setSelected(Boolean.valueOf(tablacompleta[0][56].toString()));
-            cmbSueldo.setSelectedItem         (tablacompleta[0][57].toString()        );
-            txtPensionAli.setText             (tablacompleta[0][58].toString()        );
-            cmbBono.setSelectedItem           (tablacompleta[0][59].toString()        );
-            cmbPrestamos.setSelectedItem      (tablacompleta[0][60].toString()        );
-            txtFechaActualizacion.setText     (tablacompleta[0][61].toString()        );
-            cmbBonoAsistencia.setSelectedItem (tablacompleta[0][62].toString()        );
-            cmbTipoBancos.setSelectedItem     (tablacompleta[0][63].toString()        );
-            cmbBonopuntualidad.setSelectedItem(tablacompleta[0][64].toString()        );
-            txtTarjetaNomina.setText          (tablacompleta[0][65].toString()        );
-            txtultimousuariomod.setText       (tablacompleta[0][66].toString()        );          
-            cmbPresenciaFisica.setSelectedItem(tablacompleta[0][67].toString()        );   
-            txtFormaDePago.setText            (tablacompleta[0][68].toString()        );   
-            chb_cuadrante_parcial.setSelected(Boolean.valueOf(tablacompleta[0][69].toString()));
-            txtChecador.setText               (tablacompleta[0][78].toString()        );
+            lblFolioPerfil.setText            (tabla_empleado_consulta[0][19].toString()        );
+            txtPerfil.setText                 (tabla_empleado_consulta[0][20].toString()        );
+            txtemailEmpresa.setText           (tabla_empleado_consulta[0][21].toString()        );
+            lblFolioHorario1.setText          (tabla_empleado_consulta[0][22].toString()        );
+            txtHorario.setText                (tabla_empleado_consulta[0][23].toString()        );
+            rbHorario.setSelected(Boolean.valueOf(tabla_empleado_consulta[0][24].toString())    );
+            cmbHorarioRotativo.setSelectedItem(tabla_empleado_consulta[0][25].toString()        );
+            cmbStatusChecador.setSelectedItem (tabla_empleado_consulta[0][26].toString()        );
+            lblFolioHorario2.setText          (tabla_empleado_consulta[0][27].toString()        );
+            txtHorario2.setText               (tabla_empleado_consulta[0][28].toString()        );
+            rbHorario2.setSelected(Boolean.valueOf(tabla_empleado_consulta[0][29].toString())   );
+            txtDescanso.setText               (tabla_empleado_consulta[0][30].toString()        );
+            cmbChecaCon.setSelectedItem       (tabla_empleado_consulta[0][31].toString()        );
+            lblFolioHorario3.setText          (tabla_empleado_consulta[0][32].toString()        );
+            txtHorario3.setText               (tabla_empleado_consulta[0][33].toString()        );
+            rbHorario3.setSelected(Boolean.valueOf(tabla_empleado_consulta[0][34].toString())   );
+            txtDobla.setText                  (tabla_empleado_consulta[0][35].toString()        );
+            cmbEstablecimiento.setSelectedItem(tabla_empleado_consulta[0][36].toString()        );
+            txtVencimientoLicencia.setDate    (fecha(tabla_empleado_consulta[0][37].toString()) );
+            cmbDepartamento.setSelectedItem   (tabla_empleado_consulta[0][38].toString()        );     
+            txtIngreso.setDate                (fecha(tabla_empleado_consulta[0][39].toString()) );
+            cmbPuesto.setSelectedItem         (tabla_empleado_consulta[0][40].toString()        );
+            txtBaja.setText                   (tabla_empleado_consulta[0][41].toString()        );
+            txtImss.setText                   (tabla_empleado_consulta[0][42].toString()        );
+            cmbActivo_Inactivo.setSelectedItem(tabla_empleado_consulta[0][43].toString()        );
+            txtIngresoImss.setDate            (fecha(tabla_empleado_consulta[0][44].toString()) );        
+             txtNumeroInfonavit.setText       (tabla_empleado_consulta[0][45].toString()        );
+            txtFechaUltimasVacaciones.setText (tabla_empleado_consulta[0][46].toString()        );
+            txtFechaIncapacidad.setText       (tabla_empleado_consulta[0][47].toString()        );
+            cmbStatus.setSelectedItem         (tabla_empleado_consulta[0][48].toString()        );
+            cmbContratacion.setSelectedItem   (tabla_empleado_consulta[0][49].toString()        );
+           //percepciones y deducciones
+            txtSalarioDiario.setText          (tabla_empleado_consulta[0][50].toString()        );
+            txtInfonavit.setText              (tabla_empleado_consulta[0][51].toString()        );
+            chbGafete.setSelected    (Boolean.valueOf(tabla_empleado_consulta[0][52].toString()));
+            txaObservaciones.setText          (tabla_empleado_consulta[0][53].toString()        );
+            txtSalarioDiarioIntegrado.setText (tabla_empleado_consulta[0][54].toString()        );
+            txtDInfonacot.setText             (tabla_empleado_consulta[0][55].toString()        );
+            chbFuente_Sodas.setSelected(Boolean.valueOf(tabla_empleado_consulta[0][56].toString()));
+            cmbSueldo.setSelectedItem         (tabla_empleado_consulta[0][57].toString()        );
+            txtPensionAli.setText             (tabla_empleado_consulta[0][58].toString()        );
+            cmbBono.setSelectedItem           (tabla_empleado_consulta[0][59].toString()        );
+            cmbPrestamos.setSelectedItem      (tabla_empleado_consulta[0][60].toString()        );
+            txtFechaActualizacion.setText     (tabla_empleado_consulta[0][61].toString()        );
+            cmbBonoAsistencia.setSelectedItem (tabla_empleado_consulta[0][62].toString()        );
+            cmbTipoBancos.setSelectedItem     (tabla_empleado_consulta[0][63].toString()        );
+            cmbBonopuntualidad.setSelectedItem(tabla_empleado_consulta[0][64].toString()        );
+            txtTarjetaNomina.setText          (tabla_empleado_consulta[0][65].toString()        );
+            txtultimousuariomod.setText       (tabla_empleado_consulta[0][66].toString()        );          
+            cmbPresenciaFisica.setSelectedItem(tabla_empleado_consulta[0][67].toString()        );   
+            txtFormaDePago.setText            (tabla_empleado_consulta[0][68].toString()        );   
+            chb_cuadrante_parcial.setSelected(Boolean.valueOf(tabla_empleado_consulta[0][69].toString()));
+            txtChecador.setText               (tabla_empleado_consulta[0][78].toString()        );
 
-            imagB = (byte[]) tablacompleta[0][70];
+            imagB = (byte[]) tabla_empleado_consulta[0][70];
 			btnFoto.setIcon(crearIcon(imagB));
 			
 //             ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 //	         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 //	         btnFoto.setIcon(iconoDefault);
 	   
-	         ImageIcon imagen_estatus = new ImageIcon(System.getProperty("user.dir")+"/"+tablacompleta[0][71].toString());
+	         ImageIcon imagen_estatus = new ImageIcon(System.getProperty("user.dir")+"/"+tabla_empleado_consulta[0][71].toString());
 	         Icon icono_estatus = new ImageIcon(imagen_estatus.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));
 	         btnStatus.setIcon(icono_estatus);
 
 			btnEditar.setEnabled(true);
 			txtFolioEmpleado.setEnabled(false);
+			cmbHorarioRotativo.addActionListener(opCmbHorarioRotarivo);
 //          // extras
 //			Matriz[i][72] = rs.getString(73);//huella_1
 //			Matriz[i][73] = rs.getString(74);//huella_2
 			}
 		}
 	};
-	
-	
-
-//	public void buscarEmpleado(String funcion){
-//					if(funcion.equals("rueda+")){
-//						valor++;
-//						txtFolioEmpleado.setText(valor+"");
-//						buscarEmpleado("rueda+");
-//						
-//					}
-//					
-//					if(funcion.equals("rueda-")){
-//						valor--;
-//						txtFolioEmpleado.setText(valor+"");
-//						buscarEmpleado("rueda-");
-//					}
-//					
-//					if(funcion.equals("")){
-//						JOptionPane.showMessageDialog(null, "El Registro no existe","Error",JOptionPane.WARNING_MESSAGE);
-//						panelEnabledFalse();
-//						txtFolioEmpleado.setEditable(true);
-//						txtFolioEmpleado.requestFocus();
-//						panelLimpiar();
-//					}
-	
-	public int validaIMSS(){
-		int valorIMSS = 0;
-		
-		if(txtIngresoImss.getDate()!=null){
-			valorIMSS++;
-		}
-		if(!txtImss.getText().equals("")){
-			valorIMSS++;
-		}
-		if(cmbActivo_Inactivo.getSelectedIndex()==0){
-			valorIMSS++;
-		}
-		
-		return valorIMSS;
-	}
 	
    public double tiene_deuda_fuente_sodas(){
   	  String query ="select isnull(sum(importe),0) from tb_captura_fuente_sodas where folio_empleado="+txtFolioEmpleado.getText().toString()+" and ticket in(select ticket from tb_fuente_sodas_rh where status=1)";
@@ -1383,88 +1281,96 @@ public class Cat_Empleados extends JFrame{
 	
    ActionListener guardar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-		
 			int horario=0,horario2=0,horario3=0;
 			 horario=lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText());
 			 horario2=lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText());
 			 horario3=lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText());
-			
-			if(new BuscarSQL().existe_horario_con_otro_empleado(horario,horario2,horario3, Integer.valueOf(txtFolioEmpleado.getText().toString()) )){
-				JOptionPane.showMessageDialog(null, "No Se Puede Asignar Un Mismo Horario A Mas De Un Colaborador Con Estatus\nVigente, Incapacitado, De Vacaciones o Provicional Checador", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/error-de-reloj-icono-5961-32.png"));
+			 String[][] tabla_validacion_horarios=new BuscarSQL().existe_horario_con_otro_empleado(horario,horario2,horario3, Integer.valueOf(txtFolioEmpleado.getText().toString()));
+			if(tabla_validacion_horarios[0][0].toString().equals("true") ){
+				JOptionPane.showMessageDialog(null, "No Se Puede Asignar Un Mismo Horario A Mas De Un Colaborador Con Estatus\nVigente, Incapacitado, De Vacaciones o Provicional Checador\n El Horario:"+tabla_validacion_horarios[0][2].toString()+"\nLo Tiene el Colaborador Folio:"+tabla_validacion_horarios[0][1].toString() , "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/error-de-reloj-icono-5961-32.png"));
 				return;
 			}else{
-				
-			if(cmbStatus.getSelectedItem().toString().trim().equals("Baja") || cmbStatus.getSelectedItem().toString().trim().equals("No Contratable") || cmbStatus.getSelectedItem().toString().trim().equals("Renuncia")){
-				if(new BuscarSQL().baja_en_catalogo_empleado()){
-						guardar_modificar_Empleado();
-				}else{
-					JOptionPane.showMessageDialog(null, "No Se Puede Guardar Un Colaborador Con Status De Renuncia, Baja o No Contratable Es Necesario Hacer La Encuesta De Renuncia y El Finiquito.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				if(cmbStatus.getSelectedItem().toString().trim().equals("Baja") || cmbStatus.getSelectedItem().toString().trim().equals("No Contratable") || cmbStatus.getSelectedItem().toString().trim().equals("Renuncia")){
+					JOptionPane.showMessageDialog(null, "No Se Puede Guardar Un Colaborador Con Status De \n>Renuncia, \n>Baja o \n>No Contratable \nEs Necesario Hacer La Encuesta De Renuncia y El Finiquito.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
-				}
-			}else{
+				}else{
 				    guardar_modificar_Empleado();
-			}
-			
-			
+				}
 			}	
-			
 		}	
 	};
+
+	private String validaCampos(){
+		String error="";
+		String fechaNull = txtFechaNacimiento.getDate()+"";
+		String fechaIngresoNull = txtIngreso.getDate()+"";
+		if(txtFolioEmpleado.getText().equals("")) 	  error+= "-Folio\n";
+		if(txtNombre.getText().equals("")) 	  	      error+= "-Nombre\n";
+		if(txtApPaterno.getText().equals(""))	      error+= "-Ap Paterno\n";
+		if(txtApMaterno.getText().equals(""))	      error+= "-Ap Maternoo\n";
+		if(cmbSexo.getSelectedIndex()==0)             error+= "-Sexo\n";      
+		if(fechaNull.equals("null"))                  error+= "-Fecha de Nacimiento\n";	
+		if(cmbEstadoCivil.getSelectedIndex()==0)	  error+= "-Estado Civil\n";
+		if(txtCalle.getText().equals(""))	          error+= "-Calle\n";
+		if(txtColonia.getText().equals(""))	          error+= "-Colonia\n";
+		if(txtPoblacion.getText().equals(""))	      error+= "-Poblacion\n";
+		if(cmbTipoDeSangre.getSelectedIndex()==0)	  error+= "-Tipo De Sangre\n";
+		if(txtTelefono_Familiar.getText().equals("")) error+= "-Telefono Familiar\n";
+		if(txtTelefono_Propio.getText().equals(""))	  error+= "-Telefono Propio\n";
+		if(cmbEscolaridad.getSelectedIndex()==0)	  error+= "-Escolaridad\n";
+		if(txtRFC.getText().equals(""))	              error+= "-RFC\n";
+		if(txtCurp.getText().equals(""))	          error+= "-Curp\n";
+
+		switch(cmbHorarioRotativo.getSelectedIndex()){
+		case 0:	if(txtHorario.getText().equals(""))   error+= "-Horario\n"; break;
+		case 1: if(txtHorario.getText().equals(""))   error+= "-Horario 2\n";
+				if(txtHorario2.getText().equals(""))  error+= "-Horario 3\n";break;
+		case 2: if(txtHorario.getText().equals(""))   error+= "-Horario\n";
+				if(txtHorario2.getText().equals(""))  error+= "-Horario 2\n";
+				if(txtHorario3.getText().equals(""))  error+= "-Horario 3\n";break;
+		}
+		if(cmbChecaCon.getSelectedIndex()==0)   error+= "-Checa Con\n";
+		if(cmbEstablecimiento.getSelectedIndex()==0)  error+= "-Establecimiento\n";
+		if(cmbDepartamento.getSelectedIndex()==0)     error+= "-Departamento\n";
+		if(fechaIngresoNull.equals("null"))           error+= "-Fecha de ingreso\n";
+		if(cmbPuesto.getSelectedIndex()==0)           error+= "-Puesto\n";
+ 
+			int valorIMSS = 0;			
+		if(!txtImss.getText().equals(""))           { valorIMSS++; }
+		if(cmbActivo_Inactivo.getSelectedIndex()==0){ valorIMSS++; }
+		if(txtIngresoImss.getDate()!=null)          { valorIMSS++; }
+		if(valorIMSS>0 && valorIMSS<3)                error+= "-Cuando Se Activa El IMSS Es Requerido Alimente:"+"\n-No Seguro Social\n-Activo(IMSS) \n-Ingreso IMSS (Fecha)";
+		if(cmbContratacion.getSelectedIndex()==0)     error+= "-Tipo De Contrato\n";
+		if(cmbPrestamos.getSelectedIndex()==0)        error+= "-Rango de Prestamo\n";		
+		if(cmbSueldo.getSelectedIndex()==0)           error+= "-Sueldo\n";
+		if(cmbBono.getSelectedIndex()==0)             error+= "-Bono De Complemento>puede ser 0.00\n";
+		if(cmbBonoAsistencia.getSelectedIndex()==0)   error+= "-Bono De Asistencia >puede ser 0.00\n";
+		if(cmbBonopuntualidad.getSelectedIndex()==0)  error+= "-Bono De Puntualidad>puede ser 0.00\n";
+		if(cmbPresenciaFisica.getSelectedIndex()==0)  error+= "-Presencia Fisica\n";
+//		if(txtPerfil.getText().trim().equals("")){ if(!new BuscarSQL().PerfilDeColaboradorActivo()){ error +="Perfil\n";	}		}
+		return error;
+	}
 	
-   @SuppressWarnings("deprecation")
-public void guardar_modificar_Empleado(){
-				Obj_Autorizacion_Auditoria auditoria = new Obj_Autorizacion_Auditoria().buscar();
-				Obj_Autorizacion_Finanzas finanzas = new Obj_Autorizacion_Finanzas().buscar();
-				
-				boolean auditoriaBoolean = auditoria.isAutorizar();
-				boolean finanzasBoolean = finanzas.isAutorizar();
-				
-				if((auditoriaBoolean == true)  || (finanzasBoolean == true)){
-					JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Empleado .."
-					       +" Hasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria <<Al dar Click en Aceptar SCOI se Cerrará>>","Aviso",JOptionPane.WARNING_MESSAGE);
-					try {	R.exec("taskkill /f /im javaw.exe"); } catch (IOException e1) {	e1.printStackTrace(); }		
-				}else{
-				
-				if(txtFolioEmpleado.getText().equals("")){
-					JOptionPane.showMessageDialog(null, "El Folio Es Requerido \n","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				}
-				if(validaIMSS()>0 && validaIMSS()<3){
-					
-					JOptionPane.showMessageDialog(null, "Para poder guardar o actualizar es necesario que los siguientes campos esten llenos o totalemente vacios:\n- No Seguro Social\n- Activo(IMSS) ó Inactivo (IMSS)\n- Ingreso IMSS (Fecha)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					return;
-					
-				}else{			
-					Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
-					
-					if(!(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-						if(!(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){
-							if(!(cmbBono.getSelectedItem().toString().trim().equals("Selecciona un Bono"))){							
-								if( !(empleado.getBonocomplemento()==Double.valueOf(cmbBono.getSelectedItem().toString().trim())) || !(empleado.getBono_asistencia()==Double.valueOf(cmbBonoAsistencia.getSelectedItem().toString().trim()))
-								    || !(empleado.getBono_puntualidad()==Double.valueOf(cmbBonopuntualidad.getSelectedItem().toString().trim())) || !(empleado.getSueldo()==Double.valueOf(cmbSueldo.getSelectedItem().toString().trim()))){
-									if(new BuscarSQL().validar_cambio_de_sueldo_o_bono(txtFolioEmpleado.getText().toString().trim())){
-										JOptionPane.showMessageDialog(null, "El Usuario Ya Cuenta Con Un Cambio De Sueldo o Bono Pendiente de Autorizar \nEs Necesario Que Lo Niegen o Acepten Antes De Solicitar Otro Cambio  :\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-										return;						
-									}
-								}
-							}
-					    }
-					}
-					
-					
-					if(empleado.getFolio() == Integer.parseInt(txtFolioEmpleado.getText())){
-						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
-							if(validaCampos()!="") {
-								JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-								return;
-							}else{
-								
-		//				datos personales	
-								txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
+	   @SuppressWarnings("deprecation")
+	public void guardar_modificar_Empleado(){
+	   				boolean estatus_autorizacion=false;
+	   				try{estatus_autorizacion= new BuscarSQL().autorizacion_lista_de_raya_estatus() ;} catch (SQLException e) {	e.printStackTrace();}
+	   				
+	   				if(estatus_autorizacion == true){
+	   					JOptionPane.showMessageDialog(null, "La Lista De Raya Fue Autorizada No Puede Ser Modificado Ningun Colaborador......\nHasta Que Se Genere Por D.H o Se Desautorize por Finanzas o Auditoria ","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
+	   					return;
+	   				}else{
+	   				  if(validaCampos()!="") {
+	   					JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos Para Poder Guardar El Registro:\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	   					return;
+	   				  }else{	
+	   					  Obj_Empleados empleado = new Obj_Empleados();
+	   					        //datos personales	
+								txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));//TODO modificar para eliminar esta busqueda
 								empleado.setNo_checador(txtChecador.getText());
 								empleado.setNombre(procesa_texto(txtNombre.getText()));
 								empleado.setAp_paterno(procesa_texto(txtApPaterno.getText()));
 								empleado.setAp_materno(txtApMaterno.getText().length() == 0 ? "" : procesa_texto(txtApMaterno.getText()) );
-								
 								empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate()));
 								empleado.setCalle(txtCalle.getText());
 								empleado.setColonia(txtColonia.getText());
@@ -1472,82 +1378,67 @@ public void guardar_modificar_Empleado(){
 								empleado.setTelefono_familiar(txtTelefono_Familiar.getText()+"");
 								empleado.setTelefono_propio(txtTelefono_Propio.getText()+"");
 								empleado.setRfc(txtRFC.getText());
-								empleado.setCurp(txtCurp.getText());
-								
-								empleado.setSexo(cmbSexo.getSelectedItem().equals("MASCULINO")?0:1);
-								
+								empleado.setCurp(txtCurp.getText());								
+								empleado.setSexo(cmbSexo.getSelectedItem().equals("MASCULINO")?0:1);								
 								empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
 								empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
 								empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
 								empleado.setEmailEmpresa(txtemailEmpresa.getText().toString().toLowerCase().trim());
-								empleado.setEmailPersonal(txtemailPersonal.getText().toString().toLowerCase().trim());
+								empleado.setEmailPersonal(txtemailPersonal.getText().toString().toLowerCase().trim());								
 								
-//								imagB = dpr.getOrganigramaB();
-//        						lblImage.setIcon(crearIcon(imagB));
 								empleado.setFotoB(imagB);
+//								empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
+								
 								empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
-		//				laboral
+						        //laboral
 								empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
 								empleado.setHorario2(lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText()));
-								empleado.setHorario3(lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText()));
-								
+								empleado.setHorario3(lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText()));								
 								if(rbHorario.isSelected()==true){
-									empleado.setStatus_h1(1);
-									empleado.setStatus_h2(0);
-									empleado.setStatus_h3(0);
+										empleado.setStatus_h1(1);
+										empleado.setStatus_h2(0);
+										empleado.setStatus_h3(0);
 								}
 								if(rbHorario2.isSelected()==true){
-									empleado.setStatus_h1(0);
-									empleado.setStatus_h2(1);
-									empleado.setStatus_h3(0);
+										empleado.setStatus_h1(0);
+										empleado.setStatus_h2(1);
+										empleado.setStatus_h3(0);
 								}
 								if(rbHorario3.isSelected()==true){
-									empleado.setStatus_h1(0);
-									empleado.setStatus_h2(0);
-									empleado.setStatus_h3(1);
+										empleado.setStatus_h1(0);
+										empleado.setStatus_h2(0);
+										empleado.setStatus_h3(1);
 								}
-
 								empleado.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
 								empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
-								
 								empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
 								empleado.setStatus(cmbStatus.getSelectedIndex()+1);
 								empleado.setCuadrante_parcial(chb_cuadrante_parcial.isSelected());
-								
-								Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");
+								Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");//TODO modificar para eliminar esta busqueda
 								empleado.setDepartameto(depart.getFolio());
-								
 								empleado.setImss(txtImss.getText());
 								empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
 								empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
-								
-								Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
+								Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");//TODO modificar para eliminar esta busqueda
 								empleado.setEstablecimiento(comboFolioEsta.getFolio());
-								
-								Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
+								Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");//TODO modificar para eliminar esta busqueda
 								empleado.setPuesto(comboFolioPues.getFolio());
-								
 								empleado.setFecha_ingreso_imss(txtIngresoImss.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
 								empleado.setFecha_vencimiento_licencia(txtVencimientoLicencia.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
-								empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString()/*.equals("NORMAL")?"N":"L"*/);
+								empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString());
 								empleado.setForma_de_checar(cmbChecaCon.getSelectedItem().toString());
-		//				percepciones y deducciones
-						
+					   			//percepciones y deducciones
 								empleado.setSalario_diario(txtSalarioDiario.getText().equals("")?Float.parseFloat(0.0+""):Float.parseFloat(txtSalarioDiario.getText()));	
 								empleado.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("")?Float.parseFloat(0.0+""):Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
 								empleado.setForma_pago(txtFormaDePago.getText()+"");
-								empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-								
-								Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
-								empleado.setBono(bono.getFolio());
-								
+								empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));									
+								Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));//TODO modificar para eliminar esta busqueda
+								empleado.setBono(bono.getFolio());									
 								empleado.setPrestamo(cmbPrestamos.getSelectedIndex());
-								
 								empleado.setPension_alimenticia(txtPensionAli.getText().length()==0 ? Float.parseFloat(0.0+"") : Float.parseFloat(txtPensionAli.getText()));
 								empleado.setInfonavit(txtInfonavit.getText().length() == 0 ? Float.parseFloat(0.0+"") : Float.parseFloat(txtInfonavit.getText()));
 								empleado.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString()));
 								empleado.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
-								
 								empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText().equals("")?"0":txtDInfonacot.getText()));
 								empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
 								empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
@@ -1556,189 +1447,60 @@ public void guardar_modificar_Empleado(){
 								empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
 								empleado.setObservasiones(txaObservaciones.getText()+"");
 								empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
-								
-								
-							  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
-								double importe_fuente_sodas =tiene_deuda_fuente_sodas();
-								  if(importe_fuente_sodas>0){
-									if(JOptionPane.showConfirmDialog(null,"El Colaborador Tiene Una Deuda De Fuente De Sodas "
-											                              +"\nDe:$"+importe_fuente_sodas
-											                              +"\nQue Hiba Ser Cobrada En La Lista De Raya Actual "
-											                              +"\nDesea Que Se Active De Nuevo La Fuente Sodas?","Aviso", JOptionPane.INFORMATION_MESSAGE,seleccion_de_asignacion_de_Horario1Horario2Horario3, new ImageIcon("imagen/fast-food-icon32.png")) == 0){
-									
-										if(new ActualizarSQL().devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(txtFolioEmpleado.getText().toString())){
-											JOptionPane.showMessageDialog(null, "Se Ha Devuelto A Pendiente De Cobro La Fuente De Sodas Del Colaborador Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-										}
-									 }else{
-										 return;
-									 }
-									}
-								}
-							  
-							//TODO (Actualizar)
-								if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()) , datosHuella, datosHuella2, tamañoHuella, tamañoHuella2 )){
-									panelLimpiar();
-									panelEnabledFalse();
-									rbHorario2.setEnabled(false);
-									rbHorario3.setEnabled(false);
-									txtFolioEmpleado.setEnabled(true);
-									txtFolioEmpleado.setEditable(true);
-									txtFolioEmpleado.requestFocus();
-									btnTrueFoto.setSelected(false);
-//									btnExaminar.setEnabled(false);
-									btnCamara.setEnabled(false);
-//									txtHorario.setEnabled(false);
-									btnBuscar.setEnabled(true);
-									btnFiltro.setEnabled(true);
-									btnNuevo.setEnabled(true);
-									JOptionPane.showMessageDialog(null, "El Colaborador Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-								}else{
-									JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE);
-								}
-							}
-						}else{
-							return;
-						}
-					}else{
-						if(validaCampos()!="") {
-							JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n "+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							return;
-						}else{
-							
-		//			datos personales	
-							txtFechaActualizacion.setText(new SimpleDateFormat("dd/MM/yyyy").format((new Date())));
-							empleado.setNo_checador(txtChecador.getText());
-							empleado.setNombre(procesa_texto(txtNombre.getText()));
-							empleado.setAp_paterno(procesa_texto(txtApPaterno.getText()));
-							empleado.setAp_materno(txtApMaterno.getText().length() == 0 ? "" : procesa_texto(txtApMaterno.getText()) );
-							
-							empleado.setFecha_nacimiento(new SimpleDateFormat("dd/MM/yyyy").format(txtFechaNacimiento.getDate()));
-							empleado.setCalle(txtCalle.getText());
-							empleado.setColonia(txtColonia.getText());
-							empleado.setPoblacion(txtPoblacion.getText());
-							empleado.setTelefono_familiar(txtTelefono_Familiar.getText()+"");
-							empleado.setTelefono_propio(txtTelefono_Propio.getText()+"");
-							empleado.setRfc(txtRFC.getText());
-							empleado.setCurp(txtCurp.getText());
-							
-							empleado.setSexo(cmbSexo.getSelectedItem().equals("MASCULINO")?0:1);
-							
-							empleado.setEstado_civil(cmbEstadoCivil.getSelectedItem().toString());
-							empleado.setTipo_sangre(cmbTipoDeSangre.getSelectedItem().toString());
-							empleado.setEscolaridad(cmbEscolaridad.getSelectedItem().toString());
-							empleado.setEmailEmpresa(txtemailEmpresa.getText().toString().toLowerCase().trim());
-							empleado.setEmailPersonal(txtemailPersonal.getText().toString().toLowerCase().trim());
-							
-							empleado.setFotoB(imagB);
-//							empleado.setFoto(new File(System.getProperty("user.dir")+(btnTrueFoto.isSelected()?"/tmp/tmp_update/tmp.jpg":"/tmp/tmp.jpg") ));
-							empleado.setPerfil(lblFolioPerfil.getText().trim().equals("")?0:Integer.valueOf(lblFolioPerfil.getText().trim()));
-	//				laboral
-							empleado.setHorario(lblFolioHorario1.getText().equals("")?0:Integer.valueOf(lblFolioHorario1.getText()));
-							empleado.setHorario2(lblFolioHorario2.getText().equals("")?0:Integer.valueOf(lblFolioHorario2.getText()));
-							empleado.setHorario3(lblFolioHorario3.getText().equals("")?0:Integer.valueOf(lblFolioHorario3.getText()));
-							
-							if(rbHorario.isSelected()==true){
-								empleado.setStatus_h1(1);
-								empleado.setStatus_h2(0);
-								empleado.setStatus_h3(0);
-							}
-							if(rbHorario2.isSelected()==true){
-								empleado.setStatus_h1(0);
-								empleado.setStatus_h2(1);
-								empleado.setStatus_h3(0);
-							}
-							if(rbHorario3.isSelected()==true){
-								empleado.setStatus_h1(0);
-								empleado.setStatus_h2(0);
-								empleado.setStatus_h3(1);
-							}
-							
-//							switch(cmbHorarioRotativo.getSelectedIndex()){
-//								case 0: empleado.setStatus_rotativo(0); break;
-//								case 1: empleado.setStatus_rotativo(1); break;
-//								case 2: empleado.setStatus_rotativo(2); break;
-//							}
-							empleado.setStatus_rotativo(cmbHorarioRotativo.getSelectedIndex());
-							empleado.setContrato(cmbContratacion.getSelectedItem().toString().contains(" ")?Integer.valueOf(cmbContratacion.getSelectedItem().toString().substring(0, cmbContratacion.getSelectedItem().toString().indexOf(" "))):0);
-							
-							empleado.setFecha_ingreso(new SimpleDateFormat("dd/MM/yyyy").format(txtIngreso.getDate()));
-							empleado.setStatus(cmbStatus.getSelectedIndex()+1);
-							empleado.setCuadrante_parcial(chb_cuadrante_parcial.isSelected());
-							
-							Obj_Departamento depart = new Obj_Departamento().buscar_departamento(cmbDepartamento.getSelectedItem()+"");
-							empleado.setDepartameto(depart.getFolio());
-							
-							empleado.setImss(txtImss.getText());
-							empleado.setStatus_imss(cmbActivo_Inactivo.getSelectedIndex());
-							empleado.setNumero_infonavit(txtNumeroInfonavit.getText()+"");
-							
-							Obj_Establecimiento comboFolioEsta = new Obj_Establecimiento().buscar_estab(cmbEstablecimiento.getSelectedItem()+"");
-							empleado.setEstablecimiento(comboFolioEsta.getFolio());
-	
-							Obj_Puestos comboFolioPues = new Obj_Puestos().buscar_pues(cmbPuesto.getSelectedItem()+"");
-							empleado.setPuesto(comboFolioPues.getFolio());
-							
-							empleado.setFecha_ingreso_imss(txtIngresoImss.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtIngresoImss.getDate()));
-							empleado.setFecha_vencimiento_licencia(txtVencimientoLicencia.getDate()==null?"1/01/1900":new SimpleDateFormat("dd/MM/yyyy").format(txtVencimientoLicencia.getDate()));
-							empleado.setStatus_checador(cmbStatusChecador.getSelectedItem().toString()/*.equals("NORMAL")?"N":"L"*/);
-							empleado.setForma_de_checar(cmbChecaCon.getSelectedItem().toString());
-	//				percepciones y deducciones
-					
-							empleado.setSalario_diario(txtSalarioDiario.getText().equals("")?Float.parseFloat(0.0+""):Float.parseFloat(txtSalarioDiario.getText()));	
-							empleado.setSalario_diario_integrado(txtSalarioDiarioIntegrado.getText().equals("")?Float.parseFloat(0.0+""):Float.parseFloat(txtSalarioDiarioIntegrado.getText()));
-							empleado.setForma_pago(txtFormaDePago.getText()+"");
-							empleado.setSueldo(Float.valueOf(cmbSueldo.getSelectedItem().toString()));
-							
-							Obj_Bono_Complemento_Sueldo bono = new Obj_Bono_Complemento_Sueldo().buscarValor(Float.parseFloat(cmbBono.getSelectedItem()+""));
-							empleado.setBono(bono.getFolio());
-							
-							empleado.setPrestamo(cmbPrestamos.getSelectedIndex());
-							
-							empleado.setPension_alimenticia(txtPensionAli.getText().length()==0 ? Float.parseFloat(0.0+"") : Float.parseFloat(txtPensionAli.getText()));
-							empleado.setInfonavit(txtInfonavit.getText().length() == 0 ? Float.parseFloat(0.0+"") : Float.parseFloat(txtInfonavit.getText()));
-							empleado.setBono_asistencia(cmbBonoAsistencia.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonoAsistencia.getSelectedItem().toString()));
-							empleado.setBono_puntualidad(cmbBonopuntualidad.getSelectedItem().toString().trim().equals("Selecciona un Bono") ? Float.parseFloat(0.0+"") : Float.valueOf(cmbBonopuntualidad.getSelectedItem().toString()));
-							
-							empleado.setInfonacot(Float.valueOf(txtDInfonacot.getText().equals("")?"0":txtDInfonacot.getText()));
-							empleado.setTargeta_nomina(txtTarjetaNomina.getText()+"");
-							empleado.setTipo_banco(cmbTipoBancos.getSelectedIndex());
-							empleado.setPresencia_fisica(cmbPresenciaFisica.getSelectedItem().toString().equals("Aplica")?1:0);
-							empleado.setGafete(chbGafete.isSelected());
-							empleado.setFuente_sodas(chbFuente_Sodas.isSelected());
-							empleado.setObservasiones(txaObservaciones.getText()+"");
-							empleado.setFecha_actualizacion(txtFechaActualizacion.getText());
-							
-//							System.out.println("Guaradado-------------------");
-//							System.out.println(datosHuella);
-//							  System.out.println(datosHuella2);
-//							  System.out.println(tamañoHuella);
-//							  System.out.println(tamañoHuella2);
-							  
-							//TODO (Guardar)
-							if(empleado.guardar(datosHuella, datosHuella2, tamañoHuella, tamañoHuella2)){
-								panelLimpiar();
-								panelEnabledFalse();
-								rbHorario2.setEnabled(false);
-								rbHorario3.setEnabled(false);
-								txtFolioEmpleado.setEnabled(true);
-								txtFolioEmpleado.setEditable(true);
-								txtFolioEmpleado.requestFocus();
-								btnTrueFoto.setSelected(false);
-//								btnExaminar.setEnabled(false);
-								btnCamara.setEnabled(false);
-//								txtHorario.setEnabled(false);
-								btnBuscar.setEnabled(true);
-								btnFiltro.setEnabled(true);
-								btnNuevo.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "El Colaborardor Se Guardo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-							}else{
-								JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el Colaborador", "Error", JOptionPane.ERROR_MESSAGE);
-							}
-						}
-					}
-				}			
-			}
-   }
+	   					  if(NuevoModificar.equals("M")) {
+	   							  if( !(tabla_empleado_consulta[0][59].toString()).equals(cmbBono.getSelectedItem().toString().trim()) ||
+	   								  !(tabla_empleado_consulta[0][62].toString()).equals(cmbBonoAsistencia.getSelectedItem().toString().trim())||
+	   								  !(tabla_empleado_consulta[0][64].toString()).equals(cmbBonopuntualidad.getSelectedItem().toString().trim()) ||
+	   								  !(tabla_empleado_consulta[0][57].toString()).equals(cmbSueldo.getSelectedItem().toString().trim())) {	
+	   								            NuevoModificar="A";
+	   										 if(new BuscarSQL().validar_cambio_de_sueldo_o_bono(txtFolioEmpleado.getText().toString().trim())){
+	   											JOptionPane.showMessageDialog(null, "El Usuario Ya Cuenta Con Un Cambio De Sueldo o Bono Pendiente de Autorizar \nEs Necesario Que Lo Niegen o Acepten Antes De Solicitar Otro Cambio  :\n"+validaCampos(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+	   											NuevoModificar="M";
+	   											return;						
+	   										 }
+	   							  }
+
+	   		   					 if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
+	   		   								  if(!cmbStatus.getSelectedItem().toString().equals("Vigente")){
+	   		   									double importe_fuente_sodas =tiene_deuda_fuente_sodas();
+	   		   									  if(importe_fuente_sodas>0){
+	   		   										if(JOptionPane.showConfirmDialog(null,"El Colaborador Tiene Una Deuda De Fuente De Sodas \nDe:$"+importe_fuente_sodas+"\nQue Hiba Ser Cobrada En La Lista De Raya Actual \nDesea Que Se Active De Nuevo La Fuente Sodas?","Aviso", JOptionPane.INFORMATION_MESSAGE,seleccion_de_asignacion_de_Horario1Horario2Horario3, new ImageIcon("imagen/fast-food-icon32.png")) == 0){
+	   		   											if(new ActualizarSQL().devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(txtFolioEmpleado.getText().toString())){
+	   		   												JOptionPane.showMessageDialog(null, "Se Ha Devuelto A Pendiente De Cobro La Fuente De Sodas Del Colaborador Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+	   		   											}
+	   		   									     }else{
+	   		   											 return;
+	   		   										 }
+	   		   									  }
+	   		   								  }
+	   		   								  
+	   		   								  empleado.setGuardar_Modificar(NuevoModificar);
+	   		   								//(Actualizar)
+	   		   								  if(empleado.actualizar(Integer.parseInt(txtFolioEmpleado.getText()) , datosHuella, datosHuella2, tamañoHuella, tamañoHuella2 )){
+	   		   										btnDeshacer.doClick();
+	   		   										JOptionPane.showMessageDialog(null, "El Colaborador Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+	   		   								   }else{
+	   		   										JOptionPane.showMessageDialog(null,"Error al intentar actualizar los datos","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+	   		   								   }
+	   		   					 }else{
+	   		   					   NuevoModificar="M";
+	   		   					   return;
+	   		   					 }
+	   		   					 
+	   					  }else {//nuevo
+	   						   if(NuevoModificar.equals("N")){
+		   						    empleado.setGuardar_Modificar(NuevoModificar);
+	 								if(empleado.guardar(datosHuella, datosHuella2, tamañoHuella, tamañoHuella2)){
+	 									btnDeshacer.doClick();
+	 									JOptionPane.showMessageDialog(null, "El Colaborardor Se Guardo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+	 								}else{
+	 									JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar el Colaborador", "Error", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+	 								}
+	   						   }
+	   					  }	
+	   				}			
+	   			}
+	      }
 	
 	ActionListener filtro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -1751,23 +1513,21 @@ public void guardar_modificar_Empleado(){
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 		  if(cmbStatus.getSelectedItem().equals("No Contratable")) {
-				JOptionPane.showMessageDialog(null, "Esta Restringido El Acceso a Modificar Ex-Empleados Con Este Estatus, \nSolicite Autorizacion De Direccion y Presentela A Gerencia De Sistemas Para Un Cambio","Aviso de Restricción",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-busquedaicono-4661-64.png"));
+				JOptionPane.showMessageDialog(null, "Esta Restringido El Acceso a Modificar Ex-Empleados Con Este Estatus, \nSolicite Autorizacion De Direccion y Presentela A Gerencia De Sistemas Para Un Cambio de Cualquier Dato","Aviso de Restricción",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/usuario-busquedaicono-4661-64.png"));
 				return;  
 		  }else {
+			NuevoModificar="M";
 			Obj_Empleados empleado = new Obj_Empleados().buscar(Integer.parseInt(txtFolioEmpleado.getText()));
 				
 				switch(empleado.getStatus_rotativo()){
-				
 					case 0: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(0);
 							rbHorario.setSelected(true);
 							break;
-							
 					case 1: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(1);
 							rbHorario2.setEnabled(true);
 							break;
-							
 					case 2: panelEnabledTrue();
 							cmbHorarioRotativo.setSelectedIndex(2);
 							rbHorario3.setEnabled(true);
@@ -1801,17 +1561,15 @@ public void guardar_modificar_Empleado(){
 			btnHorario.setEnabled(false);
 			btnHorarioNew.setEnabled(false);
 		}
-		
-		
 	}
 	
 	public void panelEnabledTrue(){	
+		txaObservaciones.setBackground(new Color(255,255,255));
 		txtNombre.setEnabled(true);
 		txtApPaterno.setEnabled(true);
 		txtApMaterno.setEnabled(true);
 		txtPensionAli.setEnabled(true);
-//		cmbEstablecimiento.setEnabled(true);
-//		cmbPuesto.setEnabled(true);
+
 		cmbSueldo.setEnabled(true);
 		cmbBono.setEnabled(true);
 		cmbPrestamos.setEnabled(true);
@@ -1836,7 +1594,7 @@ public void guardar_modificar_Empleado(){
 		txtVencimientoLicencia.setEnabled(true);
 		txtemailEmpresa.setEditable(true);
 		txtemailPersonal.setEditable(true);
-		
+        btnPuesto.setEnabled(true);
 		txtCalle.setEnabled(true);
 		txtColonia.setEnabled(true);
 		txtPoblacion.setEnabled(true);
@@ -1848,7 +1606,6 @@ public void guardar_modificar_Empleado(){
 		
 		rbHorario.setEnabled(true);
 		rbHorario2.setEnabled(true);
-//		cmbDepartamento.setEnabled(true);
 		txtNumeroInfonavit.setEnabled(true);
 		
 		txtSalarioDiario.setEnabled(true);
@@ -1922,9 +1679,8 @@ public void guardar_modificar_Empleado(){
 		txtFormaDePago.setEnabled(false);
 		
 		btnTrueFoto.setSelected(false);
-//		btnExaminar.setEnabled(false);
 		btnCamara.setEnabled(false);
-		
+        btnPuesto.setEnabled(false);
 		cmbEstadoCivil.setEnabled(false);
 		cmbTipoDeSangre.setEnabled(false);
 		cmbEscolaridad.setEnabled(false);
@@ -2049,6 +1805,8 @@ public void guardar_modificar_Empleado(){
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 			try {
+				NuevoModificar="N";
+				
 				Obj_Empleados empleado = new Obj_Empleados().buscar_nuevo();
 				if(empleado.getFolio() != 0){
 					panelLimpiar();
@@ -2067,11 +1825,11 @@ public void guardar_modificar_Empleado(){
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
 //					 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
 //			         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 //			         btnFoto.setIcon(iconoDefault);
-			         
-			         
+					
 //	copiar archivo de un directorio a otro --------------------------------------------------------------------------------------------------------------------
 			         try{
 			        	 FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+"/Iconos/Un.JPG"); //inFile -> Archivo a copiar
@@ -2126,17 +1884,15 @@ public void guardar_modificar_Empleado(){
 			txtFolioEmpleado.requestFocus();
 			btnEditar.setEnabled(false);
 			btnNuevo.setEnabled(true);
-//			txtHorario.setEnabled(false);
 			btnHorario.setEnabled(false);
 			btnHorario2.setEnabled(false);
 			btnHorario3.setEnabled(false);
-			
 			btnLimpiarH2.setEnabled(false);
 			btnLimpiarH3.setEnabled(false);
-			
 			btnBuscar.setEnabled(true);
 			btnFiltro.setEnabled(true);
-			
+			txaObservaciones.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
+			NuevoModificar="";
 		}
 	};
 
@@ -2280,12 +2036,6 @@ public void guardar_modificar_Empleado(){
 		}
 	};
 		
-	ActionListener salir = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			dispose();
-		}
-	};
-	
 	ActionListener opFiltroHorairo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			seleccion_de_asignacion_de_Horario1Horario2Horario3=1;
@@ -2427,53 +2177,7 @@ public void guardar_modificar_Empleado(){
 		public void keyReleased(KeyEvent e){}
 	};
 	
-	private String validaCampos(){
-		String error="";
-		String fechaNull = txtFechaNacimiento.getDate()+"";
-		String fechaIngresoNull = txtIngreso.getDate()+"";
 
-		if(txtFolioEmpleado.getText().equals("")) 		error+= "Folio\n";
-		if(txtNombre.getText().equals("")) 		error+= "Nombre\n";
-		if(txtApPaterno.getText().equals(""))	error+= "Ap Paterno\n";
-		if(txtCalle.getText().equals(""))	error+= "Calle\n";
-		if(txtColonia.getText().equals(""))	error+= "Colonia\n";
-		if(txtPoblacion.getText().equals(""))	error+= "Poblacion\n";
-		if(txtTelefono_Familiar.getText().equals(""))	error+= "Telefono Familiar\n";
-		if(txtTelefono_Propio.getText().equals(""))	error+= "Telefono Propio\n";
-		if(cmbSexo.getSelectedIndex()==0)	error+= "Sexo\n";
-		if(cmbEstadoCivil.getSelectedIndex()==0)	error+= "Estado Civil\n";
-		if(cmbTipoDeSangre.getSelectedIndex()==0)	error+= "Tipo De Sangre\n";
-		if(cmbEscolaridad.getSelectedIndex()==0)	error+= "Escolaridad\n";
-		if(cmbDepartamento.getSelectedItem().equals("Selecciona un Departamento"))	error+= "Departamento\n";
-		if(cmbEstablecimiento.getSelectedItem().equals("Selecciona un Establecimiento")) error += "Establecimiento\n";
-		if(cmbPuesto.getSelectedItem().equals("Selecciona un Puesto")) error += "Puesto\n";
-		
-		
-		if(txtPerfil.getText().trim().equals("")){
-			if(!new BuscarSQL().PerfilDeColaboradorActivo()){
-				error +="Perfil\n";
-			}
-		}
-		
-		switch(cmbHorarioRotativo.getSelectedIndex()){
-		case 0:	if(txtHorario.getText().equals("")) 		error+= "-Horario\n"; break;
-		case 1: if(txtHorario.getText().equals("")) 		error+= "-Horario 2\n";
-				if(txtHorario2.getText().equals("")) 		error+= "-Horario 3\n";break;
-		case 2: if(txtHorario.getText().equals("")) 		error+= "-Horario\n";
-				if(txtHorario2.getText().equals("")) 		error+= "-Horario 2\n";
-				if(txtHorario3.getText().equals("")) 		error+= "-Horario 3\n";break;
-		}
-		if(cmbChecaCon.getSelectedIndex()==0)	error+= "-Checa Con: (SELECCIONA UNA FORMA)\n";
-		
-		if(cmbContratacion.getSelectedIndex()==0)	error+= "-Contrato\n";
-		if(cmbSueldo.getSelectedItem().equals("Selecciona un Sueldo")) error += "-Sueldo\n";
-		if(cmbBono.getSelectedItem().equals("Selecciona un Bono")) error += "-Bono\n";
-		if(cmbPrestamos.getSelectedItem().equals("Selecciona un Rango de Prestamo")) error += "-Rango de Prestamo\n";
-		if(fechaNull.equals("null"))error+= "-Fecha de Nacimiento\n";	
-		if(fechaIngresoNull.equals("null"))error += "-Fecha de ingreso\n";
-		if(cmbPresenciaFisica.getSelectedIndex()==0)	error+= "-Presencia Fisica\n";
-		return error;
-	}
 	
 	public class Llamar_Camara extends Cat_Camara{
 		
@@ -2504,11 +2208,10 @@ public void guardar_modificar_Empleado(){
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-     					
+						
 //						ImageIcon tmpIconDefault = new ImageIcon(rutaFoto+"tmp.jpg");
 //				        Icon btnIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 //				        btnFoto.setIcon(btnIconoDefault);
-				        
 //				        Icon lblIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
 				        lblVistaPrevia.setIcon(crearIcon(imagB));
 						
@@ -2700,8 +2403,7 @@ public void guardar_modificar_Empleado(){
 		     @SuppressWarnings("rawtypes")
 		    private TableRowSorter trsfiltro;
 		
-		JTextField txtFolioFiltroEmpleado  = new Componentes().text(new JCTextField(), "Teclea Aqui Para Buscar En La Tabla", 500, "String");
-		
+		JTextField txtFolioFiltroEmpleado  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tablaf,columnas);
 		String establecimientos[] = new Obj_Establecimiento().Combo_Establecimiento();
 		@SuppressWarnings("rawtypes")
 		JComboBox cmbEstablecimientos = new JComboBox(establecimientos);
@@ -2727,130 +2429,48 @@ public void guardar_modificar_Empleado(){
 			init_tablaf();
 			agregar(tablaf);
 			cont.add(campo);
-			txtFolioFiltroEmpleado.addKeyListener(opFiltrof);
 			cmbEstablecimientos.addActionListener(opFiltro);
-//          asigna el foco al JTextField del nombre deseado al arrancar la ventana
-            this.addWindowListener(new WindowAdapter() {
-                    public void windowOpened( WindowEvent e ){
-                    	txtFolioFiltroEmpleado.requestFocus();
-                 }
-            });
-              
-//         pone el foco en el txtFolio al presionar la tecla scape
-              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "foco");
-              
-              getRootPane().getActionMap().put("foco", new AbstractAction(){
-                  @Override
-                  public void actionPerformed(ActionEvent e)
-                  {
+			txtFolioFiltroEmpleado.requestFocus();
+			
+              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put( KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "foco");
+              getRootPane().getActionMap().put("foco", new AbstractAction(){       @Override
+                  public void actionPerformed(ActionEvent e) {
                 	  txtFolioFiltroEmpleado.setText("");
                 	  txtFolioFiltroEmpleado.requestFocus();
                   }
               });
               
-              tablaf.addKeyListener(seleccionEmpleadoconteclado);
-              txtFolioFiltroEmpleado.addKeyListener(PasarATabla);
-              
-//            pone el foco en la tabla al presionar f4
-              getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                 KeyStroke.getKeyStroke(KeyEvent.VK_F4 , 0), "dtabla");
-              
-              getRootPane().getActionMap().put("dtabla", new AbstractAction(){
-                  @Override
-                  public void actionPerformed(ActionEvent e)
-                  {
-                	tablaf.requestFocus();
-                	iniciarSeleccionConTeclado();
-                  }
-              });
-              
-				KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-				tablaf.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(tab, "TAB");
-				
-				tablaf.getActionMap().put("TAB", new AbstractAction(){
-	                 public void actionPerformed(ActionEvent e)
-	                 {
-	                	iniciarSeleccionConTeclado();
-	                 }
-	            });
+       		this.agregar(tablaf);
 		}
 		
-		KeyListener PasarATabla = new KeyListener() {
-			public void keyTyped(KeyEvent e){}
-			public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_DOWN){
-					tablaf.requestFocus();
-					tablaf.getSelectionModel().setSelectionInterval(0,0);;
-				}
-			}
-		};
-		
 		private void agregar(final JTable tbl) {
-	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-		        public void mouseClicked(MouseEvent e) {
-		        	
-		        	if(e.getClickCount() == 1){
-		        		iniciarSeleccionConTeclado();
-		        	}
-		        	if(e.getClickCount() == 2){
-		    			fila = tablaf.getSelectedRow();
-		    			Object folio =  tablaf.getValueAt(fila, 0).toString().trim();
-		    			dispose();
-		    			txtFolioEmpleado.setText(folio+"");
-		    			btnBuscar.doClick();
-		        	}
-		        }
-	        });
+			tbl.addMouseListener(new MouseListener() {
+				public void mouseReleased(MouseEvent e) {
+			 	 if(e.getClickCount() == 2){funcion_agregar();}
+				}
+				public void mousePressed(MouseEvent e) {}
+				public void mouseExited(MouseEvent e)  {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) {}
+			});
+			tbl.addKeyListener(new KeyListener() {
+				public void keyPressed(KeyEvent e)  {
+					if(e.getKeyCode()==KeyEvent.VK_ENTER){
+						funcion_agregar();	
+					}
+				}
+				public void keyReleased(KeyEvent e)   {}
+				public void keyTyped   (KeyEvent e)   {}
+			});
 	    }
-		
-		int fila=0;
-		public void iniciarSeleccionConTeclado(){
-			Robot robot;
-			try {
-	            robot = new Robot();
-	            robot.keyPress(KeyEvent.VK_A);
-	            robot.keyRelease(KeyEvent.VK_A);
-	        } catch (AWTException e) {
-	            e.printStackTrace();
-	        }
- 	     };
- 	     
-		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-				KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-				tablaf.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "Enter");
-				
-				tablaf.getActionMap().put("Enter", new AbstractAction(){
-	                 public void actionPerformed(ActionEvent e)
-	                 {
-	                	iniciarSeleccionConTeclado();
-	                	
-	                	fila=tablaf.getSelectedRow();
-	     				String folio = tablaf.getValueAt(fila,0).toString().trim();
-	     					
-	     				txtFolioEmpleado.setText(folio);
-	     				btnBuscar.doClick();
-	     				dispose();
-	                 }
-	            });
-			}
-			public void keyPressed(KeyEvent e){}
-			public void keyReleased(KeyEvent e){}
-		};
-		
-		
-		KeyListener opFiltrof = new KeyListener(){
-			public void keyReleased(KeyEvent arg0) {
-				ObjTabf.Obj_Filtro(tablaf, txtFolioFiltroEmpleado.getText().toUpperCase(), columnas,tablaf);
-			}
-			public void keyTyped(KeyEvent arg0) {}
-			public void keyPressed(KeyEvent arg0) {}		
-		};
-		
+	    public void funcion_agregar() {
+	    	int fila = tablaf.getSelectedRow();
+			Object folio =  tablaf.getValueAt(fila, 0).toString().trim();
+			dispose();
+			txtFolioEmpleado.setText(folio+"");
+			btnBuscar.doClick();
+		dispose();
+	    };
 		
 		ActionListener opFiltro = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
@@ -3240,10 +2860,10 @@ public void guardar_modificar_Empleado(){
 			
 			txtFoliocolaborador.setText(txtFolioEmpleado.getText() );
 			txtNombreColaborador.setText(txtNombre.getText().trim()+" "+txtApPaterno.getText().trim()+" "+txtApMaterno.getText().trim());
-			txtNombreBeneficiario.setText(tablacompleta[0][74].toString());
-			txtRFCBeneficiario.setText(tablacompleta[0][75].toString());
-			cmbParentesco.setSelectedItem(tablacompleta[0][76].toString());
-			FechaNacimiento.setDate(fecha(tablacompleta[0][77].toString()) );
+			txtNombreBeneficiario.setText(tabla_empleado_consulta[0][74].toString());
+			txtRFCBeneficiario.setText(tabla_empleado_consulta[0][75].toString());
+			cmbParentesco.setSelectedItem(tabla_empleado_consulta[0][76].toString());
+			FechaNacimiento.setDate(fecha(tabla_empleado_consulta[0][77].toString()) );
 			btnGuardarBen.addActionListener(opGuardar);
 			btnEditarBen.addActionListener(opEditarBen);
 			cont.add(panel);
@@ -3711,14 +3331,93 @@ public void guardar_modificar_Empleado(){
 	        	JOptionPane.showMessageDialog(null, "No corresponde la huella con: ["+folio+"]", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 	        }
 	     }
-	    
-//		public static void main(String [] arg){
-//			try{
-//				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//				new Cat_Huellas_Personalizado().setVisible(true);
-//			}catch(Exception e){	}
-//		}
-	}
-//--TODO(Captura De Huella Digital(fin))	--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	}
+
+	//TODO inicia filtro_puestos	
+		public class Cat_Filtro_Puestos extends JDialog{
+			Container contf = getContentPane();
+			JLayeredPane panelf = new JLayeredPane();
+			Connexion con = new Connexion();
+			Obj_tabla ObjTab =new Obj_tabla();
+				int columnasp2 = 4,checkbox2=-1;
+				public void init_tablafp2(){
+			    	this.tablafp2.getColumnModel().getColumn(0).setMinWidth(55);
+			    	this.tablafp2.getColumnModel().getColumn(1).setMinWidth(375);
+			    	this.tablafp2.getColumnModel().getColumn(2).setMinWidth(55);
+			    	this.tablafp2.getColumnModel().getColumn(3).setMinWidth(280);
+			    	String comandof="exec empleado_puestos ";
+					String basedatos="26",pintar="si";
+					ObjTab.Obj_Refrescar(tablafp2,modelof2, columnasp2, comandof, basedatos,pintar,checkbox2);
+			    }
+				
+				@SuppressWarnings("rawtypes")
+				public Class[] base2 (){
+					Class[] types = new Class[columnasp2];
+					for(int i = 0; i<columnasp2; i++){types[i]= java.lang.Object.class;}
+					 return types;
+				}
+				
+				public DefaultTableModel modelof2 = new DefaultTableModel(null, new String[]{"Folio","Puesto","Folio C.","Cuadrante"}){
+					 @SuppressWarnings("rawtypes")
+						Class[] types = base2();
+						@SuppressWarnings({ "rawtypes" })
+						public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+						public boolean isCellEditable(int fila, int columna){return false;}
+				};
+				
+				JTable tablafp2 = new JTable(modelof2);
+				public JScrollPane scroll_tablafp2 = new JScrollPane(tablafp2);
+			     @SuppressWarnings({ "rawtypes" })
+			    private TableRowSorter trsfiltro2;
+			     
+			JTextField txtBuscarfp  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tablafp2,columnasp2);
+			@SuppressWarnings({ "rawtypes" })
+			public Cat_Filtro_Puestos(){
+				this.setSize(850,500);
+				this.setResizable(false);
+				this.setLocationRelativeTo(null);
+				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				this.setModal(true);
+				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+				this.panelf.setBorder(BorderFactory.createTitledBorder("Selecione Un Puesto Con Doble Click"));
+				this.setTitle("Filtro De Puestos");
+				trsfiltro2 = new TableRowSorter(modelof2); 
+				tablafp2.setRowSorter(trsfiltro2);
+				this.panelf.add(txtBuscarfp).setBounds       (10 ,20 ,820 , 20 );
+				this.panelf.add(scroll_tablafp2).setBounds   (10 ,40 ,820 ,415 );
+				this.init_tablafp2();
+				this.agregar(tablafp2);
+				contf.add(panelf);
+			}
+			
+			private void agregar(final JTable tbl) {
+				tbl.addMouseListener(new MouseListener() {
+					public void mouseReleased(MouseEvent e) {
+				 	 if(e.getClickCount() == 2){funcion_agregar();}
+					}
+					public void mousePressed(MouseEvent e) {}
+					public void mouseExited(MouseEvent e)  {}
+					public void mouseEntered(MouseEvent e) {}
+					public void mouseClicked(MouseEvent e) {}
+				});
+				tbl.addKeyListener(new KeyListener() {
+					public void keyPressed(KeyEvent e)  {
+						if(e.getKeyCode()==KeyEvent.VK_ENTER){
+							funcion_agregar();	
+						}
+					}
+					public void keyReleased(KeyEvent e)   {}
+					public void keyTyped   (KeyEvent e)   {}
+				});
+		    }
+		    public void funcion_agregar() {
+		    	int fila = tablafp2.getSelectedRow();
+			    cmbPuesto.setSelectedItem(tablafp2.getValueAt(fila,1)+"");
+			dispose();
+		    };
+		    
+			
+		}
+		//termina filtro puestos
 }

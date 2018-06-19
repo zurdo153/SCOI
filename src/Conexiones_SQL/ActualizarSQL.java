@@ -1,8 +1,4 @@
 package Conexiones_SQL;
-
-
-
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +19,6 @@ import javax.swing.JTable;
 
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_De_Cheques;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
@@ -56,7 +51,6 @@ import Obj_Lista_de_Raya.Obj_Empleados;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Lista_de_Raya.Obj_Grupo_De_Vacaciones;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
-import Obj_Lista_de_Raya.Obj_Prestamos;
 import Obj_Lista_de_Raya.Obj_Puestos;
 import Obj_Lista_de_Raya.Obj_Rango_De_Prestamos;
 import Obj_Lista_de_Raya.Obj_Sueldos;
@@ -75,19 +69,13 @@ public class ActualizarSQL {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	public boolean Empleado(Obj_Empleados empleado, int folio, ByteArrayInputStream datosHuella, ByteArrayInputStream datosHuella2, int tamañoHuella, int tamañoHuella2){
-		String query = "exec sp_update_alta_empleado ?,?,?,?,?,?,?,?,?,?,"
+		String query = "exec empleado_actualizar ?,?,?,?,?,?,?,?,?,?,"
 												  + "?,?,?,?,?,?,?,?,?,?,"
 												  + "?,?,?,?,?,?,?,?,?,?,"
 												  + "?,?,?,?,?,?,?,?,?,?,"
 												  + "?,?,?,?,?,?,?,?,?,?,"
 												  + "?,?,?,?,?,?,?,?,?,?,"
-												  + "?,?,?,?,?";
-
-//		  System.out.println("ActualizaNdo-------------------");
-//		  System.out.println(datosHuella);
-//		  System.out.println(datosHuella2);
-//		  System.out.println(tamañoHuella);
-//		  System.out.println(tamañoHuella2);
+												  + "?,?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -108,88 +96,6 @@ public class ActualizarSQL {
 //			private String telefono_cuadrante;
 			int i=1;
 			pstmt = con.prepareStatement(query);
-			
-//			System.out.println(		folio);
-//			System.out.println(	empleado.getNo_checador());
-//			System.out.println( 	empleado.getNombre().toUpperCase());
-//			System.out.println(	empleado.getAp_paterno().toUpperCase());
-//			System.out.println(	empleado.getAp_materno().toUpperCase());
-//			System.out.println(	empleado.getFecha_nacimiento());
-//			System.out.println(	empleado.getCalle().toUpperCase());
-//			System.out.println( 	empleado.getColonia().toUpperCase());
-//			System.out.println( 	empleado.getPoblacion().toUpperCase());
-//			System.out.println( 	empleado.getTelefono_familiar().toUpperCase());
-//			System.out.println( 	empleado.getTelefono_propio().toUpperCase());
-//			System.out.println( 	empleado.getRfc().toUpperCase());
-//			System.out.println( 	empleado.getCurp().toUpperCase());
-//			System.out.println( 		empleado.getSexo());
-//			System.out.println( 	empleado.getEmailEmpresa());
-//			
-//			System.out.println( 	empleado.getFoto());
-////			FileInputStream stream_foto = new FileInputStream(empleado.getFoto());
-////			pstmt.setBinaryStream(i+=1, stream_foto, empleado.getFoto().length());
-//			
-////			laboral
-//			System.out.println( 		empleado.getHorario());
-//			System.out.println( 		empleado.getHorario2());
-//			System.out.println( 		empleado.getStatus_h1());
-//			System.out.println( 		empleado.getStatus_h2());
-//			System.out.println( 		empleado.getStatus_rotativo());
-//			System.out.println( 	empleado.getFecha_ingreso().toUpperCase());
-//			System.out.println( 		empleado.getStatus());	
-//			System.out.println( 		empleado.isCuadrante_parcial() ? 1 : 0);
-//			System.out.println( 		empleado.getDepartameto());	
-//			System.out.println( 	empleado.getImss().toUpperCase().trim());
-//			System.out.println( 		empleado.getStatus_imss());
-//			System.out.println( 	empleado.getNumero_infonavit().toUpperCase());
-//			System.out.println( 		empleado.getEstablecimiento());
-//			System.out.println( 		empleado.getPuesto());
-//			System.out.println( 	empleado.getStatus_checador().equals("NORMAL")?"N":(empleado.getStatus_checador().equals("LIBRE")?"L":"B"));
-//			
-////			percepciones y deducciones
-//			System.out.println( 	empleado.getSalario_diario());
-//			System.out.println( 	empleado.getSalario_diario_integrado());
-//			System.out.println(	empleado.getForma_pago().toUpperCase());
-//			System.out.println(	empleado.getStatus()==4||empleado.getStatus()==5?0:empleado.getSueldo());
-//			System.out.println( 		empleado.getStatus()==4||empleado.getStatus()==5?1:empleado.getBono());
-//			
-//			System.out.println(    empleado.getBono_asistencia());
-//			System.out.println( 	empleado.getBono_puntualidad());
-//			System.out.println( 	empleado.getInfonacot());
-//			
-//			System.out.println( 		empleado.getPrestamo());
-//			System.out.println( 	empleado.getPension_alimenticia());
-//			System.out.println(	empleado.getInfonavit());
-//			System.out.println( 	empleado.getTargeta_nomina().toUpperCase());
-//			System.out.println( 		empleado.getTipo_banco());
-//			System.out.println(empleado.isGafete());
-//			System.out.println(empleado.isFuente_sodas());
-//			System.out.println( 	empleado.getObservasiones().toUpperCase());
-//			System.out.println( 	empleado.getFecha_actualizacion().toUpperCase());
-//			
-////			cambios extras 
-//			System.out.println(		empleado.getHorario3());
-//			System.out.println( 		empleado.getStatus_h3());
-//			System.out.println( 	empleado.getFecha_ingreso_imss());
-//			System.out.println( 	empleado.getFecha_vencimiento_licencia());
-//			System.out.println( 		usuario.getFolio());
-//			
-////			TODO (Datos Adicionales)
-//			System.out.println( 	empleado.getEstado_civil().toUpperCase());
-//			System.out.println( 	empleado.getTipo_sangre().toUpperCase());
-//			System.out.println( 	empleado.getEscolaridad().toUpperCase());
-//			System.out.println( 		empleado.getContrato());
-//			System.out.println( 		empleado.getPresencia_fisica());
-//			System.out.println( 		ip);
-//			System.out.println( 		pc);
-//			
-//			System.out.println( 		empleado.getPerfil());
-//	    	System.out.println( 	empleado.getForma_de_checar());
-//	    	System.out.println( 	empleado.getEmailPersonal());
-			
-//-------------------------------------------------------------------------------------------------------------			
-			
-			
 			
 			pstmt.setInt   (i,		folio);
 			pstmt.setString(i+=1,	empleado.getNo_checador());
@@ -276,7 +182,8 @@ public class ActualizarSQL {
 	    	pstmt.setBinaryStream(i+=1, datosHuella2,tamañoHuella2);
 //TODO(Huellas(fin))-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	    	
-	    	System.out.println(i+" cantidad de registros");
+			pstmt.setString(i+=1, 		empleado.getGuardar_Modificar());
+//	    	System.out.println(i+" cantidad de registros");
 	    	
 			pstmt.executeUpdate();
 			con.commit();
@@ -430,45 +337,6 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
-	
-	
-//	public boolean Usuario(Obj_Usuario usuario, int folio){
-//		String query = "update tb_usuario set nombre_completo=?,contrasena=?, permiso_id=?, fecha_actu=?, status=? where folio=" + folio;
-//		Connection con = new Connexion().conexion();
-//		PreparedStatement pstmt = null;
-//		try {
-//			con.setAutoCommit(false);
-//			pstmt = con.prepareStatement(query);
-//			pstmt.setString(1, usuario.getNombre_completo().toUpperCase());
-//			pstmt.setString(2, usuario.getContrasena());
-//			pstmt.setInt(3, usuario.getPermiso_id());
-//			String fecha = new Date().toString();
-//			pstmt.setString(4, fecha);
-//			pstmt.setInt(5, usuario.getStatus());
-//			pstmt.executeUpdate();
-//			con.commit();
-//		} catch (Exception e) {
-//			System.out.println("SQLException: "+e.getMessage());
-//			if(con != null){
-//				try{
-//					System.out.println("La transacción ha sido abortada");
-//					con.rollback();
-//					
-//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Usuario ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//				}catch(SQLException ex){
-//					System.out.println(ex.getMessage());
-//				}
-//			}
-//			return false;
-//		}finally{
-//			try {
-//				con.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}		
-//		return true;
-//	}
 	
 	public boolean Bono(Obj_Bono_Complemento_Sueldo bono, int folio){
 		String query = "update tb_bono set bono=?, abreviatura=?, status=? where folio=" + folio;
@@ -977,43 +845,6 @@ public class ActualizarSQL {
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ fuente_sodas_auxf ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}	
-	
-	public boolean prestamo(Obj_Prestamos pres, int folio){
-		String query = "update tb_prestamo set fecha=?, cantidad=?, descuento=?, status=? ,tipo_prestamo=? where folio="+folio;
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, pres.getFecha());
-			pstmt.setDouble(2, pres.getCantidad());
-			pstmt.setDouble(3, pres.getDescuento());
-			pstmt.setInt(4, pres.getStatus());
-			pstmt.setInt(5,pres.getTipo_prestamo());
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ prestamo ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ prestamo ]  \n Confirmacion update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
@@ -1653,71 +1484,6 @@ public class ActualizarSQL {
 		}		
 		return true;
 	}
-	
-	public boolean Proyecto(Obj_Actividades_Por_Proyecto proyect, String[][] tabla){
-		String queryDelete ="delete tb_tabla_proyecto_cuadrante where folio_proyecto = ?";
-		String query = "exec sp_update_proyecto ?,?,?,?,?,?,?";
-		String querytabla = "exec sp_insert_tabla_proyecto ?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtDelete = null;
-		PreparedStatement pstmt = null;
-		PreparedStatement pstmtTabla = null;
-		
-		try {
-			con.setAutoCommit(false);
-			
-			// Elimina primero la lista de cuadrante
-			pstmtDelete = con.prepareStatement(queryDelete);
-			pstmtDelete.setInt(1, proyect.getFolio());
-			pstmtDelete.execute();
-			
-			// Actualiza el Cuadrante
-			pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, proyect.getFolio());
-			pstmt.setString(2, proyect.getProyecto().toUpperCase().trim());
-			pstmt.setString(3, proyect.getDescripcion().toUpperCase().trim());
-			pstmt.setString(4, proyect.getNivel_critico().trim());
-			pstmt.setInt(5, proyect.getStatus());
-			pstmt.setString(6, proyect.getFecha_inicial());
-			pstmt.setString(7, proyect.getFecha_final());
-			pstmt.execute();
-			
-			// Inserta valores a la tabla
-			pstmtTabla = con.prepareStatement(querytabla);
-			
-			for(int i=0; i<tabla.length; i++){
-				pstmtTabla.setInt(1, proyect.getFolio());
-				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmtTabla.setString(3, tabla[i][3].toString().trim().toUpperCase());
-				pstmtTabla.setString(4, tabla[i][4].toString().trim());
-				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][2]) ? 1 : 0);
-				pstmtTabla.executeUpdate();
-			}
-
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada Actualizar - Proyecto");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: sp_update_proyecto,sp_insert_tabla_proyecto "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Proyecto ] update  SQLException: sp_update_proyecto,sp_insert_tabla_proyecto "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
 	
 	public boolean mensajePersonal(Obj_Mensaje_Personal msjPersonal, int folio){
 		 
@@ -3017,9 +2783,7 @@ public class ActualizarSQL {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
  		 for(i=0;i<guardarAN_sueldo_bono.length;i++){
- 			System.out.println(guardarAN_sueldo_bono[i][7].toString());
 				if(guardarAN_sueldo_bono[i][7].toString().equals("true")){ 
-					
 					pstmt.setInt(1, Integer.valueOf(guardarAN_sueldo_bono[i][0].toString()));
 					pstmt.setFloat(2, Float.valueOf(guardarAN_sueldo_bono[i][1].toString()));
 					pstmt.setFloat(3, Float.valueOf(guardarAN_sueldo_bono[i][2].toString()));
@@ -4354,21 +4118,15 @@ public boolean Borrar_Observacion_DH(){
 	}
 	
 	
-public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String[][] tabla,String Accion){
-		String query ="update orden_de_gasto set fecha_autorizacion=getdate(), usuario_autorizo="+usuario.getFolio()+",estatus='"+Accion+"' where folio=?";
+public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion){
+		String query ="update orden_de_gasto set fecha_autorizacion=getdate(), usuario_autorizo="+usuario.getFolio()+",estatus='"+Accion+"' where folio="+folio;
 		Connection con = new Connexion().conexion();
 		
 		try {
 			con.setAutoCommit(false);
+			System.out.println(query);
 			PreparedStatement pstmt = con.prepareStatement(query);
-			
-			for(int i=0; i<tabla.length; i++){
-
-				if(tabla[i][0].toString().equals("true")){
-					pstmt.setString (1, tabla[i][1].toString());
-			        pstmt.executeUpdate();	
-				}
-			}
+	        pstmt.executeUpdate();	
 			con.commit();
 		} catch (Exception e) {
 				System.out.println("SQLException: "+e.getMessage());

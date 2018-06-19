@@ -43,7 +43,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
+public class Cat_Revision_De_Horarios_De_Colaboradores extends JFrame{
 
 		Container cont = getContentPane();
 		JLayeredPane panel = new JLayeredPane();
@@ -102,12 +102,12 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 		
 		Border blackline;
 		
-	public Cat_Revision_De_Horario_Por_Nivel_Jerarquico() {
+	public Cat_Revision_De_Horarios_De_Colaboradores() {
 		this.setSize(800,280);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Revision De Horario Por Nivel Jerarquico");
+		setTitle("Revision De Horario De Colaboradores");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
 		panel.setBorder(BorderFactory.createTitledBorder("Busque El Colaborador y Modifique Lo Deseado"));
 		
@@ -454,7 +454,7 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 			ResultSet rs;
 			try {
 				s = con.conexion().createStatement();
-				rs = s.executeQuery("exec sp_filtro_empleado_actividades_status_vigente "+usuario.getFolio() );
+				rs = s.executeQuery("exec horarios_revision_por_colaborador ");
 				
 				while (rs.next())
 				{ 
@@ -524,7 +524,7 @@ public class Cat_Revision_De_Horario_Por_Nivel_Jerarquico extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Revision_De_Horario_Por_Nivel_Jerarquico().setVisible(true);
+			new Cat_Revision_De_Horarios_De_Colaboradores().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

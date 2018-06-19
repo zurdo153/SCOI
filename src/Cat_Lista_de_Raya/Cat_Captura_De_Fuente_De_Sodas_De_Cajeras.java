@@ -11,9 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
@@ -39,27 +36,31 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Captura_Fuente_Sodas;
 import Obj_Principal.Componentes;
-import Obj_Renders.tablaRenderer;
+import Obj_Principal.JCButton;
+import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
-{
+public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame{
+	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+	Obj_tabla ObjTab =new Obj_tabla();
 	
 	JPasswordField txtClaveCajero = new JPasswordField();
-	
 	JPasswordField txtClave = new JPasswordField();
-	JTextField txtTicket = new JTextField();
-	JTextField txtImporte = new Componentes().text(new JTextField (),"Importe Total del Ticket", 50, "Double");
-	
 	JPasswordField txtConfirmarCompra = new JPasswordField();
 	
-	JButton btnImprimir = new JButton("Imprimir autorizacion",new ImageIcon("imagen/Print.png"));
-	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
-	JButton btnCancelar = new JButton("Deshacer",new ImageIcon("imagen/deshacer16.png"));
+	JTextField txtTicket              = new Componentes().text(new JCTextField(), "Ticket"   , 15, "String");
+	JTextField txtImporte              = new Componentes().text(new JCTextField(), "Importe Total del Ticket"   , 20, "Double");
+
+	JCButton btnImprimir    = new JCButton("Imprimir"  ,"imprimir-16.png"                     ,"Azul");
+	JCButton btnGuardar     = new JCButton("Guardar"   ,"Guardar.png"                         ,"Azul");
+	JCButton btnCancelar    = new JCButton("Deshacer"  ,"deshacer16.png"                      ,"Azul");
 	
 	JLabel lblNombre_Empleado = new JLabel();
 	JLabel lblEstablecimiento_Empleado = new JLabel();
@@ -83,10 +84,23 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	JLabel Imgsigno = new JLabel("$");
 	
 	JLabel lblEnmarcadoSaldo = new JLabel();
+
+	int columnasb = 5,checkbox=-1;
+	@SuppressWarnings("static-access")
+	public void init_tabla(){
+    	this.tabla.getColumnModel().getColumn(0).setMinWidth(100);
+    	this.tabla.getColumnModel().getColumn(1).setMinWidth(100);
+    	this.tabla.getColumnModel().getColumn(2).setMinWidth(320);
+    	this.tabla.getColumnModel().getColumn(3).setMinWidth(140);
+    	this.tabla.getColumnModel().getColumn(4).setMinWidth(140);
+		String basedatos="98",pintar="si";
+		String comandob="Select '',0,'','',''";
+		  ObjTab.Obj_Refrescar(tabla,tabla_model, columnasb, comandob, basedatos,pintar,checkbox);
+		  tabla_model.setRowCount(0); 
+    }
 	
     public static DefaultTableModel tabla_model = new DefaultTableModel(null,
             new String[]{"Tiket", "Importe", "Cajera(o)", "PC","Fecha"}){
-                    
             @SuppressWarnings("rawtypes")
             Class[] types = new Class[]{
                        java.lang.Object.class,
@@ -94,7 +108,6 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
                        java.lang.Object.class, 
                        java.lang.Object.class, 
                        java.lang.Object.class
-                        
         };
             @SuppressWarnings({ "rawtypes", "unchecked" })
             public Class getColumnClass(int columnIndex) {
@@ -123,16 +136,18 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	Border blackline;
 	
-	public void getContenedor()
-	{
-		init_tabla();
+	public void getContenedor()	{
+		this.setSize(850,610);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/fast-food-icon64.png"));
 		this.setTitle("Captura de fuente de sodas");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Captura de fuente de sodas"));
-		
-		blackline = BorderFactory.createLineBorder(Color.blue);
+		this.blackline = BorderFactory.createLineBorder(Color.blue);
 		this.lblEnmarcadoSaldo.setBorder(BorderFactory.createTitledBorder(blackline,"Credito Disponible"));
 		
+		init_tabla();
 		lblFoto.setBorder(LineBorder.createGrayLineBorder());
 		Imgsigno.setFont(new Font("arial", Font.BOLD, 80));
 		lblSaldo.setFont(new Font("arial", Font.BOLD, 80));
@@ -208,7 +223,7 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		
 		panel.add(btnImprimir).setBounds(20,210,210,20);
 		panel.add(btnGuardar).setBounds(20,235,100,20);
-		panel.add(btnCancelar).setBounds(130,235,100,20);
+		panel.add(btnCancelar).setBounds(125,235,110,20);
 		
 		panel.add(panelScroll).setBounds(20,260,800,300);
 		
@@ -232,13 +247,10 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 		btnImprimir.addActionListener(opImprmiAutorizacion);
 		btnCancelar.addActionListener(cancelar);
 		
-		this.setSize(850,610);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 		cont.add(panel);
-		CargarCajero();
-		
+		lblCajero.setText(usuario.getFolio()+"");
+		lblUsuario.setText(usuario.getNombre_completo());
         ///deshacer con escape
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
         getRootPane().getActionMap().put("escape", new AbstractAction(){
@@ -254,21 +266,18 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 	
 	ActionListener claveCajero = new ActionListener() {
 		@SuppressWarnings("deprecation")
-		public void actionPerformed(ActionEvent arg0) 
-		{
+		public void actionPerformed(ActionEvent arg0){			
 			if(txtClaveCajero.getText().toUpperCase().equals("")){
 				JOptionPane.showMessageDialog(null, "Se Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-				return;
-				
+				return;				
 				}else{
 					try {
 						if(new Obj_Captura_Fuente_Sodas().buscarcajero(txtClaveCajero.getText(),lblUsuario.getText().toUpperCase().trim())){
-						txtClaveCajero.setText("");	
-						txtClaveCajero.setEnabled(false);
-						txtTicket.setEnabled(true);
-						txtTicket.requestFocus();
-						
-						return;
+							txtClaveCajero.setText("");	
+							txtClaveCajero.setEnabled(false);
+							txtTicket.setEnabled(true);
+							txtTicket.requestFocus();
+							return;
 						 }else{
 							 txtClaveCajero.setText("");
 								JOptionPane.showMessageDialog(null, "Clave Incorrecta Necesita Pasar El Gafete Del Cajero!!!","Aviso",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -501,58 +510,6 @@ public class Cat_Captura_De_Fuente_De_Sodas_De_Cajeras extends JFrame
 			return;
 		}
 	}
-	
-	public void CargarCajero()
-	{
-		  File archivo = null;
- 	      FileReader fr = null;
- 	      BufferedReader br = null;
-		 try {
- 	         archivo = new File ("Config/users");
- 	         fr = new FileReader (archivo);
- 	         br = new BufferedReader(fr);
- 	        
- 	         br.readLine();
- 	        lblUsuario.setText(br.readLine());
-// 	         String linea;
- 	         
-// 	         while((linea=br.readLine())!=null)
-// 	        	lblUsuario.setText(linea);
- 	      }
- 	      catch(Exception e){
- 	         e.printStackTrace();
- 	      }finally{
- 	         try{                   
- 	            if( null != fr ){  
- 	               fr.close();    
- 	            }                 
- 	         }catch (Exception e2){
- 	            e2.printStackTrace();
- 	         }
- 	      }
-	}
-	
-    @SuppressWarnings({ "static-access" })
-	public void init_tabla(){
-    	this.tabla.getTableHeader().setReorderingAllowed(false) ;
-    	
-    	this.tabla.getColumnModel().getColumn(0).setMaxWidth(100);
-    	this.tabla.getColumnModel().getColumn(0).setMinWidth(100);		
-    	this.tabla.getColumnModel().getColumn(1).setMaxWidth(100);
-    	this.tabla.getColumnModel().getColumn(1).setMinWidth(100);
-    	this.tabla.getColumnModel().getColumn(2).setMaxWidth(320);
-    	this.tabla.getColumnModel().getColumn(2).setMinWidth(320);
-    	this.tabla.getColumnModel().getColumn(3).setMaxWidth(140);
-    	this.tabla.getColumnModel().getColumn(3).setMinWidth(140);
-    	this.tabla.getColumnModel().getColumn(4).setMaxWidth(140);
-    	this.tabla.getColumnModel().getColumn(4).setMinWidth(140);		
-    	tabla.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",10)); 
-    	tabla.getColumnModel().getColumn(1).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
-    	tabla.getColumnModel().getColumn(2).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
-    	tabla.getColumnModel().getColumn(3).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
-    	tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",10)); 
-    }
- 	
 	
 	KeyListener numerico_action_punto = new KeyListener() {
 		public void keyTyped(KeyEvent e){

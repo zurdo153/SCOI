@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Meta_y_Establecimiento.jrxml" language="groovy" pageWidth="226" pageHeight="790" columnWidth="226" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Agotados_y_Proximos_Agotar_por_Meta_y_Establecimiento.jrxml" pageWidth="226" pageHeight="798" columnWidth="226" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ffc8bd8e-62f3-40cd-a11a-977ee55c47a5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRuebas"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<queryString language="SQL">
-		<![CDATA[exec reporte_de_cuadrante_por_folio_de_colaborador  1847,1]]>
+		<![CDATA[exec cuadrantes_reporte_por_folio_de_colaborador  414,1]]>
 	</queryString>
-	<field name="folio" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+	<field name="orden" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="orden"/>
 	</field>
-	<field name="nombre_colaborador" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nombre_colaborador"/>
+	<field name="folio_actividad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_actividad"/>
+	</field>
+	<field name="actividad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="actividad"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	</field>
+	<field name="hora_inicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hora_inicio"/>
+	</field>
+	<field name="hora_final" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hora_final"/>
+	</field>
+	<field name="dia_semana" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.label" value="dia_semana"/>
+	</field>
+	<field name="folio_cuadrante" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_cuadrante"/>
+	</field>
+	<field name="nombre_cuadrante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_cuadrante"/>
 	</field>
 	<field name="establecimiento" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="establecimiento"/>
@@ -30,26 +45,23 @@
 	<field name="puesto" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="puesto"/>
 	</field>
-	<field name="folio_cuadrante" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="folio_cuadrante"/>
+	<field name="puesto_reporta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="puesto_reporta"/>
 	</field>
-	<field name="nombre_cuadrante" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nombre_cuadrante"/>
+	<field name="responsabilidades" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="responsabilidades"/>
 	</field>
-	<field name="actividad" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="actividad"/>
+	<field name="objetivos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="objetivos"/>
 	</field>
-	<field name="descripcion" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	<field name="folio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+	</field>
+	<field name="nombre_colaborador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_colaborador"/>
 	</field>
 	<field name="tipo_de_respuesta" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tipo_de_respuesta"/>
-	</field>
-	<field name="hora_inicio" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="hora_inicio"/>
-	</field>
-	<field name="hora_final" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="hora_final"/>
 	</field>
 	<field name="tolerancia" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tolerancia"/>
@@ -60,23 +72,8 @@
 	<field name="estatus_colaborador" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="estatus_colaborador"/>
 	</field>
-	<field name="puesto_reporta" class="java.lang.String">
+	<field name="COLUMN_22" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="puesto_reporta"/>
-	</field>
-	<field name="responsabilidades" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="responsabilidades"/>
-	</field>
-	<field name="objetivos" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="objetivos"/>
-	</field>
-	<field name="fecha_ultima_modificacion_cuadrante" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="fecha_ultima_modificacion_cuadrante"/>
-	</field>
-	<field name="usuario_ultima_modificacion" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="usuario_ultima_modificacion"/>
-	</field>
-	<field name="fecha_generacion_reporte" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="fecha_generacion_reporte"/>
 	</field>
 	<field name="entradahoradiahorario" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="entradahoradiahorario"/>
@@ -86,6 +83,21 @@
 	</field>
 	<field name="tiempo_comida" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tiempo_comida"/>
+	</field>
+	<field name="dia_actual" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="dia_actual"/>
+	</field>
+	<field name="dia_descanso" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="dia_descanso"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="respuesta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="respuesta"/>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="observacion"/>
 	</field>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{temporada}]]></groupExpression>
@@ -115,11 +127,13 @@
 	<title>
 		<band height="159">
 			<image>
-				<reportElement x="12" y="2" width="203" height="148" uuid="a5703010-2cd8-4899-b224-b02685018036"/>
+				<reportElement x="12" y="2" width="197" height="148" uuid="a5703010-2cd8-4899-b224-b02685018036">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/cuadrantes.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="16" y="55" width="195" height="12" forecolor="#000000" uuid="558b6521-2e7e-4b72-bf54-75b3faaa7845">
+				<reportElement x="16" y="55" width="190" height="12" forecolor="#000000" uuid="558b6521-2e7e-4b72-bf54-75b3faaa7845">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -128,7 +142,7 @@
 				<textFieldExpression><![CDATA["COLABORADOR: "+$F{nombre_colaborador}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="16" y="35" width="195" height="20" forecolor="#000000" uuid="e84c01fe-eb6e-4e27-a07f-ec58f9c18e03">
+				<reportElement x="16" y="35" width="188" height="20" forecolor="#000000" uuid="e84c01fe-eb6e-4e27-a07f-ec58f9c18e03">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -144,7 +158,7 @@
 				<textFieldExpression><![CDATA[$F{nombre_cuadrante}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="16" y="67" width="195" height="12" forecolor="#000000" uuid="c1c906b6-cd19-46bc-a024-fbe09f60d5d3">
+				<reportElement x="16" y="67" width="190" height="12" forecolor="#000000" uuid="c1c906b6-cd19-46bc-a024-fbe09f60d5d3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -155,7 +169,7 @@
 				<textFieldExpression><![CDATA["PUESTO: "+$F{puesto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="16" y="79" width="195" height="12" forecolor="#000000" uuid="773e8d83-c982-4b05-b303-b79e199c3fa4">
+				<reportElement x="16" y="79" width="190" height="12" forecolor="#000000" uuid="773e8d83-c982-4b05-b303-b79e199c3fa4">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -166,7 +180,7 @@
 				<textFieldExpression><![CDATA["ESTAB: "+$F{establecimiento}+"  "+" DEPA: "+$F{departamento}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="16" y="91" width="195" height="12" forecolor="#000000" uuid="88c3f766-de46-4c62-9b14-5b6747ece366">
+				<reportElement x="16" y="91" width="190" height="12" forecolor="#000000" uuid="88c3f766-de46-4c62-9b14-5b6747ece366">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -177,7 +191,7 @@
 				<textFieldExpression><![CDATA["REPORTA: "+$F{puesto_reporta}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="16" y="103" width="195" height="12" forecolor="#000000" uuid="d3ab804e-cf3d-45db-bf09-e4f95d70df2a">
+				<reportElement x="16" y="103" width="190" height="12" forecolor="#000000" uuid="d3ab804e-cf3d-45db-bf09-e4f95d70df2a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -188,7 +202,7 @@
 				<textFieldExpression><![CDATA["HORARIO ENTRADA:>"+$F{entradahoradiahorario}+ "  SALIDA:<"+$F{salida}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="MMMM dd, yyyy" isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="17" y="126" width="194" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="cfb7895e-9648-4e19-85f9-5fa29e8b6646">
+				<reportElement mode="Transparent" x="17" y="126" width="188" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="cfb7895e-9648-4e19-85f9-5fa29e8b6646">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -198,7 +212,7 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="16" y="115" width="195" height="12" forecolor="#000000" uuid="9b04c19c-2a0e-4ec5-a6a2-d589a267695c">
+				<reportElement x="16" y="115" width="190" height="12" forecolor="#000000" uuid="9b04c19c-2a0e-4ec5-a6a2-d589a267695c">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -216,7 +230,7 @@
 				<text><![CDATA[Actividad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="143" width="20" height="16" uuid="56df0e92-78e6-4d19-83a4-265db4394887"/>
+				<reportElement x="164" y="143" width="20" height="16" uuid="56df0e92-78e6-4d19-83a4-265db4394887"/>
 				<textElement textAlignment="Center">
 					<font size="6" isBold="true"/>
 				</textElement>
@@ -226,7 +240,7 @@ Fin]]></text>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="4" splitType="Stretch">
+		<band height="1" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 		</band>
@@ -236,7 +250,7 @@ Fin]]></text>
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="12" y="0" width="153" height="18" uuid="9d079bbf-cfcf-4225-a380-20e31385f631">
+				<reportElement x="12" y="2" width="153" height="18" uuid="9d079bbf-cfcf-4225-a380-20e31385f631">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -245,7 +259,7 @@ Fin]]></text>
 				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="165" y="0" width="20" height="9" uuid="0737bffb-9751-4d8d-9ca3-0406f04ea4c6">
+				<reportElement x="165" y="2" width="19" height="9" uuid="0737bffb-9751-4d8d-9ca3-0406f04ea4c6">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -257,9 +271,10 @@ Fin]]></text>
 				<textFieldExpression><![CDATA[$F{hora_inicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="165" y="9" width="20" height="9" uuid="185babcc-f82c-4bc8-a488-43f4c3098aed">
+				<reportElement x="165" y="11" width="19" height="9" uuid="185babcc-f82c-4bc8-a488-43f4c3098aed">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
 					<font size="7"/>
@@ -267,17 +282,18 @@ Fin]]></text>
 				<textFieldExpression><![CDATA[$F{hora_final}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="185" y="-1" width="30" height="19" uuid="ccf14329-d1d2-460d-845a-7583f01f68bb">
+				<reportElement x="184" y="1" width="24" height="19" uuid="ccf14329-d1d2-460d-845a-7583f01f68bb">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipo_de_respuesta}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="12" y="45" width="213" height="1" uuid="6407e8b8-f8ec-4394-84fa-c9577068c24b">
+				<reportElement x="12" y="0" width="213" height="1" uuid="6407e8b8-f8ec-4394-84fa-c9577068c24b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -285,7 +301,9 @@ Fin]]></text>
 				</reportElement>
 			</line>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="12" y="18" width="203" height="27" uuid="76d63160-9dd9-4e96-a3a4-af68d333842c"/>
+				<reportElement key="" x="12" y="20" width="196" height="27" uuid="76d63160-9dd9-4e96-a3a4-af68d333842c">
+					<printWhenExpression><![CDATA[$F{descripcion}!=""]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font fontName="Serif" size="7"/>
 				</textElement>

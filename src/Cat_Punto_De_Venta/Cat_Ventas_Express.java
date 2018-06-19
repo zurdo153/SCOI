@@ -59,7 +59,7 @@ public class Cat_Ventas_Express extends JFrame{
 	Obj_tabla ObjTab =new Obj_tabla();
 	Obj_Ventas_Express Venta_Express = new Obj_Ventas_Express(); 
 	
-	int columnas = 5,checkbox=-1;
+	int columnas = 6,checkbox=-1;
 	
 	@SuppressWarnings("rawtypes")
 	public Class[] base(){
@@ -67,7 +67,7 @@ public class Cat_Ventas_Express extends JFrame{
 		for(int i = 0; i<columnas; i++){types[i]= java.lang.Object.class;}
 		 return types;
 	}
-	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo","Descripcion","Precio","Cantidad","Importe"}){
+	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Codigo","Descripcion","Precio","Cantidad","Importe","Costo"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -85,8 +85,8 @@ public class Cat_Ventas_Express extends JFrame{
 	    	this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
 	    	this.tabla.getColumnModel().getColumn(3).setMinWidth(93);
 	    	this.tabla.getColumnModel().getColumn(4).setMinWidth(100);
-	    	
-			String comando="select 0,' ',0 ,0, 0" ;
+	    	this.tabla.getColumnModel().getColumn(5).setMinWidth(200);
+			String comando="select 0,' ',0 ,0, 0, 0" ;
 			String basedatos="98",pintar="si";
 			ObjTab.Obj_Refrescar(tabla, modelo, columnas, comando, basedatos,pintar,checkbox);
 			modelo.setRowCount(0);
@@ -219,6 +219,8 @@ public class Cat_Ventas_Express extends JFrame{
 		
 		init_tabla_venta();
 		panel(false);
+		
+		Scroll_Tabla.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		txtFolioVendedor.setEditable(false);
 		txtVendedor.setEditable(false);
@@ -423,11 +425,13 @@ public class Cat_Ventas_Express extends JFrame{
 		String cod_prod=new BuscarSQL().cod_prod_principal_bms_por_establecimiento(codigo,cmbEstablecimiento.getSelectedItem().toString().trim());
 				if(!cod_prod.equals("false no existe") ){
 				  Obj_Ubicaciones_De_Productos  Datos_Producto= new Obj_Ubicaciones_De_Productos().buscardatos_producto(cod_prod,cmbEstablecimiento.getSelectedItem().toString().trim().toUpperCase()+"");
-				  Object[] Vector_Producto = new Object[4];
+				  Object[] Vector_Producto = new Object[6];
 					Vector_Producto[0]=Datos_Producto.getCod_Prod().trim();		
 					Vector_Producto[1]=Datos_Producto.getDescripcion_Prod().trim();		
 					Vector_Producto[2]=Datos_Producto.getPrecio_de_venta()+"";		
 					Vector_Producto[3]="1";
+					Vector_Producto[4]="0";
+					Vector_Producto[5]=Datos_Producto.getUltimo_Costo()+"";
 					
 					modelo.addRow(Vector_Producto);
 					txtcodigo_prod.setText("");
@@ -493,7 +497,7 @@ public class Cat_Ventas_Express extends JFrame{
 		        
 				
 				if(FActividadesCargado.equals("S")){
-					datos_tabla_precargados();
+				     ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablaprecargadaproductos, tabla2);
 				}else{
 					init_tabla_filtro_productos();
 					tablaprecargadaproductos= ObjTab.tabla_guardar(tabla2);
@@ -510,18 +514,6 @@ public class Cat_Ventas_Express extends JFrame{
 				  FActividadesCargado="S";
 				}
 			};
-
-			public void datos_tabla_precargados(){
-				 modelo2.setRowCount(0);
-				 String[][] tablacompleta = tablaprecargadaproductos;
-				 Object[]   vector        = new Object[columnas2];
-				for(int i=0;i<tablacompleta.length;i++){
-					   for(int j=0;j<columnas2;j++){
-						vector[j] = tablacompleta[i][j].toString();
-						}
-						modelo2.addRow(vector);
-				}
-			}
 			
 			private void agregar(final JTable tbl) {
 				tbl.addMouseListener(new MouseListener() {
@@ -649,6 +641,7 @@ public class Cat_Ventas_Express extends JFrame{
 				dispose();
 		    };
 		}
+		
 		
 
 /////////TODO inicia Validacion Vendedor///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -787,9 +780,9 @@ public class Cat_Ventas_Express extends JFrame{
 									  Venta_Express.setEstatus(cmb_status.getSelectedItem().toString().trim());
 									  
 									  if(Venta_Express.GuardarActualizar().getFolio()>0){
-										  String productos="\nDescripcion                                  / Precio / Cantidad / Importe\n";
+										  String productos="\nDescripcion\n";
 										   for(int i2=0;i2<tabla.getRowCount();i2++) {
-											   productos=productos+tabla.getValueAt(i2, 1)+"  / $"+tabla.getValueAt(i2, 2)+"  /"+tabla.getValueAt(i2, 3)+"  /"+tabla.getValueAt(i2, 4)+" \n";
+											   productos=productos+tabla.getValueAt(i2, 1)+"  /Precio Venta:$"+tabla.getValueAt(i2, 2)+"  /Cnt.:"+tabla.getValueAt(i2, 3)+"  /Importe$"+tabla.getValueAt(i2, 4)+"/U.Costo:$"+tabla.getValueAt(i2, 5) +" \n";
 										   }
 										   
 							                Obj_Correos correos = new Obj_Correos().buscar_correos(67, "");

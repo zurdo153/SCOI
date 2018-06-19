@@ -33,7 +33,6 @@ import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_3;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Arduino.Obj_Arduino;
-import Obj_Auditoria.Obj_Actividades_Por_Proyecto;
 import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Por_Denominacion;
@@ -1112,27 +1111,6 @@ public class BuscarSQL {
 		return folio;
 	}
 	
-	public int Proyecto_Nuevo() throws SQLException{
-		int folio = 0;
-		String query = "exec sp_nuevo_proyecto";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				folio =  rs.getInt("Maximo");
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 1;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return folio;
-	}
-	
 	public Obj_Actividad Actividad_Nuevo() throws SQLException{
 		Obj_Actividad actividad = new Obj_Actividad();
 		String query = "select max(folio) as 'Maximo' from tb_actividad";
@@ -1313,39 +1291,6 @@ public class BuscarSQL {
 		return empleado;
 	}
 	
-	public Obj_Prestamos Prestamo(int folio) throws SQLException{
-		Obj_Prestamos pre = new Obj_Prestamos();
-		String query = "select * from tb_prestamo where folio_empleado ="+ folio;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				pre.setFolio(rs.getInt("folio"));
-				pre.setFolio(rs.getInt("folio_empleado"));
-				pre.setNombre_Completo(rs.getString("nombre_completo").trim());
-				pre.setFecha(rs.getString("fecha"));
-				pre.setCantidad(rs.getDouble("cantidad"));
-				pre.setDescuento(rs.getDouble("descuento"));
-				pre.setSaldo(rs.getDouble("saldo"));
-				pre.setAbonos(rs.getInt("abonos"));
-				pre.setStatus(rs.getInt("status"));
-				pre.setStatus(rs.getInt("status_descuento"));
-				
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return pre;
-	}
-	
-	
-	
 	public Obj_Empleados Empleado_Nuevo() throws SQLException{
 		Obj_Empleados empleado = new Obj_Empleados();
 		String query = "select max(folio) as 'Maximo' from tb_empleado";
@@ -1367,9 +1312,9 @@ public class BuscarSQL {
 		return empleado;
 	}
 	
-	public Obj_Usuario Usuario(int folio) throws SQLException{
+	public Obj_Usuario Usuario(int folio, String color) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
-		String query = "exec usuario_login "+folio;
+		String query = "exec usuario_login_color "+folio+" ,'"+color+"'";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -1395,6 +1340,7 @@ public class BuscarSQL {
 				usuario.setGfilaS(rs.getInt("GFilaS"));	
 				usuario.setBfilaS(rs.getInt("BFilaS"));	
 				usuario.setTamanio_fuente(rs.getInt("tamanio_fuente"));	
+				usuario.setColor(rs.getString("color"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2356,6 +2302,29 @@ public class BuscarSQL {
 		return auditoria;
 	}
 	
+	public boolean autorizacion_lista_de_raya_estatus() throws SQLException{
+		 boolean boleano = false;
+		 
+		String query = "autorizacion_lista_de_raya_estatus";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				boleano=(rs.getBoolean(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion autorizacion_lista_de_raya_estatus \n SQLException: "+e.getMessage()+"\nprocedure: "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return boleano;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return boleano;
+	}
+	
 	public Obj_Totales_De_Cheque Autorizacion_totales_nomina () throws SQLException{
 		Obj_Totales_De_Cheque nomina = new Obj_Totales_De_Cheque();
 		String query = "select autorizar_nomina from tb_autorizaciones";
@@ -2740,72 +2709,6 @@ public class BuscarSQL {
 		return resultado;
 	}
 	
-	public boolean existeProyecto(int proyecto) throws SQLException{
-		boolean resultado = false;
-		String query = "exec sp_existe_proyecto "+proyecto+";";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				resultado = rs.getBoolean(1);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			return false;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return resultado;
-	}
-	
-	public boolean existeProyecto(String proyecto) throws SQLException{
-		boolean resultado = false;
-		String query = "exec sp_existe_proyecto_nombre '"+proyecto+"';";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				resultado = rs.getBoolean(1);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			return false;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return resultado;
-	}
-	
-	public boolean existeCuadrante(int cuadrante) throws SQLException{
-		boolean resultado = false;
-		String query = "exec sp_existe_cuadrante "+cuadrante+";";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				resultado = rs.getBoolean(1);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			return false;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return resultado;
-	}
-	
 	public Obj_Actividades_Relacionadas Actividades_Relacionadas(int folio) throws SQLException{
 		Obj_Actividades_Relacionadas relacion = new Obj_Actividades_Relacionadas();
 		String query = "exec sp_select_relacion_actividad_folio "+ folio;
@@ -2832,66 +2735,10 @@ public class BuscarSQL {
 		return relacion;
 	}
 
-	public Obj_Actividades_Por_Proyecto ProyectoCuadrante(int folio) throws SQLException{
-		Obj_Actividades_Por_Proyecto proyect = new Obj_Actividades_Por_Proyecto();
-		String query = "exec sp_select_proyecto_cuadrante_folio "+ folio;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				proyect.setProyecto(rs.getString(1));
-				proyect.setDescripcion(rs.getString(2));
-				proyect.setNivel_critico(rs.getString(3));
-				proyect.setStatus(rs.getInt(4));
-				proyect.setFecha_inicial(rs.getString(5));
-				proyect.setFecha_final(rs.getString(6));
-				
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Error");
-			return null;
-		}
-		finally{
-			 if (stmt != null) { stmt.close(); }
-		}
-		return proyect;
-	}
-	
 	public String[][] getTablaActividadesRelacionadas(int folio_proyecto){
 		String[][] Matriz = null;
 		
 		String datosif = "exec sp_select_tabla_relacion_actividad " + folio_proyecto;
-		
-		Matriz = new String[getFilas(datosif)][5];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datosif);
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				Matriz[i][3] = rs.getString(4);
-				Matriz[i][4] = rs.getString(5);
-				
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		
-		return Matriz;
-	}
-	
-	public String[][] getTabla(int folio_proyecto){
-		String[][] Matriz = null;
-		
-		String datosif = "exec sp_select_tabla_proyecto_cuadrante " + folio_proyecto;
 		
 		Matriz = new String[getFilas(datosif)][5];
 		Statement s;
@@ -4762,8 +4609,8 @@ public class BuscarSQL {
 	public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
 	    String pc_nombre="";
-//	    pc_nombre="HOGARY_CAJA1                  ";
-//	    folio_empleado= 2517; 
+	    pc_nombre="CAJA_REFA  ";
+	    folio_empleado= 156; 
 					try {
 	                 pc_nombre = InetAddress.getLocalHost().getHostName();
 					    			InetAddress.getLocalHost().getHostName();
@@ -5671,19 +5518,17 @@ public class BuscarSQL {
 		return rp_ventas;
 	}
 	
-	public Object[][] Reporte_De_Competencia(Obj_Reportes_De_Ventas ventas, int cantidad_de_columnas,int tipo) throws SQLException{
+	public Object[][] Reporte_De_Competencia(Obj_Reportes_De_Ventas ventas, int cantidad_de_columnas,int tipo, String Establecimiento) throws SQLException{
 		Statement stmt = null;
-		
-		String query = "exec sp_Reporte_IZAGAR_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+
+		String query = "exec sp_reporte_analisis_competidores '"+(ventas.getFecha_inicio()+"','"+(ventas.getProductos().equals("")?0:ventas.getProductos()))+"','"+(ventas.getClases().equals("")?0:ventas.getClases())+
 				                                                      "','"+(ventas.getCategorias().equals("")?0:ventas.getCategorias())+"','"+(ventas.getFamilias().equals("")?0:ventas.getFamilias())+
-				                                                      "','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"',"+tipo;
+				                                                      "','"+(ventas.getLineas().equals("")?0:ventas.getLineas())+"','"+(ventas.getTallas().equals("")?0:ventas.getTallas())+"','"+(ventas.getLocalizaciones().equals("")?0:ventas.getLocalizaciones())
+				                                                      +"','"+(ventas.getPasillos().equals("")?0:ventas.getPasillos())+"'," +tipo+",'"+Establecimiento+"'";
 		Object[][] rp_competencia = new Object[getFilasExterno(query)][cantidad_de_columnas];
-		
 		try {
-			
 			stmt = con.conexion_IZAGAR().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
+			System.out.println(query);;
 			int i=0;
 			while(rs.next()){
 				for(int j=0; j<cantidad_de_columnas; j++){
@@ -5906,24 +5751,8 @@ public class BuscarSQL {
 	}
 	
 	public String[] Lista_Archivos_Empleado(int folio) throws SQLException{
-		
 		String[] lista = new String[8];
-		
-		String query = "SELECT t_emp.nombre+' '+t_emp.ap_paterno+' '+t_emp.ap_materno as empleado "
-				+ "	,t_estab.nombre as establecimiento "
-				+ "	,isnull(t_aEmp.solicitud,'') "
-				+ "	,isnull(t_aEmp.acta_de_nacimiento,'') "
-				+ "	,isnull(t_aEmp.curp,'') "
-				+ "	,isnull(t_aEmp.hoja_de_seguro_social,'') "
-				+ "	,isnull(t_aEmp.hoja_de_retencion_infonavit,'') "
-				+ "	,isnull(t_aEmp.hoja_de_retencion_de_pension_alimenticia,'') "
-				+ "	,isnull(t_aEmp.credencial_de_identificacion,'') "
-				+ "	,isnull(t_aEmp.comprobante_de_domicilio,'') "
-		+ " FROM tb_archivos_empleados t_aEmp "
-		+ " left outer join tb_empleado t_emp on t_emp.folio = t_aEmp.folio_empleado "
-		+ " inner join tb_establecimiento t_estab on t_estab.folio = t_emp.establecimiento_id "
-		+ " where t_aEmp.folio_empleado = "+folio;
-
+		String query = "empleado_documentos_consulta "+folio;
 		Statement stmt = null;
 
 		try {
@@ -5931,7 +5760,7 @@ public class BuscarSQL {
 			ResultSet rs = stmt.executeQuery(query);
 
 			while(rs.next()){
-				
+				System.out.println(query);
 				String ruta = "C:\\DOCUMENTACION DE EMPLEADOS GENERADA EN SCOI\\"+rs.getString(1)+" ("+rs.getString(2)+")\\";
 				File archivos = new File(ruta);
 				
@@ -7432,32 +7261,6 @@ public class BuscarSQL {
 		return finiquito;
 	}
 	
-	public boolean  baja_en_catalogo_empleado(){
-		
-		boolean baja = false;
-		
-		String query = "select baja_en_catalogo_empleados as baja  from tb_configuracion_sistema";
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				baja=(Boolean.valueOf(rs.getString("baja")));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally{
-			if(stmt!=null){try {
-				stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}}
-		}
-		return baja;
-	}
-	
 	public boolean validar_cambio_de_sueldo_o_bono(String folio_empleado){
 		
 		boolean existe = false;
@@ -7470,6 +7273,7 @@ public class BuscarSQL {
 			stmt = con.conexion().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
+				System.out.println(query);
 				existe=(Boolean.valueOf(rs.getString(1)));
 			}
 		} catch (Exception e) {
@@ -7480,6 +7284,8 @@ public class BuscarSQL {
 				stmt.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+					JOptionPane.showMessageDialog(null,"Error Al BuscarSQL().validar_cambio_de_sueldo_o_bono Avise al Administrador del Sistema\n"+query,"Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+						
 			}}
 		}
 		return existe;
@@ -8078,30 +7884,6 @@ public String Buscar_Servicios_establecimientos_NumCtrol(String folio) throws SQ
 		
 	
 	}
-
-public boolean  existe_horario_con_otro_empleado(int horario1, int horario2, int horario3, int folio_empleado){
-	boolean existe = false;
-   String query = "exec sp_validacion_de_horarios_en_el_empleado "+horario1+","+horario2+","+horario3+","+folio_empleado;
-	
-	Statement stmt = null;
-	try {
-		stmt = con.conexion().createStatement();
-		ResultSet rs = stmt.executeQuery(query);
-		while(rs.next()){
-			existe=(Boolean.valueOf(rs.getString("bolean")));
-		}
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-	finally{
-		if(stmt!=null){try {
-			stmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}}
-	}
-	return existe;
-}
 
 public String  existe_encuentas_de_salida_del_colaborador(String folio_empleado){
    String existe = "";
@@ -9564,7 +9346,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	   
 	   public String[][] TablaActividades_Cuadrante_captura(String Clave_Gafete){
 			String[][] Matriz = null;
-			String query = "exec cuadrantes_captura_consulta_actividades_por_colaborador '"+Clave_Gafete+"'";
+			String query = "exec cuadrantes_consulta_actividades_por_colaborador_de_la_semana '"+Clave_Gafete+"'";
 			
 			Matriz = new String[getFilas(query)][29];
 			Statement s;
@@ -10197,7 +9979,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	 public String[][] Tabla_Orden_Gasto(int folio_gasto){
 			String[][] Matriz = null;
 			String query = "exec orden_de_gasto_consulta "+folio_gasto;
-			Matriz = new String[getFilas(query)][17];
+			Matriz = new String[getFilas(query)][18];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -10222,6 +10004,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][14] = rs.getString(15);
 					Matriz[i][15] = rs.getString(16);
 					Matriz[i][16] = rs.getString(17);
+					Matriz[i][17] = rs.getString(18);
 					i++;
 				}
 			} catch (SQLException e1) {
@@ -10616,44 +10399,42 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			while(rs.next()){
 //				datos personales	
 				empleado.setFolio(rs.getInt("folio"));
-//				empleado.setNo_checador(rs.getString("no_checador").trim());
-//				empleado.setNombre(rs.getString("nombre").trim());
-//				empleado.setAp_paterno(rs.getString("ap_paterno").trim());
-//				empleado.setAp_materno(rs.getString("ap_materno").trim());
-//				empleado.setFecha_nacimiento(rs.getString("fecha_nacimiento").trim());
-//				empleado.setCalle(rs.getString("calle").trim());
-//				empleado.setColonia(rs.getString("colonia").trim());
-//				empleado.setPoblacion(rs.getString("poblacion").trim());
-//				empleado.setTelefono_familiar(rs.getString("telefono_familiar").trim());
-//				empleado.setTelefono_propio(rs.getString("telefono_propio").trim());
-//				empleado.setTelefono_cuadrante(rs.getString("telefono_cuadrante"));
-//				empleado.setRfc(rs.getString("rfc").trim());
-//				empleado.setCurp(rs.getString("curp").trim());
-//				empleado.setSexo(rs.getInt("sexo"));
-//				empleado.setEmailEmpresa(rs.getString("email").trim());
-//				empleado.setEmailPersonal(rs.getString("email_personal").trim());
-//				
-////				laboral
-//				empleado.setHorario(rs.getInt("horario"));
-//				empleado.setHorario2(rs.getInt("horario2"));
-//				empleado.setStatus_h1(rs.getInt("status_h1"));
-//				empleado.setStatus_h2(rs.getInt("status_h2"));
-//				empleado.setStatus_rotativo(rs.getInt("status_rotativo"));
-//				empleado.setFecha_ingreso(rs.getString("fecha_ingreso"));
-//				empleado.setStatus(rs.getInt("status"));
-//				empleado.setFecha_baja(rs.getString("fecha_baja"));
-//				empleado.setCuadrante_parcial(rs.getInt("cuadrante_parcial") == 1 ? true : false);
-//				empleado.setDepartameto(rs.getInt("departamento"));
-//				empleado.setImss(rs.getString("imss"));
-//				empleado.setStatus_imss(rs.getInt("status_imss"));
-//				empleado.setNumero_infonavit(rs.getString("numero_infonavit"));
-//				empleado.setEstablecimiento(rs.getInt("establecimiento_id"));
-//				empleado.setPuesto(rs.getInt("puesto_id"));
-//				empleado.setDescanso(rs.getString("descanso"));
-//				empleado.setDobla(rs.getString("dobla"));
-//				empleado.setStatus_checador(rs.getString("status_checador"));
-//				empleado.setTieneHuella(rs.getBoolean("tiene_huellas"));
-				
+				empleado.setNo_checador(rs.getString("no_checador").trim());
+				empleado.setNombre(rs.getString("nombre").trim());
+				empleado.setAp_paterno(rs.getString("ap_paterno").trim());
+				empleado.setAp_materno(rs.getString("ap_materno").trim());
+				empleado.setFecha_nacimiento(rs.getString("fecha_nacimiento").trim());
+				empleado.setCalle(rs.getString("calle").trim());
+				empleado.setColonia(rs.getString("colonia").trim());
+				empleado.setPoblacion(rs.getString("poblacion").trim());
+				empleado.setTelefono_familiar(rs.getString("telefono_familiar").trim());
+				empleado.setTelefono_propio(rs.getString("telefono_propio").trim());
+				empleado.setTelefono_cuadrante(rs.getString("telefono_cuadrante"));
+				empleado.setRfc(rs.getString("rfc").trim());
+				empleado.setCurp(rs.getString("curp").trim());
+				empleado.setSexo(rs.getInt("sexo"));
+				empleado.setEmailEmpresa(rs.getString("email").trim());
+				empleado.setEmailPersonal(rs.getString("email_personal").trim());
+//				laboral
+				empleado.setHorario(rs.getInt("horario"));
+				empleado.setHorario2(rs.getInt("horario2"));
+				empleado.setStatus_h1(rs.getInt("status_h1"));
+				empleado.setStatus_h2(rs.getInt("status_h2"));
+				empleado.setStatus_rotativo(rs.getInt("status_rotativo"));
+				empleado.setFecha_ingreso(rs.getString("fecha_ingreso"));
+				empleado.setStatus(rs.getInt("status"));
+				empleado.setFecha_baja(rs.getString("fecha_baja"));
+				empleado.setCuadrante_parcial(rs.getInt("cuadrante_parcial") == 1 ? true : false);
+				empleado.setDepartameto(rs.getInt("departamento"));
+				empleado.setImss(rs.getString("imss"));
+				empleado.setStatus_imss(rs.getInt("status_imss"));
+				empleado.setNumero_infonavit(rs.getString("numero_infonavit"));
+				empleado.setEstablecimiento(rs.getInt("establecimiento_id"));
+				empleado.setPuesto(rs.getInt("puesto_id"));
+				empleado.setDescanso(rs.getString("descanso"));
+				empleado.setDobla(rs.getString("dobla"));
+				empleado.setStatus_checador(rs.getString("status_checador"));
+				empleado.setTieneHuella(rs.getBoolean("tiene_huellas"));
 //				percepciones y deducciones
 				empleado.setSalario_diario(rs.getFloat("salario_diario"));
 				empleado.setSalario_diario_integrado(rs.getFloat("salario_diario_integrado"));
@@ -10662,48 +10443,44 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				empleado.setBono(rs.getInt("bono_id"));
 				empleado.setBono_asistencia(rs.getFloat("bono_asistencia"));
 				empleado.setBono_puntualidad(rs.getFloat("bono_puntualidad"));
-//				empleado.setPrestamo(rs.getInt("rango_prestamo_id"));
-//				empleado.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
-//				empleado.setInfonavit(rs.getFloat("infonavit"));
-//				empleado.setInfonacot(rs.getFloat("infonacot"));
-//				
-//				empleado.setTargeta_nomina(rs.getString("targeta_nomina"));
-//				empleado.setTipo_banco(rs.getInt("tipo_banco_id"));
-//				empleado.setGafete(rs.getBoolean("gafete") ? true : false);
-//				empleado.setFuente_sodas(rs.getBoolean("fuente_sodas") ? true : false);
-//				empleado.setObservasiones(rs.getString("observaciones"));
-//				empleado.setFecha_actualizacion(rs.getString("fecha_actualizacion"));
-//				empleado.setUltimo_usuario_modifico(rs.getString("ultimo_usuario_modifico"));
-//				
-//				empleado.setHorario3(rs.getInt("horario3"));
-//				empleado.setStatus_h3(rs.getInt("status_h3"));
-//				
-//				empleado.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss"));
-//				empleado.setFecha_vencimiento_licencia(rs.getString("fecha_vencimiento_licencia"));
-//				
-//				empleado.setEstado_civil(rs.getString("estado_civil"));
-//				empleado.setTipo_sangre(rs.getString("tipo_de_sangre"));
-//				empleado.setEscolaridad(rs.getString("escolaridad"));
-//				empleado.setContrato(rs.getInt("contrato"));
-//				empleado.setPresencia_fisica(rs.getInt("presencia_fisica"));
-//				empleado.setBonocomplemento(rs.getInt("bono_complemento"));
-//				empleado.setPerfil(rs.getInt("folio_perfil"));
-//			    empleado.setNombre_beneficiario(rs.getString("nombre_beneficiario"));
-//			    empleado.setRfc_beneficiario(rs.getString("rfc_beneficiario"));
-//			    empleado.setParentesco_beneficiario(rs.getString("parentesco"));
-//			    empleado.setFecha_nacimiento_beneficiario(rs.getString("fecha_nacimiento_beneficiario"));
+				empleado.setPrestamo(rs.getInt("rango_prestamo_id"));
+				empleado.setPension_alimenticia(rs.getFloat("pension_alimenticia"));
+				empleado.setInfonavit(rs.getFloat("infonavit"));
+				empleado.setInfonacot(rs.getFloat("infonacot"));
+				empleado.setTargeta_nomina(rs.getString("targeta_nomina"));
+				empleado.setTipo_banco(rs.getInt("tipo_banco_id"));
+				empleado.setGafete(rs.getBoolean("gafete") ? true : false);
+				empleado.setFuente_sodas(rs.getBoolean("fuente_sodas") ? true : false);
+				empleado.setObservasiones(rs.getString("observaciones"));
+				empleado.setFecha_actualizacion(rs.getString("fecha_actualizacion"));
+				empleado.setUltimo_usuario_modifico(rs.getString("ultimo_usuario_modifico"));
+				empleado.setHorario3(rs.getInt("horario3"));
+				empleado.setStatus_h3(rs.getInt("status_h3"));
+				empleado.setFecha_ingreso_imss(rs.getString("fecha_ingreso_imss"));
+				empleado.setFecha_vencimiento_licencia(rs.getString("fecha_vencimiento_licencia"));
+				empleado.setEstado_civil(rs.getString("estado_civil"));
+				empleado.setTipo_sangre(rs.getString("tipo_de_sangre"));
+				empleado.setEscolaridad(rs.getString("escolaridad"));
+				empleado.setContrato(rs.getInt("contrato"));
+				empleado.setPresencia_fisica(rs.getInt("presencia_fisica"));
+				empleado.setBonocomplemento(rs.getInt("bono_complemento"));
+				empleado.setPerfil(rs.getInt("folio_perfil"));
+			    empleado.setNombre_beneficiario(rs.getString("nombre_beneficiario"));
+			    empleado.setRfc_beneficiario(rs.getString("rfc_beneficiario"));
+			    empleado.setParentesco_beneficiario(rs.getString("parentesco"));
+			    empleado.setFecha_nacimiento_beneficiario(rs.getString("fecha_nacimiento_beneficiario"));
 			    
-//				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-//				FileOutputStream fos = new FileOutputStream(photo);
-//				
-//		            byte[] buffer = new byte[1];
-//		            InputStream is = rs.getBinaryStream("foto");
-//		            while (is.read(buffer) > 0) {
-//		                fos.write(buffer);
-//		            }
-//		            fos.close();
-//		        
-//		        empleado.setForma_de_checar(rs.getString("forma_de_checar"));
+				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+				FileOutputStream fos = new FileOutputStream(photo);
+				
+		            byte[] buffer = new byte[1];
+		            InputStream is = rs.getBinaryStream("foto");
+		            while (is.read(buffer) > 0) {
+		                fos.write(buffer);
+		            }
+		            fos.close();
+		        
+		        empleado.setForma_de_checar(rs.getString("forma_de_checar"));
 			}
 
 			
@@ -11106,6 +10883,50 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return datos;
 	}
 
+	public String[][]  existe_horario_con_otro_empleado(int horario1, int horario2, int horario3, int folio_empleado){
+		String[][] Matriz = null;
+	   String query = "exec empleado_validacion_de_horarios_al_guardar_o_actualizar "+horario1+","+horario2+","+horario3+","+folio_empleado;
+	   Matriz = new String[getFilas(query)][3];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0]  = rs.getString(1);
+				Matriz[i][1]  = rs.getString(2);
+				Matriz[i][2]  = rs.getString(3);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz;
+     }
+	
+	 public String[][] Tabla_Venta_Bancos_Para_Depositos_Nomina(){
+			String[][] Matriz = null;
+			String query = "select nombre, 0 from tb_tipo_banco";
+			Matriz = new String[getFilas(query)][2];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+	 }
+			
+
 	public Obj_Descripcion_De_Puestos_y_Responsabilidades buscarDPR(int folioPuesto) throws SQLException{
 		Obj_Descripcion_De_Puestos_y_Responsabilidades dpr = new Obj_Descripcion_De_Puestos_y_Responsabilidades();
 		String query = "exec dpr_buscar "+folioPuesto;
@@ -11190,7 +11011,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 //		
 //		return new ImageIcon(fileContent);
 //	}
-	
+
 //	public Obj_Preguntas Pregunta_Nueva(){
 //		Obj_Preguntas pregunta = new Obj_Preguntas();
 //		String query = "-----------------------------------------";

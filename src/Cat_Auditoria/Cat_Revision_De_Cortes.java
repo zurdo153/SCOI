@@ -48,14 +48,12 @@ import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Revision_De_Cortes extends JFrame{
-
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-//	TODO (Componentes)
-	
-	JDateChooser cfecha_in = new JDateChooser();
-	JDateChooser cfecha_fin = new JDateChooser();
+	JDateChooser cfecha_in   = new Componentes().jchooser(new JDateChooser()  ,"Fecha Inicial",7);
+	JDateChooser cfecha_fin  = new Componentes().jchooser(new JDateChooser()  ,"Fecha Final"  ,0);
+    JButton btnGenerar       = new JCButton("Consultar"      ,"buscar.png"    ,"Cafe"           );
 	
 	private String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_Revision_De_Cortes();
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -67,7 +65,7 @@ public class Cat_Revision_De_Cortes extends JFrame{
     
     JCheckBox chbMosrtarTodo = new JCheckBox("Mostrar Todo");
     
-    JButton btnGenerar = new JCButton("Consultar","buscar.png","Azul");
+
     
 //	TODO (Variables globales)
 	int fila = 0;
@@ -192,21 +190,18 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		trsfiltro = new TableRowSorter(modelo); 
 		tabla.setRowSorter(trsfiltro);  
 		
-		int x=35,y=25,ancho=168,alto=20;
+		int x=15,y=25,ancho=168,alto=20;
 		
 //		TODO Agregar Componentes al panel (Coordenadas)
 
-		panel.add(new JLabel("De: ")).setBounds(x+=20, y, 20, alto); 
-		panel.add(cfecha_in).setBounds(x+=20, y, ancho, alto); 
-		panel.add(new JLabel("A: ")).setBounds(x+=(ancho+10), y, 20, alto); 
-		panel.add(cfecha_fin).setBounds(x+=20, y, ancho, alto); 
-		panel.add(btnGenerar).setBounds(x+=(ancho+20), y, 130, alto);
-		
-		panel.add(chbMosrtarTodo).setBounds(x+140, y, 100, alto);
-		
-		x=65;
-		
-		panel.add(txtFolioCorteFiltro).setBounds(x, y+=35, ancho-=105, alto);  
+		panel.add(new JLabel("De: ")).setBounds (x+=20  , y  ,20   ,alto); 
+		panel.add(cfecha_in).setBounds          (x+=20  , y  ,100  ,alto); 
+		panel.add(new JLabel("A: ")).setBounds  (x+=120 , y  ,20   ,alto); 
+		panel.add(cfecha_fin).setBounds         (x+=20  , y  ,100  ,alto); 
+		panel.add(chbMosrtarTodo).setBounds     (x+=120 , y  ,100  ,alto);
+		panel.add(btnGenerar).setBounds         (x+=120 , y  ,130  ,alto);
+
+		panel.add(txtFolioCorteFiltro).setBounds(x=65, y+=35, ancho-=105, alto);  
 		panel.add(txtAsignacion).setBounds(x+=ancho, y, ancho, alto);  
 		panel.add(txtCajero).setBounds((x+=ancho)+120, y, (ancho*=2.5)+80, alto);  
 		panel.add(cmbEstablecimientos).setBounds(x*4+75, y, 168, alto); 
@@ -226,7 +221,6 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		cont.add(panel);
 		
 		this.setSize(anchop,altop);
-		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 	}
 	
@@ -462,15 +456,10 @@ public class Cat_Revision_De_Cortes extends JFrame{
 
 //	TODO Limpiar tabla y reconsultar (refresh())
 	public void refresh(String movimiento, String permiso){
-		
-		while(tabla.getRowCount()>0){
-			modelo.removeRow(0);
-		}
-		
+		 modelo.setRowCount(0);
 		String fecha_in="01/01/1900";
 		String fecha_fin= new SimpleDateFormat("dd/MM/yyyy").format(cargar_fechas(0));
-		
-		System.out.println(fecha_in+"   "+fecha_fin);
+
 		if(permiso.equals("normal")){
 			fecha_in = new SimpleDateFormat("dd/MM/yyyy").format(cfecha_in.getDate());
 			fecha_fin= new SimpleDateFormat("dd/MM/yyyy").format(cfecha_fin.getDate());
@@ -509,30 +498,6 @@ public class Cat_Revision_De_Cortes extends JFrame{
 		return error;
 	}
 	
-//		public void Cat_Reporte_De_Trabajo_De_Crotes(int folio_trabajo_de_corte) {
-//			
-////			String query_corte_caja = "exec sp_Reporte_De_Trabajo_De_Cortes "+folio_trabajo_de_corte;
-////			Statement stmt = null;
-//			
-//			try {
-//				
-////				stmt =  new Connexion().conexion().createStatement();
-//////			    ResultSet rs = 
-////			    		stmt.executeQuery(query_corte_caja);
-//			    
-//				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_Para_Trabajo_De_Cortes.jrxml");
-//				
-//				Map parametro = new HashMap();
-//				parametro.put("folio_trabajo", folio_trabajo_de_corte);
-//				
-//				JasperPrint print = JasperFillManager.fillReport(report, parametro, new Connexion().conexion());
-//				JasperViewer.viewReport(print, false);
-//			} catch (Exception e) {
-//				System.out.println(e.getMessage());
-//				JOptionPane.showMessageDialog(null, "Error En Cat_Reporte_De_Corte_De_Caja ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-//			}
-//			
-//		}
 
 //	TODO (ActionListener)
 	ActionListener op_filtro_establecimiento = new ActionListener(){

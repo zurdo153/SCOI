@@ -9,8 +9,6 @@ import java.awt.event.KeyListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -23,16 +21,19 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import Conexiones_SQL.Generacion_Reportes;
+import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
+import Obj_Principal.JCTextField;
 
 @SuppressWarnings("serial")
-public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
+public class Cat_Reporte_De_Consulta_Y_Reimpresion_De_Vouchers extends JFrame{
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
-	JTextField txtFolio = new Componentes().text(new JTextField(),"Teclea el Folio del Ticket o Remision", 50, "String");
- 	JTextField txtNombre_Completo = new JTextField();
-	JButton btnconsultavoucher = new JButton("Buscar Voucher",new ImageIcon("imagen/buscar.png"));
+	JTextField txtFolio           = new Componentes().text(new JCTextField(),"Folio Ticket/Remision"  ,25     ,"String");
+	JCButton btnconsultavoucher              = new JCButton("Buscar"                                ,"buscar.png","Azul");
 	
 	String transaccion[] = {"Remision","Ticket"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -40,25 +41,20 @@ public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 	
- 	public Cat_Consulta_E_Impresion_De_Vouchers() {
- 		blackline = BorderFactory.createLineBorder(new java.awt.Color(100,100,100));
- 		
+ 	public Cat_Reporte_De_Consulta_Y_Reimpresion_De_Vouchers() {
+		this.setSize(400,180);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(100,100,100));
  		this.campo.setBorder(BorderFactory.createTitledBorder(blackline, "Consulta e Impresion De Vouchers"));
- 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/tarjeta-de-credito-visa-icono-8242-32.png"));
-		setTitle("Consulta E Impresion de Vouchers");
+ 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/tarjeta-de-credito-visa-icono-8242-32.png"));
+ 		this.setTitle("Consulta E Impresion de Vouchers");
 		
-		setSize(400,180);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		
-		campo.add(new JLabel("Teclee el Folio Remision/Ticket:")).setBounds(45,30,160,20);
-		campo.add(txtFolio).setBounds(200,30,120,20);
-		
-		campo.add(new JLabel("Selecciona Remision o Ticket:")).setBounds(45,60,150,20);
-		campo.add(cmbtransaccion).setBounds(200,60,120,20);
-		
-		campo.add(btnconsultavoucher).setBounds(130,110,150,20);
+		campo.add(new JLabel("Teclee el Folio Remision(20)/Ticket(38):")).setBounds(10   ,30  ,200  ,20);
+		campo.add(txtFolio).setBounds                                              (200  ,30  ,150  ,20);
+		campo.add(new JLabel("Selecciona Remision o Ticket:")).setBounds           (45   ,60  ,150  ,20);
+		campo.add(cmbtransaccion).setBounds                                        (200  ,60  ,150  ,20);
+		campo.add(btnconsultavoucher).setBounds                                    (130  ,90  ,150  ,20);
 		
 		cont.add(campo);
 		btnconsultavoucher.addActionListener(buscar);
@@ -82,6 +78,7 @@ public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
  		public void keyPressed(KeyEvent e) {}
  	};
  	
+
 	
 	ActionListener buscar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -94,15 +91,14 @@ public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
 				int vista_previa_de_ventana=0;
 				String comando="";
 				String reporte = "";
-				
 				try {	
 					int transaccion =0;
 					switch(cmbtransaccion.getSelectedIndex()){
-					case 0: transaccion=37; break;
+					case 0: transaccion=20; break;
 					case 1: transaccion=38; break;		
 					};
-					 reporte = "Obj_Reporte_IZAGAR_de_Impresion_de_Voucher.jrxml";
-					 comando = "exec sp_consulta_de_datos_voucher '"+txtFolio.getText().toUpperCase().trim()+"',"+transaccion ;
+					 reporte = "Obj_Reporte_ReImpresion_de_Voucher.jrxml";
+					 comando = "exec sp_consulta_de_datos_voucher '"+txtFolio.getText().toUpperCase().trim()+"',"+transaccion+",'"+usuario.getNombre_completo()+"',"+usuario.getFolio() ;
 					 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace(); 
@@ -116,7 +112,7 @@ public class Cat_Consulta_E_Impresion_De_Vouchers extends JFrame{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Consulta_E_Impresion_De_Vouchers().setVisible(true);
+			new Cat_Reporte_De_Consulta_Y_Reimpresion_De_Vouchers().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

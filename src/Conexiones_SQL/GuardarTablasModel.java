@@ -19,27 +19,20 @@ public class GuardarTablasModel {
 	
 	public boolean tabla_model_bancos(Object[][] tabla){
 		String query_delete = "exec sp_borrado_empleados_dif_1";
-		String query = "exec sp_insert_bancos ?,?,?";
+		String query = "exec bancos_depositos_insert ?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
-			
 			PreparedStatement pstmtDelete = con.prepareStatement(query_delete);
 			PreparedStatement pstmt = con.prepareStatement(query);
-
 			con.setAutoCommit(false);
-			
 			pstmtDelete.executeUpdate();
 			
 			for(int i=0; i<tabla.length; i++){
-				
-//				System.out.println(tabla[i][0].toString().trim());
-//				System.out.println(tabla[i][3].toString().trim());
-//				System.out.println(tabla[i][4].toString().trim());
-				
 				pstmt.setInt(1, Integer.parseInt(tabla[i][0].toString().trim()));
 				pstmt.setString(2, tabla[i][3].toString());
-				pstmt.setFloat(3, Float.parseFloat(tabla[i][4].toString()));
+				
+				pstmt.setString(3,  tabla[i][4].toString());
 				pstmt.executeUpdate();
 			}
 		

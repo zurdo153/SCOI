@@ -264,7 +264,6 @@ public class Cat_Orden_De_Pago_En_Efectivo extends JFrame{
 			try {
 				new Cat_Filtro_Order_De_Pago_Efectivo().setVisible(true);
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

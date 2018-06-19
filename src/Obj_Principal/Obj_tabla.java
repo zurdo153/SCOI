@@ -466,8 +466,22 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 			@Override
 			public void keyTyped(KeyEvent arg0) {}
 		};
+///////funciones para recargar tabla desde arreglo
 		
-	
+		public void llenado_de_modelo_desde_datos_tabla_precargados(String[][] tablacompleta, JTable tabla){
+			DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
+			int columnas=tabla.getColumnCount();
+			modelo.setRowCount(0);
+			 Object[]   vector = new Object[columnas];
+			for(int i=0;i<tablacompleta.length;i++){
+				   for(int j=0;j<columnas;j++){
+					vector[j] = tablacompleta[i][j].toString();
+					}
+				   modelo.addRow(vector);
+			}
+		}
+		
+///////funciones para convertir tabla en arreglo y guardar	
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public  String[][] tabla_guardar(JTable tabla){ 
 			int columnas=tabla.getColumnCount();

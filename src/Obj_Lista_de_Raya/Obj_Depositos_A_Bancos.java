@@ -1,6 +1,8 @@
 package Obj_Lista_de_Raya;
 
-import Conexiones_SQL.BuscarTablasModel;
+import java.io.IOException;
+
+import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarTablasModel;
 
 public class Obj_Depositos_A_Bancos {
@@ -19,15 +21,11 @@ public class Obj_Depositos_A_Bancos {
 		this.tabla_model = tabla_model;
 	}
 	
-	public Object[][] get_tabla_model(){
-		return new BuscarTablasModel().tabla_model_bancos();
-	}
-	
-	public Object[][] get_tabla_model_bancos(){
-		return new BuscarTablasModel().tabla_model_bancos_empleados();
-	}
-	
 	public boolean guardar(Object[][] tabla){
 		return new GuardarTablasModel().tabla_model_bancos(tabla);
+	}
+	
+	public String[][] buscar_bancos () throws IOException{
+		return new BuscarSQL().Tabla_Venta_Bancos_Para_Depositos_Nomina();
 	}
 }
