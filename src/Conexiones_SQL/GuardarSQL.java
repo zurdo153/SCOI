@@ -27,7 +27,6 @@ import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_2;
 import Obj_Administracion_del_Sistema.Obj_Configuracion_Base_de_Datos_3;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_Cortes;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
@@ -544,90 +543,6 @@ public class GuardarSQL {
 			} catch(SQLException e){
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Nivel_Critico ] Insert  SQLException:  "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Guardar_Relacion_Actividades(Obj_Actividades_Relacionadas relacion){
-		String query = "exec sp_insert_relacion_actividad ?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			pstmt.setInt	(1, relacion.getFolio());
-			pstmt.setString	(2, relacion.getProyecto().toUpperCase().trim());
-			pstmt.setString	(3, relacion.getDescripcion().toUpperCase().trim());
-			pstmt.setString	(4, relacion.getNivel_critico().trim());
-			pstmt.setInt	(5, relacion.getStatus());
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Actividades ] Insert  SQLException: sp_insert_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Actividades ] Insert  SQLException: sp_insert_relacion_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Actividades ] Insert  SQLException: sp_insert_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Guardar_Relacion_Tabla(Obj_Actividades_Relacionadas relacion, String[][] tabla){
-		String querytabla = "exec sp_insert_tabla_relacion_actividad ?,?,?,?,?";
-				
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtTabla = null;
-		try {
-			con.setAutoCommit(false);
-			
-			pstmtTabla = con.prepareStatement(querytabla);
-				
-			for(int i=0; i<tabla.length; i++){
-				
-				pstmtTabla.setInt(1, relacion.getFolio());
-				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmtTabla.setString(3, tabla[i][3].toString().trim().toUpperCase());
-				pstmtTabla.setString(4, tabla[i][4].toString().trim());
-				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][2]) ? 1 : 0);
-				
-				pstmtTabla.executeUpdate();
-			}
-			
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada Guardar_Proyecto_Tabla");
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Tabla ] Insert  SQLException: sp_insert_tabla_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-					con.rollback();
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Tabla ] Insert  SQLException: sp_insert_tabla_relacion_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Relacion_Tabla ] Insert  SQLException: sp_insert_tabla_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

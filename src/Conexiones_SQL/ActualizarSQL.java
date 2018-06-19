@@ -19,7 +19,6 @@ import javax.swing.JTable;
 
 import Obj_Administracion_del_Sistema.Obj_Asistencia_Y_Puntualidad;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Auditoria.Obj_Actividades_Relacionadas;
 import Obj_Auditoria.Obj_Alimentacion_De_Cheques;
 import Obj_Auditoria.Obj_Alimentacion_Denominacion;
 import Obj_Auditoria.Obj_Denominaciones;
@@ -1412,66 +1411,6 @@ public class ActualizarSQL {
 				}catch(SQLException ex){
 					System.out.println(ex.getMessage());
 					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ NivelG ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
-	public boolean Relacion_Actividad(Obj_Actividades_Relacionadas relacion, String[][] tabla){
-		String queryDelete ="delete tb_tabla_relacion_actividad where folio_proyecto = ?";
-		String query = "exec sp_update_relacion_actividad ?,?,?,?,?";
-		String querytabla = "exec sp_insert_tabla_relacion_actividad ?,?,?,?,?";
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmtDelete = null;
-		PreparedStatement pstmt = null;
-		PreparedStatement pstmtTabla = null;
-		
-		try {
-			con.setAutoCommit(false);
-			
-			// Elimina primero la lista de cuadrante
-			pstmtDelete = con.prepareStatement(queryDelete);
-			pstmtDelete.setInt(1, relacion.getFolio());
-			pstmtDelete.execute();
-			// Actualiza el Cuadrante
-			pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, relacion.getFolio());
-			pstmt.setString(2, relacion.getProyecto().toUpperCase().trim());
-			pstmt.setString(3, relacion.getDescripcion().toUpperCase().trim());
-			pstmt.setString(4, relacion.getNivel_critico().trim());
-			pstmt.setInt(5, relacion.getStatus());
-			pstmt.execute();
-			// Inserta valores a la tabla
-			pstmtTabla = con.prepareStatement(querytabla);
-			
-			for(int i=0; i<tabla.length; i++){
-				pstmtTabla.setInt(1, relacion.getFolio());
-				pstmtTabla.setInt(2, Integer.parseInt(tabla[i][0].toString().trim()));
-				pstmtTabla.setString(3, tabla[i][3].toString().trim().toUpperCase());
-				pstmtTabla.setString(4, tabla[i][4].toString().trim());
-				pstmtTabla.setInt(5, Boolean.parseBoolean(tabla[i][2]) ? 1 : 0);
-				pstmtTabla.executeUpdate();
-			}
-
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada Actualizar - Actividad relacionada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: sp_update_relacion_actividad,sp_insert_tabla_relacion_actividad "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Relacion_Actividad ] update  SQLException: sp_update_relacion_actividad,sp_insert_tabla_relacion_actividad "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			return false;
