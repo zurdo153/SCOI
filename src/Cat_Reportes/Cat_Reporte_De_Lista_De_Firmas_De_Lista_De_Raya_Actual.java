@@ -3,21 +3,18 @@ package Cat_Reportes;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.MessageFormat;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -26,6 +23,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
+import Obj_Principal.JCButton;
 
 @SuppressWarnings("serial")
 public class Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual extends JFrame {
@@ -43,16 +42,16 @@ public class Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual extends JFra
 	};
 	JTable tabla = new JTable(model);
 	
-	JLabel lblImprimir = new JLabel(new ImageIcon("imagen//imprimir-32.png"));
+	JCButton btnImprimir = new JCButton("","imprimir-32.png","Azul");
 	
 	public Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual()	{
 		this.setTitle("..:: Lista de pago por establecimiento ::..");
 		tabla.setFont(new java.awt.Font("Algerian",0,140));
 
-		campo.add(lblImprimir).setBounds(30, 15, 33, 33);
+		campo.add(btnImprimir).setBounds(30, 15, 33, 33);
 		campo.add(getPanelTabla()).setBounds(30,50,460,GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height-120);
 	
-		lblImprimir.addMouseListener(OpImprimir);
+		btnImprimir.addActionListener(opImprimir);
 		
 		cont.add(campo);
 
@@ -106,7 +105,7 @@ public class Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual extends JFra
 			int cont =0;
 			while (rs.next())
 			{ 
-			   String [] fila = new String[3];
+			   String [] fila = new String[2];
 			   
 			   String nombre=   rs.getString(1);
 			   String stab= 	rs.getString(2).trim();
@@ -149,24 +148,36 @@ public class Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual extends JFra
 	    return scrol; 
 	}
 	
-	MouseListener OpImprimir = new MouseListener() {
-		@Override
-		public void mousePressed(MouseEvent e) {
-			MessageFormat encabezado = new MessageFormat("Lista de pago pag.({0,number,integer})");
-			try {
-//			tabla.print(JTable.PrintMode.FIT_WIDTH, encabezado, null);
-			tabla.print(JTable.PrintMode.NORMAL, encabezado, null);
+	ActionListener opImprimir = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String basedatos="2.26";
+			String vista_previa_reporte="si";
+			int vista_previa_de_ventana=1;
 			
-			} catch (java.awt.print.PrinterException e1) {
-				JOptionPane.showMessageDialog(null, "No se encontro la impresora!","Aviso",JOptionPane.WARNING_MESSAGE);
-//				System.err.format("No se puede imprimir %s%n", e1.getMessage());
-			}
+			String comando="exec firmas_lista_de_raya_actual";
+			String reporte = "Obj_Lista_De_Firmas_LR_Actual.jrxml";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
-		public void mouseReleased(MouseEvent e) {}		
-		public void mouseExited(MouseEvent e) {}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseClicked(MouseEvent e) {}
 	};
+	
+//	MouseListener OpImprimir = new MouseListener() {
+//		@Override
+//		public void mousePressed(MouseEvent e) {
+//			MessageFormat encabezado = new MessageFormat("Lista de pago pag.({0,number,integer})");
+//			try {
+////			tabla.print(JTable.PrintMode.FIT_WIDTH, encabezado, null);
+//			tabla.print(JTable.PrintMode.NORMAL, encabezado, null);
+//			
+//			} catch (java.awt.print.PrinterException e1) {
+//				JOptionPane.showMessageDialog(null, "No se encontro la impresora!","Aviso",JOptionPane.WARNING_MESSAGE);
+////				System.err.format("No se puede imprimir %s%n", e1.getMessage());
+//			}
+//		}
+//		public void mouseReleased(MouseEvent e) {}		
+//		public void mouseExited(MouseEvent e) {}
+//		public void mouseEntered(MouseEvent e) {}
+//		public void mouseClicked(MouseEvent e) {}
+//	};
 	
 	KeyListener validaCantidad = new KeyListener() {
 		@Override
@@ -206,4 +217,7 @@ public class Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual extends JFra
 								
 	};
 
+	public static void main(String [] arg){
+		new Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual().setVisible(true);
+	}
 }

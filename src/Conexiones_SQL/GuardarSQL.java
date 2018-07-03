@@ -7884,11 +7884,11 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 		
 	public boolean guardarDPR(Obj_Descripcion_De_Puestos_y_Responsabilidades dpr, String movimiento){
-		
+		System.out.println(dpr.getXmlResponsabilidadesPuesto());
 		String query = "exec sp_guardar_dpr ?,?,?,?,?,?,?,?,?,?,"
 										+ " ?,?,?,?,?,?,?,?,?,?,"
 										+ " ?,?,?,?,?,?,?,?,?,?,"
-										+ " ?,?,?,?,?,?,?,'"+dpr.getXmlResponsabilidadesPuesto()+"'";//38------?
+										+ " ?,?,?,?,?,?,?,?,'"+dpr.getXmlResponsabilidadesPuesto()+"'";//39------?
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 	     try {
@@ -7896,6 +7896,55 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 pstmt = con.prepareStatement(query);
 			 
 			 int i=1;
+			 
+//			 System.out.println("-------------------------------------------------------------------------------------------------------------");
+//			 System.out.println(movimiento);
+//			 System.out.println(dpr.getFolio());
+//			 System.out.println(dpr.getFolioPuesto());
+//			 System.out.println(dpr.getUnidadNegocio());
+//			 System.out.println(dpr.getEstablecimiento());
+//			 System.out.println(dpr.getDepartamento());
+//			 System.out.println(dpr.getEdadIn());
+//			 System.out.println(dpr.getEdadFin());
+//			 System.out.println(dpr.getFolioReportaA());
+//			 System.out.println(dpr.getSexo());
+//			 System.out.println(dpr.getEstadoCivil());
+//			 
+//			 System.out.println(dpr.getObjetivoPuesto());
+//			 
+//			 System.out.println(dpr.getNivelEstudios());
+//			 System.out.println(dpr.getListaDeEspecificaciones());
+//			 System.out.println(dpr.getCursosHabilidades());
+//			 System.out.println(dpr.getEsperienciaGeneral());
+//			 System.out.println(dpr.getEsperienciaEspecifica());
+//			 System.out.println(dpr.getFacultamientosDirectos());
+//			 System.out.println(dpr.getFacultamientosIndirectos());
+//			 
+//			 System.out.println(dpr.getInteracionDelPuestoExternas());
+//			 System.out.println(dpr.getRelacionDelPuestoExternas());
+//			 System.out.println(dpr.getInteracionDelPuestoInternas());
+//			 System.out.println(dpr.getRelacionDelPuestoInternas());
+//			 
+//			 System.out.println(dpr.getAmbienteDeTrabajo());
+//			 System.out.println(dpr.getEsfuerzoFisico());
+//			 
+//			 System.out.println(dpr.isViaje());
+//			 
+//			 System.out.println(dpr.isLaptop());
+//			 System.out.println(dpr.isPc());
+//			 System.out.println(dpr.isCelular());
+//			 System.out.println(dpr.isExtencion());
+//			 System.out.println(dpr.isAutoPropio());
+//			 System.out.println(dpr.isAutoEmpresa());
+//			 System.out.println(dpr.isLicencia());
+//			 System.out.println(dpr.isLargaDistancia());
+//			 System.out.println(dpr.isOtro());
+//			 System.out.println(dpr.getNotaOtro());
+//			 System.out.println(usuario.getFolio());
+//			 System.out.println(new ByteArrayInputStream(dpr.getOrganigramaB()));
+//			 System.out.println(dpr.getXmlResponsabilidadesPuesto());
+//			 System.out.println("-------------------------------------------------------------------------------------------------------------");
+
 			 
 			 pstmt.setString(i,movimiento);
 			 pstmt.setInt(i+=1,dpr.getFolio());
@@ -7940,6 +7989,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 pstmt.setBoolean(i+=1,dpr.isOtro());
 			 
 			 pstmt.setString(i+=1,dpr.getNotaOtro());
+			 pstmt.setInt(i+=1,usuario.getFolio());
 			 
 			 InputStream input = new ByteArrayInputStream(dpr.getOrganigramaB());
 			 pstmt.setBinaryStream(i+=1, input,dpr.getOrganigramaB().length);

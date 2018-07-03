@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2018-06-19T19:20:46 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Libro_DPR" pageWidth="595" pageHeight="842" sectionType="Part" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="d2716064-8ae4-40cf-a575-33afba400e3a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<property name="com.jaspersoft.studio.book.group.cover.header" value="Cover and Table of Contents"/>
+	<property name="com.jaspersoft.studio.book.group.cover.footer" value="Backcover"/>
+	<queryString language="SQL">
+		<![CDATA[exec dpr_buscar 355]]>
+	</queryString>
+	<field name="folio" class="java.lang.Integer"/>
+	<field name="folioPuesto" class="java.lang.Integer"/>
+	<field name="Puesto" class="java.lang.String"/>
+	<field name="unidadDeNegocio" class="java.lang.String"/>
+	<field name="establecimiento" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="folioReportaA" class="java.lang.Integer"/>
+	<field name="reportaA" class="java.lang.String"/>
+	<field name="edadIn" class="java.lang.Integer"/>
+	<field name="edadFin" class="java.lang.Integer"/>
+	<field name="sexo" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="objectivoPuesto" class="java.lang.String"/>
+	<field name="escolaridad" class="java.lang.String"/>
+	<field name="listaDeEspecificaciones" class="java.lang.String"/>
+	<field name="cursosHabilidades" class="java.lang.String"/>
+	<field name="COLUMN_17" class="java.lang.String"/>
+	<field name="esperienciaGeneral" class="java.lang.String"/>
+	<field name="esperienciaEspecifica" class="java.lang.String"/>
+	<field name="facultamientosDirectos" class="java.lang.Integer"/>
+	<field name="facultaminetosIndirectos" class="java.lang.Integer"/>
+	<field name="interacionDelPuestoExternas" class="java.lang.Integer"/>
+	<field name="relacionDelPuestoExternas" class="java.lang.String"/>
+	<field name="interacionDelPuestoInternas" class="java.lang.Integer"/>
+	<field name="relacionDelPuestoInternas" class="java.lang.String"/>
+	<field name="ambienteDeTrabajo" class="java.lang.String"/>
+	<field name="esfuerzoFisico" class="java.lang.String"/>
+	<field name="viaje" class="java.lang.Boolean"/>
+	<field name="laptop" class="java.lang.Boolean"/>
+	<field name="pc" class="java.lang.Boolean"/>
+	<field name="celular" class="java.lang.Boolean"/>
+	<field name="extencion" class="java.lang.Boolean"/>
+	<field name="autoPropio" class="java.lang.Boolean"/>
+	<field name="autoEmpresa" class="java.lang.Boolean"/>
+	<field name="licencia" class="java.lang.Boolean"/>
+	<field name="largaDistancia" class="java.lang.Boolean"/>
+	<field name="otro" class="java.lang.Boolean"/>
+	<field name="notaOtro" class="java.lang.String"/>
+	<field name="archivo" class="java.lang.Object"/>
+	<field name="ResponsabilidadesPuesto" class="java.lang.String"/>
+	<group name="cover">
+		<groupHeader>
+			<part uuid="7aed05b9-1301-4a53-b47e-34289560bc0c">
+				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
+					<subreportExpression><![CDATA["cover"]]></subreportExpression>
+				</p:subreportPart>
+			</part>
+			<part evaluationTime="Report" uuid="56ab525c-754f-4f48-a52c-7cc23934be3d">
+				<property name="net.sf.jasperreports.bookmarks.data.source.parameter" value="REPORT_DATA_SOURCE"/>
+				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
+					<subreportExpression><![CDATA["Obj_Libro_DPR_toc.jasper"]]></subreportExpression>
+				</p:subreportPart>
+			</part>
+		</groupHeader>
+	</group>
+</jasperReport>

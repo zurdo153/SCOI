@@ -64,6 +64,10 @@ public class LeerXml {
 	    	 	
 		return arreglo; 
     } 
+	
+//	public String getTextProcesaClean(String input) {
+//	    return input.replace("|", "Ñ");
+//	}
     
     public static void main(String [] arg){
     	new LeerXml();

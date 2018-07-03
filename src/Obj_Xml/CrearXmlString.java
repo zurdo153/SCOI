@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -27,8 +28,7 @@ public class CrearXmlString{
 		
 		String cadena="";
 		try {
-	         DocumentBuilderFactory dbFactory =
-	         DocumentBuilderFactory.newInstance();
+	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	         Document doc = dBuilder.newDocument();
 	         
@@ -63,7 +63,8 @@ public class CrearXmlString{
 //		           	 	Attr attrType = doc.createAttribute("type");
 //		             	attrType.setValue("formula one");
 //		             	carname.setAttributeNode(attrType);
-		             	carname.appendChild(doc.createTextNode(tabla.getValueAt(i, j).toString()));
+			                    
+		             	carname.appendChild(doc.createTextNode( tabla.getValueAt(i, j).toString().toUpperCase().trim()));
 		             	supercar.appendChild(carname);
 		
 //		             	Element carname1 = doc.createElement("carname");
@@ -83,6 +84,10 @@ public class CrearXmlString{
 	         StreamResult result=new StreamResult(writer);
 	         TransformerFactory tf=TransformerFactory.newInstance();
 	         Transformer transformer=tf.newTransformer();
+	         
+//	         codificacion para qu tome acentos y letra Ñ
+	         transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
+	         
 	         transformer.transform(domSource,result);
 	         
 //	         t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -97,6 +102,10 @@ public class CrearXmlString{
 	      }
 		return cadena;
 	}
+	
+//	public String getTextProcesaClean(String input) {
+//	    return input.replace("Ñ", "|");
+//	}
 	
 public String CadenaXML2(Object[][] arreglo, int[] ignorarColumnas){
 		

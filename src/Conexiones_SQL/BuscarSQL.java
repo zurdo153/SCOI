@@ -10929,6 +10929,33 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return dpr;
 	}
 	
+	public String cancelar_trabajo_de_corte(int folioTrabajo){
+		String aviso = "";
+		String query = "exec cancelar_trabajo_de_cortes "+folioTrabajo;
+		Statement stmt = null;
+
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				aviso = rs.getString(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return aviso;
+	}
+	
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;
