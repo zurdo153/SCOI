@@ -41,13 +41,13 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		JLayeredPane campo = new JLayeredPane();
 		Connexion con = new Connexion();
 		
-		DefaultTableModel model = new DefaultTableModel(0,8){
+		DefaultTableModel model = new DefaultTableModel(0,9){
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
-		             return listacolumnas(8)[columnIndex];
+		             return listacolumnas(9)[columnIndex];
 		         }   
 			public boolean isCellEditable(int fila, int columna){
-				if(columna < 7)
+				if(columna < 8)
 					return false;
 				return true;
 			}
@@ -173,7 +173,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				tabla.getCellEditor().stopCellEditing();
 			}
 			
-			String observacion = tabla.getValueAt(tabla.getSelectedRow(), 7).toString().trim().toUpperCase();
+			String observacion = tabla.getValueAt(tabla.getSelectedRow(), 8).toString().trim().toUpperCase();
 			
 			if(new ActualizarSQL().Modificar_Status_Revision(folio_finiquito,Status_Finiquito,observacion)){
 		        	model.setRowCount(0);
@@ -214,7 +214,8 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
     		tabla.getColumnModel().getColumn(4).setCellRenderer(new tablaRenderer("numerico","derecha","Arial","negrita",9));
     		tabla.getColumnModel().getColumn(5).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",11)); 
     		tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("fecha","izquierda","Arial","normal",11)); 
-    		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",11)); 
+    		tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","centro","Arial","normal",11)); 
+    		tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",11)); 
     	}
     	
 		
@@ -231,20 +232,23 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			tabla.getColumnModel().getColumn(2).setMaxWidth(b+a);
 			tabla.getColumnModel().getColumn(2).setMinWidth(b+a);
 			tabla.getColumnModel().getColumn(3).setHeaderValue("Establecimiento");
-			tabla.getColumnModel().getColumn(3).setMaxWidth(b-30);
-			tabla.getColumnModel().getColumn(3).setMinWidth(b-30);
+			tabla.getColumnModel().getColumn(3).setMaxWidth(b-60);
+			tabla.getColumnModel().getColumn(3).setMinWidth(b-60);
 			tabla.getColumnModel().getColumn(4).setHeaderValue("Total a Pagar");
-			tabla.getColumnModel().getColumn(4).setMaxWidth(b-30);
-			tabla.getColumnModel().getColumn(4).setMinWidth(b-30);
+			tabla.getColumnModel().getColumn(4).setMaxWidth(b-100);
+			tabla.getColumnModel().getColumn(4).setMinWidth(b-100);
 			tabla.getColumnModel().getColumn(5).setHeaderValue("Elaboro");
 			tabla.getColumnModel().getColumn(5).setMaxWidth(b+a);
 			tabla.getColumnModel().getColumn(5).setMinWidth(b+a);
 			tabla.getColumnModel().getColumn(6).setHeaderValue("Fecha De Elaboracion");
 			tabla.getColumnModel().getColumn(6).setMaxWidth(a*2);
 			tabla.getColumnModel().getColumn(6).setMinWidth(a*2);
-			tabla.getColumnModel().getColumn(7).setHeaderValue("Observacion");
-			tabla.getColumnModel().getColumn(7).setMaxWidth(a*8);
-			tabla.getColumnModel().getColumn(7).setMinWidth(a*6-25);
+			tabla.getColumnModel().getColumn(7).setHeaderValue("Dias Transcurridos");
+			tabla.getColumnModel().getColumn(7).setMaxWidth(b-100);
+			tabla.getColumnModel().getColumn(7).setMinWidth(b-100);
+			tabla.getColumnModel().getColumn(8).setHeaderValue("Observacion");
+			tabla.getColumnModel().getColumn(8).setMaxWidth(a*8);
+			tabla.getColumnModel().getColumn(8).setMinWidth(a*6-25);
 			
 	    	tabla.getTableHeader().setReorderingAllowed(false) ;
 	    	tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -260,7 +264,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			try {
 				s = con.conexion().createStatement();
 				rs = s.executeQuery("exec sp_select_filtro__de_finiquito_vigentes '"+status+"'");
-				Object [] fila = new Object[8];
+				Object [] fila = new Object[9];
 				while (rs.next()) {
 				   fila[0] = rs.getString(1)+"  ";
 				   fila[1] = rs.getString(2)+"  ";
@@ -269,7 +273,8 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				   fila[4] = "   "+rs.getString(5);
 				   fila[5] = "   "+rs.getString(6);
 				   fila[6] = "   "+rs.getString(7);
-				   fila[7] = "";
+				   fila[7] = "   "+rs.getString(8);
+				   fila[8] = "";
 				   
 			  	   model.addRow(fila); 
 				}	

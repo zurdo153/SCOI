@@ -4125,8 +4125,8 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 		return true;
 	}
 	
-	public boolean Autorizar_DPR(int Folio_Puesto, String status){
-		String query = "exec dpr_update_revision ?,?,?";
+	public boolean Autorizar_DPR(int Folio_Puesto, String status, String observacion){
+		String query = "exec dpr_update_revision ?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -4134,7 +4134,8 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, Folio_Puesto);
 			pstmt.setString(2, status);
-			pstmt.setInt(3, usuario.getFolio());
+			pstmt.setString(3, observacion);
+			pstmt.setInt(4, usuario.getFolio());
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {

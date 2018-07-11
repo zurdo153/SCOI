@@ -2,6 +2,7 @@ package Cat_Evaluaciones;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -49,6 +52,11 @@ import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 import Obj_Tratamiento_De_Imagenes.Obj_Formato_De_Imagen;
 import Obj_Xml.CrearXmlString;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 @SuppressWarnings("serial")
 public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
@@ -1040,11 +1048,12 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			Connexion con = new Connexion();
 			
 			Obj_tabla ObjTab =new Obj_tabla();
-			int columnasp = 2,checkbox=-1;
+			int columnasp = 3,checkbox=-1;
 			String parametro="";
 			public void init_tablafp(){
-		    	this.tablafp.getColumnModel().getColumn(0).setMinWidth(55);
-		    	this.tablafp.getColumnModel().getColumn(1).setMinWidth(375);
+		    	this.tablafp.getColumnModel().getColumn(0).setMinWidth(30);
+		    	this.tablafp.getColumnModel().getColumn(1).setMinWidth((!parametro.equals("Filtro"))?375:275);
+		    	this.tablafp.getColumnModel().getColumn(2).setMinWidth(100);
 		    	
 		    	String filtrar = parametro.equals("Filtro")? "Filtro" : (parametro.equals("Puesto") ? "DISPONIBLES" : "TODOS");
 		    	
@@ -1052,6 +1061,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		    	System.out.println(comandof);
 				String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablafp,modelof, columnasp, comandof, basedatos,pintar,checkbox);
+				
+				if(!filtrar.equals("Filtro")){
+					tablafp.removeColumn(tablafp.getColumnModel().getColumn(2));
+				}
 		    }
 			
 			@SuppressWarnings("rawtypes")
@@ -1061,7 +1074,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 				 return types;
 			}
 			
-			public DefaultTableModel modelof = new DefaultTableModel(null, new String[]{"Folio","Puesto"}){
+			public DefaultTableModel modelof = new DefaultTableModel(null, new String[]{"Folio","Puesto","Estatus"}){
 				 @SuppressWarnings("rawtypes")
 					Class[] types = base();
 					@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1075,6 +1088,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		    private TableRowSorter trsfiltro;
 		     
 			JTextField txtBuscarfp  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tablafp,columnasp);
+		
+			JCButton btnReporte = new JCButton("Reporte", "Report.png", "Azul");
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Cat_Filtro_Puestos(String btnparametro){
 				parametro=btnparametro;
@@ -1083,9 +1098,16 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 				trsfiltro = new TableRowSorter(modelof); 
 				tablafp.setRowSorter(trsfiltro);
 				this.panelf.add(txtBuscarfp).setBounds      (10 ,20 ,470 , 20 );
-				this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,470 ,415 );
+				this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,470 ,(!parametro.equals("Filtro"))?420:400 );
+				this.panelf.add(btnReporte).setBounds   	(360,445,120 , 20 );
 				this.init_tablafp();
 				this.agregar(tablafp);
+				
+				if(!parametro.equals("Filtro")){
+					btnReporte.setVisible((!parametro.equals("Filtro"))?false:true);
+				}
+				
+				btnReporte.addActionListener(opReporte);
 				
 				this.setResizable(false);
 				this.setLocationRelativeTo(null);
@@ -1097,6 +1119,49 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 				
 				contf.add(panelf);
 			}
+			
+			ActionListener opReporte = new ActionListener() {
+				@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(tablafp.getSelectedRow()>=0){
+						//--REPORTE MODAL CON PARAMETRO-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+						//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+												String reporte = "Obj_Libro_DPR_toc.jrxml";
+											
+												 try{
+														JDialog viewer = new JDialog(new JFrame(),reporte, true);
+														viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
+														viewer.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+														viewer.setLocationRelativeTo(null);
+
+														JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
+														
+														Map parametro = new HashMap();
+														parametro.put("folioPuesto", Integer.valueOf(tablafp.getValueAt(tablafp.getSelectedRow(), 0).toString()));
+
+														// En mapa se especifican los parametros del reporte
+														JasperPrint print = JasperFillManager.fillReport(report,parametro, new Connexion().conexion());
+
+																JRViewer jrv = new JRViewer(print);
+																jrv.setZoomRatio(1);//zoom default del reporte
+																viewer.getContentPane().add(jrv);
+																viewer.show();
+
+													}
+													catch(Exception ex){
+														System.out.println(ex.getMessage());											
+														JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Mensaje Exception: "+ex.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+													}
+						//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+						//--TERMINA METODO DE REPORTE MODAL CON PARAMETRO-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+					}else{
+						JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El Puesto Que Desea Revisar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}
+				}
+			};
 			
 			private void agregar(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {

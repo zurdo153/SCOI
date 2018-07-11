@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2018-06-25T18:59:56 -->
+<!-- 2018-07-07T14:16:12 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TocReport" pageWidth="612" pageHeight="792" columnWidth="532" leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40" uuid="6e74177b-d551-4a75-ae51-6cdde3f284ce">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
@@ -174,24 +174,35 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="Responsabilidades" uuid="9f40966f-0a4b-4274-981b-d3f47a60fe2e">
+	<subDataset name="Responsabilidades" whenResourceMissingType="Error" uuid="9f40966f-0a4b-4274-981b-d3f47a60fe2e">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 		<parameter name="FolPuesto" class="java.lang.Integer">
 			<parameterDescription><![CDATA[Folio De Puesto Principal]]></parameterDescription>
-			<defaultValueExpression><![CDATA[355]]></defaultValueExpression>
+			<defaultValueExpression><![CDATA[111]]></defaultValueExpression>
 		</parameter>
+		<parameter name="slFactory" class="java.lang.Object"/>
+		<parameter name="slSchema" class="java.lang.Object"/>
+		<parameter name="LoggedInUser" class="java.lang.Object"/>
+		<parameter name="LoggedInUsername" class="java.lang.Object"/>
 		<queryString language="SQL">
 			<![CDATA[declare @xml xml = (select ResponsabilidadesPuesto 
 					from dpr 
-					where folioPuesto = $P{FolPuesto} )
+					where folioPuesto =  $P{FolPuesto}  )
 
 select T.col.value('columna_1[1]','varchar(10)')+'.- '+T.col.value('columna_2[1]','varchar(max)') Responsabilidades
 from @xml.nodes('fila') T(col)]]>
 		</queryString>
 		<field name="Responsabilidades" class="java.lang.String"/>
 	</subDataset>
+	<parameter name="slFactory" class="java.lang.Object"/>
+	<parameter name="slSchema" class="java.lang.Object"/>
+	<parameter name="LoggedInUser" class="java.lang.Object"/>
+	<parameter name="LoggedInUsername" class="java.lang.Object"/>
+	<parameter name="folioPuesto" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[111]]></defaultValueExpression>
+	</parameter>
 	<queryString language="SQL">
-		<![CDATA[exec dpr_buscar 111]]>
+		<![CDATA[exec dpr_buscar  $P{folioPuesto}]]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer"/>
 	<field name="folioPuesto" class="java.lang.Integer"/>
@@ -231,9 +242,6 @@ from @xml.nodes('fila') T(col)]]>
 	<field name="otro" class="java.lang.Boolean"/>
 	<field name="notaOtro" class="java.lang.String"/>
 	<field name="archivo" class="java.io.InputStream"/>
-	<field name="ResponsabilidadesPuesto" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="folio_elaboro" class="java.lang.Integer"/>
 	<field name="elaboro" class="java.lang.String"/>
 	<field name="folio_reviso" class="java.lang.Integer"/>
@@ -243,8 +251,23 @@ from @xml.nodes('fila') T(col)]]>
 	<field name="fecha_elaboro" class="java.lang.String"/>
 	<field name="fecha_reviso" class="java.lang.String"/>
 	<field name="fecha_autoriso" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="712" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="530" height="712" uuid="ed6d9ecc-7ff7-45c2-9773-05b4cca4b88e">
+					<printWhenExpression><![CDATA[$F{status}.equals("N")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA["C:/SCOI/imagen/NEGADO.png"]]></imageExpression>
+			</image>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement x="1" y="0" width="530" height="712" uuid="7c26f57e-5926-4fb9-84ed-241a12eef77a">
+					<printWhenExpression><![CDATA[$F{status}.equals("V")||$F{status}.equals("R")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/EN-PROCESO.png"]]></imageExpression>
+			</image>
+		</band>
 	</background>
 	<pageHeader>
 		<band height="60">
@@ -316,6 +339,13 @@ from @xml.nodes('fila') T(col)]]>
 				</textElement>
 				<text><![CDATA[Código de puesto:  ]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="60" y="5" width="26" height="13" uuid="a5fd16fa-f4ac-445a-bad1-369c0111a8aa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
@@ -416,6 +446,12 @@ from @xml.nodes('fila') T(col)]]>
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
+				<box>
+					<topPen lineWidth="0.1"/>
+					<leftPen lineWidth="0.1"/>
+					<bottomPen lineWidth="0.1"/>
+					<rightPen lineWidth="0.1"/>
+				</box>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
@@ -465,7 +501,7 @@ from @xml.nodes('fila') T(col)]]>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Deoartamento:]]></text>
+				<text><![CDATA[Departamento:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="8" width="50" height="15" uuid="c5f25f39-98e9-4bcc-a186-775c83518084">
@@ -549,7 +585,7 @@ from @xml.nodes('fila') T(col)]]>
 				<textElement verticalAlignment="Bottom">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Responsabilidades del Puesto: (Especifique qué hace y para que lo hace)]]></text>
+				<text><![CDATA[Responsabilidades del Puesto: (Que hace y para que lo hace)]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="150" y="88" width="119" height="15" uuid="a40aa3d1-e7ce-4583-9102-24016a207b5e">
@@ -589,7 +625,7 @@ from @xml.nodes('fila') T(col)]]>
 				<textElement verticalAlignment="Bottom">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Enliste ejemplos específicos de Título(s), área(s) de estudio, y/o licencias denotando (R) si es Requisito o (P) si es Preferible.]]></text>
+				<text><![CDATA[Lista de ejemplos específicos de Título(s), área(s) de estudio, y/o licencias denotando (R) si es Requisito o (P) si es Preferible.]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="330" y="68" width="70" height="15" uuid="5359f97e-89a4-4a81-b985-6d1a2c9a2845">
@@ -644,11 +680,13 @@ from @xml.nodes('fila') T(col)]]>
 				<text><![CDATA[E.Civil:]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement stretchType="RelativeToBandHeight" x="2" y="332" width="529" height="15" isPrintWhenDetailOverflows="true" uuid="6f76939f-317c-4364-89f1-a8256dfd4ea6"/>
+				<reportElement stretchType="RelativeToBandHeight" x="2" y="332" width="529" height="15" uuid="6f76939f-317c-4364-89f1-a8256dfd4ea6">
+					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
+				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="Responsabilidades" uuid="858350e0-7fb5-4146-aa7a-4b337ee6ac92">
+					<datasetRun subDataset="Responsabilidades" uuid="60619d58-3eaf-4058-885d-1abef6cefbe7">
 						<datasetParameter name="FolPuesto">
-							<datasetParameterExpression><![CDATA[$F{folioPuesto}]]></datasetParameterExpression>
+							<datasetParameterExpression><![CDATA[$P{folioPuesto}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -656,10 +694,6 @@ from @xml.nodes('fila') T(col)]]>
 						<frame>
 							<reportElement x="1" y="0" width="525" height="15" isPrintWhenDetailOverflows="true" uuid="912d858b-6582-45d5-ad71-7af8e6567bc6"/>
 						</frame>
-						<textField>
-							<reportElement x="0" y="0" width="0" height="0" isPrintWhenDetailOverflows="true" uuid="6a7b9555-fe93-4bf3-900e-737bd423c7aa"/>
-							<textFieldExpression><![CDATA[$F{Responsabilidades}]]></textFieldExpression>
-						</textField>
 						<textField isStretchWithOverflow="true">
 							<reportElement x="1" y="0" width="528" height="15" isPrintWhenDetailOverflows="true" uuid="ee117cc4-1b70-484a-b740-9b3ad3391a8e">
 								<property name="local_mesure_unitheight" value="pixel"/>
@@ -702,7 +736,7 @@ from @xml.nodes('fila') T(col)]]>
 				<textElement verticalAlignment="Bottom">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Entrenamiento, habilidades, conocimientos y/o experiencia: Enlista ejemplos específicos denotando (E)Exwlwntee, (MB) Muy bueno, (B) Bueno.]]></text>
+				<text><![CDATA[Entrenamiento, habilidades, conocimientos y/o experiencia: Ejemplos específicos denotando (E)Exelente, (MB) Muy bueno, (B) Bueno.]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="120" y="41" width="410" height="30" uuid="1f5be3cb-886e-4dcc-a2ce-0dccd5199326"/>
@@ -761,7 +795,7 @@ from @xml.nodes('fila') T(col)]]>
 				<textElement verticalAlignment="Bottom">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Indique las principales interacciones del puesto y seleccione su tipo de relacion:]]></text>
+				<text><![CDATA[Principales interacciones del puesto y tipo de relacion:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="0" y="180" width="36" height="15" uuid="1e790588-999b-4614-a38f-d644a0d9ea51">
@@ -837,7 +871,7 @@ from @xml.nodes('fila') T(col)]]>
 				<textElement verticalAlignment="Bottom">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Condiciones de trabajo: Describa las condiciones generales de trabajo requeridas para ejecutar las tareas principales del puesto.]]></text>
+				<text><![CDATA[Condiciones de trabajo: Condiciones generales de trabajo requeridas para ejecutar las tareas principales del puesto.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="267" width="100" height="15" uuid="06f4ce7e-f52b-42e6-b258-05e93df9da10">
@@ -906,7 +940,7 @@ from @xml.nodes('fila') T(col)]]>
 				<textElement verticalAlignment="Bottom">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Facultamiento: (Indique cuántos empleados dependen directa e indirectamente de este puesto)]]></text>
+				<text><![CDATA[Facultamiento: (Cuántos empleados dependen directa e indirectamente de este puesto)]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="53" y="63" width="27" height="15" uuid="3c8599f3-ab49-46f2-b43c-0c1826ecf185"/>

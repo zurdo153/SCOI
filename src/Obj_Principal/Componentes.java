@@ -158,10 +158,13 @@ public class Componentes {
 		
 		tmp.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {}
-			public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {
+			public void keyReleased(KeyEvent e) {
 				ObjTab.Obj_Filtro(tabla, tmp.getText().toUpperCase(), columnas,tmp);
 				funciones_validacion(tmp, longitud, e, tipo);
+			}
+			public void keyPressed(KeyEvent e) {
+//				ObjTab.Obj_Filtro(tabla, tmp.getText().toUpperCase(), columnas,tmp);
+//				funciones_validacion(tmp, longitud, e, tipo);
 				}
 		});
 	tmp.setToolTipText(caption);

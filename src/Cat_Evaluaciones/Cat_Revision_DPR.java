@@ -1,19 +1,25 @@
 package Cat_Evaluaciones;
 
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -21,11 +27,15 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.Connexion;
-import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 @SuppressWarnings("serial")
 public class Cat_Revision_DPR extends JDialog{
@@ -35,6 +45,9 @@ public class Cat_Revision_DPR extends JDialog{
 	
 	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 5, "Int");
 	JTextField txtPuesto = new Componentes().text(new JTextField(), "Puesto", 100, "String");
+	
+	JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "", 350);
+	JScrollPane scrollObservacion = new JScrollPane(txaObservacion);
 	
 	JCButton btnReporte = new JCButton("Reporte", "", "Azul");
 	JCButton btnGuardar = new JCButton("Autorizar", "", "Azul");
@@ -84,14 +97,19 @@ public class Cat_Revision_DPR extends JDialog{
 		this.panelf.add(new JLabel("Puesto: ")).setBounds   (10 ,295 ,50 ,20 );
 		this.panelf.add(txtFolio).setBounds   (60 ,295 ,50 ,20 );
 		this.panelf.add(txtPuesto).setBounds   (110 ,295 ,370 ,20 );
-		this.panelf.add(btnReporte).setBounds   (110 ,320 ,110 ,20 );
-		this.panelf.add(btnGuardar).setBounds   (225 ,320 ,110 ,20 );
-		this.panelf.add(btnNegar).setBounds   (340 ,320 ,110 ,20 );
+		this.panelf.add(new JLabel("Observacion: ")).setBounds   (10 ,320 ,80 ,20 );
+		this.panelf.add(scrollObservacion).setBounds   (90 ,320 ,390 ,60 );		
+		this.panelf.add(btnReporte).setBounds   (110 ,390 ,110 ,20 );
+		this.panelf.add(btnGuardar).setBounds   (225 ,390 ,110 ,20 );
+		this.panelf.add(btnNegar).setBounds   (340 ,390 ,110 ,20 );
 		
 		this.init_tablafp();
 		
 		txtFolio.setEditable(false);
 		txtPuesto.setEditable(false);
+		
+//		String color = status?"FFFFFF":"EBEBEB";
+		txaObservacion.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
 		
 		this.agregar(tablafp);
 		
@@ -116,6 +134,7 @@ public class Cat_Revision_DPR extends JDialog{
 				int fila = tbl.getSelectedRow();
 	    		txtFolio.setText(tbl.getValueAt(fila, 0)+"");
 	    		txtPuesto.setText(tbl.getValueAt(fila, 1)+"");
+	    		txaObservacion.requestFocus();
 			}
 			public void mouseEntered(java.awt.event.MouseEvent e) {			}
 			public void mouseExited(java.awt.event.MouseEvent e) {			}
@@ -125,16 +144,42 @@ public class Cat_Revision_DPR extends JDialog{
     }
 	
 	ActionListener opReporte = new ActionListener() {
+		@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(!txtFolio.getText().trim().equals("")){
-				String basedatos="2.26";
-				String vista_previa_reporte="si";
-				int vista_previa_de_ventana=1;
-				
-				String comando="exec dpr_buscar "+txtFolio.getText().trim()+"";
-				String reporte = "Obj_Libro_DPR_toc.jrxml";
-				 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				//--REPORTE MODAL CON PARAMETRO-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+				//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+										String reporte = "Obj_Libro_DPR_toc.jrxml";
+									
+										 try{
+												JDialog viewer = new JDialog(new JFrame(),reporte, true);
+												viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
+												viewer.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+												viewer.setLocationRelativeTo(null);
+
+												JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
+												
+												Map parametro = new HashMap();
+												parametro.put("folioPuesto", Integer.valueOf(txtFolio.getText().trim()));
+
+												// En mapa se especifican los parametros del reporte
+												JasperPrint print = JasperFillManager.fillReport(report,parametro, new Connexion().conexion());
+
+														JRViewer jrv = new JRViewer(print);
+														jrv.setZoomRatio(1);//zoom default del reporte
+														viewer.getContentPane().add(jrv);
+														viewer.show();
+
+											}
+											catch(Exception ex){
+												System.out.println(ex.getMessage());											
+												JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Mensaje Exception: "+ex.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+											}
+				//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+				//--TERMINA METODO DE REPORTE MODAL CON PARAMETRO-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 			}else{
 				JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El Puesto Que Desea Revisar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -147,11 +192,12 @@ public class Cat_Revision_DPR extends JDialog{
 		public void actionPerformed(ActionEvent e) {
 			if(!txtFolio.getText().trim().equals("")){
 				
-				if(new ActualizarSQL().Autorizar_DPR(Integer.valueOf(txtFolio.getText().trim()), "R")){//V= Elaborado  R= Revisado  A= Autorizaado  N= Negar
+				if(new ActualizarSQL().Autorizar_DPR(Integer.valueOf(txtFolio.getText().trim()), "R", txaObservacion.getText().toString().trim().toUpperCase())){//V= Elaborado  R= Revisado  A= Autorizaado  N= Negar
 					//guardado correctamente
 					init_tablafp();
 					txtFolio.setText("");
 					txtPuesto.setText("");
+					txaObservacion.setText("");
 					JOptionPane.showMessageDialog(null, "Se Actualizaron Los Datos Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					return;
 				}else{
@@ -172,11 +218,12 @@ public class Cat_Revision_DPR extends JDialog{
 		public void actionPerformed(ActionEvent e) {
 			if(!txtFolio.getText().equals("")){
 				
-				if(new ActualizarSQL().Autorizar_DPR(Integer.valueOf(txtFolio.getText().trim()), "N")){//V= Elaborado  R= Revisado  A= Autorizaado  N= Negar
+				if(new ActualizarSQL().Autorizar_DPR(Integer.valueOf(txtFolio.getText().trim()), "N", txaObservacion.getText().toString().trim().toUpperCase())){//V= Elaborado  R= Revisado  A= Autorizaado  N= Negar
 					//guardado correctamente
 					init_tablafp();
 					txtFolio.setText("");
 					txtPuesto.setText("");
+					txaObservacion.setText("");
 					JOptionPane.showMessageDialog(null, "Se Actualizaron Los Datos Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 					return;
 				}else{

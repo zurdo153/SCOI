@@ -7752,9 +7752,6 @@ public class BuscarSQL {
 		}
 		
 		return Descripcion;
-		
-		
-	
 	}
 	
 	public String Folio_Siguiente_alta_Servicios() throws SQLException{
@@ -10954,6 +10951,33 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}}
 		}
 		return aviso;
+	}
+	
+	public String validarFechaAguinaldo(int folio) throws SQLException{
+		String Descripcion="";
+		String query = "declare @valor varchar(300) set @valor=(select descripcion from tb_matrices where folio_matriz="+folio+")"
+				+ " if @valor is null set @valor='No Se Encontro Registro Con Este folio' select @valor ";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				Descripcion=(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+		}
+		
+		return Descripcion;
 	}
 	
 //	public ImageIcon crearImagIcon(){
