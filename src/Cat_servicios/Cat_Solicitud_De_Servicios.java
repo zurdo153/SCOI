@@ -42,6 +42,7 @@ import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCTextArea;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Catalogo_Servicios;
@@ -108,7 +109,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 	JLabel lblTiempoEstimado   = new JLabel("");
 	JLabel lblFolio            = new JLabel("");
 	
-	JTextArea txaDetallenuevo       = new Componentes().textArea(new JTextArea(), "", 500);
+	JTextArea txaDetallenuevo       = new Componentes().textArea(new JCTextArea(), "Detalle Del Servicio", 500);
 	JScrollPane scrollDetallen  = new JScrollPane(txaDetallenuevo);
 	
 	JTextField txtServicio     = new Componentes().text(new JCTextField(), "Descripción Corta Del Servicio", 150, "String");
@@ -363,7 +364,7 @@ public class Cat_Solicitud_De_Servicios extends JFrame{
 		JCButton btnAdjuntar       = new JCButton("Adjuntar Archivo","adjuntar-icono-7764-16.png","AzulC");
 		
 		JTextField txtFolio        = new Componentes().text(new JCTextField(), "Folio", 9, "Int");
-		JTextArea txaDetalle       = new Componentes().textArea(new JTextArea(), "", 500);
+		JTextArea txaDetalle       = new Componentes().textArea(new JCTextArea(), "Describa Claramente El Detalle Del Servicio Solicitado", 500);
 		JScrollPane scrollDetalle  = new JScrollPane(txaDetalle);
 		JLabel lblArchivoAdjunto   = new JLabel("");
 		

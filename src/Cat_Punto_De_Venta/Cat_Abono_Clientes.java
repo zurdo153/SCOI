@@ -14,9 +14,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -92,24 +89,7 @@ public class Cat_Abono_Clientes extends JFrame{
 	JButton btnCancelarAbono = new JButton("Cancelar Abono",new ImageIcon("Iconos/cancelarAbono.png"));
 	JButton btnLiquidarTicket = new JButton("Liquidar Ticket",new ImageIcon("Iconos/cancelarTicket.png"));
 	
-//	 static Object[][] data = {
-//          {"pesos",new Integer(1), new Integer(0),new Integer(0)},
-//          {"dolar",new Double(12.92), new Integer(0),new Integer(0)},
-//	 };
-//	 
-//	 static Object[][] dataTicket = {
-//		 {"060000000001", "01/01/1900", "02/01/1900",new Integer(240)},
-//         {"060000000002", "01/01/1900", "02/01/1900",new Integer(850)},
-//         {"060000000002", "01/01/1900", "02/01/1900",new Integer(850)},
-//     };
-//	 
-//	 static Object[][] dataAbono = {
-//         {new Double(45.5), "01/01/1900", "depa","edgar"},
-//         {new Double(150), "01/01/1900", "ferre","edgar"},
-//         {new Double(45.5), "01/01/1900", "depa","edgar"},
-//         {new Double(150), "01/01/1900", "ferre","edgar"},
-//         {new Double(150), "01/01/1900", "ferre","edgar"},
-//     };
+	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
      
     public static DefaultTableModel tabla_model_cobro = new DefaultTableModel( null, new String[]{"Efectivo", "Valor", "Pago", "Importe"} ){
                     
@@ -440,13 +420,7 @@ public class Cat_Abono_Clientes extends JFrame{
 							return;
 							
 						}else{
-							
-							
-							
-							
-		//					System.out.println(bandera);
-		//                  si 		bandera = "" entonces el ticket no es nuevo y se guardara correctamente
-		//					else 	pedir fecha limite
+
 							if(bandera.equals("")){
 								
 									if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
@@ -456,11 +430,6 @@ public class Cat_Abono_Clientes extends JFrame{
 										
 										btnGuardarAbono.setEnabled(true);
 											tabla_cobros.setEnabled(true);
-											
-		//								if(Integer.valueOf(tabla_cobros.getValueAt(fila, columna)+"")==0){
-		//									tabla_cobros.setValueAt("",fila, columna);
-		//								}
-											
 											tabla_cobros.editCellAt(fila, columna);
 											Component aComp=tabla_cobros.getEditorComponent();
 											aComp.requestFocus();
@@ -474,13 +443,10 @@ public class Cat_Abono_Clientes extends JFrame{
 									btnGuardarAbono.setContentAreaFilled(false);
 									btnGuardarAbono.setOpaque(true);
 									
-									
 									btnNuevaCuenta.setBackground(new Color(155,131,110));
 									btnNuevaCuenta.setForeground(new Color(0,17 ,255));
 									btnNuevaCuenta.setContentAreaFilled(false);
 									btnNuevaCuenta.setOpaque(true);
-									
-									
 								
 							}else{
 								String fechaNull = fecha.getDate()+"";
@@ -508,24 +474,17 @@ public class Cat_Abono_Clientes extends JFrame{
 												btnGuardarAbono.setContentAreaFilled(false);
 												btnGuardarAbono.setOpaque(true);
 												
-												
 												btnNuevaCuenta.setBackground(new Color(155,131,110));
 												btnNuevaCuenta.setForeground(new Color(0,17 ,255));
 												btnNuevaCuenta.setContentAreaFilled(false);
 												btnNuevaCuenta.setOpaque(true);
-												
-		//										if(Integer.valueOf(tabla_cobros.getValueAt(fila, columna)+"")==0){
-		//											tabla_cobros.setValueAt("",fila, columna);
-		//										}
 												
 												tabla_cobros.editCellAt(fila, columna);
 												Component aComp=tabla_cobros.getEditorComponent();
 												aComp.requestFocus();
 										}
 								}
-									
 							}
-							
 						}
 					}
 				});
@@ -578,10 +537,7 @@ public class Cat_Abono_Clientes extends JFrame{
 										JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
 										return;
 								}else{
-//										if(fecha.getDate()==null){
-//												JOptionPane.showMessageDialog(null, "Favor de Ingresar una fecha limite","Aviso",JOptionPane.INFORMATION_MESSAGE);
-//												return;
-//										}else{
+
 												if( txtAbono.getText().equals("") || Integer.valueOf(txtAbono.getText()) <= 0 ){
 														JOptionPane.showMessageDialog(null, "Ingrese La Cantidad Que Desea Abonar","Aviso",JOptionPane.INFORMATION_MESSAGE);
 														return;
@@ -589,8 +545,7 @@ public class Cat_Abono_Clientes extends JFrame{
 													String existeTicket ="no";
 													
 													System.out.println(tabla_ticket.getRowCount());
-													
-//													if(tabla_ticket.getRowCount()>0){
+
 														for(int i=0; i<tabla_ticket.getRowCount(); i++){
 															if(txtTiket.getText().equals(tabla_ticket.getValueAt(i, 0).toString().trim())){
 																existeTicket="si";
@@ -662,7 +617,7 @@ public class Cat_Abono_Clientes extends JFrame{
 		//    	FUNCION PARA AGREGAR UNA ACCION AL SELECCIONAR UNA FECHA
 		        fecha.getDateEditor().addPropertyChangeListener(opFecha);
 		        
-				CargarCajero();
+		        txtCajera.setText(usuario.getNombre_completo());
 				
 				SELECCION_TICKET(tabla_ticket);
 				SELECCION_ABONO(tabla_abonos);
@@ -1339,31 +1294,6 @@ public class Cat_Abono_Clientes extends JFrame{
         });
     }
 	
-	public void CargarCajero()
-	{
-		  File archivo = null;
- 	      FileReader fr = null;
- 	      BufferedReader br = null;
-		 try {
- 	         archivo = new File ("Config/users");
- 	         fr = new FileReader (archivo);
- 	         br = new BufferedReader(fr);
- 	         String linea;
- 	         while((linea=br.readLine())!=null)
- 	        	txtCajera.setText(linea);
- 	      }
- 	      catch(Exception e){
- 	         e.printStackTrace();
- 	      }finally{
- 	         try{                   
- 	            if( null != fr ){  
- 	               fr.close();    
- 	            }                 
- 	         }catch (Exception e2){
- 	            e2.printStackTrace();
- 	         }
- 	      }
-	}
 	
 	//Filtro Clientes
 	public class Cat_Filtro_Clientes extends JFrame{
@@ -1554,23 +1484,16 @@ public class Cat_Abono_Clientes extends JFrame{
 	
 	
 	public class Cat_Genera_Ticket_De_Abono_Cliente extends JFrame {
-		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Cat_Genera_Ticket_De_Abono_Cliente(String ticket,String movimiento) {
 			
 			String ruta = "";
 			String query = "";
 			
-			
-			
 			if(movimiento.equals("liquidacion")){
-				
-					System.out.println(ticket+" - "+movimiento);
 					                                
 						ruta = "\\src\\Obj_Reportes\\Obj_Liquidar_Ticket_C_Ahorro_Cte.jrxml";
 						query = "exec sp_tickets_abonos_c_ahorro_cte '"+ticket+"','L'";
-						
-//						System.out.println(query);
 				}else{	
 						if(movimiento.equals("abono")){
 								ruta = "\\src\\Obj_Reportes\\Obj_Ticket_C_Ahorro_Cte.jrxml";
@@ -1583,29 +1506,17 @@ public class Cat_Abono_Clientes extends JFrame{
 					
 			try {
 				
-//				jenera el archivo *.jasper en la misma ruta del proyecto
-//				JasperCompileManager.compileReportToFile(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\Obj_Reporte_De_Cumpleanios_Del_Mes.jrxml");
-				
 				JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+ruta);
 				JasperPrint print = JasperFillManager.fillReport(report, new HashMap(),new JRResultSetDataSource(new Connexion().conexion().createStatement().executeQuery(query)));
-				
-//				mostras reporte (comentar para no mostrar)
-//				JasperViewer.viewReport(print, false);
-				
-//				imprimir reporte automatico ---------------------------------------------------------------------------------------------------------------
-//				false = imprime reporte en impresora predeterminada ---------------------------------------------------------------------------------------
-//				true  = muestra ventana de seleccion de impresora -----------------------------------------------------------------------------------------
+
 				JasperPrintManager.printReport(print, false);
 				JasperPrintManager.printReport(print, false);
-				
 				ruta= "";
-				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-				JOptionPane.showMessageDialog(null, "Error En La Subclase Cat_Abono_Clientes ", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+				JOptionPane.showMessageDialog(null, "Error al Momento De Generar El Reporte "+ruta+"\nCon La Consulta:"+query +"\n parametro movimiento"+movimiento, "Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
 			}
 		}
-				
 		
 	}
 	

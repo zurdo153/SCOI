@@ -48,6 +48,7 @@ import Obj_Contabilidad.Obj_Orden_De_Gasto;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCTextArea;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Correos;
@@ -103,7 +104,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	JTextField txtFecha       = new Componentes().text(new JCTextField()  ,"Fecha"                     ,60   ,"String");
 	JTextField txtTotal       = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
 	
-    JTextArea txaUso       = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia", 300);
+    JTextArea txaUso       = new Componentes().textArea(new JCTextArea(), "Uso De La Mercancia", 300);
 	JScrollPane Uso        = new JScrollPane(txaUso);
 
 	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
@@ -114,7 +115,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	JCButton btnQuitarfila = new JCButton("Eliminar"     ,"boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnAgregar    = new JCButton("Agregar"      ,"double-arrow-icone-3883-16.png"    ,"Azul");
 	JCButton btnImprimir   = new JCButton("Imprimir"     ,"imprimir-16.png"       ,"Azul");
-	JCButton btnModificar = new JCButton("Modificar" ,"Modify.png"                ,"Azul");
+	JCButton btnModificar  = new JCButton("Modificar" ,"Modify.png"               ,"Azul");
 	
 	String status[] = {"PENDIENTE","AUTORIZADO","CANCELADO","FINALIZADO","NEGADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -270,30 +271,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		modelo.setRowCount(0);
 		txaUso.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
     }
-    
-	
-//	KeyListener op_validanumero_en_celda = new KeyListener() {
-//		public void keyTyped(KeyEvent e) {}
-//		public void keyReleased(KeyEvent e) {
-////			int fila=tabla.getSelectedRow();
-////			int columna=tabla.getSelectedColumn();
-//			
-////			if(fila==-1)fila=fila+1;
-////			if(columna<1 )columna=1;
-//
-//			if(e.getKeyCode()==9&&columna>1) {
-//				columna=1;
-//			};
-//			
-//			if(ObjTab.validacelda(tabla,"decimal", fila,columna)){
-//				calculo();
-//						  if(ObjTab.RecorridoFocotabla_con_evento(tabla, fila,columna, "x",e).equals("si")){
-//								txtDescripcion.requestFocus();
-//						  };
-//			}	
-//		}
-//		public void keyPressed(KeyEvent e) {}
-//	};
 	
 	KeyListener opAgregarConEnter = new KeyListener() {
 	public void keyTyped(KeyEvent e) {}
@@ -318,11 +295,12 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			btnImprimir.setEnabled(false);
 			btnAgregar.setEnabled(true);
 			btnQuitarfila.setEnabled(true);
-			txtDescripcion.setEditable(true);
 			txaUso.setEditable(true);
+			cmb_concepto.setEnabled(true);
 			cmbEstablecimiento.setEnabled(true);
 			cmbEstablecimiento.requestFocus();
 			cmbEstablecimiento.showPopup();
+			
     		tabla.setEnabled(true );
  		}
  	};
@@ -358,10 +336,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 					Vector_Producto[3]="0";		
 					modelo.addRow(Vector_Producto);
 					txtDescripcion.setText("");
-//					ObjTab.RecorridoFocotabla(tabla, modelo.getRowCount()-1, 1, "x");
 					fila = modelo.getRowCount()-1;
 					columna = 1;
-//					tabla.setRowSelectionInterval(fila, fila);
 					RecorridoFoco("click");
 				   return;	
 				}

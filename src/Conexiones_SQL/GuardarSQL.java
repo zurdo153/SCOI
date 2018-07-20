@@ -50,6 +50,7 @@ import Obj_Compras.Obj_Compra_De_Cascos;
 import Obj_Compras.Obj_Cotizaciones_De_Un_Producto;
 import Obj_Compras.Obj_Gestion_De_Pedidos_A_Establecimientos;
 import Obj_Compras.Obj_Horario_Base_De_Entrega_De_Pedidos;
+import Obj_Compras.Obj_Orden_De_Compra;
 import Obj_Compras.Obj_Programacion_De_Proveedores;
 import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
@@ -4014,7 +4015,11 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 	}
 	
 	public boolean Guardar_Proveedor(Obj_Alta_Proveedores_Polizas prv){
-		String query = "exec sp_insert_proveedor ?,?,?,?,?";
+		if(prv.getGuardarActualizar().equals("N")){
+			prv.setFolio_proveedor(busca_y_actualiza_proximo_folio(47));
+		}
+		
+		String query = "exec proveedor_guardar_actualizar ?,?,?,?,?,?,?,?";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -4023,11 +4028,14 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			
 			int i=1;
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(i,	 	prv.getNombre().toUpperCase());
+			pstmt.setString(i,	 	prv.getFolio_proveedor()+"");
+			pstmt.setString(i+=1,	prv.getNombre().toUpperCase());
 			pstmt.setString(i+=1,	prv.getAp_paterno().toUpperCase());
 			pstmt.setString(i+=1,	prv.getAp_materno().toUpperCase());
 			pstmt.setString(i+=1,	prv.getDireccion().toUpperCase());
 			pstmt.setString(i+=1, 	prv.getTelefono().toUpperCase());
+			pstmt.setString(i+=1, 	prv.getPlazo().toUpperCase());
+			pstmt.setString(i+=1, 	prv.getGuardarActualizar().toUpperCase());
 			
 			pstmt.executeUpdate();
 			con.commit();
@@ -4048,7 +4056,7 @@ public String Guardar_Sesion_Cajero(String Establecimiento,int Folio_empleado){
 			try {
 				pstmt.close();
 				con.close();
-			} catch(SQLException e){
+		} catch(SQLException e){
 				e.printStackTrace();
 			}
 		}		
@@ -7973,20 +7981,131 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			return true;
 	}
 	
-//	public String readIt(InputStream is) throws IOException {
-//	    if (is != null) {
-//	        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
-//
-//	        StringBuilder sb = new StringBuilder();
-//	        String line;
-//	        while ((line = reader.readLine()) != null) {
-//	            sb.append(line).append("\n");
-//	        }
-//	        is.close();
-//	        return sb.toString();
-//	    }
-//	    return "error: ";
-//	}
+	public boolean Guardar_Orden_De_Compra (Obj_Orden_De_Compra orden){
+		orden.setFolio( busca_y_actualiza_proximo_folio(63) );
+		
+		int cantidad_filas=orden.getTabla_productos().length;	
+
+		String query = "exec orden_de_compra_autorizacion_insert ?,?,?,?,?,?,?,?,?,?,?,?,?,?" ;
+		String querybms= " declare @usuario_autorizacion varchar(5),@folio varchar(10) " + 
+				        "  select @usuario_autorizacion='"+orden.getFolio_usuario_bms()+"' , @folio='"+orden.getFolio_orden_de_compra()+"' " + 
+				        " UPDATE pedprv SET fecha_autorizacion = getdate() " + 
+				        "                  ,usuario_autorizacion = @usuario_autorizacion" + 
+				        "				   ,status = 'A'" + 
+				        "        WHERE (folio = @folio) AND (Transaccion = '30')" + 
+   				        " UPDATE mpedprv SET cantidad_autorizada = cantidad_pedida " + 
+				        "        WHERE (folio = @folio) AND (transaccion = '30')";
+		Connection con    = new Connexion().conexion       ();
+		Connection conbms = new Connexion().conexion_IZAGAR();
+		PreparedStatement pstmt    = null;
+		PreparedStatement pstmtbms = null;
+		
+		try {
+			con.setAutoCommit(false);
+			pstmt    = con.prepareStatement(query);
+			pstmtbms = conbms.prepareStatement(querybms);
+		
+			for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setInt   (1 ,  orden.getFolio());
+				pstmt.setString(2 ,  orden.getFolio_orden_de_compra());
+				pstmt.setString(3 ,  orden.getTabla_productos()[i][0].toString().trim());
+				pstmt.setString(4 ,  orden.getTabla_productos()[i][2].toString().trim());			
+				pstmt.setString(5 ,  orden.getTabla_productos()[i][3].toString().trim());
+				pstmt.setString(6 ,  orden.getTabla_productos()[i][4].toString().trim());
+				pstmt.setString(7 ,  orden.getTabla_productos()[i][5].toString().trim());
+				pstmt.setString(8 ,  orden.getTabla_productos()[i][6].toString().trim());
+				pstmt.setString(9 ,  orden.getTabla_productos()[i][7].toString().trim());
+				pstmt.setString(10,  orden.getTabla_productos()[i][14].toString().trim());
+				pstmt.setString(11,  orden.getTabla_productos()[i][15].toString().trim());
+				pstmt.setInt   (12,  usuario.getFolio());
+				pstmt.setString(13,  orden.getTabla_productos()[i][16].toString().trim());//aqui van las observaciones_del_que_autoriza
+				pstmt.setString(14,  orden.GuardarActualizar);
+			
+				pstmt.executeUpdate();
+			} 	
+			con.commit();
+			
+			pstmtbms.executeUpdate( );
+			conbms.commit();
+		
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Compra ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_solicitud_de_benchmarking (Obj_Orden_De_Compra orden){
+		orden.setFolio( busca_y_actualiza_proximo_folio(62) );
+		int cantidad_filas=orden.getTabla_productos().length;	
+		String query = "exec orden_de_compra_solicitud_bechmarking ?,?,?,?,?,?,?,?,?,?,?,?,?" ;		
+		Connection con    = new Connexion().conexion       ();
+		PreparedStatement pstmt    = null;
+ 
+		try {
+			con.setAutoCommit(false);
+			pstmt    = con.prepareStatement(query);
+//			 @folio int, @folio_orden_de_compra varchar(20), @cod_prod varchar(13),  @cantidad numeric(16,2), @precio_orden_compra numeric(16,2), @costo_promedio numeric(16,2), @precio_venta numeric(16,2),
+//	           @margen numeric(4,2), @margen_familia numeric(4,2), @folio_razon int, @observaciones varchar(500), @usuario_solicita int,@guardar_actualizar char(1)
+	           
+			for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setInt   (1 ,  orden.getFolio());
+				pstmt.setString(2 ,  orden.getFolio_orden_de_compra());
+				pstmt.setString(3 ,  orden.getTabla_productos()[i][0].toString().trim());
+				pstmt.setString(4 ,  orden.getTabla_productos()[i][2].toString().trim());			
+				pstmt.setString(5 ,  orden.getTabla_productos()[i][3].toString().trim());
+				pstmt.setString(6 ,  orden.getTabla_productos()[i][4].toString().trim());
+				pstmt.setString(7 ,  orden.getTabla_productos()[i][5].toString().trim());
+				pstmt.setString(8 ,  orden.getTabla_productos()[i][6].toString().trim());
+				pstmt.setString(9 ,  orden.getTabla_productos()[i][7].toString().trim());
+				pstmt.setString(10,  orden.getTabla_productos()[i][14].toString().trim());
+				pstmt.setString(11,  orden.getTabla_productos()[i][15].toString().trim());
+				pstmt.setInt   (12,  usuario.getFolio());
+				pstmt.setString(13,  orden.GuardarActualizar);
+				pstmt.executeUpdate();
+			} 	
+			con.commit();
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_solicitud_de_benchmarking ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 	
 	public boolean reactivarMerma(int folio_de_merma){
 		

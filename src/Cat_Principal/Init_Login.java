@@ -16,6 +16,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -58,6 +59,7 @@ import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.CLabel;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCPasswordField;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_Menus;
@@ -67,10 +69,11 @@ import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Init_Login extends JFrame{
-
 	
 	public Container cont = getContentPane();
 	public JLayeredPane panel = new JLayeredPane();
+	JLabel fondo = new JLabel();
+	int Version=1294;
 	
 	String color[] =  new Obj_Menus().Combo_Colores();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -170,11 +173,11 @@ public class Init_Login extends JFrame{
 	
 	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio Empleado", 10, "Int");
 	JTextField txtUsuario = new JTextField("");
-	JPasswordField txtContrasena = new Componentes().textPassword(new JPasswordField(), "Contraseña", 50);
+	JPasswordField txtContrasena = new Componentes().textPassword(new JCPasswordField(), "Contraseña", 50);
  	
-	JPasswordField txtContrasenaActual = new Componentes().textPassword(new JPasswordField(), "Contraseña Actual", 50); 
-	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JPasswordField(), "Contraseña Nueva", 50);
-	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JPasswordField(), "Confirmar Contraseña", 50);
+	JPasswordField txtContrasenaActual = new Componentes().textPassword(new JCPasswordField(), "Contraseña Actual", 50); 
+	JPasswordField txtContrasenaNueva = new Componentes().textPassword(new JCPasswordField(), "Contraseña Nueva", 50);
+	JPasswordField txtContrasenaConfirmar = new Componentes().textPassword(new JCPasswordField(), "Confirmar Contraseña", 50);
 	
 	JCButton btnSalir             = new JCButton("Salir"             ,"logout-icone-6625-16.png","AzulO");
 	JCButton btnCambiarContrasena = new JCButton("Cambiar Contraseña","signo-kgpg-icono-4248-16.png","AzulO");
@@ -204,10 +207,26 @@ public class Init_Login extends JFrame{
              }
         });
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
         cont.setBackground(new java.awt.Color(255, 255, 255));
-    	
-        Resolucion(ancho, alto);
+        int VersionValida=0;	
+		 
+        VersionValida= new BuscarSQL().VersionValida();
+		
+		
+		if(Version<VersionValida ) {
+		  JOptionPane.showMessageDialog(null, "La Version "+Version+" Que Tiene Instalada Es Obsoleta Es Requerido Solicite Actualizacion \nPara Poder Utilizar El Sistema.\n\nSolo Es Funcional Apartir De La Version "+VersionValida+"." ,"Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));        
+
+		  this.panel.add(fondo).setBounds    (200,0 ,1024,600);
+		  this.panel.add(btnCerrar).setBounds(  0,0 ,64,64);
+			btnCerrar.addActionListener(Opciones);
+	      ImageIcon imagen_estatus = new ImageIcon(System.getProperty("user.dir")+"/Imagen/Logotipo_IZAGAR.jpg");
+	      Icon icono_estatus = new ImageIcon(imagen_estatus.getImage().getScaledInstance(550, 550, Image.SCALE_DEFAULT));
+	      fondo.setIcon(icono_estatus);
+		  cont.add(panel);
+	     return;
+		}else {
+           Resolucion(ancho, alto);
+		}
 		
 		// buscar usuario con F2
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -281,17 +300,8 @@ public class Init_Login extends JFrame{
 	
 	
 	public void Resolucion(int ancho, int alto){
-		
-//		Cat_Reloj_Sincronizado_Servidor reloj =new Cat_Reloj_Sincronizado_Servidor();
-		
 		if(ancho > 1024){
-			
-//			reloj.lblHora.setFont(new java.awt.Font("Algerian",0,70));
-//			panel.add(reloj.lblHora).setBounds(1030,230,400,100);
-			
 			panel.add(lblLogo).setBounds(920,0,400,218);
-			
-//			panel.add(btnFoto).setBounds(1010,380,100,95);
 			panel.add(fotolb).setBounds(1080,380,100,95);
 			panel.add(cmbcolores).setBounds(1215,460,70,20);
 			
@@ -304,8 +314,6 @@ public class Init_Login extends JFrame{
 			panel.add(btnCortes_Cajeros).setBounds                (x     ,y+=115,z,z);	
 			panel.add(btnSolSer).setBounds                 (x     ,y+=115,z,z);
 			panel.add(btnServicios).setBounds          (x     ,y+=115,z,z);  
-	
-			
 
 			y = 60;
 			panel.add(lblFuente_sodascajeras).setBounds  (x+=75 ,y     ,zl,w);
@@ -748,7 +756,6 @@ public class Init_Login extends JFrame{
 			if(txtContrasenaNueva.getText().trim().toLowerCase().equals(txtContrasenaConfirmar.getText().trim().toLowerCase())) {
 			String nuevacontrasena = algoritmo.cryptMD5(txtContrasenaNueva.getText().trim(), "izagar").trim();
 			boolean user = new Obj_Usuario().CambiarContrasena( Integer.valueOf(txtFolio.getText()),nuevacontrasena);
-			System.out.println("valido"+nuevacontrasena);
 			txtContrasenaActual.setText("");
 			txtContrasenaNueva.setText("");
 			txtContrasenaConfirmar.setText("");

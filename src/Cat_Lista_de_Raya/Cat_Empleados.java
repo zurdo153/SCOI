@@ -98,6 +98,8 @@ import Obj_Lista_de_Raya.Obj_Sueldos;
 import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCPasswordField;
+import Obj_Principal.JCTextArea;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
@@ -142,7 +144,7 @@ public class Cat_Empleados extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	JLayeredPane panelReporte = new JLayeredPane();
 	
-	JPasswordField txtChecador = new Componentes().textPassword(new JPasswordField(), "Contraseña del Checador", 100);
+	JPasswordField txtChecador = new Componentes().textPassword(new JCPasswordField(), "Contraseña del Checador", 100);
 	
 	JLabel lblDatosPersonales = new JLabel();
 	JLabel lblLaboral = new JLabel();
@@ -229,7 +231,6 @@ public class Cat_Empleados extends JFrame{
 	JButton btnStatus                 = new JButton();
 	JButton btnLimpiarPerfil          = new JButton(".");
 	JButton btnAgregarPerfil          = new JButton(".");
-//	JButton btnExaminar = new JButton("Examinar");
 	
 	JDateChooser txtFechaNacimiento = new Componentes().jchooser(new JDateChooser()  ,"",0);
 	JDateChooser txtIngreso = new Componentes().jchooser(new JDateChooser()  ,"",0);
@@ -287,7 +288,7 @@ public class Cat_Empleados extends JFrame{
 	
 	JCheckBox chb_cuadrante_parcial = new JCheckBox("Permite Cuadrante Parcial",false);
 	
-	JTextArea txaObservaciones = new Componentes().textArea(new JTextArea(), "Observaciones", 980);
+	JTextArea txaObservaciones = new Componentes().textArea(new JCTextArea(), "Observaciones Del Colaborador", 980);
 	JScrollPane Observasiones = new JScrollPane(txaObservaciones);
 
 	String sexo[] = {"Selecciona un Genero","MASCULINO","FEMENINO"};
@@ -777,12 +778,10 @@ public class Cat_Empleados extends JFrame{
 	
 	public Icon crearIcon(byte[] bs){
 		ImageIcon tmpIconDefault= new ImageIcon(bs);
-		
-//			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+		//			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
 //			int altoRealDeImg = tmpIconDefault.getIconHeight();
 			int anchoDeImagenEscala = (btnFoto.getWidth());
 			int altoDeImgagenEscala = (btnFoto.getHeight());
-		 
 			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
 	}
 	

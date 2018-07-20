@@ -34,7 +34,7 @@ public class Cat_Servicio_Chat_Server{
 				serverConnector = new ServerSocket(content.Constant._SERVERPORT);
 				System.out.println("Puerto: "+Constant._SERVERPORT+" OK");
 				
-				final InetAddress address = InetAddress.getByName("192.168.2.10");
+				final InetAddress address = InetAddress.getByName("192.168.4.118");
 				System.out.println("IP S: "+address);
 				final String SO = System.getProperty("os.name");
 				System.out.println("Sistema Operarivo: "+SO+" Version: "+System.getProperty("os.version"));

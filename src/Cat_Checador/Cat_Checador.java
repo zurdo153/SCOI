@@ -59,6 +59,7 @@ import Conexiones_SQL.BuscarSQL;
 import Obj_Checador.Obj_Checador;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCPasswordField;
 import Obj_Principal.Obj_tabla;
 import rojerusan.componentes.RSProgressCircleAnimatedUno;
 
@@ -83,28 +84,25 @@ public class Cat_Checador extends JFrame {
         static int columnas = 9;
 		static int checkbox=-1;
         public static void init_tabla(){
-        	
             tabla.getTableHeader().setReorderingAllowed(false) ;
-            
             int x,y,z,decremento,incremento1,incremento2;
-            if(anchoMon <= 1380){
-            	x=45;
-                y=245;
-                z=60;
-                decremento=-10;
-                incremento1=10;
-                incremento2=30;
-            }else{
-            	x=50;
-                y=280;
-                z=80;
-                decremento=-40;
-                incremento1=30;
-                incremento2=10;
+	            if(anchoMon <= 1380){
+	            	x=45;
+	                y=245;
+	                z=60;
+	                decremento=-10;
+	                incremento1=10;
+	                incremento2=30;
+	            }else{
+	            	x=50;
+	                y=280;
+	                z=80;
+	                decremento=-40;
+	                incremento1=30;
+	                incremento2=10;
             }
             
             tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            
             tabla.getColumnModel().getColumn(0).setMaxWidth(x);
             tabla.getColumnModel().getColumn(0).setMinWidth(x);
             tabla.getColumnModel().getColumn(1).setMaxWidth(y);
@@ -184,7 +182,7 @@ public class Cat_Checador extends JFrame {
                 
                 JLabel lblClave = new JLabel("Clave:");
                 
-                JPasswordField txtClaveReal = new Componentes().textPassword(new JPasswordField(), "Clave", 30);
+                JPasswordField txtClaveReal = new Componentes().textPassword(new JCPasswordField(), "Clave", 30);
                 JCButton btnMaster = new JCButton("", "clave.png", "Azul");
 
                 JButton btnEmplorar = new JButton("");
@@ -1224,6 +1222,7 @@ public class Cat_Checador extends JFrame {
     		private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
     		
     		public Cat_Huellas_Personalizado(String formaDeChecar) {
+    			huellaAceptada=false;
     			this.setModal(true);
     			
     			checoCon = formaDeChecar;
@@ -1237,6 +1236,8 @@ public class Cat_Checador extends JFrame {
     			this.setLocationRelativeTo(null);
     			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     			
+//    			this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    			
     			panel.add(pca1).setBounds(0, 20, 270, 200);
     			
     			pca1.setString("Ingresar Huella");
@@ -1245,6 +1246,10 @@ public class Cat_Checador extends JFrame {
     			cont.add(panel);
     			
     	        this.addWindowListener(new java.awt.event.WindowAdapter() {
+    	        	public void windowClosed(WindowEvent e) {
+    	        		dispose();
+        			}
+    	        	
     	            public void windowClosing(java.awt.event.WindowEvent evt) {
     	                formWindowClosing(evt);
     	            }
@@ -1252,8 +1257,10 @@ public class Cat_Checador extends JFrame {
     	                formWindowOpened(evt);
     	            }
     	        });
-    		}
 
+    		}
+   		
+    		
     		private void formWindowOpened(java.awt.event.WindowEvent evt){
     	        Iniciar();
     	        start();
@@ -1261,7 +1268,6 @@ public class Cat_Checador extends JFrame {
 
     	    private void formWindowClosing(java.awt.event.WindowEvent evt) {
     	    	btn_salir_huella = true;
-    	    	System.out.println("cerar con btn Cerrar");
     	        stop();
     	    }
     	    
@@ -1377,9 +1383,6 @@ public class Cat_Checador extends JFrame {
 	 	    			muestra2 = checador.getHuella_2();
  	    		}
     	    	 
-    	    	System.out.println(muestra1);
-    	    	System.out.println(muestra2);
-    	    	 
     	        //Lee la plantilla de la base de datos
     	        byte[] templateBuffer1 = muestra1;
     	        //Crea una nueva plantilla a partir de la guardada en la base de datos
@@ -1398,9 +1401,6 @@ public class Cat_Checador extends JFrame {
     	        // plantilla guardada al usuario especifico en la base de datos
     	        DPFPVerificationResult result = Verificador.verify(muestra1==null?null:featuresverificacion, getTemplate());
     	        DPFPVerificationResult result2 = Verificador.verify(muestra2==null?null:featuresverificacion, getTemplate2());
-
-    	        System.out.println(result.isVerified());
-    	        System.out.println(result2.isVerified());
     	        //compara las plantilas (actual vs bd)
     	        if (result.isVerified() || result2.isVerified()){
     	        	huellaAceptada=true;
@@ -1419,7 +1419,7 @@ public class Cat_Checador extends JFrame {
     	    		}
     	        	
     	        }
-    	        System.out.println(huellaAceptada);
+
     	     }
 
     	}
@@ -1427,13 +1427,8 @@ public class Cat_Checador extends JFrame {
     	public static void main(String args[]){
     		try {
     			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//    			if(new BuscarSQL().equipoAutorizadoComoChecador()){
     				DPFPGlobal.getEnrollmentFactory().createEnrollment();
     				new Cat_Checador().setVisible(true);	
-//    			}else{
-//    				JOptionPane.showMessageDialog(null, "Este Equipo No Esta Autorizado Como Checador, Favor De Comunicarse Al Departamente De Sistemas", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-//		        	return;
-//    			}
     			
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | Error e) {
 				System.out.println(e.getMessage());

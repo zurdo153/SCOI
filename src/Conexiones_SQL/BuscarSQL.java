@@ -1319,6 +1319,7 @@ public class BuscarSQL {
 				usuario.setBfilaS(rs.getInt("BFilaS"));	
 				usuario.setTamanio_fuente(rs.getInt("tamanio_fuente"));	
 				usuario.setColor(rs.getString("color"));
+				usuario.setFoto(String_a_Bytes(  rs.getString("foto")));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1329,6 +1330,17 @@ public class BuscarSQL {
 		}
 		return usuario;
 	}
+	
+	public static byte[] String_a_Bytes (String s) {                   
+        String tmp;
+        byte[] b = new byte[s.length() / 2];
+        int i;
+        for (i = 0; i < s.length() / 2; i++) {
+          tmp = s.substring(i * 2, i * 2 + 2);
+          b[i] = (byte)(Integer.parseInt(tmp, 16) & 0xff);
+        }
+        return b;
+    }
 	
 	public Obj_Usuario BuscarUsuarios(int folio_empleado) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
@@ -1342,15 +1354,16 @@ public class BuscarSQL {
 				usuario.setNombre_completo(rs.getString("nombre_completo").trim());
 				usuario.setContrasena(rs.getString("contrasena").trim());
 				usuario.setStatus(rs.getInt("status"));
+				usuario.setFoto(String_a_Bytes(  rs.getString("foto")));
 				
-				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
-				FileOutputStream fos = new FileOutputStream(photo);
-				        byte[] buffer = new byte[1];
-				        InputStream is = rs.getBinaryStream("Foto");
-				        while (is.read(buffer) > 0) {
-				        	fos.write(buffer);
-				        }
-				        fos.close();
+//				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
+//				FileOutputStream fos = new FileOutputStream(photo);
+//				        byte[] buffer = new byte[1];
+//				        InputStream is = rs.getBinaryStream("Foto");
+//				        while (is.read(buffer) > 0) {
+//				        	fos.write(buffer);
+//				        }
+//				        fos.close();
 				
 			}
 			
@@ -2323,29 +2336,6 @@ public class BuscarSQL {
 			 if (stmt != null) { stmt.close(); }
 		}
 		return nomina;
-	}
-	
-
-	public String[][] getUsuarioPermisos(){
-		String datos = "exec sp_lista_usuarios_para_administracion_permisos";
-		String[][] Matriz = new String[getFilas(datos)][4];
-		Statement s;
-		ResultSet rs;
-		try {			
-			s = con.conexion().createStatement();
-			rs = s.executeQuery(datos);
-			int i=0;
-			while(rs.next()){
-				Matriz[i][0] = rs.getString(1);
-				Matriz[i][1] = rs.getString(2);
-				Matriz[i][2] = rs.getString(3);
-				Matriz[i][2] = rs.getString(4);
-				i++;
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return Matriz; 
 	}
 	
 	public int getFilas(String qry){
@@ -4539,8 +4529,8 @@ public class BuscarSQL {
 	public Obj_Retiros_Cajeros datos_cajero(Integer folio_empleado) throws SQLException{
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
 	    String pc_nombre="";
-	    pc_nombre="CAJA_REFA  ";
-	    folio_empleado= 156; 
+//	    pc_nombre="SV_CAJA5";
+//	    folio_empleado= 1822; 
 					try {
 	                 pc_nombre = InetAddress.getLocalHost().getHostName();
 					    			InetAddress.getLocalHost().getHostName();
@@ -4558,7 +4548,6 @@ public class BuscarSQL {
 						try {
 							stmt = con.conexion().createStatement();
 							stmt2= con.conexion_IZAGAR().createStatement();
-								
 							ResultSet rs = stmt.executeQuery(query);
 							ResultSet rs2= stmt2.executeQuery(query_2);
 									while(rs.next()){
@@ -4566,20 +4555,15 @@ public class BuscarSQL {
 										datos_empleado.setNombre(rs.getString("Nombre"));
 										datos_empleado.setPuesto(rs.getString("Puesto"));
 										datos_empleado.setPc(pc_nombre);
-										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
-										FileOutputStream fos = new FileOutputStream(photo);
-										        byte[] buffer = new byte[1];
-										        InputStream is = rs.getBinaryStream("Foto");
-										        while (is.read(buffer) > 0) {
-										        	fos.write(buffer);
-										        }
-										        fos.close();
+										datos_empleado.setFoto(String_a_Bytes(rs.getString("Foto")  ));
+										datos_empleado.setSegundos_a_esperar_antes_de_buscar_retiro(rs.getInt("Segundos"));
 							    	}
+									
 								   while(rs2.next()){
 									        datos_empleado.setImporte_total(rs2.getFloat(1));
 									        datos_empleado.setAsignacion_turno(rs2.getString(2));
 								 			datos_empleado.setEstablecimiento(rs2.getString(3));
-								 			datos_empleado.setCantidad_asignaciones_nombreturno(rs2.getString(4));
+								 			datos_empleado.setCantidad_asignaciones_nombreturno(rs2.getString(4));								 			
 								    }
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage()+" \n"+query_2, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
@@ -4594,37 +4578,26 @@ public class BuscarSQL {
 		return datos_empleado;
 	}
 
-	public Obj_Retiros_Cajeros datos_supervisor_retiro(String clave) throws SQLException{
+	public Obj_Retiros_Cajeros datos_supervisor_retiro(String folio_empleado, String clave) throws SQLException{
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
-		String query = "exec retiros_a_cajeros_datos_supervisor '"+clave+"'";
-		Statement stmt = null;
+		String query  = "exec retiros_a_cajeros_datos_supervisor '"+clave+"'";
+		Statement stmt  = null;
 						try {
-							stmt = con.conexion().createStatement();
-							ResultSet rs = stmt.executeQuery(query);
-							
-									while(rs.next()){										
+							stmt  = con.conexion().createStatement();
+							ResultSet rs  = stmt.executeQuery(query  );
+									while(rs.next()){		
 										datos_empleado.setFolio_supervisor(rs.getInt("Folio_Empleado"));
 										datos_empleado.setNombre_Supervisor(rs.getString("Nombre"));
 										datos_empleado.setExiste_supervisor(rs.getString("Existe"));
-										datos_empleado.setClave(rs.getString("Clave"));										
-										
-										if(rs.getString("Existe").equals("EXISTE")){
-										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_supervisor/supervisortmp.jpg");
-										FileOutputStream fos = new FileOutputStream(photo);
-										        byte[] buffer = new byte[1];
-										        InputStream is = rs.getBinaryStream("Foto");
-										        while (is.read(buffer) > 0) {
-										        	fos.write(buffer);
-										        }
-										        fos.close();
-										}										
+										datos_empleado.setClave(rs.getString("Clave"));	
+										if(!datos_empleado.getExiste_supervisor().equals("NO EXISTE"))
+										datos_empleado.setFotosupervisor(String_a_Bytes(rs.getString("Foto")  ));
 							    	}
-							
+									
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento : sp_select_datos_cajero  \n SQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n  en el procedimiento :\n SQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
 							System.out.println(query);
-;
 							return null;
 						}
 		finally{
@@ -4633,6 +4606,40 @@ public class BuscarSQL {
 		return datos_empleado;
 	}
 
+	public Obj_Retiros_Cajeros importes_retiros_cajeros(String folio_empleado ) throws SQLException{
+		Obj_Retiros_Cajeros ImportesRetirosCajeros = new Obj_Retiros_Cajeros();
+		String pc_nombre="";
+		try {
+            pc_nombre = InetAddress.getLocalHost().getHostName();
+			    			InetAddress.getLocalHost().getHostName();
+			} catch (UnknownHostException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion datos_cajero \n no se pudo obtener el nombre de la pc "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		
+		String query = "exec retiros_a_cajeros_consulta_hilo "+folio_empleado+",'"+pc_nombre+"'";
+		Statement stmt = null;
+						try {
+							stmt = con.conexion().createStatement();
+							ResultSet rs = stmt.executeQuery(query);
+									while(rs.next()){	
+										ImportesRetirosCajeros.setImporte_retiros_guardados(rs.getFloat(1));
+										ImportesRetirosCajeros.setValor_a_retirar_deacuerdo_al_dia(rs.getFloat(2));
+										ImportesRetirosCajeros.setImporte_nuevo(rs.getFloat(3));
+							    	}
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion importes_retiros_cajeros \n  SQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+							System.out.println(query);;
+							return null;
+						}
+		finally{
+			if(stmt!=null){stmt.close();}
+		}
+		return ImportesRetirosCajeros;
+	}
+	
 	
 	public String[][] getRetiros_a_detalle(int folio_cajero,String establecimiento){
 		String[][] Matriz = null;
@@ -5129,7 +5136,8 @@ public class BuscarSQL {
 		Obj_Retiros_Cajeros datos_empleado = new Obj_Retiros_Cajeros();
 		
 	   String pc_nombre="";
-//	 	pc_nombre ="SIV_CAJA1";
+//	 	pc_nombre ="F_CAJA1";
+//	 	folio_empleado=1139;
 	   
 					try {
 	   pc_nombre = InetAddress.getLocalHost().getHostName();
@@ -5175,20 +5183,17 @@ public class BuscarSQL {
 										datos_empleado.setPuesto(rs.getString("Puesto"));
 										datos_empleado.setPc(pc_nombre);
 										
-										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
-										FileOutputStream fos = new FileOutputStream(photo);
-										        byte[] buffer = new byte[1];
-										        InputStream is = rs.getBinaryStream("Foto");
-										        while (is.read(buffer) > 0) {
-										        	fos.write(buffer);
-										        }
-										        fos.close();
+//										File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_cajero/cajerotmp.jpg");
+//										FileOutputStream fos = new FileOutputStream(photo);
+//										        byte[] buffer = new byte[1];
+//										        InputStream is = rs.getBinaryStream("Foto");
+//										        while (is.read(buffer) > 0) {
+//										        	fos.write(buffer);
+//										        }
+//										        fos.close();
 							    	}
-
-									
 								   while(rs2.next()){
 								 			datos_empleado.setEstablecimiento(rs2.getString("establecimiento"));
-//											datos_empleado.setImporte_total(rs2.getFloat("importe"));
 											datos_empleado.setAsignacion_turno(rs2.getString("folio_asignacion"));
 								    }
 							
@@ -6017,31 +6022,10 @@ public class BuscarSQL {
 		return rp_cuenta;
 	}
 	
-	public Obj_Alta_Proveedores_Polizas Proveedor_Nuevo() throws SQLException{
-		Obj_Alta_Proveedores_Polizas prv = new Obj_Alta_Proveedores_Polizas();
-		String query = "exec sp_nuevo_proveedor";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				prv.setFolio_proveedor(rs.getInt("Maximo"));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		finally{
-			if(stmt!=null){stmt.close();}
-		}
-		return prv;
-	}
-	
 	public Obj_Alta_Proveedores_Polizas Proveedor(int folio_prv) throws SQLException{
 		Obj_Alta_Proveedores_Polizas prv = new Obj_Alta_Proveedores_Polizas();
 		
-		String query = "select folio_proveedor,nombre,ap_paterno,ap_materno,direccion,telefono from tb_proveedores where folio_proveedor = "+folio_prv;
+		String query = "select folio_proveedor,nombre,ap_paterno,ap_materno,direccion,telefono,plazo from tb_proveedores where folio_proveedor = "+folio_prv;
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -6053,6 +6037,7 @@ public class BuscarSQL {
 				prv.setAp_materno(rs.getString("ap_materno"));
 				prv.setDireccion(rs.getString("direccion"));
 				prv.setTelefono(rs.getString("telefono"));
+				prv.setPlazo(rs.getString("plazo"));
 			}
 			
 		} catch (Exception e) {
@@ -10855,7 +10840,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 			return Matriz;
 	 }
-			
 
 	public Obj_Descripcion_De_Puestos_y_Responsabilidades buscarDPR(int folioPuesto) throws SQLException{
 		Obj_Descripcion_De_Puestos_y_Responsabilidades dpr = new Obj_Descripcion_De_Puestos_y_Responsabilidades();
@@ -10928,6 +10912,44 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		}
 		return dpr;
 	}
+	
+	public String[][] usuario_valido(int folio_empleado){
+		String[][] Matriz = null;
+		String query = "exec orden_de_compra_usuario_valido "+folio_empleado;
+		Matriz = new String[getFilas(query)][2];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0]  = rs.getString( 1);
+				Matriz[i][1]  = rs.getString( 2);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz;
+    }
+	
+	public int VersionValida (){
+		String query ="select version_valida_desde  from tb_configuracion_sistema ";
+		int versionaactual = 0;
+		try { 
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			while(rs.next()){
+				versionaactual = rs.getInt(1);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en VersionValida  en la funcion [VersionValida] \n SQLException: "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+		}
+		return versionaactual;
+	}
+	
 	
 //	public ImageIcon crearImagIcon(){
 //		

@@ -24,9 +24,9 @@ import Obj_Principal.*;
 public class Init_Menu_Bar extends Init_Login{
 	public ArrayList<WP_Relation> relacion = new ArrayList<WP_Relation>();
     	JMenuBar Barra = new JMenuBar();
-	
+    	
 	public Init_Menu_Bar(){
-		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version 1.286");
+		this.setTitle("SCOI [Sistema de Control Operativo Izagar] Version "+Version);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/LOGO SCOI 64 X 64  PIX-01.png"));
 		btnAceptar.addActionListener(opLogin);
 		btnSalir.addActionListener(opSalir);
@@ -34,6 +34,7 @@ public class Init_Menu_Bar extends Init_Login{
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		this.setSize(ancho,alto);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		
 	 }	
 		
 	@SuppressWarnings("rawtypes")
@@ -214,16 +215,16 @@ public class Init_Menu_Bar extends Init_Login{
 					setJMenuBar(miMenuTop());
 					subMenusbotones();
 					user.Session();
+					
 					txtContrasena.setEnabled(false);
 					
-					///cargar foto del empleado///
-					fotolb.setVisible(true);
-					int folio_empleado =Integer.valueOf(txtFolio.getText());
-	        		new Obj_Usuario().BuscarUsuario(folio_empleado);
-	    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmp.jpg");
-	    	 		fotolb.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(140, 110, Image.SCALE_DEFAULT)));
+	    			ImageIcon fotoIcono= new ImageIcon(user.getFoto());
+	    	 		fotolb.setIcon(new ImageIcon(fotoIcono.getImage().getScaledInstance(140, 110, Image.SCALE_DEFAULT)));
 	    	 		
+					fotolb.setVisible(true);
 	    	 		cmbcolores.setVisible(false);
+	    	 		
+
 					if(Integer.valueOf(buscarRegistro_Contrato()[0])>0){
 						if(Integer.valueOf(buscarRegistro_Contrato()[1])>0){
 							new Cat_Aviso_Vencimiento_De_Contrato().setVisible(true);

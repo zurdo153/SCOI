@@ -1,4 +1,4 @@
-package Cat_Servicios;
+package Cat_Principal;
 import java.util.Properties;
 import javax.mail.Folder;
 import javax.mail.Message;

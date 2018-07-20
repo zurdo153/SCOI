@@ -1,8 +1,5 @@
 package Conexiones_SQL;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +8,6 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_SubMenus;
-
 
 public class SubMenusSQL {
 	Connexion con = new Connexion();
@@ -30,17 +26,16 @@ public class SubMenusSQL {
 				usuario.setNombre_completo(rs.getString("nombre_completo").trim());
 				usuario.setContrasena(rs.getString("contrasena").trim());
 				usuario.setStatus(rs.getInt("status"));
-				
-				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmpcat.jpg");
-				FileOutputStream fos = new FileOutputStream(photo);
-				        byte[] buffer = new byte[1];
-				        InputStream is = rs.getBinaryStream("Foto");
-				        while (is.read(buffer) > 0) {
-				        	fos.write(buffer);
-				        }
-				        fos.close();
+				usuario.setFoto(String_a_Bytes(rs.getString("Foto")  ));
+//				File photo = new File(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmpcat.jpg");
+//				FileOutputStream fos = new FileOutputStream(photo);
+//				        byte[] buffer = new byte[1];
+//				        InputStream is = rs.getBinaryStream("Foto");
+//				        while (is.read(buffer) > 0) {
+//				        	fos.write(buffer);
+//				        }
+//				        fos.close();
 			}
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,6 +48,17 @@ public class SubMenusSQL {
 		}
 		return usuario;
 	}
+	
+	public static byte[] String_a_Bytes (String s) {                   
+        String tmp;
+        byte[] b = new byte[s.length() / 2];
+        int i;
+        for (i = 0; i < s.length() / 2; i++) {
+          tmp = s.substring(i * 2, i * 2 + 2);
+          b[i] = (byte)(Integer.parseInt(tmp, 16) & 0xff);
+        }
+        return b;
+    }
 	
 	@SuppressWarnings("unchecked")
 	public String[] Relacion_de_SubMenus(int menu_principal) throws SQLException{

@@ -34,6 +34,7 @@ import Obj_Evaluaciones.Obj_Opciones_De_Respuestas;
 import Obj_Evaluaciones.Obj_Temporada;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCTextArea;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
@@ -79,10 +80,10 @@ public class Cat_Actividades extends JFrame {
 	JTextField txtFolio      = new Componentes().text(new JCTextField(), "Folio Actividad", 20, "Int");
 	JTextField txttolerancia = new Componentes().text(new JCTextField(), "Tolerancia", 3, "Negativo");
 	
-	JTextArea txaActividad 	 = new Componentes().textArea(new JTextArea(), "Actividad", 200);
+	JTextArea txaActividad 	 = new Componentes().textArea(new JCTextArea(), "Actividad", 200);
 	JScrollPane scrollact    = new JScrollPane(txaActividad);
 	
-    JTextArea txaDescripcion = new Componentes().textArea(new JTextArea(), "Descripcion", 500);
+    JTextArea txaDescripcion = new Componentes().textArea(new JCTextArea(), "Descripcion", 500);
 	JScrollPane scrolltxa    = new JScrollPane(txaDescripcion);
 
 	String respuesta[] = new Obj_Opciones_De_Respuestas().Combo_Respuesta();

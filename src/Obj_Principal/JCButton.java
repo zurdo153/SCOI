@@ -10,6 +10,9 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import Obj_Efectos.RippleEffect;
+
+
 @SuppressWarnings("serial")
 public class JCButton extends JButton{
     //CA color Base
@@ -18,13 +21,14 @@ public class JCButton extends JButton{
     private Color CA    =   new Color(7  , 255 , 7);
     private Color CB    =   new Color(98  ,255  ,103);
     private Color CD    =   new Color(32 ,198  ,38);
+    private RippleEffect ripple;
     
     public JCButton(String Texto, String Imagen, String color){
         super();
         if(color.equals("Azul")){
             CA    =   new Color(77,135,237);
             CB    =   new Color(110,160,239);
-            CD    =   new Color(25,92,198);
+            CD    =   new Color(25,92,198);     
             setForeground(new Color(255, 255, 255));
             setBackground(CA);  
         }
@@ -93,12 +97,15 @@ public class JCButton extends JButton{
             setBackground(CA);  
         }
         
+       
         setContentAreaFilled(false);
         setOpaque(false);
         setBorderPainted(false);
         setFont(new Font("Tahoma", 1, 12));
         setText(Texto);
         setIcon(new ImageIcon("Imagen/"+Imagen));
+        ripple = RippleEffect.applyTo(this);
+       
     }
     
     @Override
@@ -108,11 +115,20 @@ public class JCButton extends JButton{
        
        GradientPaint gGradientPaint = new GradientPaint(0, 0, CA, 0, getHeight()/2, CB, true);
 
+       
         if (getModel().isPressed()) {
             gGradientPaint = new GradientPaint(0, 0, CD, 0, getHeight()/2, CA, true);
         } 
         g2.setPaint(gGradientPaint);
         g2.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 10, 10));
+        
+        
+        if (isEnabled()) {
+            g2.setClip(new RoundRectangle2D.Float(0, 0, getWidth() , getHeight() , 0, 0));
+            g2.setColor(Color.BLACK);
+            ripple.paint(g2);
+        }
+        
         super.paintComponent(g2);
     }
-}//JCButton:end
+}

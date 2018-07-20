@@ -65,7 +65,7 @@ public class Componentes {
 		}
 	}
 	
-	public final JPasswordField textPassword(final JPasswordField tmp, final String caption, final int longitud){
+	public final JPasswordField textPassword(final JCPasswordField tmp, final String caption, final int longitud){
 		tmp.addKeyListener(new KeyListener() {
 			@SuppressWarnings("deprecation")
 			public void keyTyped(KeyEvent e) {
@@ -79,11 +79,12 @@ public class Componentes {
 			public void keyPressed(KeyEvent e) {}
 		});
 		
+	    ((JCPasswordField) tmp).setPlaceholder(caption);
+	    ((JCPasswordField) tmp).setPhColor( new Color(0,0,255) );
+	    tmp.setFont( new Font("SansSerif",Font.PLAIN, 12) );
 		tmp.setToolTipText(caption);
 		return tmp;
 	}
-	
-
 	
 	public final JTextArea textArea(final JTextArea tmp, final String caption, final int longitud){
 		tmp.addKeyListener(new KeyListener() {
@@ -96,12 +97,17 @@ public class Componentes {
 			public void keyReleased(KeyEvent e) {}
 			public void keyPressed(KeyEvent e) {}
 		});
+		
+		if(tmp.getClass().getSimpleName().equals("JCTextArea")){
+		((JCTextArea) tmp).setPlaceholder(caption);
+		((JCTextArea) tmp).setPhColor( new Color(0,0,255) );
+		}
+		
 		tmp.setToolTipText(caption);
 		tmp.setLineWrap(true); 
 		tmp.setWrapStyleWord(true);
 		tmp.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
-		Font font = new Font("Arial", Font.BOLD, 12);
-		tmp.setFont(font );
+		
 		return tmp;
 	}
 	

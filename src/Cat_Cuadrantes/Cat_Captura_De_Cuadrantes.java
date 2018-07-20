@@ -44,6 +44,7 @@ import Conexiones_SQL.Generacion_Reportes;
 import Obj_Cuadrantes.Obj_Cuadrantes;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCPasswordField;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
@@ -180,7 +181,7 @@ public class Cat_Captura_De_Cuadrantes extends JFrame{
 	JTextField txtBuscarSabado     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Sabado<<<"   ,500 , "String",tablaSabado   ,columnas );
 	JTextField txtBuscarDomingo    = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla Domingo<<<"  ,500 , "String",tablaDomingo  ,columnas );
 	
-	JPasswordField txtFolio = new Componentes().textPassword(new JPasswordField(), "Clave", 100);
+	JPasswordField txtFolio = new Componentes().textPassword(new JCPasswordField(), "Clave", 100);
 			
 	JTextField txtColaborador    = new Componentes().text(new JCTextField()  , "Nombre Colaborador", 200                                     , "String");
 	JTextField txtfolioColaborado= new Componentes().text(new JCTextField()  , "Folio Colaborador", 50                                       , "String");

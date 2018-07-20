@@ -5,10 +5,9 @@ import java.sql.SQLException;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
-
-
 public class Obj_Retiros_Cajeros {
-	
+	byte[] foto;
+	byte[] fotosupervisor;
 	Integer folio_empleado;
 	Integer folio_supervisor;
 	
@@ -22,10 +21,62 @@ public class Obj_Retiros_Cajeros {
 	String clave;
 	String folio_retiro;
 	String cantidad_asignaciones_nombreturno;
+	int segundos_a_esperar_antes_de_buscar_retiro;
 	
 	float retiro_cajero;
-	float  importe_total;
+	float importe_total;
+	float importe_nuevo;
+	float importe_retiros_guardados;
+	float valor_a_retirar_deacuerdo_al_dia;
 	
+	public int getSegundos_a_esperar_antes_de_buscar_retiro() {
+		return segundos_a_esperar_antes_de_buscar_retiro;
+	}
+
+	public void setSegundos_a_esperar_antes_de_buscar_retiro(int segundos_a_esperar_antes_de_buscar_retiro) {
+		this.segundos_a_esperar_antes_de_buscar_retiro = segundos_a_esperar_antes_de_buscar_retiro;
+	}
+
+	public byte[] getFotosupervisor() {
+		return fotosupervisor;
+	}
+
+	public void setFotosupervisor(byte[] fotosupervisor) {
+		this.fotosupervisor = fotosupervisor;
+	}
+
+	public float getImporte_nuevo() {
+		return importe_nuevo;
+	}
+
+	public void setImporte_nuevo(float importe_nuevo) {
+		this.importe_nuevo = importe_nuevo;
+	}
+
+	public float getImporte_retiros_guardados() {
+		return importe_retiros_guardados;
+	}
+
+	public void setImporte_retiros_guardados(float importe_retiros_guardados) {
+		this.importe_retiros_guardados = importe_retiros_guardados;
+	}
+
+	public float getValor_a_retirar_deacuerdo_al_dia() {
+		return valor_a_retirar_deacuerdo_al_dia;
+	}
+
+	public void setValor_a_retirar_deacuerdo_al_dia(float valor_a_retirar_deacuerdo_al_dia) {
+		this.valor_a_retirar_deacuerdo_al_dia = valor_a_retirar_deacuerdo_al_dia;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+
 	public Integer getFolio_empleado() {
 		return folio_empleado;
 	}
@@ -156,9 +207,18 @@ public class Obj_Retiros_Cajeros {
 	return null; 
 	}
 	
-	public Obj_Retiros_Cajeros buscarSupervisor(String clave){ 
+	public Obj_Retiros_Cajeros buscarimportes_retiros_cajeros(String folio_empleado){ 
 		try {
-			return new BuscarSQL().datos_supervisor_retiro(clave);
+			return new BuscarSQL().importes_retiros_cajeros(folio_empleado);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null; 
+	}
+	
+	public Obj_Retiros_Cajeros buscarSupervisor(String folio_empleado, String clave){ 
+		try {
+			return new BuscarSQL().datos_supervisor_retiro(folio_empleado, clave);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

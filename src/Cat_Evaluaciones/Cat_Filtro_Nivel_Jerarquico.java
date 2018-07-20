@@ -97,8 +97,6 @@ public class Cat_Filtro_Nivel_Jerarquico extends JFrame{
 	
 	public void filtro() { 
 		ObjTabf.Obj_Filtro(tabla, txtBuscar.getText().toUpperCase(), 3,txtBuscar);
-		
-//			trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().toUpperCase().trim(), 1));
 	}  
 	
 	

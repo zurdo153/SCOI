@@ -519,39 +519,6 @@ public class Cargar_Combo {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String[] Usuario() throws SQLException{
-		String query = "select distinct tb_empleado.folio, tb_empleado.nombre+' '+tb_empleado.ap_paterno+' '+tb_empleado.ap_materno as usuario from tb_permisos_submenus_usuarios inner join tb_empleado on tb_empleado.folio=tb_permisos_submenus_usuarios.folio_empleado where tb_empleado.status in (1,2,3,6) order by usuario";
-		
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			int j=0;
-			while(rs.next()){
-				if(j == 0){
-					miVector.add("Selecciona Un Usuario");
-				}
-				miVector.add(rs.getString("usuario"));
-				j++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}finally{
-			if(stmt!=null){stmt.close();}
-		}
-		int i=0;
-		String[] pila= new String[miVector.size()];
-		
-		while(i < miVector.size()){
-			pila[i]= miVector.get(i).toString();
-			i++;
-		}
-		return pila;
-	}
-	
-	@SuppressWarnings("unchecked")
 	public String[] Tipo_Banco(String tabla) throws SQLException{
 		String query = "select nombre from " + tabla;
 		Statement stmt = null;

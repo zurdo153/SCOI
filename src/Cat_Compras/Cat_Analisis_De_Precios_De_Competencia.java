@@ -1,5 +1,7 @@
 package Cat_Compras;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
@@ -29,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Filtros_IZAGAR.Cat_Filtro_De_Busqueda_De_Productos;
@@ -53,37 +56,30 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	JDateChooser c_inicio = new Componentes().jchooser(new JDateChooser()  ,"",0);
 	
-	String operadorProducto[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
+	String operadorgeneral[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","No Este en Lista"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Productos = new JComboBox(operadorProducto);
+	JComboBox cmbOperador_Productos = new JComboBox(operadorgeneral);
 	
-	String operadorClase[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Clase = new JComboBox(operadorClase);
+	JComboBox cmbOperador_Clase = new JComboBox    (operadorgeneral);
 
-	String operadorCategoria[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Categoria= new JComboBox(operadorCategoria);
+	JComboBox cmbOperador_Categoria= new JComboBox (operadorgeneral);
 	
-	String operadorFamilia[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Familia = new JComboBox(operadorFamilia);
+	JComboBox cmbOperador_Familia = new JComboBox  (operadorgeneral);
 	
-	String operadorLinea[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Linea = new JComboBox(operadorLinea);
+	JComboBox cmbOperador_Linea = new JComboBox    (operadorgeneral);
 	
-	String operadorTalla[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Talla = new JComboBox(operadorTalla);
+	JComboBox cmbOperador_Talla = new JComboBox    (operadorgeneral);
 	
-	String operadorLocalizacion[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Localizacion = new JComboBox(operadorLocalizacion);
+	JComboBox cmbOperador_Localizacion = new JComboBox(operadorgeneral);
 	
-	String operadorPasillo[] = {"Todos","Igual","Esta en lista","Menor que","Mayor que","Diferente"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbOperador_Pasillo = new JComboBox(operadorPasillo);
+	JComboBox cmbOperador_Pasillo = new JComboBox  (operadorgeneral);
 	
 	
 	String establecimientosbms[] = new Obj_Establecimiento().Combo_Establecimiento201();
@@ -133,7 +129,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	JTextField txtFiltroLocalizacion = new Componentes().text(new JCTextField()  , "Filtro Localizacion", 500      , "String");
 	JTextField txtFiltroPasillo      = new Componentes().text(new JCTextField()  , "Filtro Pasillo"     , 500      , "String");
 	
-	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+10);
+	int cantidad_de_columnas =  (new Obj_Reportes_De_Ventas().cantidad_de_competidores()+13);
 	DefaultTableModel model = new DefaultTableModel(0,cantidad_de_columnas){
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int columnIndex) {
@@ -155,41 +151,76 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	 return lista;
    };
 	
-	JTable tabla = new JTable(model);
+//	JTable tabla = new JTable(model);
+	
+	 JTable tabla = new JTable(model){
+    	 public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
+    	        Component componente = super.prepareRenderer(renderer, row, col);
+    	        if(col==6){
+                  float margen_ordeno = Float.valueOf(tabla.getValueAt(row,6).toString().trim());
+                  float margen_meta   = Float.valueOf(tabla.getValueAt(row,7).toString().trim());
+                  Color c = Color.green;
+                     if(margen_meta>margen_ordeno) {                          
+                    	 c = new java.awt.Color(255,0,0); 
+                     }
+                     componente.setBackground(c);
+    	        }
+    	        
+    	        if(col==12){
+                    float venta = Float.valueOf(tabla.getValueAt(row,12).toString().trim());
+             
+                       if(venta<=0) {                          
+                    	   Color c = Color.lightGray;
+                      	  componente.setBackground(c);
+                       }
+                     
+      	        }
+    	        
+    	        
+    	     return componente;
+    	 }
+    };
+    
 	private JScrollPane getPanelTabla()	{		
-		int a=90,b=300;
-		
-		tabla.getColumnModel().getColumn(0).setHeaderValue("Cod_Prod");
-		tabla.getColumnModel().getColumn(0).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(0).setMinWidth(a);
-		tabla.getColumnModel().getColumn(1).setHeaderValue("Descripcion");
-		tabla.getColumnModel().getColumn(1).setMaxWidth(b*2+a);
-		tabla.getColumnModel().getColumn(1).setMinWidth(b+a);
-		tabla.getColumnModel().getColumn(2).setHeaderValue("Costo Promedio");
-		tabla.getColumnModel().getColumn(2).setMaxWidth(a);
-		tabla.getColumnModel().getColumn(2).setMinWidth(a);
-		tabla.getColumnModel().getColumn(3).setHeaderValue("Ultimo Costo");
+		int a=95,b=300;
+		tabla.getColumnModel().getColumn(0).setHeaderValue("Familia");
+		tabla.getColumnModel().getColumn(0).setMinWidth(150);
+		tabla.getColumnModel().getColumn(1).setHeaderValue("Cod_Prod");
+		tabla.getColumnModel().getColumn(1).setMaxWidth(a);
+		tabla.getColumnModel().getColumn(1).setMinWidth(a);
+		tabla.getColumnModel().getColumn(2).setHeaderValue("Descripcion");
+		tabla.getColumnModel().getColumn(2).setMaxWidth(b*2+a);
+		tabla.getColumnModel().getColumn(2).setMinWidth(b+a);
+		tabla.getColumnModel().getColumn(3).setHeaderValue("Costo Promedio Actual");
 		tabla.getColumnModel().getColumn(3).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(3).setMinWidth(a);
-		tabla.getColumnModel().getColumn(4).setHeaderValue("Precio De Venta");
+		tabla.getColumnModel().getColumn(4).setHeaderValue("Ultimo Costo Actual");
 		tabla.getColumnModel().getColumn(4).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(4).setMinWidth(a);
-		tabla.getColumnModel().getColumn(5).setHeaderValue("Margen");
+		tabla.getColumnModel().getColumn(5).setHeaderValue("Precio De Venta Actual");
 		tabla.getColumnModel().getColumn(5).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(5).setMinWidth(a);
-		tabla.getColumnModel().getColumn(6).setHeaderValue("Margen Meta Familia");
+		tabla.getColumnModel().getColumn(6).setHeaderValue("Margen");
+		tabla.getColumnModel().getColumn(6).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(6).setMinWidth(a);
-		tabla.getColumnModel().getColumn(7).setHeaderValue("Localización");
+		tabla.getColumnModel().getColumn(7).setHeaderValue("Margen Meta Familia");
 		tabla.getColumnModel().getColumn(7).setMinWidth(a);
-		tabla.getColumnModel().getColumn(8).setHeaderValue("Pasillo");
+		tabla.getColumnModel().getColumn(8).setHeaderValue("Precio De Oferta Actual");
+		tabla.getColumnModel().getColumn(8).setMaxWidth(a);
 		tabla.getColumnModel().getColumn(8).setMinWidth(a);
-		tabla.getColumnModel().getColumn(9).setHeaderValue("Precio de Venta Captura");
+		tabla.getColumnModel().getColumn(9).setHeaderValue("Localización");
 		tabla.getColumnModel().getColumn(9).setMinWidth(a);
+		tabla.getColumnModel().getColumn(10).setHeaderValue("Pasillo");
+		tabla.getColumnModel().getColumn(10).setMinWidth(a);
+		tabla.getColumnModel().getColumn(11).setHeaderValue("Precio de Venta Captura");
+		tabla.getColumnModel().getColumn(11).setMinWidth(a);
+		tabla.getColumnModel().getColumn(12).setHeaderValue("Venta Ult. 90/dias");
+		tabla.getColumnModel().getColumn(12).setMinWidth(a);
 		
 		try {
 			String[] competidor = new Obj_Reportes_De_Ventas().lista_de_competidores();
-			for(int i=10; i<cantidad_de_columnas; i++){
-				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-10)].toString());
+			for(int i=13; i<cantidad_de_columnas; i++){
+				tabla.getColumnModel().getColumn(i).setHeaderValue(competidor[(i-13)].toString());
 				tabla.getColumnModel().getColumn(i).setMaxWidth(a+20);
 				tabla.getColumnModel().getColumn(i).setMinWidth(a+20);
 			}
@@ -206,10 +237,12 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	}
     
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
-	
+	@SuppressWarnings("rawtypes")
+	private TableRowSorter trsfiltro;
 	String parametroGeneral = "";
 	String Lista="";
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Cat_Analisis_De_Precios_De_Competencia(String parametro, String operador){
 		int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -223,6 +256,9 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		setTitle("Analisis De Precios De Competencia");
 		panel.setBorder(BorderFactory.createTitledBorder("Analisis De Precios De Competencia"));
 		
+		this.trsfiltro = new TableRowSorter(model); 
+		this.tabla.setRowSorter(trsfiltro);
+		
 		btn_buscar_ultimos_mov.setText(	"<html><FONT FACE=arial black SIZE=3 COLOR=WHITE><CENTER><p>Buscar Ultimas Cotizaciones Del Producto</p></CENTER></FONT></html>"); 
 		
 		int x=15 ;
@@ -234,7 +270,6 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 		panel.add(c_inicio).setBounds                                             (x+=185,y ,90  ,a);
 		panel.add(txtcod_prod ).setBounds                                         (x+=105,y ,120 ,a);
 		panel.add(JLBdescripcion).setBounds                                       (x+130 ,y ,450 ,a);
-
 		
 		x=100;
 		panel.add(new JLabel("Filtro De Productos:")             ).setBounds(x-85,y+=30,l+50,a);
@@ -312,7 +347,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	    		case "Esta en lista":operador_simbolo=" in "; break;
 	    		case "Menor que"	:operador_simbolo=" < "; break;
 	    		case "Mayor que"	:operador_simbolo=" > "; break;
-	    		case "Diferente"	:operador_simbolo=" <> "; break;
+	    		case "No Este en Lista"	:operador_simbolo=" not in "; break;
     		}
         	txtFiltroProducto.setText(operador_simbolo+parametro);
         	cmbOperador_Productos.setSelectedItem(operador);
@@ -354,7 +389,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 	
 	public void render_tabla(){
 		for(int i = 0; i < cantidad_de_columnas; i++){
-			if(i<=1){
+			if(i<=2){
 				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","normal",12));
 			}else{
 				tabla.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","normal",12));
@@ -699,8 +734,8 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
     	btnLimpiarFiltroLinea.setEnabled(true);
     	btnLimpiarFiltroTalla.setEnabled(true);
 	}
-	
-//TODO FILTRO DE  CLASIFICADORES
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+///////////////////////////TODO FILTRO DE  CLASIFICADORES/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 	public class Cat_Filtro_Dinamico extends JDialog {
 				
 				Container cont = getContentPane();
@@ -736,7 +771,7 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 			            @Override
 			            public void setValueAt(Object value, int row, int col) {
 			                super.setValueAt(value, row, col);
-			                if(!Operador.equals("Esta en lista")){
+			                if(!(Operador.equals("Esta en lista")||Operador.equals("No Este en Lista"))   ){
 			                	if (col == 2 && value.equals(Boolean.TRUE))
 			                    deselectValues(row, col);
 			                }
@@ -860,11 +895,12 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
 				 			    		panelEnableFalse();
 				 			    		
 				 			    		break;
-				 			    		case "Diferente"	:operador_simbolo=" <> "; 
+				 			    		case "No Este en Lista"	:operador_simbolo=" not in "; 
 				 			    		panelEnableFalse();
 				 			    		
 				 			    		break;
 				 		    		}
+				 		            
 				 				Lista=operador_simbolo+Lista;
 				 				switch(folio_columna){
 				 				           

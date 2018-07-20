@@ -41,7 +41,7 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 
 	String operador[] = {"Selecciona Un Reporte"
 			                ,"Saldo de Banco Interno en un Periodo por Cuenta" 
-			                ,"Gastos Pendientes de Realizar Corte" 
+			                ,"Pagos Realizados Pendientes de Realizar Corte" 
 							};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
@@ -100,6 +100,7 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 		 cmb_conceptosolicitud.setEnabled(booleano);
 		 cmbcuenta_bancaria.setSelectedIndex(0);
 		 cmb_conceptosolicitud.setSelectedIndex(0);
+		 cmbEstablecimiento.setEnabled(booleano);
 	}
 	
 	public String validar_campos(){
@@ -151,12 +152,14 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 				 c_final.setEnabled(true);
 				 cmbcuenta_bancaria.setEnabled(true);
 				 cmbcuenta_bancaria.showPopup();
+				 cmbEstablecimiento.setEnabled(true);
 			 }
 			 
-			 if(concepto.equals("Gastos Pendientes de Realizar Corte" )){
-				 c_inicio.setEnabled(true);
-				 c_final.setEnabled(true);
-				 cmb_conceptosolicitud.setEnabled(true);
+			 if(concepto.equals("Pagos Realizados Pendientes de Realizar Corte" )){
+				 c_inicio.setEnabled(false);
+				 c_final.setEnabled(false);
+				 cmb_conceptosolicitud.setEnabled(false);
+				 cmbEstablecimiento.setEnabled(false);
 			 }
 			 
 		}
@@ -185,8 +188,8 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 									reporte ="Obj_Reporte_De_Saldo_Banco_Interno.jrxml";
 							    }
 								
-								if(concepto.equals("Gastos Pendientes de Realizar Corte" )){
-									comando="exec ordenes_de_gasto_reporte_de_pagos_pendientes_de_rembolsar '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+cmbEstablecimiento.getSelectedItem().toString()+"','BENEFICIARIO','"+cmb_conceptosolicitud.getSelectedItem().toString()+"'";
+								if(concepto.equals("Pagos Realizados Pendientes de Realizar Corte" )){
+									comando="exec ordenes_de_gasto_reporte_de_pagos_de_caja_chica_sin_corte";
 									reporte ="Obj_Reporte_De_Banco_Interno_Ordenes_De_Gasto_Pendientes_De_Realizar_Corte.jrxml";
 							    }
 								

@@ -44,6 +44,7 @@ import Obj_Compras.Obj_Ubicaciones_De_Productos;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCPasswordField;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
@@ -129,7 +130,7 @@ public class Cat_Registro_De_Entrada_y_Salida_De_Proveedores extends JFrame{
 	JTextField txtFechaGuardo     = new Componentes().text(new JCTextField(), "Fecha Guardo"                     ,200        ,"String");
 	JTextField txtcodigo_prod     = new Componentes().text(new JCTextField(), "Codigo del Producto"              ,15         ,"String");
 	
-	JPasswordField PtxtClave   = new Componentes().textPassword(new JPasswordField(), "Clave", 100);
+	JPasswordField PtxtClave   = new Componentes().textPassword(new JCPasswordField(), "Clave", 100);
 	
 	String status[] = {"Vigente","Cancelado"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -7,8 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Enumeration;
@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -33,11 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-
-
-
-
-
+import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNode;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeEditor;
 import Obj_Administracion_del_Sistema.Obj_CheckBoxNodeRenderer;
@@ -45,7 +42,11 @@ import Obj_Administracion_del_Sistema.Obj_MD5;
 import Obj_Administracion_del_Sistema.Obj_NombreVector;
 import Obj_Administracion_del_Sistema.Obj_SubMenus;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
+import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
+import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
+import Obj_Principal.Obj_tabla;
 
 
 @SuppressWarnings("serial")
@@ -54,24 +55,7 @@ public class Cat_Usuarios extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane campo = new JLayeredPane();
 	
-//	public int cantidad_submenus(int menu){
-//		int cantidad_submenusp=0;
-//	try {
-//		 cantidad_submenusp= new SubMenusSQL().cantidad_submenus(4);
-//	} catch (SQLException e1) {
-//		e1.printStackTrace();
-//	}
-//	return cantidad_submenusp;
-//	}
-//	
-//	public Obj_CheckBoxNode[] tipos(int menu,String[] nombre){
-//		Obj_CheckBoxNode[] tip = new Obj_CheckBoxNode[cantidad_submenus(menu)];
-//		for(int i =0; i<tip.length-1; i++){
-//			new Obj_CheckBoxNode(nombre[i], false);
-//		}
-//		return tip;
-//	}
-	
+	Obj_Usuario user = new Obj_Usuario().LeerSession();
 	// MENU PRICIPAL ADMINISTRACION DEL SISTEMA  (1) select nombre from tb_submenu where menu_principal = 1 order by nombre asc
 	String[] Sub_Administracion_del_Sistema = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(1);
 	
@@ -385,15 +369,31 @@ public class Cat_Usuarios extends JFrame{
 	JScrollPane scrolltree = new JScrollPane(tree);
 	
 	Obj_CheckBoxNodeRenderer  renderer = new Obj_CheckBoxNodeRenderer ();	
-	String[][] Matriz = new Obj_SubMenus().UsuarioMatriz();
 	
-	DefaultTableModel model = new DefaultTableModel(Matriz,
-			new String[]{"Folio", "Nombre", "Usuario"}){
-		public boolean isCellEditable(int fila, int columna){
-			if(columna < 0)
-				return true;
-			return false;
-		}
+	Obj_tabla ObjTab =new Obj_tabla();
+	
+	int columnasb = 3,checkbox=-1;
+	public void init_tabla(){
+    	this.tabla.getColumnModel().getColumn( 0).setMinWidth(55);
+    	this.tabla.getColumnModel().getColumn( 1).setMinWidth(260);
+		 String comandob=" exec usuarios_lista_para_administracion_permisos '"+user.getFolio()+"'" ;
+		String basedatos="98",pintar="si";
+		ObjTab.Obj_Refrescar(tabla,model, columnasb, comandob, basedatos,pintar,checkbox);
+    }
+
+	@SuppressWarnings("rawtypes")
+	public Class[] base (){
+		Class[] types = new Class[columnasb];
+		for(int i = 0; i<columnasb; i++){types[i]= java.lang.Object.class;}
+		 return types;
+	}
+	
+	public DefaultTableModel model = new DefaultTableModel(null, new String[]{"Folio", "Nombre", "Usuario"}){
+		 @SuppressWarnings("rawtypes")
+			Class[] types = base();
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+			public boolean isCellEditable(int fila, int columna){return false;}
 	};
 	
 	JTable tabla = new JTable(model);
@@ -409,66 +409,70 @@ public class Cat_Usuarios extends JFrame{
 	JPasswordField txtContrasena = new JPasswordField();
 	JPasswordField txtContrasena1 = new JPasswordField();
     
-	JButton btnFoto = new JButton();
-	JButton btnUsuariovigente = new JButton(new ImageIcon("imagen/usuario-icono-vigente7340-64.png"));
-	JButton btnNoEsUsuario = new JButton(new ImageIcon("imagen/usuario-icono-noes_usuario9131-64.png"));
-	JButton btnNuevo  = new JButton(new ImageIcon("imagen/usuario-icono-editar8476-64.png"));
-	JButton btnGuardar = new JButton("Guardar",new ImageIcon("imagen/Guardar.png"));
+	JButton btnGuardar        = new JCButton("Guardar","Guardar.png"                     ,"Azul" );
+	JButton btnFoto           = new JCButton(""  ,""                                     ,"Azul" );
+	JButton btnUsuariovigente = new JCButton(""  ,"usuario-icono-vigente7340-64.png"     ,"Azul" );
+	JButton btnNoEsUsuario    = new JCButton(""  ,"usuario-icono-noes_usuario9131-64.png","Cafe" );
+	JButton btnfiltroclonar   = new JCButton(""  ,"Usuario.png"                          ,"Azul" );
+	JButton btnDefault        = new JCButton("Aplicar Contraseña Default Al Usuario Seleccionado","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png","Cafe");
+	JButton btnNuevo          = new JButton(new ImageIcon("imagen/usuario-icono-editar8476-64.png"));
 	
 	String establecimiento[] = new Obj_SubMenus().Combo_Usuarios();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbempleado_usuario = new JComboBox(establecimiento);
-
-	JButton btnDefault = new JButton("Contraseña default");
+	
+    JTextField txtFolio_usuario = new JTextField();
+	JTextField txtNombre_usuario = new JTextField();
 	
 	@SuppressWarnings("unchecked")
 	public Cat_Usuarios(){
+		this.setSize(905,560);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Usuarios y Permisos");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/usuario-grupo-icono-5183-64.png"));
 		
 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.jpg");
- 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
+ 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(90, 85, Image.SCALE_DEFAULT)));
 		
 		tabla.setRowSorter(trsfiltro);  
 		
 		campo.setBorder(BorderFactory.createTitledBorder("Usuarios y Permisos"));
+		init_tabla();
 		
-		campo.add(scrolltree).setBounds(10,50,350,350);
-				
-		campo.add(txtFolioFiltro).setBounds(370,20,68,20);
-		campo.add(txtNombre_CompletoFiltro).setBounds(440,20,208,20);
-		campo.add(btnDefault).setBounds(650,20,150,20);
-		campo.add(scrolltable).setBounds(370,50,430,350);	
+		int x=10, y =15 ,h=20;
 		
-		tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-		tabla.getColumnModel().getColumn(0).setMinWidth(70);
-		tabla.getColumnModel().getColumn(1).setMaxWidth(210);
-		tabla.getColumnModel().getColumn(1).setMinWidth(210);
+		campo.add(txtFolioFiltro).setBounds                            (x     ,20  ,68 ,h  );
+		campo.add(txtNombre_CompletoFiltro).setBounds                  (x+68  ,20  ,362,h  );
+		campo.add(scrolltable).setBounds                               (x     ,40  ,430,480);
 		
-		int y = 415;
-		campo.add(new JLabel("Folio:")).setBounds(120,y,90,20);
-		campo.add(txtFolio).setBounds(170,y,100,20);
-
-		campo.add(new JLabel("Clonar Permisos del Usuario:")).setBounds(570,y,200,20);
-		campo.add(cmbempleado_usuario).setBounds(570, y+20, 200, 20);
-		campo.add(new JLabel("Usuario:")).setBounds(120,y+=25,90,20);
-		campo.add(txtNombre_Completo).setBounds(170,y,210,20);
+		campo.add(btnFoto).setBounds                                   (x=450 ,y+=5   ,100 ,95 );
+		campo.add(new JLabel("Folio:")).setBounds                      (x+110 ,y      ,90  ,h  );		
+		campo.add(txtFolio).setBounds                                  (x+160 ,y      ,100 ,h  );
+		campo.add(btnGuardar).setBounds                                (x+270 ,y      ,100 ,h  );
+		campo.add(btnNoEsUsuario).setBounds                            (x+375 ,y      ,64  ,64 );
+		campo.add(btnUsuariovigente).setBounds                         (x+375 ,y      ,64  ,64 );
+		campo.add(btnNuevo).setBounds                                  (x+375 ,y      ,64  ,64 );
 		
-		campo.add(btnGuardar).setBounds(280,y+=35,100,20);
-		campo.add(btnFoto).setBounds(10,y-70,100,95);
-		campo.add(btnNoEsUsuario).setBounds(390,415,64,64);
-		campo.add(btnUsuariovigente).setBounds(390,415,64,64);
-		campo.add(btnNuevo).setBounds(390,415,64,64);
+		campo.add(new JLabel("Usuario:")).setBounds                    (x+110 ,y+=25  ,90  ,h  );
+		campo.add(txtNombre_Completo).setBounds                        (x+160 ,y      ,210 ,h  );
+		campo.add(new JLabel("Clonar Permisos del Usuario:")).setBounds(x+110 ,y+=25  ,200 ,h  );
+		campo.add(cmbempleado_usuario).setBounds                       (x+110 ,y+=20  ,260 ,h  );		
+		campo.add(btnfiltroclonar).setBounds                           (x+370 ,y      ,20 ,h  );		
+		campo.add(btnDefault).setBounds                                (x     ,y+=35  ,370 ,h  );	
+		campo.add(scrolltree).setBounds                                (x     ,y+=25  ,438 ,370);
 		
 		btnNuevo.setVisible(true);
 		btnNoEsUsuario.setVisible(false);
 	    btnUsuariovigente.setVisible(false);
 		cont.add(campo);
 		
+		btnfiltroclonar.addActionListener(opAbrirFiltroUserClonar);
 		btnGuardar.addActionListener(opguardar);
 		txtFolioFiltro.addKeyListener(opFiltroFolio);
 		txtNombre_CompletoFiltro.addKeyListener(opFiltroNombre);
-		tabla.addMouseListener(opMouse);
+		seleccion_usuario(tabla);
 		
 		tree.setCellRenderer(renderer);
 		tree.setCellEditor(new Obj_CheckBoxNodeEditor(tree));
@@ -480,11 +484,6 @@ public class Cat_Usuarios extends JFrame{
 		btnDefault.setEnabled(false);
 		
 		btnDefault.addActionListener(contraseniaDefault);
-	
-		this.setSize(830,550);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
         this.addWindowListener(new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
@@ -494,12 +493,16 @@ public class Cat_Usuarios extends JFrame{
 		
 	}
 	
+	ActionListener opAbrirFiltroUserClonar = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Cat_Filtro_User_Clonar().setVisible(true);
+		}
+	};
+	
 	boolean usuario = false;
 	ActionListener contraseniaDefault = new ActionListener(){
 		@SuppressWarnings("static-access")
 		public void actionPerformed(ActionEvent e){
-			
-			
 			if(!validaCampos().equals("")){
 			    	JOptionPane.showMessageDialog(null,"Seleccione un Usuario","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			    	return;
@@ -521,166 +524,183 @@ public class Cat_Usuarios extends JFrame{
 			}
 		}
 	};
-
-			    	
-	MouseAdapter opMouse = new MouseAdapter(){
+		
 	
-		@SuppressWarnings("rawtypes")
-		public void mouseClicked(MouseEvent arg0){
-			if(arg0.getClickCount() == 1){
-				int fila = tabla.getSelectedRow();
-    			int folio_empleado = Integer.valueOf(tabla.getValueAt(fila, 0).toString());
-    			Object Nombre_Completo = tabla.getValueAt(fila, 1);
-    			
-    			btnNoEsUsuario.setVisible(false);
-    		    btnUsuariovigente.setVisible(false);
-    		    
-    		    btnDefault.setEnabled(true);
-    		    
+	private void seleccion_usuario(final JTable tbl) {
+		tbl.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {
+		 	 if(e.getClickCount() != 0){funcion_agregar();}
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e)  {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {}
+		});
+		tbl.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e)  {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					funcion_agregar();	
+				}
+			}
+			public void keyReleased(KeyEvent e)   {}
+			public void keyTyped   (KeyEvent e)   {}
+		});
+    }
+	
+    @SuppressWarnings("rawtypes")
+	public void funcion_agregar() {
+
+			int fila = tabla.getSelectedRow();
+			int folio_empleado = Integer.valueOf(tabla.getValueAt(fila, 0).toString());
+			Object Nombre_Completo = tabla.getValueAt(fila, 1);
+			
+			btnNoEsUsuario.setVisible(false);
+		    btnUsuariovigente.setVisible(false);
+		    
+		    btnDefault.setEnabled(true);
+		    
+			txtFolio.setText(folio_empleado+"");
+    		txtNombre_Completo.setText(Nombre_Completo.toString());
+    		
+    		Obj_SubMenus usuario = new Obj_SubMenus().BuscarUsuariosua(folio_empleado);
+    		
+    		ImageIcon fotoIcono= new ImageIcon(usuario.getFoto());
+    		btnFoto.setIcon(new ImageIcon(fotoIcono.getImage().getScaledInstance(90, 85, Image.SCALE_DEFAULT)));
+
+			if(new Obj_Usuario().ExisteUsuario(folio_empleado) == true){
+									
 				txtFolio.setText(folio_empleado+"");
         		txtNombre_Completo.setText(Nombre_Completo.toString());
         		
-               ///cargar foto del empleado///
+        		txtContrasena.setText(usuario.getContrasena());
+        		btnUsuariovigente.setVisible(true);
         		
-        		Obj_SubMenus usuario = new Obj_SubMenus().BuscarUsuariosua(folio_empleado);
-    	 		ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp_usuario/usuariotmpcat.jpg");
-    	 		btnFoto.setIcon(new ImageIcon(tmpIconAux.getImage().getScaledInstance(110, 90, Image.SCALE_DEFAULT)));
+        		Vector catalogo = new Obj_Usuario().returnPermisos(folio_empleado,1);
+        		for(int i = 0; i<Administracion_del_sistema.length; i++){
+        			Administracion_del_sistema[i].setSelected(Boolean.parseBoolean(catalogo.get(i).toString()));
+        		}
+        		tree.collapseRow(0);      	
         		
-				if(new Obj_Usuario().ExisteUsuario(folio_empleado) == true){
-										
-					txtFolio.setText(folio_empleado+"");
-	        		txtNombre_Completo.setText(Nombre_Completo.toString());
-	        		
-	        		txtContrasena.setText(usuario.getContrasena());
-	        		btnUsuariovigente.setVisible(true);
-	        		
-	        		Vector catalogo = new Obj_Usuario().returnPermisos(folio_empleado,1);
-	        		for(int i = 0; i<Administracion_del_sistema.length; i++){
-	        			Administracion_del_sistema[i].setSelected(Boolean.parseBoolean(catalogo.get(i).toString()));
-	        		}
-	        		tree.collapseRow(0);
-	        		
-	        		Vector auditoria = new Obj_Usuario().returnPermisos(folio_empleado, 2);
-	        		for(int i=0; i <Auditoria.length; i ++){
-	        			Auditoria[i].setSelected(Boolean.parseBoolean(auditoria.get(i).toString()));
-	        		}
-	        		tree.collapseRow(1);
-	        		
-	        		Vector checador = new Obj_Usuario().returnPermisos(folio_empleado, 3);
-	        		for(int i = 0; i<Checador.length; i ++){
-	        			Checador[i].setSelected(Boolean.parseBoolean(checador.get(i).toString()));
-	        		}
-	        		tree.collapseRow(2);
-	        		
-	        		Vector cuadrantes_alimentacion = new Obj_Usuario().returnPermisos(folio_empleado, 4);
-	        		for(int i = 0; i<Contabilidad.length; i ++){
-	        			Contabilidad[i].setSelected(Boolean.parseBoolean(cuadrantes_alimentacion.get(i).toString()));
-	        		}
-	        		tree.collapseRow(3);
-	        		
-	        		Vector evaluaciones = new Obj_Usuario().returnPermisos(folio_empleado, 5);
-	        		for(int i = 0; i<Evaluaciones.length; i ++){
-	        			Evaluaciones[i].setSelected(Boolean.parseBoolean(evaluaciones.get(i).toString()));
-	        		}
-	        		tree.collapseRow(4);
-	        		
-	        		Vector lista_de_Raya = new Obj_Usuario().returnPermisos(folio_empleado, 6);
-	        		for(int i = 0; i<Lista_de_Raya.length; i ++){
-	        			Lista_de_Raya[i].setSelected(Boolean.parseBoolean(lista_de_Raya.get(i).toString()));
-	        		}
-	        		tree.collapseRow(5);
-	        		
-	        		Vector reportes_especiales = new Obj_Usuario().returnPermisos(folio_empleado, 7);
-	        		for(int i = 0; i<Reportes_Especiales.length; i ++){
-	        			Reportes_Especiales[i].setSelected(Boolean.parseBoolean(reportes_especiales.get(i).toString()));
-	        		}
-	        		tree.collapseRow(6);
-	        		
-	        		Vector compras = new Obj_Usuario().returnPermisos(folio_empleado, 8);
-	        		for(int i = 0; i<Compras.length; i ++){
-	        			Compras[i].setSelected(Boolean.parseBoolean(compras.get(i).toString()));
-	        		}
-	        		tree.collapseRow(7);
-	        		
-	        		Vector punto_de_venta = new Obj_Usuario().returnPermisos(folio_empleado, 9);
-	        		for(int i = 0; i<Punto_de_Venta.length; i ++){
-	        			Punto_de_Venta[i].setSelected(Boolean.parseBoolean(punto_de_venta.get(i).toString()));
-	        		}
-	        		tree.collapseRow(8);
-	        		
-	        		Vector inventarios = new Obj_Usuario().returnPermisos(folio_empleado, 10);
-	        		for(int i = 0; i<Inventarios.length; i ++){
-	        			Inventarios[i].setSelected(Boolean.parseBoolean(inventarios.get(i).toString()));
-	        		}
-	        		tree.collapseRow(9);
-	        		
-					Vector servicios = new Obj_Usuario().returnPermisos(folio_empleado, 11);
-	        		for(int i = 0; i<Servicios.length; i ++){
-	        			Servicios[i].setSelected(Boolean.parseBoolean(servicios.get(i).toString()));
-	        		}
-	        		tree.collapseRow(9);
-	        		
-				}else{
-					
-					btnNoEsUsuario.setVisible(true);
-					
-	        		for(int i = 0; i<Administracion_del_sistema.length; i++){
-	        			Administracion_del_sistema[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(0);
-	        		
-	        		for(int i=0; i <Auditoria.length; i ++){
-	        			Auditoria[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(1);
-	        		
-	        		for(int i = 0; i<Checador.length; i ++){
-	        			Checador[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(2);
-	        		
-	        		for(int i = 0; i<Contabilidad.length; i ++){
-	        			Contabilidad[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(3);
-	        		
-	        		for(int i = 0; i<Evaluaciones.length; i ++){
-	        			Evaluaciones[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(4);
-	        		
-	        		for(int i = 0; i<Lista_de_Raya.length; i ++){
-	        			Lista_de_Raya[i].setSelected(false);
-	        		}
-	        		for(int i = 0; i<Reportes_Especiales.length; i ++){
-	        			Reportes_Especiales[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(5);
-	        		
-	        		for(int i = 0; i<Compras.length; i ++){
-	        			Compras[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(6);
-	        		
-	        		for(int i = 0; i<Punto_de_Venta.length; i ++){
-	        			Punto_de_Venta[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(7);
-	        		
-	        		for(int i = 0; i<Inventarios.length; i ++){
-	        			Inventarios[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(8);
-	        		
-	        		for(int i = 0; i<Servicios.length; i ++){
-	        			Servicios[i].setSelected(false);
-	        		}
-	        		tree.collapseRow(9);
-	        		
-				}        		
-			}
+        		Vector auditoria = new Obj_Usuario().returnPermisos(folio_empleado, 2);
+        		for(int i=0; i <Auditoria.length; i ++){
+        			Auditoria[i].setSelected(Boolean.parseBoolean(auditoria.get(i).toString()));
+        		}
+        		tree.collapseRow(1);
+        		
+        		Vector checador = new Obj_Usuario().returnPermisos(folio_empleado, 3);
+        		for(int i = 0; i<Checador.length; i ++){
+        			Checador[i].setSelected(Boolean.parseBoolean(checador.get(i).toString()));
+        		}
+        		tree.collapseRow(2);
+        		
+        		Vector cuadrantes_alimentacion = new Obj_Usuario().returnPermisos(folio_empleado, 4);
+        		for(int i = 0; i<Contabilidad.length; i ++){
+        			Contabilidad[i].setSelected(Boolean.parseBoolean(cuadrantes_alimentacion.get(i).toString()));
+        		}
+        		tree.collapseRow(3);
+        		
+        		Vector evaluaciones = new Obj_Usuario().returnPermisos(folio_empleado, 5);
+        		for(int i = 0; i<Evaluaciones.length; i ++){
+        			Evaluaciones[i].setSelected(Boolean.parseBoolean(evaluaciones.get(i).toString()));
+        		}
+        		tree.collapseRow(4);
+        		
+        		Vector lista_de_Raya = new Obj_Usuario().returnPermisos(folio_empleado, 6);
+        		for(int i = 0; i<Lista_de_Raya.length; i ++){
+        			Lista_de_Raya[i].setSelected(Boolean.parseBoolean(lista_de_Raya.get(i).toString()));
+        		}
+        		tree.collapseRow(5);
+        		
+        		Vector reportes_especiales = new Obj_Usuario().returnPermisos(folio_empleado, 7);
+        		for(int i = 0; i<Reportes_Especiales.length; i ++){
+        			Reportes_Especiales[i].setSelected(Boolean.parseBoolean(reportes_especiales.get(i).toString()));
+        		}
+        		tree.collapseRow(6);
+        		
+        		Vector compras = new Obj_Usuario().returnPermisos(folio_empleado, 8);
+        		for(int i = 0; i<Compras.length; i ++){
+        			Compras[i].setSelected(Boolean.parseBoolean(compras.get(i).toString()));
+        		}
+        		tree.collapseRow(7);
+        		
+        		Vector punto_de_venta = new Obj_Usuario().returnPermisos(folio_empleado, 9);
+        		for(int i = 0; i<Punto_de_Venta.length; i ++){
+        			Punto_de_Venta[i].setSelected(Boolean.parseBoolean(punto_de_venta.get(i).toString()));
+        		}
+        		tree.collapseRow(8);
+        		
+        		Vector inventarios = new Obj_Usuario().returnPermisos(folio_empleado, 10);
+        		for(int i = 0; i<Inventarios.length; i ++){
+        			Inventarios[i].setSelected(Boolean.parseBoolean(inventarios.get(i).toString()));
+        		}
+        		tree.collapseRow(9);
+        		
+				Vector servicios = new Obj_Usuario().returnPermisos(folio_empleado, 11);
+        		for(int i = 0; i<Servicios.length; i ++){
+        			Servicios[i].setSelected(Boolean.parseBoolean(servicios.get(i).toString()));
+        		}
+        		tree.collapseRow(9);
+        		
+			}else{
+				
+				btnNoEsUsuario.setVisible(true);
+				
+        		for(int i = 0; i<Administracion_del_sistema.length; i++){
+        			Administracion_del_sistema[i].setSelected(false);
+        		}
+        		tree.collapseRow(0);
+        		
+        		for(int i=0; i <Auditoria.length; i ++){
+        			Auditoria[i].setSelected(false);
+        		}
+        		tree.collapseRow(1);
+        		
+        		for(int i = 0; i<Checador.length; i ++){
+        			Checador[i].setSelected(false);
+        		}
+        		tree.collapseRow(2);
+        		
+        		for(int i = 0; i<Contabilidad.length; i ++){
+        			Contabilidad[i].setSelected(false);
+        		}
+        		tree.collapseRow(3);
+        		
+        		for(int i = 0; i<Evaluaciones.length; i ++){
+        			Evaluaciones[i].setSelected(false);
+        		}
+        		tree.collapseRow(4);
+        		
+        		for(int i = 0; i<Lista_de_Raya.length; i ++){
+        			Lista_de_Raya[i].setSelected(false);
+        		}
+        		for(int i = 0; i<Reportes_Especiales.length; i ++){
+        			Reportes_Especiales[i].setSelected(false);
+        		}
+        		tree.collapseRow(5);
+        		
+        		for(int i = 0; i<Compras.length; i ++){
+        			Compras[i].setSelected(false);
+        		}
+        		tree.collapseRow(6);
+        		
+        		for(int i = 0; i<Punto_de_Venta.length; i ++){
+        			Punto_de_Venta[i].setSelected(false);
+        		}
+        		tree.collapseRow(7);
+        		
+        		for(int i = 0; i<Inventarios.length; i ++){
+        			Inventarios[i].setSelected(false);
+        		}
+        		tree.collapseRow(8);
+        		
+        		for(int i = 0; i<Servicios.length; i ++){
+        			Servicios[i].setSelected(false);
+        		}
+        		tree.collapseRow(9);
+        		
+     		
 		}
-	};
+    };
 	
 	ActionListener opguardar = new ActionListener(){
 		@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -781,6 +801,91 @@ public class Cat_Usuarios extends JFrame{
 		if(txtNombre_Completo.getText().equals("")) error+= "Nombre Completo\n";
 		return error;
 	}
+	
+	//TODO inicia filtro_puestos	
+	public class Cat_Filtro_User_Clonar extends JDialog{
+		Container contf = getContentPane();
+		JLayeredPane panelf = new JLayeredPane();
+		Connexion con = new Connexion();
+		Obj_tabla ObjTab =new Obj_tabla();
+			int columnasp2 = 2,checkbox2=-1;
+			public void init_tablafp2(){
+		    	this.tablafp2.getColumnModel().getColumn(0).setMinWidth(55);
+		    	this.tablafp2.getColumnModel().getColumn(1).setMinWidth(375);
+		    	String comandof="exec usuarios_filtro_clonar ";
+				String basedatos="26",pintar="si";
+				ObjTab.Obj_Refrescar(tablafp2,modelof2, columnasp2, comandof, basedatos,pintar,checkbox2);
+		    }
+			
+			@SuppressWarnings("rawtypes")
+			public Class[] base2 (){
+				Class[] types = new Class[columnasp2];
+				for(int i = 0; i<columnasp2; i++){types[i]= java.lang.Object.class;}
+				 return types;
+			}
+			
+			public DefaultTableModel modelof2 = new DefaultTableModel(null, new String[]{"Folio","Nombre Colaborador"}){
+				 @SuppressWarnings("rawtypes")
+					Class[] types = base2();
+					@SuppressWarnings({ "rawtypes", "unchecked" })
+					public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+					public boolean isCellEditable(int fila, int columna){return false;}
+			};
+			
+			JTable tablafp2 = new JTable(modelof2);
+			public JScrollPane scroll_tablafp2 = new JScrollPane(tablafp2);
+		     @SuppressWarnings({ "rawtypes" })
+		    private TableRowSorter trsfiltro2;
+		     
+		JTextField txtBuscarfp  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tablafp2,columnasp2);
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Cat_Filtro_User_Clonar(){
+			this.setSize(500,500);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+			this.panelf.setBorder(BorderFactory.createTitledBorder("Selecione Un Colaborador Con Doble Click"));
+			this.setTitle("Filtro De Colaboradores Disponibles Para Clonar");
+			trsfiltro2 = new TableRowSorter(modelof2); 
+			tablafp2.setRowSorter(trsfiltro2);
+			this.panelf.add(txtBuscarfp).setBounds       (10 ,20 ,470 , 20 );
+			this.panelf.add(scroll_tablafp2).setBounds   (10 ,40 ,470 ,415 );
+			this.init_tablafp2();
+			this.agregar(tablafp2);
+			contf.add(panelf);
+		}
+		
+		private void agregar(final JTable tbl) {
+			tbl.addMouseListener(new MouseListener() {
+				public void mouseReleased(MouseEvent e) {
+			 	 if(e.getClickCount() == 2){funcion_agregar();}
+				}
+				public void mousePressed(MouseEvent e) {}
+				public void mouseExited(MouseEvent e)  {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) {}
+			});
+			tbl.addKeyListener(new KeyListener() {
+				public void keyPressed(KeyEvent e)  {
+					if(e.getKeyCode()==KeyEvent.VK_ENTER){
+						funcion_agregar();	
+					}
+				}
+				public void keyReleased(KeyEvent e)   {}
+				public void keyTyped   (KeyEvent e)   {}
+			});
+	    }
+	    public void funcion_agregar() {
+	    	int fila = tablafp2.getSelectedRow();
+		    cmbempleado_usuario.setSelectedItem(tablafp2.getValueAt(fila,1)+"");
+		dispose();
+	    };
+	    
+		
+	}
+	
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

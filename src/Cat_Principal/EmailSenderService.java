@@ -32,6 +32,11 @@ public class EmailSenderService {
 		 clave="Ragazi/*-1";
 		}
 		
+		if(correo.equals("benchmarking")) {
+			 de="scoi.benchmarking@gmail.com";
+			 clave="Ragazi/*-1";
+			}
+		
 		try{
 		String host="smtp.gmail.com";
 

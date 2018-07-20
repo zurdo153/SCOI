@@ -42,6 +42,7 @@ import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCTextArea;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Catalogo_Servicios;
@@ -142,8 +143,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	
 	JLabel lblUsuario           = new JLabel("");
 	JLabel lblDepartamento      = new JLabel("");
-	JTextArea txaDetalle        = new Componentes().textArea(new JTextArea(), "", 500);
-	JTextArea txaNotas          = new Componentes().textArea(new JTextArea(), "", 500);
+	JTextArea txaDetalle        = new Componentes().textArea(new JCTextArea(), "Detalle De La Solicitud", 500);
+	JTextArea txaNotas          = new Componentes().textArea(new JCTextArea(), "Notas", 500);
 	JScrollPane scrollDetalle   = new JScrollPane(txaDetalle);
 	JScrollPane scrollNotas     = new JScrollPane(txaNotas);
 	

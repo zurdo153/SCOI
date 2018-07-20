@@ -2,12 +2,10 @@ package Obj_Contabilidad;
 
 import java.sql.SQLException;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
-import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.GuardarSQL;
 
-public class Obj_Alta_Proveedores_Polizas {
+public class Obj_Alta_Proveedores_Polizas{
 
 	int folio_proveedor;
 	String nombre;
@@ -15,7 +13,25 @@ public class Obj_Alta_Proveedores_Polizas {
 	String ap_materno;
 	String direccion;
 	String telefono;
+	String Plazo;
+	String GuardarActualizar;
 	
+	public String getGuardarActualizar() {
+		return GuardarActualizar;
+	}
+
+	public void setGuardarActualizar(String guardarActualizar) {
+		GuardarActualizar = guardarActualizar;
+	}
+
+	public String getPlazo() {
+		return Plazo;
+	}
+
+	public void setPlazo(String plazo) {
+		Plazo = plazo;
+	}
+
 	public Obj_Alta_Proveedores_Polizas() {
 		this.folio_proveedor=0;	this.nombre="";	this.ap_paterno="";	this.ap_materno="";	this.direccion="";	this.telefono="";
 	}
@@ -68,16 +84,8 @@ public class Obj_Alta_Proveedores_Polizas {
 		this.telefono = telefono;
 	}
 	
-	public Object[][] get_tabla_model(String busqueda){
-		return new BuscarTablasModel().tabla_model_cliente_proveedores(busqueda);
-	}
-	
-	public Obj_Alta_Proveedores_Polizas buscar_nuevo() throws SQLException{ return new BuscarSQL().Proveedor_Nuevo(); }
-	
 	public Obj_Alta_Proveedores_Polizas buscar(int folio_prv) throws SQLException{ return new BuscarSQL().Proveedor(folio_prv); }
 	
 	public boolean guardar(){ return new GuardarSQL().Guardar_Proveedor(this); }
-	
-	public boolean actualizar(){ return new ActualizarSQL().Proveedor(this); }
 	
 }

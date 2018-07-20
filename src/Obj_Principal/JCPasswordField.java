@@ -1,6 +1,5 @@
 package Obj_Principal;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -11,7 +10,6 @@ import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -24,7 +22,7 @@ import Obj_Efectos.SafePropertySetter;
 
 
 @SuppressWarnings("serial")
-public class JCTextField extends JTextField{
+public class JCPasswordField extends javax.swing.JPasswordField{
 
     private Dimension d = new Dimension(200,32);
     private String placeholder = "";
@@ -33,10 +31,11 @@ public class JCTextField extends JTextField{
     private final Line line = new Line(this);
     
     /** Constructor de clase */
-    public JCTextField( )
+    public JCPasswordField( )
     {
         super();
         setSize(d);
+     
         setPreferredSize(d);
         setVisible(true);
         setMargin( new Insets(3,6,3,6));
@@ -44,7 +43,8 @@ public class JCTextField extends JTextField{
       //atento a cambios 
         getDocument().addDocumentListener(new DocumentListener() {
 
-            @Override
+            @SuppressWarnings("deprecation")
+			@Override
             public void removeUpdate(DocumentEvent e) {
                 band = (getText().length()>0) ? false:true ;
             }
@@ -59,6 +59,7 @@ public class JCTextField extends JTextField{
 
         });
         
+
     }
         
 
@@ -84,7 +85,7 @@ public class JCTextField extends JTextField{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         //color de placeholder 
-        g.setColor( new Color(phColor.getRed(),phColor.getGreen(),phColor.getBlue(),90));
+        g.setColor( MaterialColor.BLUE_400);
         //dibuja texto
         g.drawString((band)?placeholder:"",
                      getMargin().left,
@@ -92,10 +93,10 @@ public class JCTextField extends JTextField{
                         
         //dibuja linea
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(MaterialColor.BLUEA_400);
-        g2.fillRect((int) ((getWidth()+1 - line.getWidth()) / 2), getHeight()-3 , (int) line.getWidth(), 2);
-        
+        g2.setColor(MaterialColor.RED_400);
+        g2.fillRect((int) ((getWidth()+1 - line.getWidth()) / 2), getHeight()-3 , (int) line.getWidth(), 2);        
       }
+    
     
     public String getTextProcesa(String texto) {
 		StringTokenizer tokens = new StringTokenizer(texto);
@@ -109,8 +110,8 @@ public class JCTextField extends JTextField{
     @Override
     protected void processFocusEvent(FocusEvent e) {
         super.processFocusEvent(e);
-        line.update();
         selectAll();
+        line.update();
     }
     
     

@@ -730,9 +730,8 @@ public class BuscarTablasModel {
 	    return matriz; 
 	}
 	
-	public Object[][] tabla_model_cliente_proveedores(String cltPrv){
-//		cambiar consulta
-		
+	public Object[][] tabla_model_clientes(String cltPrv){
+
 		String query_lista = cltPrv.equals("CLIENTES") ? "select folio_cliente,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_clientes where status = 1" : "select folio_proveedor,nombre+' '+ap_paterno+' '+ap_materno as empleado,direccion from tb_proveedores where status = 1";
 		
 		Object[][] matriz = new Object[get_filas(query_lista)][3];

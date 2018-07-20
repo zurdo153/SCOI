@@ -23,6 +23,7 @@ import javax.swing.table.TableRowSorter;
 
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCTextArea;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
@@ -83,13 +84,13 @@ public class Cat_Ordenes_De_Gasto_Cancelacion_De_Pagos  extends JFrame{
 	JTextField txtConcepto         = new Componentes().text(new JCTextField(), "Concepto"        ,150 , "String");	
 	
 //	"Folio", "Fecha", "Importe", "Beneficiario", "Descripcion", "Detalle", "Establecimiento", "Elaboro","Concepto"
-    JTextArea txaDescripcion = new Componentes().textArea(new JTextArea(), "Descripcion", 160);
+    JTextArea txaDescripcion = new Componentes().textArea(new JCTextArea(), "Descripcion", 160);
     JScrollPane Descripcion  = new JScrollPane(txaDescripcion);
     
-    JTextArea txaDetalle     = new Componentes().textArea(new JTextArea(), "Detalle", 160);
+    JTextArea txaDetalle     = new Componentes().textArea(new JCTextArea(), "Detalle", 160);
     JScrollPane Detalle      = new JScrollPane(txaDetalle);
     
-    JTextArea txaMotivo      = new Componentes().textArea(new JTextArea(), "Motivo Cancelación", 160);
+    JTextArea txaMotivo      = new Componentes().textArea(new JCTextArea(), "Motivo Cancelación", 160);
     JScrollPane Motivo       = new JScrollPane(txaMotivo);
 
     JCButton btnCancelar = new JCButton("Cancelar"    ,"cancelar-icono-4961-16.png" ,"Azul"); 

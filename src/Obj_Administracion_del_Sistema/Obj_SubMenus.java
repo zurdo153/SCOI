@@ -2,17 +2,25 @@ package Obj_Administracion_del_Sistema;
 
 import java.sql.SQLException;
 
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.SubMenusSQL;
 
 public class Obj_SubMenus {
+	byte[] foto;
 	private int folio;
 	private String nombre_completo;
 	private String contrasena;
 	private int status;
 	private String nombre;
 	private int cantidad_submenus;
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
 
 	public int getFolio() {
 		return folio;
@@ -74,13 +82,10 @@ public class Obj_SubMenus {
 		}
 		return null; 
 	}
-	public String[][] UsuarioMatriz(){
-		return new BuscarSQL().getUsuarioPermisos();
-	}
 	
 	public String[] Combo_Usuarios(){
 		try {
-			return new Cargar_Combo().Usuario();
+			return new Cargar_Combo().Combos("usuarios_clonar");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -63,6 +63,9 @@
 	<field name="concepto_solicitud" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="concepto_solicitud"/>
 	</field>
+	<field name="plazo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="plazo"/>
+	</field>
 	<variable name="Importe" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{cantidad}*$F{precio_unitario}]]></variableExpression>
 	</variable>
@@ -97,7 +100,7 @@
 				<text><![CDATA[SUPERMERCADO LA COMPETIDORA, S.A. de C.V.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="51" width="300" height="25" forecolor="#000000" uuid="1dc841bb-60b3-4d39-a458-f2f6f32c5f5c">
+				<reportElement x="101" y="51" width="308" height="25" forecolor="#000000" uuid="1dc841bb-60b3-4d39-a458-f2f6f32c5f5c">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -260,6 +263,13 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CONCEPTO:"+$F{concepto_solicitud}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="82" width="118" height="19" uuid="69ade6ca-3ea3-46da-bead-8454fe9d8934"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PLAZO:"+$F{plazo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

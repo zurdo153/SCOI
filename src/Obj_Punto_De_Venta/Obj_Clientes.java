@@ -69,7 +69,7 @@ public class Obj_Clientes {
 	}
 	
 	public Object[][] get_tabla_model(String busqueda){
-		return new BuscarTablasModel().tabla_model_cliente_proveedores(busqueda);
+		return new BuscarTablasModel().tabla_model_clientes(busqueda);
 	}
 	
 	public Obj_Clientes buscar_nuevo() throws SQLException{ return new BuscarSQL().Cliente_Nuevo(); }

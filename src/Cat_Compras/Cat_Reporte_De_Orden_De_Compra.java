@@ -101,9 +101,9 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
  	JTextField txtBuscar    = new Componentes().text(new JCTextField(), ">>Teclee Aqui Para Realizar La Busqueda En La Tabla<<"    , 300, "String"); 
 	JTextField txtFolio     = new Componentes().text(new JCTextField(), "Folio Orden De Compra" , 12, "String");
 	
-	JButton btngenerar        = new JCButton("Generar Orden De Compra"              ,"buscar.png","Azul");
-	JButton btngenerarSAut    = new JCButton("Generar Pre Orden De Compra","buscar.png","Azul");
-	JButton btngenerarOrdP    = new JCButton("Generar Orden Proveedor","buscar.png","Azul");
+	JButton btngenerar        = new JCButton("Generar Orden De Compra"      ,"imprimir-16.png","Azul");
+	JButton btngenerarSAut    = new JCButton("Generar Pre Orden De Compra"  ,"imprimir-16.png","Azul");
+	JButton btngenerarOrdP    = new JCButton("Generar Orden Proveedor"      ,"imprimir-16.png","Azul");
 	
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 	String nombre_usuario=usuario.getNombre_completo();
@@ -196,7 +196,7 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
 			   	    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 				    return;
 				}else {
-					 JOptionPane.showMessageDialog(null, "La Orden De Compra Tecleada Tiene Alguno De Los Siguientes Inconvenientes \n -Es Inexistente \n -El Folio Es Incorrecto \n -Esta Pendiente De Autorizar \n -Esta Cancelada La Orden De Compra","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					 JOptionPane.showMessageDialog(null, "La Orden De Compra Tecleada Tiene Alguno De Los Siguientes Inconvenientes \n -Es Inexistente \n -El Folio Es Incorrecto \n -Esta Pendiente De Autorizar \n -Esta Cancelada La Orden De Compra","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				  	  txtFolio.requestFocus();
 			          return;
 				}
