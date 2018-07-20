@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,7 +36,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
-public class Cat_Autorizacion_De_Finiquitos extends JFrame {
+public class Cat_Autorizacion_De_Vacaciones extends JFrame {
 	    
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
@@ -71,12 +72,12 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 	    JButton btnAceptar = new JCButton("Aceptar","Aplicar.png","Azul");
 	    JButton btnNegar = new JCButton("Negar","Delete.png","Azul");
 	    
-	    JButton btnReporte = new JCButton("Prefiniquito", "Report.png","Azul");
+	    JButton btnReporte = new JCButton("Prevacaciones", "Report.png","Azul");
 	  
-	    JButton btnFiniquitosAutorizados = new JCButton("Finiquitos Autorizados","Report.png","Azul");
+	    JButton btnVacacionesAutorizadas = new JCButton("Vacaciones Autorizadas","Report.png","Azul");
 	    
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Cat_Autorizacion_De_Finiquitos()	{
+		public Cat_Autorizacion_De_Vacaciones()	{
 			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 			
@@ -86,9 +87,9 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
-			this.setTitle("Autorizacion De Finiquitos");
+			this.setTitle("Autorizacion De Vacaciones");
 
-			campo.setBorder(BorderFactory.createTitledBorder("Autorizacion De Finiquitos"));
+			campo.setBorder(BorderFactory.createTitledBorder("Autorizacion De Vacaciones"));
 			trsfiltro = new TableRowSorter(model); 
 			tabla.setRowSorter(trsfiltro);  
 			campo.add(getPanelTabla()).setBounds(15,42,ancho-25,alto-125);
@@ -99,12 +100,12 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			campo.add(btnAceptar).setBounds(643,20,100,20);
 			
 			campo.add(btnReporte).setBounds(803,20,150,20);
-			campo.add(btnFiniquitosAutorizados).setBounds(1103,20,200,20);
+			campo.add(btnVacacionesAutorizadas).setBounds(1103,20,200,20);
 			
 			Actualizar_tabla("V");
 			cargar_render();
 			
-//			agregar(tabla);
+			agregar(tabla);
 			cont.add(campo);
 			txtFolio.addKeyListener(opFiltroEmpleado);
 			txtEmpleado.addKeyListener(opFiltroEmpleado);
@@ -112,42 +113,50 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			btnAceptar.addActionListener(opAceptar);
 			btnNegar.addActionListener(opNegar);
 			btnReporte.addActionListener(opReporte);
-			btnFiniquitosAutorizados.addActionListener(opFiniquitos);
+			btnVacacionesAutorizadas.addActionListener(opVacaciones);
 		}
+		
+		String observacionTestigo = "";
+		private void agregar(final JTable tbl) {
+	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+		        public void mouseClicked(MouseEvent e) {
+		        	if(e.getClickCount() > 0){
+		    			observacionTestigo = tabla.getValueAt(tabla.getSelectedRow(), 8).toString().trim().toUpperCase();
+		        	}
+		        }
+	        });
+	    }
 		
 		ActionListener opReporte = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(tabla.getSelectedRow() >= 0){
-					reporte(Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim()), "prefiniquito".toUpperCase());
+					reporte(Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim()), "prevacaciones".toUpperCase());
 				}else{
-					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar Un Colaborador De La Tabla Para Revisar Su Finiquito", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar Un Colaborador De La Tabla Para Revisar Sus Vacaciones", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
 		};
 		
-		public void reporte(int folio_finiquito, String tipo_de_reporte){
+		public void reporte(int folio_vacaciones, String tipo_de_reporte){
 			String basedatos="2.26";
 			String vista_previa_reporte="no";
 			int vista_previa_de_ventana=0;
-			String comando="";
-			String reporte = "";
-			 comando = "exec sp_select_reporte_de_finiquito "+folio_finiquito+",'"+tipo_de_reporte+"','"+new Obj_Usuario().LeerSession().getNombre_completo()+"'";
-			
-			 reporte="Obj_Finiquito.jrxml";
+			String comando= "exec reporte_de_vacaciones "+folio_vacaciones+",'"+tipo_de_reporte+"','"+new Obj_Usuario().LeerSession().getNombre_completo()+"'";
+			String reporte ="Obj_Vacaciones.jrxml";
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-			 reporte="Obj_Registro_De_Finiquito.jrxml";
-			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+//			 reporte="Obj_Registro_De_Finiquito.jrxml";
+//			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 		
 		ActionListener opAceptar = new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
 	    		
 	    		if(tabla.getSelectedRow() >= 0){
-	    			Autorizar_Negar("L", Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim()));
+	    			Autorizar_Negar("A");
 				}else{
-					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El EL Registro De Finiquito Que Sera Aprovado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El EL Registro De Vacaciones Que Sera Aprovado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 	    		
@@ -158,29 +167,29 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(tabla.getSelectedRow() >= 0){
-	    			Autorizar_Negar("N", Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim()));
+	    			Autorizar_Negar("N");
 				}else{
-					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El Registro De Finiquito Que Sera Rechazado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El Registro De Vacaciones Que Sera Rechazado", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
 			}
 		};
 		
-		
-		public void Autorizar_Negar(String Status_Finiquito, int folio_finiquito){
+		public void Autorizar_Negar(String Status_Vacaciones){
 			
 			if(tabla.isEditing()){
 				tabla.getCellEditor().stopCellEditing();
 			}
 			
-			String observacion = tabla.getValueAt(tabla.getSelectedRow(), 8).toString().trim().toUpperCase();
+			int folio_vacaciones = Integer.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 0).toString().trim());
+			String observacion = observacionTestigo.equals(tabla.getValueAt(tabla.getSelectedRow(), 8).toString().trim().toUpperCase())?"":tabla.getValueAt(tabla.getSelectedRow(), 8).toString().trim().toUpperCase();
 			
-			if(new ActualizarSQL().Modificar_Status_Revision(folio_finiquito,Status_Finiquito,observacion)){
+			if(new ActualizarSQL().Autorizacion_de_vacaciones(folio_vacaciones,Status_Vacaciones,observacion)){
 		        	model.setRowCount(0);
 		        	Actualizar_tabla("V");
 		        	
-		        	if(Status_Finiquito.equals("L")){
-		        		reporte(folio_finiquito,"finiquito".toUpperCase());
+		        	if(Status_Vacaciones.equals("A")){
+		        		reporte(folio_vacaciones,"vacaciones".toUpperCase());
 		        	}else{
 						JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		        	}
@@ -189,9 +198,9 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			}
 		};
 		
-		ActionListener opFiniquitos = new ActionListener() {
+		ActionListener opVacaciones = new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
-	    		new Cat_Finiquitos_Autorizados().setVisible(true);
+	    		new Cat_Vacaciones_Autorizados().setVisible(true);
 			}
 		};
 		
@@ -263,7 +272,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 			ResultSet rs;
 			try {
 				s = con.conexion().createStatement();
-				rs = s.executeQuery("exec sp_select_filtro__de_finiquito_vigentes '"+status+"'");
+				rs = s.executeQuery("exec vacaciones_autorizacion '"+status+"'");
 				Object [] fila = new Object[9];
 				while (rs.next()) {
 				   fila[0] = rs.getString(1)+"  ";
@@ -274,7 +283,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				   fila[5] = "   "+rs.getString(6);
 				   fila[6] = "   "+rs.getString(7);
 				   fila[7] = "   "+rs.getString(8);
-				   fila[8] = "";
+				   fila[8] = rs.getString(9);
 				   
 			  	   model.addRow(fila); 
 				}	
@@ -286,11 +295,11 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Autorizacion_De_Finiquitos().setVisible(true);
+				new Cat_Autorizacion_De_Vacaciones().setVisible(true);
 			}catch(Exception e){	}
 		}
 		
-		public class Cat_Finiquitos_Autorizados extends JFrame{
+		public class Cat_Vacaciones_Autorizados extends JFrame{
 			Container contFiltro = getContentPane();
 			JLayeredPane campoFiltro = new JLayeredPane();
 //			Connexion con = new Connexion();
@@ -317,12 +326,12 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 		   };
 			
 			JTable tablaFiltro = new JTable(modelFiltro);
-			JTextField txtFiltro = new Componentes().text(new JTextField(),"Teclee Folio De Finiquito, Folio o Nombre Del Empleado", 150, "String");
+			JTextField txtFiltro = new Componentes().text(new JTextField(),"Teclee Folio De Vacaciones, Folio o Nombre Del Empleado", 150, "String");
 		    
-		    JButton btnReporteFiniquito = new JCButton("Finiquito", "Report.png","Azul");
+		    JButton btnReporteVacaciones = new JCButton("Vacaciones", "Report.png","Azul");
 		  
 		    
-			public Cat_Finiquitos_Autorizados()	{
+			public Cat_Vacaciones_Autorizados()	{
 				int ancho = Toolkit.getDefaultToolkit().getScreenSize().width-390;
 				int alto = Toolkit.getDefaultToolkit().getScreenSize().height-60;
 				
@@ -333,23 +342,23 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				this.setLocationRelativeTo(null);
 				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
-				this.setTitle("Reportes De Finiquitos");
+				this.setTitle("Reportes De Vacaciones");
 
-				campoFiltro.setBorder(BorderFactory.createTitledBorder("Reporte De Finiquitos"));
+				campoFiltro.setBorder(BorderFactory.createTitledBorder("Reporte De Vacaciones"));
 				campoFiltro.add(getPanelTablaFiltro()).setBounds(15,42,ancho-30,alto-85);
 				campoFiltro.add(txtFiltro).setBounds(15,20,410,20);
 
-				campoFiltro.add(btnReporteFiniquito).setBounds(803,20,150,20);
+				campoFiltro.add(btnReporteVacaciones).setBounds(803,20,150,20);
 				
 				txtFiltro.addKeyListener(opFiltro);
 				
-				Actualizar_tabla_filtro("L");
+				Actualizar_tabla_filtro("A");
 				cargar_render();
 				
 //				agregar(tabla);
 				contFiltro.add(campoFiltro);
 				txtFiltro.addKeyListener(opFiltro);
-				btnReporteFiniquito.addActionListener(opReporteFiniquito);
+				btnReporteVacaciones.addActionListener(opReporteVacaciones);
 			}
 			
 			KeyListener opFiltro = new KeyListener(){
@@ -361,13 +370,13 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				public void keyPressed(KeyEvent arg0) {}		
 			};
 			
-			ActionListener opReporteFiniquito = new ActionListener() {
+			ActionListener opReporteVacaciones = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
 					if(tablaFiltro.getSelectedRow() >= 0){
-						reporte(Integer.valueOf(tablaFiltro.getValueAt(tablaFiltro.getSelectedRow(), 0).toString().trim()), "finiquito".toUpperCase());
+						reporte(Integer.valueOf(tablaFiltro.getValueAt(tablaFiltro.getSelectedRow(), 0).toString().trim()), "vacaciones".toUpperCase());
 					}else{
-						JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar Un Colaborador De La Tabla Para Revisar Su Finiquito", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar Un Colaborador De La Tabla Para Revisar Sus Vacaciones", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 						return;
 					}
 					
@@ -423,7 +432,7 @@ public class Cat_Autorizacion_De_Finiquitos extends JFrame {
 				ResultSet rs;
 				try {
 					s = con.conexion().createStatement();
-					rs = s.executeQuery("exec sp_select_filtro__de_finiquito_vigentes '"+status+"'");
+					rs = s.executeQuery("exec vacaciones_autorizacion '"+status+"'");
 					Object [] fila = new Object[7];
 					while (rs.next()) {
 					   fila[0] = rs.getString(1)+"  ";

@@ -2,6 +2,7 @@ package Cat_Evaluaciones;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -49,6 +52,11 @@ import Obj_Principal.Obj_tabla;
 import Obj_Renders.tablaRenderer;
 import Obj_Tratamiento_De_Imagenes.Obj_Formato_De_Imagen;
 import Obj_Xml.CrearXmlString;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 @SuppressWarnings("serial")
 public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
@@ -133,10 +141,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstadoCivil = new JComboBox(estado_civil);
 	
-	JTextArea txaObjectivoDelPuesto = new Componentes().textArea(new JTextArea(), "Objectivo Del Puesto", 200);
+	JTextArea txaObjectivoDelPuesto = new Componentes().textArea(new JTextArea(), "Objectivo Del Puesto", 400);
 	JScrollPane scrollObjectivoDelPuesto = new JScrollPane(txaObjectivoDelPuesto);
 	
-	JTextField txtResponsabilidad = new Componentes().text(new JCTextField(), "Ingresar Responsabilidad", 200, "String");
+	JTextField txtResponsabilidad = new Componentes().text(new JCTextField(), "Ingresar Responsabilidad", 300, "String");
 	JCButton btnAgregarResponsabilidad = new JCButton("Agregar", "", "Azul");
 	JCButton btnSubir = new JCButton("", "Up.png", "Azul");
 	JCButton btnBajar = new JCButton("", "Down.png", "Azul");
@@ -171,7 +179,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbEscolaridad = new JComboBox(escolaridad);
 		
-		JTextArea txaRequisitos = new Componentes().textArea(new JTextArea(), "Objectivo Del Puesto", 200);
+		JTextArea txaRequisitos = new Componentes().textArea(new JTextArea(), "Ejemplos especificos", 350);
 		JScrollPane scrollRequisitos = new JScrollPane(txaRequisitos);
 //pagina 1 (fin)------------------------------------------------------------------------------------------------------------------------------------------
 //pagina 2 (inicia)------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,26 +211,26 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		JLabel lblViajes = new JLabel("Viajes nacionales/internacionales:");
 		JLabel lblHerramientasYEquipos = new JLabel("Indique las necesidades de herramientas y equipos:");
 //		------------------------------------------------------------------------------------------------------------------------------------------------------
-		JTextArea txaCursosHabilidades = new Componentes().textArea(new JTextArea(), "", 200);
+		JTextArea txaCursosHabilidades = new Componentes().textArea(new JTextArea(), "", 350);
 		JScrollPane scrollCursosHabilidades = new JScrollPane(txaCursosHabilidades);
 		
-		JTextArea txaExperienciaGeneral = new Componentes().textArea(new JTextArea(), "", 200);
+		JTextArea txaExperienciaGeneral = new Componentes().textArea(new JTextArea(), "", 350);
 		JScrollPane scrollExperienciaGeneral = new JScrollPane(txaExperienciaGeneral);
 		
-		JTextArea txaExperienciaEspecifica = new Componentes().textArea(new JTextArea(), "", 200);
+		JTextArea txaExperienciaEspecifica = new Componentes().textArea(new JTextArea(), "", 350);
 		JScrollPane scrollExperienciaEspecifica = new JScrollPane(txaExperienciaEspecifica);
 		
 		JTextField txtDirectos = new Componentes().text(new JCTextField(), "", 10, "Int");
 		JTextField txtIndirectos = new Componentes().text(new JCTextField(), "", 10, "Int");
 		
 		JTextField txtPorcentajeExterno = new Componentes().text(new JCTextField(), "", 3, "Int");
-		JTextField txtInteraccionesEsternasPuesto = new Componentes().text(new JCTextField(), "Seguridad, Logística, Desarrollo Humano, Cedis.", 120, "String");
+		JTextField txtInteraccionesEsternasPuesto = new Componentes().text(new JCTextField(), "Seguridad, Logística, Desarrollo Humano, Cedis.", 150, "String");
 		
 		JTextField txtPorcentajeInterno = new Componentes().text(new JCTextField(), "", 3, "Int");
-		JTextField txtInteraccionesInternasPuesto = new Componentes().text(new JCTextField(), "Clientes, Personal a Cargo, Encargado de Tienda.", 120, "String");
+		JTextField txtInteraccionesInternasPuesto = new Componentes().text(new JCTextField(), "Clientes, Personal a Cargo, Encargado de Tienda.", 150, "String");
 		
-		JTextField txtAmbienteDeTrabajo = new Componentes().text(new JCTextField(), "Tienda", 120, "String");
-		JTextField txtEsfuerzoFisico = new Componentes().text(new JCTextField(), "Moderado", 120, "String");
+		JTextField txtAmbienteDeTrabajo = new Componentes().text(new JCTextField(), "Tienda", 150, "String");
+		JTextField txtEsfuerzoFisico = new Componentes().text(new JCTextField(), "Moderado", 150, "String");
 		
 		ButtonGroup GrViajes = new ButtonGroup();
 		JRadioButton rbSi = new JRadioButton("Si");
@@ -237,7 +245,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		JCheckBox chbAutoDeCompania = new JCheckBox("Auto de la comañía");
 		JCheckBox chbLicenciaConducir = new JCheckBox("Licencia de conducir");
 		JCheckBox chbOtro = new JCheckBox("Otro:");
-		JTextField txtOtro = new Componentes().text(new JCTextField(), "", 120, "String");
+		JTextField txtOtro = new Componentes().text(new JCTextField(), "", 150, "String");
 		
 //pagina 2 (fin)------------------------------------------------------------------------------------------------------------------------------------------
 //pagina 3 (inicia)---------------------------------------------------------------------------------------------------------------------------------------	    
@@ -326,6 +334,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		chbOtro.addActionListener(opChbOtro);
 		
 		cont.add(panelBase);
+		
+		System.out.println(imagB==null ? 0 : imagB.length);
 	}
 	
 	ActionListener opEdit = new ActionListener(){
@@ -334,10 +344,11 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		}
 	};
 	
+	String otroNota = "";
 	ActionListener opChbOtro = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			txtOtro.setEnabled(!chbOtro.isEnabled()?false:(chbOtro.isSelected()?true:false));
-			txtOtro.setText(!chbOtro.isEnabled()?"":(chbOtro.isSelected()?"Lo que tenía":""));
+			txtOtro.setText(!chbOtro.isEnabled()?"":(chbOtro.isSelected()?otroNota:""));
 		}
 	};
 	
@@ -476,6 +487,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		
 //		lista+= rutaImagen.equals("")?"- Se Requiere Seleccionar Organigrama\n":"";
 //		lista+= !fi.exists()?"- Se Requiere Seleccionar Organigrama\n":"";
+		
+		lista+= (imagB==null ? 0 : imagB.length) == 0 ? "- Se Requiere Seleccionar Organigrama\n" : "" ;
 		
 		lista+= txtEdadIn.getText().equals("")?"- Edad In\n":"";
 		lista+= txtEdadFin.getText().equals("")?"- Edad Fin\n":"";
@@ -917,26 +930,26 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		panel1.add(lblEstadoCivil).setBounds(x+ancho*8+50, y, ancho, 20);
 		panel1.add(cmbEstadoCivil).setBounds(x+ancho*9+50, y, ancho*2, 20);
 		
+		panel1.add(lblNivelDeEduacacionRequerido).setBounds(x, y+=30, ancho*2, 20);
+		panel1.add(cmbEscolaridad).setBounds(x+(ancho*2), y, ancho*2+20, 20);
+		panel1.add(lblNivelDeEduacacionRequeridoNota).setBounds(x+(ancho*4)+30, y, ancho*7, 20);
+		
 		panel1.add(lblObjetivoDelPuesto).setBounds(x, y+=30, ancho+30, 20);
 		panel1.add(lblObjetivoDelPuestoNota).setBounds(x+(ancho+30), y, ancho*4, 20);
-		panel1.add(scrollObjectivoDelPuesto).setBounds(x, y+=20, ancho*12-30, 100);
+		panel1.add(scrollObjectivoDelPuesto).setBounds(x, y+=20, ancho*12-30, 65);
 		
-		panel1.add(lblResponsabilidadesDelPuesto).setBounds(x, y+=110, ancho*2, 20);
+		panel1.add(lblResponsabilidadesDelPuesto).setBounds(x, y+=75, ancho*2, 20);
 		panel1.add(lblResponsabilidadesDelPuestoNota).setBounds(x+(ancho*2), y, ancho*4, 20);
 		
-		panel1.add(txtResponsabilidad).setBounds(x, y+=20, ancho*5, 20);
-		panel1.add(btnAgregarResponsabilidad).setBounds(x+(ancho*5), y , ancho+20, 20);
+		panel1.add(txtResponsabilidad).setBounds(x, y+=20, ancho*6, 20);
+		panel1.add(btnAgregarResponsabilidad).setBounds(x+(ancho*6), y , ancho+20, 20);
 		
-		panel1.add(new JLabel("Mover:")).setBounds(x+(ancho*7), y , ancho, 20);
-		panel1.add(btnSubir).setBounds(x+(ancho*7)+40, y , 30, 20);
-		panel1.add(btnBajar).setBounds(x+(ancho*8), y , 30, 20);
+		panel1.add(new JLabel("Mover:")).setBounds(x+(ancho*8), y , ancho, 20);
+		panel1.add(btnSubir).setBounds(x+(ancho*8)+40, y , 30, 20);
+		panel1.add(btnBajar).setBounds(x+(ancho*9), y , 30, 20);
 		panel1.add(btnQuitarfila).setBounds(x+(ancho*10), y , ancho+50, 20);
 		
-		panel1.add(scrollResponsabilidadesDelPuesto).setBounds(x, y+=20, ancho*12-30, 170);
-		
-		panel1.add(lblNivelDeEduacacionRequerido).setBounds(x, y+=180, ancho*2, 20);
-		panel1.add(cmbEscolaridad).setBounds(x+(ancho*2), y, ancho*2, 20);
-		panel1.add(lblNivelDeEduacacionRequeridoNota).setBounds(x+(ancho*4)+10, y, ancho*7, 20);
+		panel1.add(scrollResponsabilidadesDelPuesto).setBounds(x, y+=20, ancho*12-30, 250);
 	}
 	
 	public void pagina2(){
@@ -947,21 +960,22 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		int x=10, y=5, ancho=80;
 		
 		panel2.add(lblListaDeRequisitos).setBounds(x, y, ancho*8, 20);
-		panel2.add(scrollRequisitos).setBounds(x, y+=20, ancho*12-30, 100);
+		panel2.add(scrollRequisitos).setBounds(x, y+=20, ancho*12-30, 50);
 		
-		panel2.add(lblHabilidadesYConocimientos).setBounds(x, y+=110, ancho*3+50, 20);
+		panel2.add(lblHabilidadesYConocimientos).setBounds(x, y+=60, ancho*3+50, 20);
 		panel2.add(lblHabilidadesYConocimientosNota).setBounds(x+ancho*3+70, y, ancho*6, 20);
-		panel2.add(lblCursosHabilidades1).setBounds(x, y+=20, ancho*2, 20);
-		panel2.add(scrollCursosHabilidades).setBounds(x+ancho*2-30, y, ancho*10, 30);
+		
+		panel2.add(lblCursosHabilidades1).setBounds(x, y+=30, ancho*2, 20);
 		panel2.add(lblCursosHabilidades2).setBounds(x, y+=10, ancho*2, 20);
+		panel2.add(scrollCursosHabilidades).setBounds(x+ancho*2-30, y-20, ancho*10, 50);
 		
-		panel2.add(lblExperienciaGeneral).setBounds(x, y+=30, ancho*5, 20);
-		panel2.add(scrollExperienciaGeneral).setBounds(x+ancho*3-60, y-5, ancho*9+30, 30);
+		panel2.add(lblExperienciaGeneral).setBounds(x, y+=55, ancho*5, 20);
+		panel2.add(scrollExperienciaGeneral).setBounds(x+ancho*3-60, y-20, ancho*9+30, 50);
 		
-		panel2.add(lblExperienciaEspecifica).setBounds(x, y+=35, ancho*5, 20);
-		panel2.add(scrollExperienciaEspecifica).setBounds(x+ancho*3-50, y-5, ancho*9+20, 30);
+		panel2.add(lblExperienciaEspecifica).setBounds(x, y+=55, ancho*5, 20);
+		panel2.add(scrollExperienciaEspecifica).setBounds(x+ancho*3-50, y-20, ancho*9+20, 50);
 		
-		panel2.add(lblFacultamiento).setBounds(x, y+=35, ancho*2, 20);
+		panel2.add(lblFacultamiento).setBounds(x, y+=40, ancho*2, 20);
 		panel2.add(lblFacultamientoNota).setBounds(x+ancho+20, y, ancho*5, 20);
 		
 		panel2.add(lblDirectos).setBounds(x, y+=20, ancho, 20);
@@ -969,7 +983,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		panel2.add(lblIndirectos).setBounds(x+ancho+20, y, ancho, 20);
 		panel2.add(txtIndirectos).setBounds(x+ancho*2, y, 35, 20);
 		
-		panel2.add(lblInteraccionesDelPuesto).setBounds(x, y+=35, ancho*5, 20);
+		panel2.add(lblInteraccionesDelPuesto).setBounds(x, y+=30, ancho*5, 20);
 		
 		panel2.add(txtPorcentajeExterno).setBounds(x, y+=25, 30, 20);
 		panel2.add(lblExternas).setBounds(x+40, y, ancho, 20);
@@ -1034,11 +1048,12 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			Connexion con = new Connexion();
 			
 			Obj_tabla ObjTab =new Obj_tabla();
-			int columnasp = 2,checkbox=-1;
+			int columnasp = 3,checkbox=-1;
 			String parametro="";
 			public void init_tablafp(){
-		    	this.tablafp.getColumnModel().getColumn(0).setMinWidth(55);
-		    	this.tablafp.getColumnModel().getColumn(1).setMinWidth(375);
+		    	this.tablafp.getColumnModel().getColumn(0).setMinWidth(30);
+		    	this.tablafp.getColumnModel().getColumn(1).setMinWidth((!parametro.equals("Filtro"))?375:275);
+		    	this.tablafp.getColumnModel().getColumn(2).setMinWidth(100);
 		    	
 		    	String filtrar = parametro.equals("Filtro")? "Filtro" : (parametro.equals("Puesto") ? "DISPONIBLES" : "TODOS");
 		    	
@@ -1046,6 +1061,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		    	System.out.println(comandof);
 				String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablafp,modelof, columnasp, comandof, basedatos,pintar,checkbox);
+				
+				if(!filtrar.equals("Filtro")){
+					tablafp.removeColumn(tablafp.getColumnModel().getColumn(2));
+				}
 		    }
 			
 			@SuppressWarnings("rawtypes")
@@ -1055,7 +1074,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 				 return types;
 			}
 			
-			public DefaultTableModel modelof = new DefaultTableModel(null, new String[]{"Folio","Puesto"}){
+			public DefaultTableModel modelof = new DefaultTableModel(null, new String[]{"Folio","Puesto","Estatus"}){
 				 @SuppressWarnings("rawtypes")
 					Class[] types = base();
 					@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1069,6 +1088,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		    private TableRowSorter trsfiltro;
 		     
 			JTextField txtBuscarfp  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tablafp,columnasp);
+		
+			JCButton btnReporte = new JCButton("Reporte", "Report.png", "Azul");
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Cat_Filtro_Puestos(String btnparametro){
 				parametro=btnparametro;
@@ -1077,9 +1098,16 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 				trsfiltro = new TableRowSorter(modelof); 
 				tablafp.setRowSorter(trsfiltro);
 				this.panelf.add(txtBuscarfp).setBounds      (10 ,20 ,470 , 20 );
-				this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,470 ,415 );
+				this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,470 ,(!parametro.equals("Filtro"))?420:400 );
+				this.panelf.add(btnReporte).setBounds   	(360,445,120 , 20 );
 				this.init_tablafp();
 				this.agregar(tablafp);
+				
+				if(!parametro.equals("Filtro")){
+					btnReporte.setVisible((!parametro.equals("Filtro"))?false:true);
+				}
+				
+				btnReporte.addActionListener(opReporte);
 				
 				this.setResizable(false);
 				this.setLocationRelativeTo(null);
@@ -1091,6 +1119,49 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 				
 				contf.add(panelf);
 			}
+			
+			ActionListener opReporte = new ActionListener() {
+				@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(tablafp.getSelectedRow()>=0){
+						//--REPORTE MODAL CON PARAMETRO-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+						//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+												String reporte = "Obj_Libro_DPR_toc.jrxml";
+											
+												 try{
+														JDialog viewer = new JDialog(new JFrame(),reporte, true);
+														viewer.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Report.png"));
+														viewer.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
+														viewer.setLocationRelativeTo(null);
+
+														JasperReport report = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\src\\Obj_Reportes\\"+reporte);
+														
+														Map parametro = new HashMap();
+														parametro.put("folioPuesto", Integer.valueOf(tablafp.getValueAt(tablafp.getSelectedRow(), 0).toString()));
+
+														// En mapa se especifican los parametros del reporte
+														JasperPrint print = JasperFillManager.fillReport(report,parametro, new Connexion().conexion());
+
+																JRViewer jrv = new JRViewer(print);
+																jrv.setZoomRatio(1);//zoom default del reporte
+																viewer.getContentPane().add(jrv);
+																viewer.show();
+
+													}
+													catch(Exception ex){
+														System.out.println(ex.getMessage());											
+														JOptionPane.showMessageDialog(null, "Error Al Intentar Generar El Reporte: \n En La Clase Generacion Reportes Reporte:"+reporte+"\n Mensaje Exception: "+ex.getMessage(), "Avisa Al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/configuracion-de-usuario-de-configuracion-de-la-herramienta-de-ocio-icono-7245-64.png"));
+													}
+						//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+						//--TERMINA METODO DE REPORTE MODAL CON PARAMETRO-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+					}else{
+						JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar El Puesto Que Desea Revisar", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;
+					}
+				}
+			};
 			
 			private void agregar(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1139,6 +1210,8 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			        						imagB = dpr.getOrganigramaB();
 			        						lblImage.setIcon(crearIcon(imagB));
 			        						
+			        						System.out.println(imagB==null ? 0 : imagB.length);
+			        						
 			        						txtPorcentajeExterno.setText(dpr.getInteracionDelPuestoExternas()+"");
 			        						txtInteraccionesEsternasPuesto.setText(dpr.getRelacionDelPuestoExternas());
 			        						txtPorcentajeInterno.setText(dpr.getInteracionDelPuestoInternas()+"");
@@ -1158,8 +1231,10 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			        						chbAutoDeCompania.setSelected(dpr.isAutoEmpresa());  
 			        						chbLicenciaConducir.setSelected(dpr.isLicencia());  
 			        						chbCelLargaDistancia.setSelected(dpr.isLargaDistancia());  
-			        						chbOtro.setSelected(dpr.isOtro());  
-			        						txtOtro.setText(dpr.getNotaOtro());  
+			        						chbOtro.setSelected(dpr.isOtro()); 
+			        						
+			        						otroNota = dpr.getNotaOtro();
+			        						txtOtro.setText(otroNota);  
 			        				
 			        				btnNuevo.setEnabled(false);
 			        				btnDeshacer.setEnabled(true);

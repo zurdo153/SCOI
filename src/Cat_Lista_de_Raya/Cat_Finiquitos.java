@@ -2,6 +2,8 @@ package Cat_Lista_de_Raya;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,6 +20,7 @@ import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,6 +36,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -53,6 +58,9 @@ public class Cat_Finiquitos extends JFrame{
 	Container cont_quitados = getContentPane();
 	JLayeredPane panel_quitados = new JLayeredPane();
 	
+	JLabel lblPendientes = new JLabel("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=WHITE><CENTER><p>Finiquitos Pendientes:</p></CENTER></FONT></html>");
+	JLabel lblNoPendientes = new JLabel();
+	
 	JButton btnNegados = new JCButton("Finiquitos Rechazados", "","Azul");
 	JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png","Azul");
 	
@@ -67,13 +75,15 @@ public class Cat_Finiquitos extends JFrame{
 	
 	JTextField txtFiltroAsignacion = new Componentes().text(new JCTextField(), ">> Teclee El Nombre Del Empleado <<", 120, "String");
 	
-	 public DefaultTableModel tabla_model_filtro_scoi = new DefaultTableModel(null, new String[]{"Folio","Empleado", "Establecimiento", "Puesto", "Status"} ){
+	 public DefaultTableModel tabla_model_filtro_scoi = new DefaultTableModel(null, new String[]{"Folio","Empleado", "Establecimiento", "Puesto", "Fecha Renuncia", "Dias Transcurridos", "Status"} ){
          
 			@SuppressWarnings({ "rawtypes" })
 			Class[] types = new Class[]{
 	                   java.lang.Object.class, 
 	                   java.lang.Object.class, 
 	                   java.lang.Object.class, 
+	                   java.lang.Object.class,
+	                   java.lang.Object.class,
 	                   java.lang.Object.class,
 	                   java.lang.Object.class
 	                    
@@ -89,6 +99,8 @@ public class Cat_Finiquitos extends JFrame{
 	                        case 2  : return false; 
 	                        case 3  : return false; 
 	                        case 4  : return false; 
+	                        case 5  : return false; 
+	                        case 6  : return false; 
 	                }
 	                 return false;
 	         }
@@ -131,37 +143,64 @@ public class Cat_Finiquitos extends JFrame{
 		
 		String establecimiento_global = "";
 
+		JLabel lblEmpSCOI = new JLabel("Empleado SCOI:");
+		JLabel lblEmpBNNS = new JLabel("Empleado BMS:");
+		
+		JLabel lblSCOI = new JLabel();
+		JLabel lblBNNS = new JLabel();
+		
+		String rutaImag = "Imagen/fondoFiniquito.png";
+		JLabel lblFondo = new JLabel();
 	public Cat_Finiquitos(){
 		this.setTitle("Filtro De Empleados Para Finiquitos");
-		this.panel_quitados.setBorder(BorderFactory.createTitledBorder( "Filtro De Empleados Para Finiquitos"));
+//		this.panel_quitados.setBorder(BorderFactory.createTitledBorder( "Filtro De Empleados Para Finiquitos"));
 		
-		lblAviso.setForeground(Color.RED);
+		Border lineSCOI = BorderFactory.createLineBorder(Color.BLUE, 3);
+		Border tutuloBordeSCOI = BorderFactory.createTitledBorder(lineSCOI, "Colaboradores Con Finiquitos Pendientes De Capturar", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLUE);
+		lblSCOI.setBorder(tutuloBordeSCOI);
+
+		Border lineBNNS = BorderFactory.createLineBorder(Color.WHITE, 3);
+		Border tutuloBordeBNNS= BorderFactory.createTitledBorder(lineBNNS, "Colaboradores En BMS", TitledBorder.CENTER, TitledBorder.TOP, null, Color.WHITE);
+		lblBNNS.setBorder(tutuloBordeBNNS);
 		
-		panel_quitados.add(txtFiltroAsignacion).setBounds(70, 30, 300, 20);
-		panel_quitados.add(scroll_filtro_scoi).setBounds(20, 50, 745, 200);
-		panel_quitados.add(lblAviso).setBounds(20, 250, 745, 20);
-		panel_quitados.add(scroll_filtro_bnns).setBounds(20, 280, 745, 200);
 		
+		ImageIcon tmpIconAuxFondo = new ImageIcon(rutaImag);
+		Icon iconoFondo = new ImageIcon(tmpIconAuxFondo.getImage().getScaledInstance(1024,768, Image.SCALE_DEFAULT));
+        lblFondo.setIcon(iconoFondo);
 		
-		panel_quitados.add(new JLabel("Empleado Scoi:")).setBounds(20, 490, 120, 20);
-		panel_quitados.add(txtFolioScoi 	    ).setBounds(120, 490, 50, 20);
-		panel_quitados.add(txtEmpleadoScoi     ).setBounds(170, 490, 300, 20);
+		lblEmpSCOI.setForeground(Color.WHITE);
+		lblEmpBNNS.setForeground(Color.WHITE);
+        lblAviso.setFont(new Font("arial", Font.BOLD, 13));
+        
+        
+        panel_quitados.add(lblSCOI).setBounds(0,0,1015,475);
+		panel_quitados.add(txtFiltroAsignacion).setBounds(70, 30, 280, 20);
+		panel_quitados.add(lblPendientes).setBounds(430, 30, 230, 20);
+		panel_quitados.add(lblNoPendientes).setBounds(640, 30, 60, 20);
+		panel_quitados.add(scroll_filtro_scoi).setBounds(20, 50, 980, 400);
+		panel_quitados.add(lblAviso).setBounds(20, 450, 745, 20);
 		
-		panel_quitados.add(new JLabel("Empleado Bms:")).setBounds(20, 515, 120, 20);
-		panel_quitados.add(txtFolioBms 		).setBounds(120, 515, 50, 20);
-		panel_quitados.add(txtEmpleadoBms      ).setBounds(170, 515, 300, 20);
-		panel_quitados.add(btnLimpiarEmpleadoBms).setBounds(470, 515, 30, 20);
+		panel_quitados.add(lblBNNS).setBounds(0,480,1015,255);
+		panel_quitados.add(scroll_filtro_bnns).setBounds(20, 500, 780, 180);
 		
-		panel_quitados.add(btnNegados).setBounds(580, 10, 185, 40);
-		panel_quitados.add(btnGenerar).setBounds(580, 495, 185, 40);
+		panel_quitados.add(lblEmpSCOI).setBounds(20, 685, 120, 20);
+		panel_quitados.add(txtFolioScoi 	    ).setBounds(120, 685, 50, 20);
+		panel_quitados.add(txtEmpleadoScoi     ).setBounds(170, 685, 300, 20);
+		
+		panel_quitados.add(lblEmpBNNS).setBounds(20, 705, 120, 20);
+		panel_quitados.add(txtFolioBms 		).setBounds(120, 705, 50, 20);
+		panel_quitados.add(txtEmpleadoBms      ).setBounds(170, 705, 300, 20);
+		panel_quitados.add(btnLimpiarEmpleadoBms).setBounds(470, 705, 30, 20);
+		
+		panel_quitados.add(btnNegados).setBounds(815, 10, 185, 40);
+		panel_quitados.add(btnGenerar).setBounds(605, 685, 185, 40);
+		
+		panel_quitados.add(lblFondo).setBounds(-1,-10,1024,768); 
 		
 		cont_quitados.add(panel_quitados);
 		
-		llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
-		llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
-		
-		render_filtro(tabla_filtro_scoi);
-		render_filtro(tabla_filtro_bnns);
+		init_tablafp(tabla_filtro_scoi,"SCOI");
+		init_tablafp(tabla_filtro_bnns,"BNNS");
 		
 		filtro(tabla_filtro_scoi);
 		filtro(tabla_filtro_bnns);
@@ -178,7 +217,7 @@ public class Cat_Finiquitos extends JFrame{
 		txtFolioBms.setEditable(false);
 		txtEmpleadoBms.setEditable(false);
 		
-		this.setSize(790,580);
+		this.setSize(1024,768);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		
@@ -265,6 +304,15 @@ public class Cat_Finiquitos extends JFrame{
 		}
 	};
 	
+	public String ValidarFechaAguinaldo(){
+		String resultado = "";
+		
+//		resultado = new BuscarSQL().Buscar_Descripcion(folio);
+		
+		
+		return resultado;
+	}
+	
 //	public void reporte(int folio_empleado_scoi){
 //		String basedatos="2.26";
 //		String vista_previa_reporte="no";
@@ -280,36 +328,44 @@ public class Cat_Finiquitos extends JFrame{
 //		 
 //	}
 	
-	public void render_filtro(final JTable tb){
-		tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));
-		for(int i = 1; i<tb.getColumnCount(); i++){
-			switch(i){
-					case 0: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro"	,"Arial","negrita",11)); break;
-					case 1: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
-					case 2: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
-					case 3: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",9) ); break;
-					case 4: tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10)); break;
-					default:tb.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha"	,"Arial","negrita",11)); break;
-				}
-		}
-		
-		tb.getTableHeader().setReorderingAllowed(false) ;
-    	tb.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    	
+	Obj_tabla ObjTab1 =new Obj_tabla();
+	int columnas =0 ,checkbox=-1;
+	public void init_tablafp(final JTable tb, String baseDeDatos){
+		columnas = baseDeDatos.equals("SCOI")?7:5;
     	int x=50;
     	
     	tb.getColumnModel().getColumn(0 ).setMaxWidth(x);   
     	tb.getColumnModel().getColumn(0 ).setMinWidth(x);   
-    	tb.getColumnModel().getColumn(1 ).setMaxWidth(x*6);
-    	tb.getColumnModel().getColumn(1 ).setMinWidth(x*6);
+    	tb.getColumnModel().getColumn(1 ).setMaxWidth(x*6-20);
+    	tb.getColumnModel().getColumn(1 ).setMinWidth(x*6-20);
     	tb.getColumnModel().getColumn(2 ).setMaxWidth(x*3); 
     	tb.getColumnModel().getColumn(2 ).setMinWidth(x*3); 
     	                                          
-    	tb.getColumnModel().getColumn(3 ).setMaxWidth(x*3);
-    	tb.getColumnModel().getColumn(3 ).setMinWidth(x*3);		
-    	tb.getColumnModel().getColumn(4 ).setMaxWidth(x*2);
-    	tb.getColumnModel().getColumn(4 ).setMinWidth(x+25);
-	}
+    	tb.getColumnModel().getColumn(3 ).setMaxWidth(x*4);
+    	tb.getColumnModel().getColumn(3 ).setMinWidth(x*4);
+    	
+    	if(columnas==5){
+    		tb.getColumnModel().getColumn(4 ).setMaxWidth(x*2);
+    		tb.getColumnModel().getColumn(4 ).setMinWidth(x+25);
+    	}else{
+    		tb.getColumnModel().getColumn(4 ).setMaxWidth(x*2);
+    		tb.getColumnModel().getColumn(4 ).setMinWidth(x*2);
+    		tb.getColumnModel().getColumn(5 ).setMaxWidth(x*2+10);
+    		tb.getColumnModel().getColumn(5 ).setMinWidth(x*2+10);
+	    	
+    		tb.getColumnModel().getColumn(6 ).setMaxWidth(x*2);
+    		tb.getColumnModel().getColumn(6 ).setMinWidth(x+25);
+    	}
+    	
+    	String comandof="exec filtro_empleados_finiquito '"+baseDeDatos+"'";
+		String basedatos="26",pintar="si";
+		ObjTab.Obj_Refrescar(tb,(DefaultTableModel)tb.getModel(), columnas, comandof, basedatos,pintar,checkbox);
+		
+		if(columnas==7){
+			lblNoPendientes.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=WHITE><CENTER><p>"+tb.getRowCount()+"</p></CENTER></FONT></html>");
+		}
+		
+    }
 	
 	public void filtro(final JTable tb){
 		txtFiltroAsignacion.addKeyListener(new KeyListener() {
@@ -321,15 +377,15 @@ public class Cat_Finiquitos extends JFrame{
 		});
 	}
 	
-	public void llenar_tabla_filtro(final DefaultTableModel modelo,String baseDatos){
-		
-		modelo.setRowCount(0);
-		
-		String[][] matriz = new BuscarTablasModel().filtro_empleado_finiquito(baseDatos);
-		for(String[] fila: matriz){
-			modelo.addRow(fila);
-		}
-	}
+//	public void llenar_tabla_filtro(final DefaultTableModel modelo,String baseDatos){
+//		
+//		modelo.setRowCount(0);
+//		
+//		String[][] matriz = new BuscarTablasModel().filtro_empleado_finiquito(baseDatos);
+//		for(String[] fila: matriz){
+//			modelo.addRow(fila);
+//		}
+//	}
 	
 	public static void main(String [] arg){
 		try{
@@ -673,8 +729,8 @@ public class Cat_Finiquitos extends JFrame{
 //				reporte(Integer.valueOf(txtFolioEmpleado.getText().trim()));
 				dispose();
 				
-				llenar_tabla_filtro(tabla_model_filtro_scoi,"SCOI");
-				llenar_tabla_filtro(tabla_model_filtro_bnns,"BNNS");
+				init_tablafp(tabla_filtro_scoi,"SCOI");
+				init_tablafp(tabla_filtro_bnns,"BNNS");
 				
 				JOptionPane.showMessageDialog(null, "El Finiquito Se Guardo Correctamente","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 				return;

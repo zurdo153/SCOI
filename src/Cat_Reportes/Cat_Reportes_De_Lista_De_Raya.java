@@ -83,7 +83,7 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 		panel.add(new JLabel("Folio:")).setBounds(x+10,y+=50 ,200 ,20);		
 		panel.add(txtFolio).setBounds            (x+50,y     ,185 ,20);
 		panel.add(btnSeleccionLR).setBounds      (255 ,y     ,20  ,20);
-		panel.add(btngenerar).setBounds          (100,y+=30,120,30);
+		panel.add(btngenerar).setBounds          (100 ,y+=30 ,120 ,30);
 	    
 	    txtFolio.setEditable(false);
 	    btngenerar.setEnabled(false);
@@ -242,9 +242,19 @@ public class Cat_Reportes_De_Lista_De_Raya extends JDialog{
 	ActionListener opReporte_Lista_De_firmas = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
-			new Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual().setVisible(true);;
+//			new Cat_Reporte_De_Lista_De_Firmas_De_Lista_De_Raya_Actual().setVisible(true);
+			
+			String basedatos="2.26";
+			String vista_previa_reporte="si";
+			int vista_previa_de_ventana=1;
+			
+			String comando="exec firmas_lista_de_raya_actual";
+			String reporte = "Obj_Lista_De_Firmas_LR_Actual.jrxml";
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		}
 	};
+	
+	
 	
 	ActionListener opfiltroLR = new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {

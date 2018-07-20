@@ -4065,4 +4065,86 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 		}		
 		return true;
 	}
+	
+	public boolean Autorizar_DPR(int Folio_Puesto, String status, String observacion){
+		String query = "exec dpr_update_revision ?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, Folio_Puesto);
+			pstmt.setString(2, status);
+			pstmt.setString(3, observacion);
+			pstmt.setInt(4, usuario.getFolio());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_DPR ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizar_DPR ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Autorizacion_de_vacaciones(int folio_vacaciones, String status, String observacion){
+		int  folio_usuario= usuario.getFolio();
+		String query = "exec autorizar_negar_vacaciones ?,?,?,?";
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+
+				pstmt.setInt(1, folio_vacaciones);
+				pstmt.setString(2, status);
+				pstmt.setString(3, observacion);
+				pstmt.setInt(4, folio_usuario);
+				
+				System.out.println(folio_vacaciones);
+				System.out.println(status);
+				System.out.println(observacion);
+				System.out.println(folio_usuario);
+				
+				pstmt.executeUpdate();	
+			
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizacion_de_vacaciones ] update  SQLException:\n Procedimiento Almacenado: "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Autorizacion_de_vacaciones ] update  SQLException:\n Procedimiento Almacenado: "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close(); 
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 }

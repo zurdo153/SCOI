@@ -627,9 +627,9 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 			     }
 			   
 				if(tipo.equals("fecha")){
-                 if(validarfecha(valorcelda).equals("Fecha Valida")){
-                	  return true;
-                 }else{
+	                 if(validarfecha(valorcelda).equals("Fecha Valida")){
+	                	  return true;
+	                 }else{
 							    JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+" Requiere Teclear Una Fecha Valida"+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							    tabla.editCellAt(fila, columna);
 							    Component accion=tabla.getEditorComponent();

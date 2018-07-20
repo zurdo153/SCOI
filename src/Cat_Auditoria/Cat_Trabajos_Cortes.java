@@ -1161,7 +1161,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Trabajos_Cortes("CONCENTRADO 4").setVisible(true);
+			new Cat_Trabajos_Cortes("CONCENTRADO 5").setVisible(true);
 		}catch(Exception e){
 			System.err.println("Error :"+ e.getMessage());
 		}
