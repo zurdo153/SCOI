@@ -1,6 +1,5 @@
 package Obj_Lista_de_Raya;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,23 +16,25 @@ public class Obj_Alimentacion_De_Vacaciones {
 	String puesto;
 	String fecha_ingreso;
 	String fecha_ingreso_imss;
-	float salario_diario_integrado;
+//	float salario_diario_integrado;
 	String grupo_vacacional;
 	int proximas_vacaciones;
-	File imagen;
+	byte[] imagen;
 	
 //	alimentacion de vacaciones
 	String fecha_inicio;//
-	String fecha_final;//
-	int anios_a_disfrutar;//
+	String fecha_regresa;//
 	
+//	int anios_a_disfrutar;//
 	int dias_de_vacaciones;//
 	int dias_de_descanso_pagados;//
 	int dias_trabajados_de_la_ultima_semana;//
 	
+	float mensualidad;
+	
 //	vacaciones nc
-	float cuota_diaria_nc;//
-	float sueldo_semanal_nc;
+	float sd_nc;//
+	float sueldo_nc;
 	float vacaciones_nc;
 	float descansos_pagados_nc;
 	float prima_vacacional_nc;
@@ -44,57 +45,72 @@ public class Obj_Alimentacion_De_Vacaciones {
 	float infonavit_nc;
 	float infonacot_nc;
 	float pension_alimenticia_nc;
-	float fuente_de_sodas_nc;
-	float corte_de_caja_nc;
-	float cortes_nc;
-	float otros_nc;
+//	float fuente_de_sodas_nc;
+//	float corte_de_caja_nc;
+//	float cortes_nc;
+	float otras_deducciones;
+	float otras_percepciones;
 	float cheque_nc;
 	
-	float total_a_pagar_nc;
+	float efectivo_nc;
 	
 //	vacaciones c
-	float cuota_diaria_c;//
+	float sd_c;//
 	float SDI_c;//
-	float sueldo_semanal_c;
+	float sueldo_c;
 	float vacaciones_c;
 	float descansos_pagados_c;
 	float prima_vacacional_c;
 	float total_percepciones_c;
 	
 //	deducciones c
-	float prestamo_c;
-	float infonavit_c;
-	float infonacot_c;
-	float pension_alimenticia_c;
+//	float prestamo_c;
+//	float infonavit_c;
+//	float infonacot_c;
+//	float pension_alimenticia_c;
+	
+	float prima_dominical_c;
+	float bono_despensa_c;
+	float premio_por_puntualidad_c;
+	float premio_por_asistencia_c;
+	float subsidio_c;
+	
 	float imss_c;
 	float ispt_c;
 	
-	float total_a_pagar_c;
+	String observacion_vacaciones;
+	String observacion_autorizacion;
+	
+//	float total_a_pagar_c;
 	
 	public Obj_Alimentacion_De_Vacaciones() {
 
 //		datos del empleado
 		folio_vacaciones=0;		folio_empleado=0;			empleado="";		establecimiento="";		puesto="";					
-		fecha_ingreso="";		fecha_ingreso_imss="";	salario_diario_integrado=0;	grupo_vacacional="";
+		fecha_ingreso="";		fecha_ingreso_imss="";	/*salario_diario_integrado=0;*/	grupo_vacacional="";
 		proximas_vacaciones=0;	imagen=null;					
 		
 //		vacaciones
-		fecha_inicio="";		fecha_final="";		anios_a_disfrutar=0;
+		fecha_inicio="";		fecha_regresa="";		/*anios_a_disfrutar=0;*/
 		dias_de_vacaciones=0;	dias_de_descanso_pagados=0;		dias_trabajados_de_la_ultima_semana=0;
 		
+		mensualidad=0;
+		
 //		alimentacion de vacaciones nc.
-		cuota_diaria_nc=0;		sueldo_semanal_nc=0;		vacaciones_nc=0;		descansos_pagados_nc=0;
+		sd_nc=0;		sueldo_nc=0;		vacaciones_nc=0;		descansos_pagados_nc=0;
 		prima_vacacional_nc=0;		total_percepciones_nc=0;
 //		deducciones nc
-		prestamo_nc=0;		infonavit_nc=0;		infonacot_nc=0;		pension_alimenticia_nc=0;		fuente_de_sodas_nc=0;
-		corte_de_caja_nc=0;		cortes_nc=0;		otros_nc=0;		cheque_nc=0;		total_a_pagar_nc=0;	     
+		prestamo_nc=0;		infonavit_nc=0;		infonacot_nc=0;		pension_alimenticia_nc=0;		/*fuente_de_sodas_nc=0;
+		corte_de_caja_nc=0;		cortes_nc=0;		*/otras_deducciones=0;		otras_deducciones=0;		cheque_nc=0;		efectivo_nc=0;	     
 		
 //		alimentacion de vacaciones c.
-		cuota_diaria_c=0;		SDI_c=0;		sueldo_semanal_c=0;		vacaciones_c=0;		descansos_pagados_c=0;
+		sd_c=0;		SDI_c=0;		sueldo_c=0;		vacaciones_c=0;		descansos_pagados_c=0;
 		prima_vacacional_c=0;		total_percepciones_c=0;
 //		deducciones c
-		prestamo_c=0;		infonavit_c=0;		infonacot_c=0;		pension_alimenticia_c=0;		imss_c=0;
-		ispt_c=0;		total_a_pagar_c=0;
+//		prestamo_c=0;		infonavit_c=0;		infonacot_c=0;		pension_alimenticia_c=0;		
+		imss_c=0;			ispt_c=0;		/*total_a_pagar_c=0;*/
+		
+		observacion_vacaciones = "";	observacion_autorizacion="";
 	}
 	
 	public int getFolio_vacaciones() {
@@ -153,13 +169,13 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.fecha_ingreso_imss = fecha_ingreso_imss;
 	}
 
-	public float getSalario_diario_integrado() {
-		return salario_diario_integrado;
-	}
-
-	public void setSalario_diario_integrado(float salario_diario_integrado) {
-		this.salario_diario_integrado = salario_diario_integrado;
-	}
+//	public float getSalario_diario_integrado() {
+//		return salario_diario_integrado;
+//	}
+//
+//	public void setSalario_diario_integrado(float salario_diario_integrado) {
+//		this.salario_diario_integrado = salario_diario_integrado;
+//	}
 
 	public String getGrupo_vacacional() {
 		return grupo_vacacional;
@@ -177,11 +193,11 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.proximas_vacaciones = proximas_vacaciones;
 	}
 
-	public File getImagen() {
+	public byte[] getImagen() {
 		return imagen;
 	}
 
-	public void setImagen(File imagen) {
+	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
 	}
 
@@ -193,21 +209,21 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.fecha_inicio = fecha_inicio;
 	}
 
-	public String getFecha_final() {
-		return fecha_final;
+	public String getFecha_regresa() {
+		return fecha_regresa;
 	}
 
-	public void setFecha_final(String fecha_final) {
-		this.fecha_final = fecha_final;
+	public void setFecha_final(String fecha_regresa) {
+		this.fecha_regresa = fecha_regresa;
 	}
 
-	public int getAnios_a_disfrutar() {
-		return anios_a_disfrutar;
-	}
-
-	public void setAnios_a_disfrutar(int anios_a_disfrutar) {
-		this.anios_a_disfrutar = anios_a_disfrutar;
-	}
+//	public int getAnios_a_disfrutar() {
+//		return anios_a_disfrutar;
+//	}
+//
+//	public void setAnios_a_disfrutar(int anios_a_disfrutar) {
+//		this.anios_a_disfrutar = anios_a_disfrutar;
+//	}
 
 	public int getDias_de_vacaciones() {
 		return dias_de_vacaciones;
@@ -225,6 +241,14 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.dias_de_descanso_pagados = dias_de_descanso_pagados;
 	}
 
+	public float getMensualidad() {
+		return mensualidad;
+	}
+
+	public void setMensualidad(float mensualidad) {
+		this.mensualidad = mensualidad;
+	}
+
 	public int getDias_trabajados_de_la_ultima_semana() {
 		return dias_trabajados_de_la_ultima_semana;
 	}
@@ -234,20 +258,20 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.dias_trabajados_de_la_ultima_semana = dias_trabajados_de_la_ultima_semana;
 	}
 
-	public float getCuota_diaria_nc() {
-		return cuota_diaria_nc;
+	public float getSd_nc() {
+		return sd_nc;
 	}
 
-	public void setCuota_diaria_nc(float cuota_diaria_nc) {
-		this.cuota_diaria_nc = cuota_diaria_nc;
+	public void setSd_nc(float sd_nc) {
+		this.sd_nc = sd_nc;
 	}
 
-	public float getSueldo_semanal_nc() {
-		return sueldo_semanal_nc;
+	public float getSueldo_nc() {
+		return sueldo_nc;
 	}
 
-	public void setSueldo_semanal_nc(float sueldo_semanal_nc) {
-		this.sueldo_semanal_nc = sueldo_semanal_nc;
+	public void setSueldo_nc(float sueldo_nc) {
+		this.sueldo_nc = sueldo_nc;
 	}
 
 	public float getVacaciones_nc() {
@@ -314,60 +338,72 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.pension_alimenticia_nc = pension_alimenticia_nc;
 	}
 
-	public float getFuente_de_sodas_nc() {
-		return fuente_de_sodas_nc;
-	}
-
-	public void setFuente_de_sodas_nc(float fuente_de_sodas_nc) {
-		this.fuente_de_sodas_nc = fuente_de_sodas_nc;
-	}
-
-	public float getCorte_de_caja_nc() {
-		return corte_de_caja_nc;
-	}
-
-	public void setCorte_de_caja_nc(float corte_de_caja_nc) {
-		this.corte_de_caja_nc = corte_de_caja_nc;
-	}
-
-	public float getCortes_nc() {
-		return cortes_nc;
-	}
-
-	public void setCortes_nc(float cortes_nc) {
-		this.cortes_nc = cortes_nc;
-	}
-
-	public float getOtros_nc() {
-		return otros_nc;
-	}
-
-	public void setOtros_nc(float otros_nc) {
-		this.otros_nc = otros_nc;
-	}
+//	public float getFuente_de_sodas_nc() {
+//		return fuente_de_sodas_nc;
+//	}
+//
+//	public void setFuente_de_sodas_nc(float fuente_de_sodas_nc) {
+//		this.fuente_de_sodas_nc = fuente_de_sodas_nc;
+//	}
+//
+//	public float getCorte_de_caja_nc() {
+//		return corte_de_caja_nc;
+//	}
+//
+//	public void setCorte_de_caja_nc(float corte_de_caja_nc) {
+//		this.corte_de_caja_nc = corte_de_caja_nc;
+//	}
+//
+//	public float getCortes_nc() {
+//		return cortes_nc;
+//	}
+//
+//	public void setCortes_nc(float cortes_nc) {
+//		this.cortes_nc = cortes_nc;
+//	}
 
 	public float getCheque_nc() {
 		return cheque_nc;
+	}
+
+	public float getOtras_deducciones() {
+		return otras_deducciones;
+	}
+
+	public void setOtras_deducciones(float otras_deducciones) {
+		this.otras_deducciones = otras_deducciones;
+	}
+
+	public float getOtras_percepciones() {
+		return otras_percepciones;
+	}
+
+	public void setOtras_percepciones(float otras_percepciones) {
+		this.otras_percepciones = otras_percepciones;
 	}
 
 	public void setCheque_nc(float cheque_nc) {
 		this.cheque_nc = cheque_nc;
 	}
 
-	public float getTotal_a_pagar_nc() {
-		return total_a_pagar_nc;
+	public float getEfectivo_nc() {
+		return efectivo_nc;
 	}
 
-	public void setTotal_a_pagar_nc(float total_a_pagar_nc) {
-		this.total_a_pagar_nc = total_a_pagar_nc;
+	public void setEfectivo_nc(float efectivo_nc) {
+		this.efectivo_nc = efectivo_nc;
 	}
 
-	public float getCuota_diaria_c() {
-		return cuota_diaria_c;
+	public float getSd_c() {
+		return sd_c;
 	}
 
-	public void setCuota_diaria_c(float cuota_diaria_c) {
-		this.cuota_diaria_c = cuota_diaria_c;
+	public void setSd_c(float sd_c) {
+		this.sd_c = sd_c;
+	}
+
+	public void setFecha_regresa(String fecha_regresa) {
+		this.fecha_regresa = fecha_regresa;
 	}
 
 	public float getSDI_c() {
@@ -378,12 +414,12 @@ public class Obj_Alimentacion_De_Vacaciones {
 		SDI_c = sDI_c;
 	}
 
-	public float getSueldo_semanal_c() {
-		return sueldo_semanal_c;
+	public float getSueldo_c() {
+		return sueldo_c;
 	}
 
-	public void setSueldo_semanal_c(float sueldo_semanal_c) {
-		this.sueldo_semanal_c = sueldo_semanal_c;
+	public void setSueldo_c(float sueldo_c) {
+		this.sueldo_c = sueldo_c;
 	}
 
 	public float getVacaciones_c() {
@@ -418,40 +454,80 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.total_percepciones_c = total_percepciones_c;
 	}
 
-	public float getPrestamo_c() {
-		return prestamo_c;
-	}
-
-	public void setPrestamo_c(float prestamo_c) {
-		this.prestamo_c = prestamo_c;
-	}
-
-	public float getInfonavit_c() {
-		return infonavit_c;
-	}
-
-	public void setInfonavit_c(float infonavit_c) {
-		this.infonavit_c = infonavit_c;
-	}
-
-	public float getInfonacot_c() {
-		return infonacot_c;
-	}
-
-	public void setInfonacot_c(float infonacot_c) {
-		this.infonacot_c = infonacot_c;
-	}
-
-	public float getPension_alimenticia_c() {
-		return pension_alimenticia_c;
-	}
-
-	public void setPension_alimenticia_c(float pension_alimenticia_c) {
-		this.pension_alimenticia_c = pension_alimenticia_c;
-	}
+//	public float getPrestamo_c() {
+//		return prestamo_c;
+//	}
+//
+//	public void setPrestamo_c(float prestamo_c) {
+//		this.prestamo_c = prestamo_c;
+//	}
+//
+//	public float getInfonavit_c() {
+//		return infonavit_c;
+//	}
+//
+//	public void setInfonavit_c(float infonavit_c) {
+//		this.infonavit_c = infonavit_c;
+//	}
+//
+//	public float getInfonacot_c() {
+//		return infonacot_c;
+//	}
+//
+//	public void setInfonacot_c(float infonacot_c) {
+//		this.infonacot_c = infonacot_c;
+//	}
+//
+//	public float getPension_alimenticia_c() {
+//		return pension_alimenticia_c;
+//	}
+//
+//	public void setPension_alimenticia_c(float pension_alimenticia_c) {
+//		this.pension_alimenticia_c = pension_alimenticia_c;
+//	}
 
 	public float getImss_c() {
 		return imss_c;
+	}
+
+	public float getPrima_dominical_c() {
+		return prima_dominical_c;
+	}
+
+	public void setPrima_dominical_c(float prima_dominical_c) {
+		this.prima_dominical_c = prima_dominical_c;
+	}
+
+	public float getBono_despensa_c() {
+		return bono_despensa_c;
+	}
+
+	public void setBono_despensa_c(float bono_despensa_c) {
+		this.bono_despensa_c = bono_despensa_c;
+	}
+
+	public float getPremio_por_puntualidad_c() {
+		return premio_por_puntualidad_c;
+	}
+
+	public void setPremio_por_puntualidad_c(float premio_por_puntualidad_c) {
+		this.premio_por_puntualidad_c = premio_por_puntualidad_c;
+	}
+
+	public float getPremio_por_asistencia_c() {
+		return premio_por_asistencia_c;
+	}
+
+	public void setPremio_por_asistencia_c(float premio_por_asistencia_c) {
+		this.premio_por_asistencia_c = premio_por_asistencia_c;
+	}
+
+	public float getSubsidio_c() {
+		return subsidio_c;
+	}
+
+	public void setSubsidio_c(float subsidio_c) {
+		this.subsidio_c = subsidio_c;
 	}
 
 	public void setImss_c(float imss_c) {
@@ -466,18 +542,26 @@ public class Obj_Alimentacion_De_Vacaciones {
 		this.ispt_c = ispt_c;
 	}
 
-	public float getTotal_a_pagar_c() {
-		return total_a_pagar_c;
+	public String getObservacion_vacaciones() {
+		return observacion_vacaciones;
 	}
 
-	public void setTotal_a_pagar_c(float total_a_pagar_c) {
-		this.total_a_pagar_c = total_a_pagar_c;
+	public void setObservacion_vacaciones(String observacion_vacaciones) {
+		this.observacion_vacaciones = observacion_vacaciones;
+	}
+
+	public String getObservacion_autorizacion() {
+		return observacion_autorizacion;
+	}
+
+	public void setObservacion_autorizacion(String observacion_autorizacion) {
+		this.observacion_autorizacion = observacion_autorizacion;
 	}
 
 	//	resive parametro del filtro para un nuevo regitro y lo busca aqui solo alimenta la informacion del empleado
-	public Obj_Alimentacion_De_Vacaciones buscar(int folio){ 
+	public Obj_Alimentacion_De_Vacaciones buscar(int folio, String movimiento){ 
 		try {
-			return new BuscarSQL().Empleado_En_Vacaciones(folio);
+			return new BuscarSQL().Empleado_En_Vacaciones(folio,movimiento);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -504,10 +588,10 @@ public class Obj_Alimentacion_De_Vacaciones {
 	return null; 
 	}
 	
-////	guardar vacaciones calculadas
-//	public boolean guardar_vacaciones_calculadas(){
-//		return new GuardarSQL().Guardar_Vacaciones_Calculadas(this); 
-//	}
+//	guardar vacaciones calculadas
+	public boolean guardar_vacaciones_calculadas(String movimiento){
+		return new GuardarSQL().Guardar_Vacaciones_Calculadas(this,movimiento); 
+	}
 	
 	
 	public boolean buscar_vacaciones_para_update(int folio_vacaciones){

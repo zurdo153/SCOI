@@ -127,8 +127,6 @@ import Obj_Servicios.Obj_Marcas_De_Activos;
 import Obj_Servicios.Obj_Modelos_De_Activos;
 import Obj_Servicios.Obj_Pc_Por_Establecimientos;
 
-
-
 public class GuardarSQL {
 	String Qbitacora ="exec sp_insert_bitacora ?,?,?,?,?";
 	PreparedStatement pstmtb = null;
@@ -2725,19 +2723,21 @@ public boolean Guardar_Horario(Obj_Horarios horario,int folio_turno){
 	}
 	
 	public boolean Guardar_Vacaciones_Pasadas(Obj_Alimentacion_De_Vacaciones alimentacion){
-		String query = "exec sp_insert_alimentacion_de_ultimas_vacaciones ?,?,?,?";
+		String query = "exec guardar_ultimas_vacaciones ?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
+			
 			pstmt.setInt(1, alimentacion.getFolio_empleado());
 			pstmt.setString(2, alimentacion.getFecha_inicio());
-			pstmt.setString(3, alimentacion.getFecha_final());
-			pstmt.setInt(4, alimentacion.getAnios_a_disfrutar());
+			pstmt.setString(3, alimentacion.getFecha_regresa());
+			pstmt.setInt(4, alimentacion.getProximas_vacaciones());
+			pstmt.setInt(5, usuario.getFolio());
 			pstmt.executeUpdate();
 			con.commit();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			System.out.println("SQLException: "+e.getMessage());
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Pasadas ]   SQLException: sp_insert_alimentacion_de_ultimas_vacaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			if(con != null){
@@ -2761,71 +2761,150 @@ public boolean Guardar_Horario(Obj_Horarios horario,int folio_turno){
 		return true;
 	}
 	
-//	public boolean Guardar_Vacaciones_Calculadas(Obj_Alimentacion_De_Vacaciones alimentacion){
-////		cambiar procedimiento, agregar todos los campos
-//		String query = "exec sp_insert_alimentacion_de_vacaciones_calculadas ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ";
-//		Connection con = new Connexion().conexion();
-//		PreparedStatement pstmt = null;
-//		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
-//		
-//		int i=1;
-//		try {
-//			con.setAutoCommit(false);
-//			pstmt = con.prepareStatement(query);
-//			pstmt.setInt			(i, 	alimentacion.getFolio_empleado());
-//			pstmt.setString			(i+=1, alimentacion.getFecha_inicio());
-//			pstmt.setString			(i+=1, alimentacion.getFecha_final());
-//			pstmt.setInt			(i+=1, alimentacion.getAnios_a_disfrutar());
-//			pstmt.setFloat			(i+=1, alimentacion.getVacaciones());
-//			pstmt.setFloat			(i+=1, alimentacion.getPrima_vacacional());
-//			pstmt.setFloat			(i+=1, alimentacion.getInfonavit());
-//			pstmt.setFloat			(i+=1, alimentacion.getSueldo_semana());
-//			pstmt.setFloat			(i+=1, alimentacion.getCorte_de_caja());
-//			pstmt.setFloat			(i+=1, alimentacion.getFuente_de_sodas());
-//			pstmt.setFloat			(i+=1, alimentacion.getPrestamo());
-//			pstmt.setFloat			(i+=1, alimentacion.getPension_alimenticia());
-//			pstmt.setFloat          (i+=1, alimentacion.getDias_descanso_vacaciones()); 
-//			pstmt.setFloat			(i+=1, alimentacion.getTotal());
-//			pstmt.setInt			(i+=1, alimentacion.isStatus()?1:0);
-//			pstmt.setFloat          (i+=1, alimentacion.getVacaciones_c());
-//			pstmt.setFloat          (i+=1, alimentacion.getPrima_vacacional_c());
-//			pstmt.setFloat          (i+=1, alimentacion.getSueldo_semana_c());
-//			pstmt.setFloat          (i+=1, alimentacion.getGratificacion()); 
-//			pstmt.setInt            (i+=1, usuario.getFolio());
-//			
-//			
-//			pstmt.executeUpdate();
-//			con.commit();
-//		} catch (Exception e) {
-//			System.out.println("SQLException: "+e.getMessage());
-//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//			if(con != null){
-//				try{
-//					System.out.println("La transacción ha sido abortada");
-//					con.rollback();
-//					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//				}catch(SQLException ex){
-//					System.out.println(ex.getMessage());
-//					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//				}
-//			}
-//			return false;
-//		}finally{
-//			try {
-//				con.close();
-//			} catch(SQLException e){
-//				e.printStackTrace();
-//			}
-//		}		
-//		return true;
-//	}
+	public boolean Guardar_Vacaciones_Calculadas(Obj_Alimentacion_De_Vacaciones vac, String movimiento){
+//		cambiar procedimiento, agregar todos los campos
+		String query = "exec guardar_vacaciones ?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?,?,?,"
+											+  "?,?,?,?,?,?,?,?,?,?,"
+											+  "?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		
+		int i=1;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+//			System.out.println(	vac.getFolio_vacaciones());
+//			System.out.println( 	vac.getFolio_empleado());
+//			System.out.println(  vac.getGrupo_vacacional());
+//			System.out.println( 	vac.getProximas_vacaciones());
+//			System.out.println(  vac.getFecha_inicio());
+//			System.out.println(  vac.getFecha_regresa());
+//			System.out.println(  vac.getDias_trabajados_de_la_ultima_semana());
+//			System.out.println( 	vac.getDias_de_vacaciones());
+//			System.out.println( 	vac.getDias_de_descanso_pagados());
+//
+//			System.out.println(  vac.getSd_nc());
+//			System.out.println( vac.getSueldo_nc());
+//			System.out.println( vac.getVacaciones_nc());
+//			System.out.println( vac.getDescansos_pagados_nc());
+//			System.out.println( vac.getPrima_vacacional_nc());
+//			System.out.println( vac.getTotal_percepciones_nc());
+//
+//			System.out.println(  vac.getSd_c());
+//			System.out.println(  vac.getSDI_c());
+//			System.out.println(  vac.getSueldo_c());
+//			System.out.println( vac.getVacaciones_c());
+//			System.out.println( vac.getDescansos_pagados_c());
+//			System.out.println( vac.getPrima_vacacional_c());
+//			System.out.println( vac.getTotal_percepciones_c());
+//
+//			System.out.println( vac.getPrima_dominical_c());
+//			System.out.println( vac.getBono_despensa_c());
+//			System.out.println( vac.getPremio_por_puntualidad_c());
+//			System.out.println( vac.getPremio_por_asistencia_c());
+//			System.out.println( vac.getSubsidio_c());
+//			System.out.println( vac.getImss_c());
+//			System.out.println( vac.getIspt_c());
+//
+//			System.out.println( vac.getPrestamo_nc());
+//			System.out.println( vac.getInfonavit_nc());
+//			System.out.println( vac.getInfonacot_nc());
+//			System.out.println( vac.getPension_alimenticia_nc());
+//
+//			System.out.println( vac.getOtras_deducciones());
+//			System.out.println( vac.getOtras_percepciones());
+//
+//			System.out.println( vac.getCheque_nc());
+//			System.out.println( vac.getEfectivo_nc());
+//
+//			System.out.println( vac.getObservacion_vacaciones());
+//			System.out.println( usuario.getFolio());
+//			System.out.println( movimiento);
+			
+			pstmt.setInt	(i, 	vac.getFolio_vacaciones());
+			pstmt.setInt	(i+=1, 	vac.getFolio_empleado());
+			pstmt.setString	(i+=1,  vac.getGrupo_vacacional());
+			pstmt.setInt	(i+=1, 	vac.getProximas_vacaciones());
+			pstmt.setString	(i+=1,  vac.getFecha_inicio());
+			pstmt.setString	(i+=1,  vac.getFecha_regresa());
+			pstmt.setFloat	(i+=1,  vac.getDias_trabajados_de_la_ultima_semana());
+			pstmt.setInt	(i+=1, 	vac.getDias_de_vacaciones());
+			pstmt.setInt	(i+=1, 	vac.getDias_de_descanso_pagados());
+			
+			pstmt.setFloat	(i+=1,  vac.getMensualidad());
+			pstmt.setFloat	(i+=1,  vac.getSd_nc());
+			pstmt.setFloat	(i+=1, vac.getSueldo_nc());
+			pstmt.setFloat	(i+=1, vac.getVacaciones_nc());
+			pstmt.setFloat	(i+=1, vac.getDescansos_pagados_nc());
+			pstmt.setFloat	(i+=1, vac.getPrima_vacacional_nc());
+			pstmt.setFloat	(i+=1, vac.getTotal_percepciones_nc());
+			
+			pstmt.setFloat	(i+=1,  vac.getSd_c());
+			pstmt.setFloat	(i+=1,  vac.getSDI_c());
+			pstmt.setFloat	(i+=1,  vac.getSueldo_c());
+			pstmt.setFloat	(i+=1, vac.getVacaciones_c());
+			pstmt.setFloat	(i+=1, vac.getDescansos_pagados_c());
+			pstmt.setFloat	(i+=1, vac.getPrima_vacacional_c());
+			pstmt.setFloat	(i+=1, vac.getTotal_percepciones_c());
+			
+			pstmt.setFloat	(i+=1, vac.getPrima_dominical_c());
+			pstmt.setFloat	(i+=1, vac.getBono_despensa_c());
+			pstmt.setFloat	(i+=1, vac.getPremio_por_puntualidad_c());
+			pstmt.setFloat	(i+=1, vac.getPremio_por_asistencia_c());
+			pstmt.setFloat	(i+=1, vac.getSubsidio_c());
+			pstmt.setFloat	(i+=1, vac.getImss_c());
+			pstmt.setFloat	(i+=1, vac.getIspt_c());
+			
+			pstmt.setFloat	(i+=1, vac.getPrestamo_nc());
+			pstmt.setFloat	(i+=1, vac.getInfonavit_nc());
+			pstmt.setFloat	(i+=1, vac.getInfonacot_nc());
+			pstmt.setFloat	(i+=1, vac.getPension_alimenticia_nc());
+			
+			pstmt.setFloat	(i+=1, vac.getOtras_deducciones());
+			pstmt.setFloat	(i+=1, vac.getOtras_percepciones());
+
+			pstmt.setFloat	(i+=1, vac.getCheque_nc());
+			pstmt.setFloat	(i+=1, vac.getEfectivo_nc());
+			
+			pstmt.setString (i+=1, vac.getObservacion_vacaciones());
+			pstmt.setInt    (i+=1, usuario.getFolio());
+			pstmt.setString (i+=1, movimiento);
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (SQLException e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Vacaciones_Calculadas ]   SQLException: sp_insert_alimentacion_de_vacaciones_calculadas "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 	
 	public boolean Guardar_Control_Factura_xml(Obj_Proveedores fact_xml_proveedores){
 //		cambiar procedimiento, agregar todos los campos
 		String query = "exec sp_insert_factura_para_control_xml ?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
-		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
+//		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		
 		int i=1;
 		try {

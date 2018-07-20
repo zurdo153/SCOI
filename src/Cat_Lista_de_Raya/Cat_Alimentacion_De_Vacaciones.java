@@ -1,5 +1,6 @@
 package Cat_Lista_de_Raya;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
@@ -23,14 +24,14 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
@@ -42,6 +43,8 @@ import Conexiones_SQL.BuscarTablasModel;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
+import Obj_Principal.JCTextField;
 import Obj_Renders.tablaRenderer;
 
 import com.toedter.calendar.JDateChooser;
@@ -49,26 +52,27 @@ import com.toedter.calendar.JDateChooser;
 @SuppressWarnings("serial")
 public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	
+	double sd_nc = 0;
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 //	campos de datos de enpleado	
 	JLabel lblMargenEmpleado = new JLabel();
-	JTextField txtFolioVacaciones = new JTextField();
-	JTextField txtFechaIngreso = new JTextField();
-	JTextField txtFechaIngresoIMSS = new JTextField();
+	JTextField txtFolioVacaciones = new Componentes().text(new JCTextField(), "Folio Vacaciones", 10, "Int");
+	JTextField txtFechaIngreso = new Componentes().text(new JCTextField(), "Fecha De Ingreso", 20, "Int");
+	JTextField txtFechaIngresoIMSS = new Componentes().text(new JCTextField(), "Fecha De Ingreso IMSS", 20, "Int");
 	
-	JButton btnBuscar = new JButton(new ImageIcon("Iconos/zoom_icon&16.png"));
-	JButton btnNuevo = new JButton("Nuevo");
+	JCButton btnBuscar = new JCButton("","buscar.png","Azul");
+	JCButton btnNuevo = new JCButton("Nuevo","","Azul");
 	
-	JTextField txtFolioEmpleado = new JTextField();
-	JTextField txtEmpleado = new JTextField();
-	JTextField txtEstablecimiento = new JTextField();
-	JTextField txtPuesto = new JTextField();
-	JTextField txtSalarioDiarioIn= new JTextField();
-	JTextField txtGrupoDeVacaciones = new JTextField();
-	JTextField txtProximasVacaciones = new JTextField();
+	JTextField txtFolioEmpleado = new Componentes().text(new JCTextField(), "Folio Empleado", 20, "Int");
+	JTextField txtEmpleado = new Componentes().text(new JCTextField(), "Empleado", 20, "Int");
+	JTextField txtEstablecimiento = new Componentes().text(new JCTextField(), "Establecimiento", 20, "Int");
+	JTextField txtPuesto = new Componentes().text(new JCTextField(), "Puesto", 20, "Int");
+//	JTextField txtSalarioDiarioIn = new Componentes().text(new JCTextField(), "Salario Diario Integrado", 20, "Int");
+	JTextField txtGrupoDeVacaciones = new Componentes().text(new JCTextField(), "Grupo De Vacaciones", 20, "Int");
+	JTextField txtProximasVacaciones = new Componentes().text(new JCTextField(), "Proximas Vacaciones", 20, "Int");
 	
-	JButton btnFoto = new JButton("");
+	JCButton btnFoto = new JCButton("","","Azul");
 	
 	String fileFoto = System.getProperty("user.dir")+"/Iconos/Un.JPG";
     ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
@@ -76,31 +80,39 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 //	campo de vacaciones de empleados
 	JLabel lblMargenVacaciones = new JLabel();
 	
-	JCheckBox chbStatus = new JCheckBox("Status",true);
+//	JCheckBox chbStatus = new JCheckBox("Status",true);
 	
-	JDateChooser fechaInicio = new JDateChooser();
-	JDateChooser fechaFin = new JDateChooser();
-	JTextField txtDiasPendientesDePago = new Componentes().text( new JTextField(), "Dias Pendientes De Pago", 15, "Int");
+	JDateChooser fechaInicioVacaciones = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser fechaRegreso = new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JTextField txtDiasPendientesDePago = new Componentes().text( new JCTextField(), "Dias Pendientes De Pago", 15, "Int");
 	
-	JTextField txtCuotaDiaria = new Componentes().text( new JTextField(), "Cuota Diaria", 15, "Double");
+	JTextField txtMensualidad = new Componentes().text( new JCTextField(), "Mendualidad", 15, "Double");
+	JTextField txtMensualidadDia = new Componentes().text( new JCTextField(), "Mens. Dia", 15, "Double");
 	
-	JTextField txtSueldo = new Componentes().text( new JTextField(), "Sueldo", 15, "Double");
-	JTextField txtVacaciones = new Componentes().text( new JTextField(), "Vacaciones", 15, "Double");
-	JTextField txtDescansoPagado = new Componentes().text( new JTextField(), "Descanso Pagado", 15, "Double");
-	JTextField txtPrimaVacacional = new Componentes().text( new JTextField(), "Prima Vacacional", 15, "Double");
+	JTextField txtCuotaDiaria = new Componentes().text( new JCTextField(), "Cuota Diaria", 15, "Double");
 	
-	JTextField txtPercepciones = new Componentes().text( new JTextField(), "Percepciones", 15, "Double");
+	JTextField txtSueldo = new Componentes().text( new JCTextField(), "Sueldo", 15, "Double");
+	JTextField txtVacaciones = new Componentes().text( new JCTextField(), "Vacaciones", 15, "Double");
+	JTextField txtDescansoPagado = new Componentes().text( new JCTextField(), "Descanso Pagado", 15, "Double");
+	JTextField txtPrimaVacacional = new Componentes().text( new JCTextField(), "Prima Vacacional", 15, "Double");
 	
-	JTextField txtPrestamo = new Componentes().text( new JTextField(), "Prestamo", 15, "Double");
-	JTextField txtInfonavit = new Componentes().text( new JTextField(), "Infonavit", 15, "Double");
-	JTextField txtInfonacot = new Componentes().text( new JTextField(), "Infonacot", 15, "Double");
-	JTextField txtPension = new Componentes().text( new JTextField(), "Pension Alimenticia", 15, "Double");
-	JTextField txtFSodas = new Componentes().text( new JTextField(), "Fuente de Sodas", 15, "Double");
-	JTextField txtCorteCaja = new Componentes().text( new JTextField(), "Corte Caja", 15, "Double");
-	JTextField txtOtros = new Componentes().text( new JTextField(), "Otros", 15, "Double");
-	JTextField txtCheques = new Componentes().text( new JTextField(), "Cheques", 15, "Double");
+	JTextField txtPercepciones = new Componentes().text( new JCTextField(), "Percepciones", 15, "Double");
 	
-	JTextField txtTotal_A_Pagar = new Componentes().text( new JTextField(), "Total a Pagar", 15, "Double");
+	JTextField txtPrestamo = new Componentes().text( new JCTextField(), "Prestamo", 15, "Double");
+	JTextField txtInfonavit = new Componentes().text( new JCTextField(), "Infonavit", 15, "Double");
+	JTextField txtInfonacot = new Componentes().text( new JCTextField(), "Infonacot", 15, "Double");
+	JTextField txtPension = new Componentes().text( new JCTextField(), "Pension Alimenticia", 15, "Double");
+//	JTextField txtFSodas = new Componentes().text( new JCTextField(), "Fuente de Sodas", 15, "Double");
+//	JTextField txtCorteCaja = new Componentes().text( new JCTextField(), "Corte Caja", 15, "Double");
+	
+	JTextField txtImss = new Componentes().text( new JCTextField(), "IMSS", 15, "Double");
+	JTextField txtIspt = new Componentes().text( new JCTextField(), "ISPT", 15, "Double");
+	
+	JTextField txtOtrasDeducciones = new Componentes().text( new JCTextField(), "Otras Deducciones", 15, "Double");
+	JTextField txtOtrasPercepciones = new Componentes().text( new JCTextField(), "Otras Percepciones", 15, "Double");
+	JTextField txtCheques = new Componentes().text( new JCTextField(), "Cheques", 15, "Double");
+	
+	JTextField txtEfectivo = new Componentes().text( new JCTextField(), "Total a Pagar", 15, "Double");
 	
 	JLabel lblDiasVacaciones = new JLabel("Dias De Vacaciones: ");
 	JLabel lblDiasVac = new JLabel("0");
@@ -109,37 +121,38 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	
 	JLabel lblMargenVacacionesC = new JLabel();
 	
-	JTextField txtCuotaDiariaC = new Componentes().text( new JTextField(), "Cuota Diaria", 15, "Double");
+	JTextField txtCuotaDiariaC = new Componentes().text( new JCTextField(), "Cuota Diaria", 15, "Double");
+	JTextField txtSDI = new Componentes().text( new JCTextField(), "S.D.I.", 15, "Double");
 	
-	JTextField txtSueldoC = new Componentes().text( new JTextField(), "Sueldo", 15, "Double");
-	JTextField txtVacacionesC = new Componentes().text( new JTextField(), "Vacaciones", 15, "Double");
-	JTextField txtDescansoPagadoC = new Componentes().text( new JTextField(), "Descanso Pagado", 15, "Double");
-	JTextField txtPrimaVacacionalC = new Componentes().text( new JTextField(), "Prima Vacacional", 15, "Double");
+	JTextField txtSueldoC = new Componentes().text( new JCTextField(), "Sueldo", 15, "Double");
+	JTextField txtVacacionesC = new Componentes().text( new JCTextField(), "Vacaciones", 15, "Double");
+	JTextField txtDescansoPagadoC = new Componentes().text( new JCTextField(), "Descanso Pagado", 15, "Double");
+	JTextField txtPrimaVacacionalC = new Componentes().text( new JCTextField(), "Prima Vacacional", 15, "Double");
 	
-	JTextField txtPercepcionesC = new Componentes().text( new JTextField(), "Percepciones", 15, "Double");
+	JTextField txtPercepcionesC = new Componentes().text( new JCTextField(), "Percepciones", 15, "Double");
 	
-	JTextField txtInfonavitC = new Componentes().text( new JTextField(), "Infonavit C.", 15, "Double");
-	JTextField txtInfonacotC = new Componentes().text( new JTextField(), "Infonacot C.", 15, "Double");
-	JTextField txtPrestamoC = new Componentes().text( new JTextField(), "Prestamo C.", 15, "Double");
-	JTextField txtPensionC = new Componentes().text( new JTextField(), "Pension Alimenticia C.", 15, "Double");
+//	JTextField txtInfonavitC = new Componentes().text( new JCTextField(), "Infonavit C.", 15, "Double");
+//	JTextField txtInfonacotC = new Componentes().text( new JCTextField(), "Infonacot C.", 15, "Double");
+//	JTextField txtPrestamoC = new Componentes().text( new JCTextField(), "Prestamo C.", 15, "Double");
+//	JTextField txtPensionC = new Componentes().text( new JCTextField(), "Pension Alimenticia C.", 15, "Double");
 	
-	JTextField txtPrimaDominical = new Componentes().text( new JTextField(), "Prima Dominical", 15, "Double");
-	JTextField txtBonoDespensa = new Componentes().text( new JTextField(), "Bono Despensa", 15, "Double");
-	JTextField txtPremioPorPuntualidad = new Componentes().text( new JTextField(), "Premio Por Puntualidad", 15, "Double");
-	JTextField txtPremioPorAsitencia = new Componentes().text( new JTextField(), "Premio Por Asitencia", 15, "Double");
-	JTextField txtSubsidio = new Componentes().text( new JTextField(), "Subsidio", 15, "Double");
+	JTextField txtPrimaDominical = new Componentes().text( new JCTextField(), "Prima Dominical", 15, "Double");
+	JTextField txtBonoDespensa = new Componentes().text( new JCTextField(), "Bono Despensa", 15, "Double");
+	JTextField txtPremioPorPuntualidad = new Componentes().text( new JCTextField(), "Premio Por Puntualidad", 15, "Double");
+	JTextField txtPremioPorAsitencia = new Componentes().text( new JCTextField(), "Premio Por Asistencia", 15, "Double");
+	JTextField txtSubsidio = new Componentes().text( new JCTextField(), "Subsidio", 15, "Double");
 	
-	JButton btnDeshacer = new JButton("Deshacer");
-	JButton btnReporte = new JButton("Generar Reporte");
-	JButton btnCalcular = new JButton("Calcular");
-	JButton btnGuardar = new JButton("Guardar");
+	JCButton btnDeshacer = new JCButton("Deshacer","deshacer16.png","Azul");
+	JCButton btnReporte = new JCButton("Generar Reporte","","Azul");
+	JCButton btnCalcular = new JCButton("Calcular","","Azul");
+	JCButton btnGuardar = new JCButton("Guardar","","Azul");
 	
 //	campo de tabla de vacaciones
 	JLabel lblMargenTabla = new JLabel();
 	
 	DecimalFormat DF = new DecimalFormat("#0.00");
 	
-    public static DefaultTableModel tabla_model = new DefaultTableModel(
+    DefaultTableModel tabla_model = new DefaultTableModel(
     		null,	new String[]{"Folio Vacaciones","Fecha Inicio","Fecha Final","Años"}){
                     @SuppressWarnings("rawtypes")
                     Class[] types = new Class[]{
@@ -153,18 +166,15 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
                             return types[columnIndex];
                     }
                 public boolean isCellEditable(int fila, int columna){
-                            switch(columna){
-                                    case 0  : return false; 
-                                    case 1  : return false; 
-                                    case 2  : return false; 
-                                    case 3  : return false; 
-                            }
                              return false;
                      }
             };
             
         	JTable tabla_vacaciones_disfrutadas = new JTable(tabla_model);
         	JScrollPane panelScroll = new JScrollPane(tabla_vacaciones_disfrutadas);
+        	
+        	JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "Observaciones", 400);
+        	JScrollPane scrollObservacion = new JScrollPane(txaObservacion);
 
     Border blackline;
     
@@ -187,145 +197,162 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		this.lblMargenVacacionesC.setBorder(BorderFactory.createTitledBorder(blackline,"Vacaciones C."));
 		this.lblMargenTabla.setBorder(BorderFactory.createTitledBorder(blackline,"Tabla De Vacaciones Pasadas"));
 		
-		int y=15;
+		int x=15,y=15;
 //		campos de datos de empleado
 		panel.add(lblMargenEmpleado).setBounds(3, 0, 675, 167);
 		panel.add(new JLabel("Folio Vacaciones: ")).setBounds(20, y, 110, 20);
 		panel.add(txtFolioVacaciones).setBounds(130, y, 60, 20);
 		
-		panel.add(btnBuscar).setBounds(200, y, 30, 20);
-		panel.add(btnNuevo).setBounds(240, y, 80, 20);
-		panel.add(btnDeshacer).setBounds(330, y, 80, 20);
+		panel.add(btnBuscar).setBounds(190, y, 30, 20);
+		panel.add(btnNuevo).setBounds(223, y, 80, 20);
+		panel.add(btnDeshacer).setBounds(306, y, 110, 20);
+		panel.add(btnGuardar).setBounds(419, y, 90, 20);
 		
 		
 		panel.add(new JLabel("Empleado: ")).setBounds(20, y+=25, 110, 20);
 		panel.add(txtFolioEmpleado).setBounds(130, y, 50, 20);
-		panel.add(txtEmpleado).setBounds(181, y, 319, 20);
+		panel.add(txtEmpleado).setBounds(181, y, 329, 20);
 		
 		panel.add(new JLabel("Establecimiento: ")).setBounds(20, y+=25, 110, 20);
 		panel.add(txtEstablecimiento).setBounds(130, y, 190, 20);
-		panel.add(chbStatus).setBounds(360, y, 80, 20);
+//		panel.add(chbStatus).setBounds(360, y, 80, 20);
 		
 		panel.add(new JLabel("Puesto: ")).setBounds(20, y+=25, 60, 20);
-		panel.add(txtPuesto).setBounds(130, y, 370, 20);
+		panel.add(txtPuesto).setBounds(130, y, 380, 20);
 		
 		panel.add(new JLabel("Fecha Ingreso: ")).setBounds(20, y+=25, 130, 20);
-		panel.add(txtFechaIngreso).setBounds(125, y, 100, 20);
+		panel.add(txtFechaIngreso).setBounds(125, y, 140, 20);
 		
 		panel.add(new JLabel("Grupo De Vacaciones: ")).setBounds(290, y, 140, 20);
-		panel.add(txtGrupoDeVacaciones).setBounds(400, y, 100, 20);
+		panel.add(txtGrupoDeVacaciones).setBounds(400, y, 110, 20);
 		
 		panel.add(new JLabel("Fecha Ingreso IMSS: ")).setBounds(20, y+=25, 120, 20);
-		panel.add(txtFechaIngresoIMSS).setBounds(125, y, 100, 20);
+		panel.add(txtFechaIngresoIMSS).setBounds(125, y, 140, 20);
 		
 		panel.add(new JLabel("Proximas Vacaciones: ")).setBounds(290, y, 140, 20);
-		panel.add(txtProximasVacaciones).setBounds(400, y, 100, 20);
+		panel.add(txtProximasVacaciones).setBounds(400, y, 110, 20);
 		
 		panel.add(btnFoto).setBounds(523, 11, 150, 150);
 
 		panel.add(new JLabel("Fecha Inicial: ")).setBounds(7, y+=30, 140, 20);
-		panel.add(fechaInicio).setBounds(70, y, 100, 20);
+		panel.add(fechaInicioVacaciones).setBounds(70, y, 100, 20);
 		
-		panel.add(new JLabel("Fecha Final: ")).setBounds(175, y, 100, 20);
-		panel.add(fechaFin).setBounds(235, y, 100, 20);
+		panel.add(new JLabel("Regresa el: ")).setBounds(175, y, 100, 20);
+		panel.add(fechaRegreso).setBounds(235, y, 100, 20);
 		
 		panel.add(new JLabel("Dias Pendientes De Pago: ")).setBounds(345, y, 150, 20);
 		panel.add(txtDiasPendientesDePago).setBounds(470, y, 100, 20);
 		
+		panel.add(new JLabel("Mensualidad: ")).setBounds(7, y+=25, 140, 20);
+		panel.add(txtMensualidad).setBounds(70, y, 75, 20);
+		panel.add(new JLabel("Mensualidad Dia: ")).setBounds(x+135, y, 140, 20);
+		panel.add(txtMensualidadDia).setBounds(x+220, y, 75, 20);
+		
 //		campo de vacaciones no contables de empleados
-		panel.add(lblMargenVacaciones).setBounds(115, 190, 120, 410);
+		panel.add(lblMargenVacaciones).setBounds(130, 215, 120, 410);
 		
-		panel.add(new JLabel("Cuota Diaria: ")).setBounds(20, y+=35, 140, 20);
-		panel.add(txtCuotaDiaria).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("Cuota Diaria: ")).setBounds(x, y+=35, 140, 20);
+		panel.add(txtCuotaDiaria).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Sueldo Semanal: ")).setBounds(20, y+=35, 140, 20);
-		panel.add(txtSueldo).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("SDI : ")).setBounds(x, y+=25, 140, 20);
+		
+		panel.add(new JLabel("(+) Sueldo : ")).setBounds(x, y+=35, 140, 20);
+		panel.add(txtSueldo).setBounds(x+125, y, 100, 20);
 
-		panel.add(new JLabel("Vacaciones: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtVacaciones).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(+) Vacaciones: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtVacaciones).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Descanso Pagado: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtDescansoPagado).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(+) Descanso Pagado: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtDescansoPagado).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Prima Vacacional: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtPrimaVacacional).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(+) Prima Vacacional: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtPrimaVacacional).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Total Percepciones: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtPercepciones).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(=) Total Percepciones: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtPercepciones).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Prestamo: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtPrestamo).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(-)  Prestamo: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtPrestamo).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Infonavit: ")).setBounds(20, y+=25, 100, 20);
-		panel.add(txtInfonavit).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(-)  Infonavit: ")).setBounds(x, y+=25, 100, 20);
+		panel.add(txtInfonavit).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Infonacot: ")).setBounds(20, y+=25, 100, 20);
-		panel.add(txtInfonacot).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(-)  Infonacot: ")).setBounds(x, y+=25, 100, 20);
+		panel.add(txtInfonacot).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Pension Alimenticia: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtPension).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(-)  Pension Alimenticia: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtPension).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Fuente De Sodas: ")).setBounds(20, y+=25, 120, 20);
-		panel.add(txtFSodas).setBounds(125, y, 100, 20);
+//		panel.add(new JLabel("Fuente De Sodas: ")).setBounds(x, y+=25, 120, 20);
+//		panel.add(txtFSodas).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Corte De Caja: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtCorteCaja).setBounds(125, y, 100, 20);
+//		panel.add(new JLabel("Corte De Caja: ")).setBounds(x, y+=25, 140, 20);
+//		panel.add(txtCorteCaja).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Otros: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtOtros).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(-)  Otras Deducciones: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtOtrasDeducciones).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Cheque: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtCheques).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("(+) Otras Percepciones: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtOtrasPercepciones).setBounds(x+125, y, 100, 20);
 		
-		panel.add(new JLabel("Total A Pagar: ")).setBounds(20, y+=25, 140, 20);
-		panel.add(txtTotal_A_Pagar).setBounds(125, y, 100, 20);
+		panel.add(new JLabel("Cheque: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtCheques).setBounds(x+125, y, 100, 20);
+		
+		panel.add(new JLabel("Efectivo: ")).setBounds(x, y+=25, 140, 20);
+		panel.add(txtEfectivo).setBounds(x+125, y, 100, 20);
 		
 //		campo de vacaciones contables de empleados
-		y=205;
-		panel.add(lblMargenVacacionesC).setBounds(240, 190, 440, 280);
+		x=255; y=205;
+		panel.add(lblMargenVacacionesC).setBounds(x, 215, 425, 255);
 		
-		panel.add(txtCuotaDiariaC).setBounds(250, y, 100, 20);
-		panel.add(txtSueldoC).setBounds(250, y+=35, 100, 20);
-		panel.add(txtVacacionesC).setBounds(250, y+=25, 100, 20);
-		panel.add(txtDescansoPagadoC).setBounds(250, y+=25, 100, 20);
-		panel.add(txtPrimaVacacionalC).setBounds(250, y+=25, 100, 20);
+		panel.add(txtCuotaDiariaC).setBounds(x+=10, y+=25, 100, 20);
+		panel.add(txtSDI).setBounds(x, y+=25, 100, 20);
+		panel.add(txtSueldoC).setBounds(x, y+=35, 100, 20);
+		panel.add(txtVacacionesC).setBounds(x, y+=25, 100, 20);
+		panel.add(txtDescansoPagadoC).setBounds(x, y+=25, 100, 20);
+		panel.add(txtPrimaVacacionalC).setBounds(x, y+=25, 100, 20);
 		
-		panel.add(txtPercepcionesC).setBounds(250, y+=25, 100, 20);
+		panel.add(txtPercepcionesC).setBounds(x, y+=25, 100, 20);
 		
-		panel.add(txtPrestamoC).setBounds(250, y+=25, 100, 20);
-		panel.add(txtInfonavitC).setBounds(250, y+=25, 100, 20);
-		panel.add(txtInfonacotC).setBounds(250, y+=25, 100, 20);
-		panel.add(txtPensionC).setBounds(250, y+=25, 100, 20);
+		panel.add(panelScroll).setBounds(x-8, y+=80, 420, 85);
 		
+		panel.add(scrollObservacion).setBounds(x-8, y+=90, 420, 63);
+		
+//		panel.add(txtPrestamoC).setBounds(250, y+=25, 100, 20);
+//		panel.add(txtInfonavitC).setBounds(250, y+=25, 100, 20);
+//		panel.add(txtInfonacotC).setBounds(250, y+=25, 100, 20);
+//		panel.add(txtPensionC).setBounds(250, y+=25, 100, 20);
+		
+		x=530;
 		y=200;
 		
-		panel.add(lblDiasVacaciones).setBounds(390, y, 220, 20);
-		panel.add(lblDiasVac).setBounds(530, y, 50, 20);
+		panel.add(lblDiasVacaciones).setBounds(390, y+=25, 220, 20);
+		panel.add(lblDiasVac).setBounds(x, y, 50, 20);
 		
 		panel.add(lblDias_De_Descanso_Pagados).setBounds(390, y+=20, 220, 20);
 		panel.add(lblDescansos_Pagados).setBounds(580, y, 50, 20);
 		
-		panel.add(new JLabel("Prima Dominical: ")).setBounds(390, y+=45, 140, 20);
-		panel.add(txtPrimaDominical).setBounds(520, y, 100, 20);
+		panel.add(new JLabel("(+) Prima Dominical: ")).setBounds(390, y+=45, 140, 20);
+		panel.add(txtPrimaDominical).setBounds(x, y, 100, 20);
 		
-		panel.add(new JLabel("Bono Despensa: ")).setBounds(390, y+=25, 140, 20);
-		panel.add(txtBonoDespensa).setBounds(520, y, 100, 20);
+		panel.add(new JLabel("(+) Bono Despensa: ")).setBounds(390, y+=25, 140, 20);
+		panel.add(txtBonoDespensa).setBounds(x, y, 100, 20);
 
-		panel.add(new JLabel("Premio Por Puntualidad: ")).setBounds(390, y+=25, 140, 20);
-		panel.add(txtPremioPorPuntualidad).setBounds(520, y, 100, 20);
+		panel.add(new JLabel("(+) Premio Por Puntualidad: ")).setBounds(390, y+=25, 140, 20);
+		panel.add(txtPremioPorPuntualidad).setBounds(x, y, 100, 20);
 		
-		panel.add(new JLabel("Premio Por Asistencia: ")).setBounds(390, y+=25, 140, 20);
-		panel.add(txtPremioPorAsitencia).setBounds(520, y, 100, 20);
+		panel.add(new JLabel("(+) Premio Por Asistencia: ")).setBounds(390, y+=25, 140, 20);
+		panel.add(txtPremioPorAsitencia).setBounds(x, y, 100, 20);
 		
-		panel.add(new JLabel("Subsidio: ")).setBounds(390, y+=25, 140, 20);
-		panel.add(txtSubsidio).setBounds(520, y, 100, 20);
+		panel.add(new JLabel("(+) Subsidio: ")).setBounds(390, y+=25, 140, 20);
+		panel.add(txtSubsidio).setBounds(x, y, 100, 20);
 		
-//		campo de tabla de vacaciones
-//		panel.add(lblMargenTabla).setBounds(3, 435, 675, 125);
-		panel.add(panelScroll).setBounds(242, y+=105, 435, 100);
+		panel.add(new JLabel("(-) Imss: ")).setBounds(390, y+=25, 140, 20);
+		panel.add(txtImss).setBounds(x, y, 100, 20);
+		panel.add(new JLabel("(-) Ispt: ")).setBounds(390, y+=25, 140, 20);
+		panel.add(txtIspt).setBounds(x, y, 100, 20);
 		
 //		panel.add(btnCalcular).setBounds(20, y+=14, 90, 20);
-		panel.add(btnGuardar).setBounds(242, y+=105, 90, 20);
 //		panel.add(btnReporte).setBounds(235, y, 140, 20);
 		
         Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
@@ -345,25 +372,28 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
         btnBuscar.addActionListener(opBuscar);
         btnNuevo.addActionListener(opNuevo);
         btnDeshacer.addActionListener(opDeshacer);
-//        btnGuardar.addActionListener(opGuardar);
+        btnGuardar.addActionListener(opGuardar);
 //        btnReporte.addActionListener(opReporte);
         
         txtDiasPendientesDePago.addKeyListener(opRecalcular);
+        txtMensualidad.addKeyListener(opRecalcular);
         txtPrimaDominical.addKeyListener(opRecalcular);
         txtBonoDespensa.addKeyListener(opRecalcular);
         txtPremioPorPuntualidad.addKeyListener(opRecalcular);
         txtPremioPorAsitencia.addKeyListener(opRecalcular);
         txtSubsidio.addKeyListener(opRecalcular);
-        txtOtros.addKeyListener(opRecalcular);
+        txtImss.addKeyListener(opRecalcular);
+        txtIspt.addKeyListener(opRecalcular);
+        txtOtrasDeducciones.addKeyListener(opRecalcular);
+        txtOtrasPercepciones.addKeyListener(opRecalcular);
         
         
 //    	FUNCION PARA AGREGAR UNA ACCION AL SELECCIONAR UNA FECHA
-        fechaInicio.getDateEditor().addPropertyChangeListener(opCalcularAutomaticoConFechaIn);
+        fechaInicioVacaciones.getDateEditor().addPropertyChangeListener(opCalcularAutomaticoConFechaIn);
 
 		cont.add(panel);
-		this.setSize(700,660);
+		this.setSize(700,670);
 		this.setLocationRelativeTo(null);
-	
 	}
 	
 	public void camposBloqueadosDefault(){
@@ -375,13 +405,16 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
         txtPuesto.setEditable(false);
         txtFechaIngreso.setEditable(false);
         txtFechaIngresoIMSS.setEditable(false);
-        txtSalarioDiarioIn.setEditable(false);
+//        txtSalarioDiarioIn.setEditable(false);
         txtGrupoDeVacaciones.setEditable(false);
         txtProximasVacaciones.setEditable(false);
 		
-		fechaFin.setEnabled(false);
+        fechaRegreso.setEnabled(false);
+        
+        txtMensualidadDia.setEnabled(false);
         
         txtCuotaDiaria.setEditable(false);
+        txtSDI.setEditable(false);
         
         txtVacaciones.setEditable(false);
         txtDescansoPagado.setEditable(false);
@@ -392,10 +425,10 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		txtSueldo.setEditable(false);
 		txtPrestamo.setEditable(false);
 		txtPension.setEditable(false);
-        txtFSodas.setEditable(false);
-        txtCorteCaja.setEditable(false);
+//        txtFSodas.setEditable(false);
+//        txtCorteCaja.setEditable(false);
         txtCheques.setEditable(false);
-        txtTotal_A_Pagar.setEditable(false);
+        txtEfectivo.setEditable(false);
 		
         txtCuotaDiariaC.setEditable(false);
         
@@ -403,26 +436,32 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		txtDescansoPagadoC.setEditable(false);
 		txtPrimaVacacionalC.setEditable(false);
 		txtPercepcionesC.setEditable(false);
-		txtInfonavitC.setEditable(false);
-		txtInfonacotC.setEditable(false);
+//		txtInfonavitC.setEditable(false);
+//		txtInfonacotC.setEditable(false);
 		txtSueldoC.setEditable(false);
-		txtPrestamoC.setEditable(false);
-		txtPensionC.setEditable(false);
-		
+//		txtPrestamoC.setEditable(false);
+//		txtPensionC.setEditable(false);
 	}
 	
 	public void activar_descactivar_campos(boolean activ){
-		fechaInicio.setEnabled(activ);
+		fechaInicioVacaciones.setEnabled(activ);
+		txtMensualidad.setEnabled(activ);
 		txtDiasPendientesDePago.setEditable(activ);
-		txtOtros.setEditable(activ);
+		txtOtrasDeducciones.setEditable(activ);
+		txtOtrasPercepciones.setEditable(activ);
 		txtPrimaDominical.setEditable(activ);
 		txtBonoDespensa.setEditable(activ);
 		txtPremioPorPuntualidad.setEditable(activ);
 		txtPremioPorAsitencia.setEditable(activ);
 		txtSubsidio.setEditable(activ);
-		
+		txtImss.setEditable(activ);
+		txtIspt.setEditable(activ);
 		btnDeshacer.setEnabled(activ);
 		btnGuardar.setEnabled(activ);
+		
+		txaObservacion.setEnabled(activ);
+		String color = activ?"FFFFFF":"EBEBEB";
+		txaObservacion.setBackground(new Color(Integer.parseInt(color,16)));
 	}
 	
 	
@@ -439,91 +478,50 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		tb.getTableHeader().setReorderingAllowed(false) ;
     	tb.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     	
-    	int x=140;
+    	int x=100;
     	
-    	tb.getColumnModel().getColumn(0 ).setMaxWidth(x-50);   
-    	tb.getColumnModel().getColumn(0 ).setMinWidth(x-50);   
-    	tb.getColumnModel().getColumn(1 ).setMaxWidth(x);
-    	tb.getColumnModel().getColumn(1 ).setMinWidth(x);
-    	tb.getColumnModel().getColumn(2 ).setMaxWidth(x); 
-    	tb.getColumnModel().getColumn(2 ).setMinWidth(x); 
+    	tb.getColumnModel().getColumn(0 ).setMaxWidth(x);   
+    	tb.getColumnModel().getColumn(0 ).setMinWidth(x);   
+    	tb.getColumnModel().getColumn(1 ).setMaxWidth(x+20);
+    	tb.getColumnModel().getColumn(1 ).setMinWidth(x+20);
+    	tb.getColumnModel().getColumn(2 ).setMaxWidth(x+20); 
+    	tb.getColumnModel().getColumn(2 ).setMinWidth(x+20); 
     	                                          
-    	tb.getColumnModel().getColumn(3 ).setMaxWidth(50);
-    	tb.getColumnModel().getColumn(3 ).setMinWidth(50);		
+    	tb.getColumnModel().getColumn(3 ).setMaxWidth(60);
+    	tb.getColumnModel().getColumn(3 ).setMinWidth(60);		
 	}
 	
 	ActionListener opNuevo = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			movimiento="GUARDAR";
 			new Filtro_Empleado_Para_Vacaciones_Nuevas().setVisible(true);
 		}
 	};
 	
 	ActionListener opBuscar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			movimiento="MODIFICAR";
 			new Filtro_Ultimas_Vacaciones_De_Empleado().setVisible(true);
 		}
 	};
 	
-//	int dias_de_vacaciones = 0;
-//    int dias_de_descanso_pagados = 0;
 	PropertyChangeListener opCalcularAutomaticoConFechaIn = new PropertyChangeListener() {
   	  public void propertyChange(PropertyChangeEvent e) {
   	            if ("date".equals(e.getPropertyName())) {
   	            	
-	  	            	if(fechaInicio.getDate() != null){
+	  	            	if(fechaInicioVacaciones.getDate() != null){
 	  	            		
-	  	            		activar_descactivar_campos(true);
-	  	            		
-		  	            	Obj_Alimentacion_De_Vacaciones calculo = new Obj_Alimentacion_De_Vacaciones().buscar_vacaciones(Integer.valueOf(txtFolioEmpleado.getText()),fechaInicio.getDate(),Integer.valueOf(txtProximasVacaciones.getText()));
-		
 //  	                System.out.println(e.getPropertyName()+ ": " + (Date) e.getNewValue());
 //  calcula rango de fecha-------------------------------------------------------------------------------------------------
-//		  	                int rangoEnDias = Integer.valueOf(calculo.getFecha_final());
-//		  	                int tiempo =(24 * 60 * 60 * 1000);
-//		  	                long dias = rangoEnDias * tiempo;
-//		  	                
-//		  	                long tiempoActual = fechaInicio.getDate().getTime();
-//		  	                Date fechaLimite = new Date(tiempoActual + dias);
+		  	                int rangoEnDias = Integer.valueOf(lblDiasVac.getText())+Integer.valueOf(lblDescansos_Pagados.getText()); //dias totales de vacaciones
+		  	                int tiempo =(24 * 60 * 60 * 1000); 			// 1 dia en milisegundos
+		  	                long diasVacaciones = rangoEnDias * tiempo; // dia de vacaciones en milisegundos
+		  	                
+		  	                long tiempoInicioDeVacaciones = fechaInicioVacaciones.getDate().getTime(); 		// obtener fecha de inicio de vacaciones
+		  	                Date fechaLimite = new Date(tiempoInicioDeVacaciones + diasVacaciones); //fecha de regreso a laborar
+		  	                
+		  	              fechaRegreso.setDate(fechaLimite);	// asignar fecha a calendario
 // -------------------------------------------------------------------------------------------------------------------------
-////		  					alimentacion de vacaciones
-//		  					alimentacion_vacaciones.setPrestamo_nc(rs.getFloat("desc_prestamo"));
-//		  					alimentacion_vacaciones.setPension_alimenticia_nc(rs.getFloat("pension_alimenticia"));
-//		  					alimentacion_vacaciones.setInfonacot_nc(rs.getFloat("infonavit"));
-//		  					alimentacion_vacaciones.setInfonacot_nc(rs.getFloat("infonacot"));
-////		  					System.out.println(rs.getFloat(""));
-//		  					alimentacion_vacaciones.setFuente_de_sodas_nc(rs.getFloat("descuento_de_fuente_de_sodas"));
-//		  					alimentacion_vacaciones.setCorte_de_caja_nc(rs.getFloat("corte_de_caja"));
-//		  					
-		  					
-		  	                try {
-								fechaFin.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(calculo.getFecha_final()));
-							} catch (ParseException e1) {
-								e1.printStackTrace();
-							}
-		  	                
-		  	                lblDiasVac.setText(calculo.getDias_de_vacaciones()+"");
-		  	                lblDescansos_Pagados.setText(calculo.getDias_de_descanso_pagados()+"");
-			  	            
-		  	                txtDiasPendientesDePago.setText(calculo.getDias_trabajados_de_la_ultima_semana()+"");
-		  	                txtCuotaDiaria.setText(DF.format(calculo.getCuota_diaria_nc()));
-		  	                
-		  	                txtCuotaDiariaC.setText(DF.format(calculo.getCuota_diaria_c()));
-		  	                txtSalarioDiarioIn.setText(DF.format(calculo.getSDI_c()));
-		  	                
-			  	            txtPrestamo.setText(DF.format(calculo.getPrestamo_nc()));
-			  	            txtPension.setText(DF.format(calculo.getPension_alimenticia_nc()));
-			  	            txtInfonavit.setText(DF.format(calculo.getInfonavit_nc()));
-			  	           	txtInfonacot.setText(DF.format(calculo.getInfonacot_nc()));
-			  	           	txtFSodas.setText(DF.format(calculo.getFuente_de_sodas_nc()));
-			  	           	txtCorteCaja.setText(DF.format(calculo.getCorte_de_caja_nc()));
-			  	           	
-			  	          txtPrestamoC.setText(DF.format(calculo.getPrestamo_nc()));
-			  	            txtPensionC.setText(DF.format(calculo.getPension_alimenticia_nc()));
-			  	            txtInfonavitC.setText(DF.format(calculo.getInfonavit_nc()));
-			  	           	txtInfonacotC.setText(DF.format(calculo.getInfonacot_nc()));
-		  	                
-		  	              calcular();
-
 		  	              txtDiasPendientesDePago.requestFocus();
 	  	            	}
   	            }
@@ -532,10 +530,13 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   	    
   	    public void calcular(){
   	    	
+  	    	txtMensualidadDia.setText(DF.format(Float.valueOf(txtMensualidad.getText().trim().equals("")?"0":txtMensualidad.getText())/30)+"");
+  	    	txtCuotaDiaria.setText(DF.format(sd_nc+(Float.valueOf(txtMensualidadDia.getText().trim())))+"");
+  	    	
   	    	txtSueldo.setText(DF.format(Float.valueOf(txtCuotaDiaria.getText()) * Float.valueOf(txtDiasPendientesDePago.getText().equals("")?"0":txtDiasPendientesDePago.getText())));
               txtVacaciones.setText(DF.format(Float.valueOf(txtCuotaDiaria.getText()) * Float.valueOf(lblDiasVac.getText())));	
               txtDescansoPagado.setText(DF.format(Float.valueOf(txtCuotaDiaria.getText()) * Float.valueOf(lblDescansos_Pagados.getText())));	
-              txtPrimaVacacional.setText(DF.format(Float.valueOf(txtVacaciones.getText()) * 0.25));
+              txtPrimaVacacional.setText(DF.format(Float.valueOf(txtVacaciones.getText()) / 4));
               
               txtPercepciones.setText(DF.format(Float.valueOf(txtSueldo.getText()) +
 						  	            		Float.valueOf(txtVacaciones.getText()) +
@@ -545,39 +546,44 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
               txtSueldoC.setText(DF.format(Float.valueOf(txtCuotaDiariaC.getText()) * Float.valueOf(txtDiasPendientesDePago.getText().equals("")?"0":txtDiasPendientesDePago.getText())));
               txtVacacionesC.setText(DF.format(Float.valueOf(txtCuotaDiariaC.getText()) * Float.valueOf(lblDiasVac.getText())));	
               txtDescansoPagadoC.setText(DF.format(Float.valueOf(txtCuotaDiariaC.getText()) * Float.valueOf(lblDescansos_Pagados.getText())));	
-              txtPrimaVacacionalC.setText(DF.format(Float.valueOf(txtVacacionesC.getText()) * 0.25));
+              txtPrimaVacacionalC.setText(DF.format(Float.valueOf(txtVacacionesC.getText()) / 4));
               
-              txtPercepcionesC.setText(DF.format(Float.valueOf(txtSueldoC.getText()) +
-						  	            		Float.valueOf(txtVacacionesC.getText()) +
-						  	            		Float.valueOf(txtDescansoPagadoC.getText()) +
-						  	            		Float.valueOf(txtPrimaVacacionalC.getText())  ));
+              txtPercepcionesC.setText(DF.format(Float.valueOf(txtSueldoC.getText()) 
+							  	            		+ Float.valueOf(txtVacacionesC.getText()) 
+							  	            		+ Float.valueOf(txtDescansoPagadoC.getText()) 
+							  	            		+ Float.valueOf(txtPrimaVacacionalC.getText())  
+							  	            		
+							  	            		+ Float.valueOf(txtPrimaDominical.getText().equals("")?"0":txtPrimaDominical.getText())
+							            			+ Float.valueOf(txtBonoDespensa.getText().equals("")?"0":txtBonoDespensa.getText())
+							            			+ Float.valueOf(txtPremioPorPuntualidad.getText().equals("")?"0":txtPremioPorPuntualidad.getText())
+							            			+ Float.valueOf(txtPremioPorAsitencia.getText().equals("")?"0":txtPremioPorAsitencia.getText())
+							            			+ Float.valueOf(txtSubsidio.getText().equals("")?"0":txtSubsidio.getText())
+            		  							)
+            		  				);
               
-              txtCheques.setText(DF.format(Float.valueOf(txtPercepcionesC.getText())
-						            			
-						            			+ Float.valueOf(txtPrimaDominical.getText().equals("")?"0":txtPrimaDominical.getText())
-						            			+ Float.valueOf(txtBonoDespensa.getText().equals("")?"0":txtBonoDespensa.getText())
-						            			+ Float.valueOf(txtPremioPorPuntualidad.getText().equals("")?"0":txtPremioPorPuntualidad.getText())
-						            			+ Float.valueOf(txtPremioPorAsitencia.getText().equals("")?"0":txtPremioPorAsitencia.getText())
-						            			+ Float.valueOf(txtSubsidio.getText().equals("")?"0":txtSubsidio.getText())
-						            			
-						            			- Float.valueOf(txtPrestamoC.getText())
-						            			- Float.valueOf(txtPensionC.getText())
-						            			- Float.valueOf(txtInfonavitC.getText())
-						            			- Float.valueOf(txtInfonacotC.getText())
+              txtCheques.setText(DF.format(	Float.valueOf(txtPercepcionesC.getText())<=	0	?	0	:
+            	  								Float.valueOf(txtPercepcionesC.getText())
+						            			- Float.valueOf(txtPrestamo.getText())
+						            			- Float.valueOf(txtPension.getText())
+						            			- Float.valueOf(txtInfonavit.getText())
+						            			- Float.valueOf(txtInfonacot.getText())
+						            			- Float.valueOf(txtImss.getText().equals("")?"0":txtImss.getText())
+						            			- Float.valueOf(txtIspt.getText().equals("")?"0":txtIspt.getText())
 						            	   )
             		  			 );
 
-				txtTotal_A_Pagar.setText(DF.format(Float.valueOf(txtPercepciones.getText())
-													- Float.valueOf(txtPrestamo.getText())
-													- Float.valueOf(txtInfonavit.getText())
-													- Float.valueOf(txtInfonacot.getText())
-													- Float.valueOf(txtPension.getText())
-													- Float.valueOf(txtFSodas.getText())
-													- Float.valueOf(txtCorteCaja.getText())
-													- Float.valueOf(txtOtros.getText().equals("")?"0":txtOtros.getText())
-													- Float.valueOf(txtCheques.getText())
-												   )
-										   );
+			txtEfectivo.setText(DF.format(Float.valueOf(txtPercepciones.getText())
+										+ Float.valueOf(txtOtrasPercepciones.getText().equals("")?"0":txtOtrasPercepciones.getText())
+										- Float.valueOf(txtPrestamo.getText())
+										- Float.valueOf(txtInfonavit.getText())
+										- Float.valueOf(txtInfonacot.getText())
+										- Float.valueOf(txtPension.getText())
+//													- Float.valueOf(txtFSodas.getText())
+//													- Float.valueOf(txtCorteCaja.getText())
+										- Float.valueOf(txtOtrasDeducciones.getText().equals("")?"0":txtOtrasDeducciones.getText())
+										- Float.valueOf(txtCheques.getText())
+									   )
+							   );
               
   	    }
   	    
@@ -628,9 +634,110 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 //  			
 //  		};
   		
-
+  		public String validaCamposAlGuardar(){
+  			String camposRequeridos = "";
+  			
+  			String f_in = fechaInicioVacaciones.getDate()+"";
+  			System.out.println(f_in);
+  			
+  			camposRequeridos += f_in.equals("null")?"Fecha Inicio\n":"";
+  			camposRequeridos += txtDiasPendientesDePago.getText().trim().equals("")?"Dias Pendientes De Pago\n":"";
+  			camposRequeridos += txtPrimaDominical.getText().trim().equals("")?"Prima Dominical\n":"";
+  			camposRequeridos += txtBonoDespensa.getText().trim().equals("")?"Bono De Despensa\n":"";
+  			camposRequeridos += txtPremioPorPuntualidad.getText().trim().equals("")?"Premio Por Puntualidad\n":"";
+  			camposRequeridos += txtPremioPorAsitencia.getText().trim().equals("")?"Premio Por Asistencia\n":"";
+  			camposRequeridos += txtSubsidio.getText().trim().equals("")?"Subsidio\n":"";
+  			camposRequeridos += txtImss.getText().trim().equals("")?"Imss\n":"";
+  			camposRequeridos += txtIspt.getText().trim().equals("")?"Ispt\n":"";
+  			camposRequeridos += txtOtrasDeducciones.getText().trim().equals("")?"Otras Deducciones\n":"";
+  			camposRequeridos += txtOtrasPercepciones.getText().trim().equals("")?"Otras Percepciones\n":"";
+  			
+  			
+  			return camposRequeridos;
+  		}
   		
-//  		ActionListener opGuardar = new ActionListener() {
+  		String movimiento = "";
+  		ActionListener opGuardar = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String validacionDeCampos = validaCamposAlGuardar();
+				
+				if(validacionDeCampos.equals("")){
+					Obj_Alimentacion_De_Vacaciones vacaciones = new Obj_Alimentacion_De_Vacaciones();
+					
+					vacaciones.setFolio_vacaciones(Integer.valueOf(txtFolioVacaciones.getText().trim()));
+					vacaciones.setFolio_empleado(Integer.valueOf(txtFolioEmpleado.getText().trim()));
+					vacaciones.setGrupo_vacacional(txtGrupoDeVacaciones.getText());
+					vacaciones.setProximas_vacaciones(Integer.valueOf(txtProximasVacaciones.getText().trim()));
+					
+					vacaciones.setFecha_inicio(new SimpleDateFormat("dd/MM/yyyy").format(fechaInicioVacaciones.getDate()));
+					vacaciones.setFecha_final(new SimpleDateFormat("dd/MM/yyyy").format(fechaRegreso.getDate()));
+					vacaciones.setDias_trabajados_de_la_ultima_semana(Integer.valueOf(txtDiasPendientesDePago.getText().trim()));
+					vacaciones.setDias_de_vacaciones(Integer.valueOf(lblDiasVac.getText().trim()));
+					vacaciones.setDias_de_descanso_pagados(Integer.valueOf(lblDescansos_Pagados.getText().trim()));
+					
+					vacaciones.setMensualidad(Float.valueOf(txtMensualidad.getText().trim().equals("")?"0":txtMensualidad.getText().trim()));
+	//------------------------------------------------------------------------------------------------------------------------				
+					vacaciones.setSd_nc(Float.valueOf(txtCuotaDiaria.getText()));
+					vacaciones.setSueldo_nc(Float.valueOf(txtSueldo.getText()));
+					vacaciones.setVacaciones_nc(Float.valueOf(txtVacaciones.getText().trim()));
+					vacaciones.setDescansos_pagados_nc(Float.valueOf(txtDescansoPagado.getText().trim()));
+					vacaciones.setPrima_vacacional_nc(Float.valueOf(txtPrimaVacacional.getText().trim()));
+					vacaciones.setTotal_percepciones_nc(Float.valueOf(txtPercepciones.getText().trim()));
+	//------------------------------------------------------------------------------------------------------------------------
+					vacaciones.setSd_c(Float.valueOf(txtCuotaDiariaC.getText()));
+					vacaciones.setSDI_c(Float.valueOf(txtSDI.getText()));
+					vacaciones.setSueldo_c(Float.valueOf(txtSueldoC.getText()));
+					vacaciones.setVacaciones_c(Float.valueOf(txtVacacionesC.getText().trim()));
+					vacaciones.setDescansos_pagados_c(Float.valueOf(txtDescansoPagadoC.getText().trim()));
+					vacaciones.setPrima_vacacional_c(Float.valueOf(txtPrimaVacacionalC.getText().trim()));
+					vacaciones.setTotal_percepciones_c(Float.valueOf(txtPercepcionesC.getText().trim()));
+	//------------------------------------------------------------------------------------------------------------------------				
+					
+					vacaciones.setPrima_dominical_c(Float.valueOf(txtPrimaDominical.getText().trim()));
+					vacaciones.setBono_despensa_c(Float.valueOf(txtBonoDespensa.getText().trim()));
+					vacaciones.setPremio_por_puntualidad_c(Float.valueOf(txtPremioPorPuntualidad.getText().trim()));
+					vacaciones.setPremio_por_asistencia_c(Float.valueOf(txtPremioPorAsitencia.getText().trim()));
+					vacaciones.setSubsidio_c(Float.valueOf(txtSubsidio.getText().trim()));
+					vacaciones.setImss_c(Float.valueOf(txtImss.getText().trim()));
+					vacaciones.setIspt_c(Float.valueOf(txtIspt.getText().trim()));
+					
+					vacaciones.setPrestamo_nc(Float.valueOf(txtPrestamo.getText().trim()));
+					vacaciones.setInfonavit_nc(Float.valueOf(txtInfonavit.getText().trim()));
+					vacaciones.setInfonacot_nc(Float.valueOf(txtInfonacot.getText().trim()));
+					vacaciones.setPension_alimenticia_nc(Float.valueOf(txtPension.getText().trim()));
+					vacaciones.setOtras_deducciones(Float.valueOf(txtOtrasDeducciones.getText().trim()));
+					vacaciones.setOtras_percepciones(Float.valueOf(txtOtrasPercepciones.getText().trim()));
+					
+					vacaciones.setCheque_nc(Float.valueOf(txtCheques.getText().trim()));
+					vacaciones.setEfectivo_nc(Float.valueOf(txtEfectivo.getText().trim()));
+					
+					vacaciones.setObservacion_vacaciones(txaObservacion.getText().trim().toUpperCase());
+					
+					if(movimiento.equals("GUARDAR")){
+						if(vacaciones.guardar_vacaciones_calculadas(movimiento)){
+							JOptionPane.showMessageDialog(null, "El Registro Se Guardo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						}else{
+							JOptionPane.showMessageDialog(null, "Ocurrió un problema al almacenar las vacaciones", "Error", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+						}
+					}else{
+						if(JOptionPane.showConfirmDialog(null, "El registro existe, ¿desea actualizarlo?") == 0){
+							if(vacaciones.guardar_vacaciones_calculadas(movimiento)){
+								JOptionPane.showMessageDialog(null, "El Registro Se Actualizo Correctamente","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+							}else{
+								JOptionPane.showMessageDialog(null, "Ocurrió un problema al actualizar las vacaciones", "Error", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+							}
+						}
+					}
+				}else{
+					JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validacionDeCampos, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+   					return;
+				}
+				
+			}
+  		};
+  		
+//  		ActionListener opGuardar2 = new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
 //				
 //				if(txtFolioVacaciones.getText().equals("")){
@@ -761,8 +868,8 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   		@SuppressWarnings("unused")
 		private String validaCampos(){
   			String error="";
-  			String fechaInNull = fechaInicio.getDate()+"";
-  			String fechaFinNull = fechaFin.getDate()+"";
+  			String fechaInNull = fechaInicioVacaciones.getDate()+"";
+  			String fechaFinNull = fechaRegreso.getDate()+"";
   			
   			if(fechaInNull.equals("null"))error+= "Fecha Inicial\n";	
   			if(fechaFinNull.equals("null"))error += "Fecha Final\n";
@@ -771,8 +878,8 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   			if(txtPrimaVacacional.getText().equals("")) 		error+= "Prima Vacacional\n";
   			if(txtInfonavit.getText().equals(""))	error+= "Ifonavit\n";
   			if(txtSueldo.getText().equals(""))error+= "Sueldo Semana\n";
-  			if(txtCorteCaja.getText().equals(""))	error+= "Corte De Caja\n";
-  			if(txtFSodas.getText().equals("")) 		error+= "Fuente De Sodas\n";
+//  			if(txtCorteCaja.getText().equals(""))	error+= "Corte De Caja\n";
+//  			if(txtFSodas.getText().equals("")) 		error+= "Fuente De Sodas\n";
   			if(txtPrestamo.getText().equals("")) 	error+= "Prestamo\n";
   			if(txtPension.getText().equals("")) 	error+= "Pension Alimenticia\n";
   			
@@ -788,16 +895,17 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   	        txtPuesto.setText("");
   	        txtFechaIngreso.setText("");
   	        txtFechaIngresoIMSS.setText("");
-  	        txtSalarioDiarioIn.setText("");
+//  	        txtSalarioDiarioIn.setText("");
   	        txtGrupoDeVacaciones.setText("");
   	        txtProximasVacaciones.setText("");
   	        
   			Icon iconoFoto = new ImageIcon(tmpIconAuxFoto.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
   	        btnFoto.setIcon(iconoFoto);
   			
-	  		fechaFin.setDate(null);
+  	        fechaRegreso.setDate(null);
 	          
 	        txtCuotaDiaria.setText("");
+	        txtSDI.setText("");
 	         
 	        txtVacaciones.setText("");
 	        txtDescansoPagado.setText("");
@@ -808,10 +916,10 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	  		txtSueldo.setText("");
 	  		txtPrestamo.setText("");
 	  		txtPension.setText("");
-	        txtFSodas.setText("");
-	        txtCorteCaja.setText("");
+//	        txtFSodas.setText("");
+//	        txtCorteCaja.setText("");
 	        txtCheques.setText("");
-	        txtTotal_A_Pagar.setText("");
+	        txtEfectivo.setText("");
 	  		
 	        txtCuotaDiariaC.setText("");
 	          
@@ -819,26 +927,30 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	  		txtDescansoPagadoC.setText("");
 	  		txtPrimaVacacionalC.setText("");
 	  		txtPercepcionesC.setText("");
-	  		txtInfonavitC.setText("");
-	  		txtInfonacotC.setText("");
+//	  		txtInfonavitC.setText("");
+//	  		txtInfonacotC.setText("");
 	  		txtSueldoC.setText("");
-	  		txtPrestamoC.setText("");
-	  		txtPensionC.setText("");
+//	  		txtPrestamoC.setText("");
+//	  		txtPensionC.setText("");
 	  		
-	  		fechaInicio.setDate(null);
+	  		fechaInicioVacaciones.setDate(null);
 	  		txtDiasPendientesDePago.setText("");
-	  		txtOtros.setText("");
+	  		txtOtrasDeducciones.setText("");
+	  		txtOtrasPercepciones.setText("");
 	  		txtPrimaDominical.setText("");
 	  		txtBonoDespensa.setText("");
 	  		txtPremioPorPuntualidad.setText("");
 	  		txtPremioPorAsitencia.setText("");
 	  		txtSubsidio.setText("");
+	  		txtImss.setText("");
+	  		txtIspt.setText("");
             
             lblDiasVac.setText("0");
+            lblDescansos_Pagados.setText("0");
             
-            while(tabla_vacaciones_disfrutadas.getRowCount()>0){
-                tabla_model.removeRow(0);
-            }
+            txaObservacion.setText("");
+            
+            tabla_model.setRowCount(0);
   		}
   		
  //Filtro Empleado para buscar y editar sus ultimas vacacioenes----------------------------------------------------------------------------
@@ -849,10 +961,10 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   			
   			Connexion con = new Connexion();
   			
-  			DefaultTableModel model = new DefaultTableModel(0,3){
+  			DefaultTableModel model = new DefaultTableModel(0,4){
   				public boolean isCellEditable(int fila, int columna){
-  					if(columna < 0)
-  						return true;
+//  					if(columna < 0)
+//  						return true;
   					return false;
   				}
   			};
@@ -894,94 +1006,64 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   				tabla.addKeyListener(seleccionEmpleadoconteclado);
   				
   			}
-  			private void agregar(final JTable tbl) {
+  			
+  			public void agregar(final JTable tbl) {
   		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
   			        public void mouseClicked(MouseEvent e) {
   			        	if(e.getClickCount() == 2){
   			        		
   			        		int fila = tabla.getSelectedRow();
   			    			String folio =  tabla.getValueAt(fila, 0).toString().trim();
-  			    			btnReporte.setEnabled(true);
   			    			dispose();
   			    			
   			    			llenarDatosEmpleado(Integer.valueOf(folio));
+  			    			fechaInicioVacaciones.transferFocus();
   			        	}
   			        }
   		        });
+  		        
   		    }
-
-  			public void llenarDatosEmpleado(int folio){
-  				
-				try {
-					 fechaInicio.setEnabled(true);
-	  				 
-		  				Obj_Alimentacion_De_Vacaciones vacaciones = new Obj_Alimentacion_De_Vacaciones().buscar_vacaciones_guardadas(folio);
-						
-		  	            while(tabla_vacaciones_disfrutadas.getRowCount()>0){
-		  	                tabla_model.removeRow(0);
-		  	        }
-		  	        
-		  	        Object [][] lista_tabla = new BuscarTablasModel().tabla_de_vacaciones_disfrutadas(folio);
-		  	        String[] fila = new String[4];
-		  	                for(int i=0; i<lista_tabla.length; i++){
-		  	                        fila[0] = lista_tabla[i][0]+"";
-		  	                        fila[1] = lista_tabla[i][1]+"";
-		  	                        fila[2] = lista_tabla[i][2]+"";
-		  	                        fila[3] = lista_tabla[i][3]+"";
-		  	                        tabla_model.addRow(fila);
-		  	                }
-		  	                
-		  				txtFolioVacaciones.setText(vacaciones.getFolio_vacaciones()+"");
-		  				txtFolioEmpleado.setText(vacaciones.getFolio_empleado()+"");
-		  				txtEmpleado.setText(vacaciones.getEmpleado());
-		  				txtEstablecimiento.setText(vacaciones.getEstablecimiento());
-		  				txtPuesto.setText(vacaciones.getPuesto());
-		  				txtFechaIngreso.setText(vacaciones.getFecha_ingreso());
-		  				txtFechaIngresoIMSS.setText(vacaciones.getFecha_ingreso_imss());
-		  				txtSalarioDiarioIn.setText(vacaciones.getSalario_diario_integrado()+"");
-		  				txtGrupoDeVacaciones.setText(vacaciones.getGrupo_vacacional());
-		  				txtProximasVacaciones.setText(vacaciones.getProximas_vacaciones()+"");
-		  				
-		  				
-					Date dateIn = new SimpleDateFormat("dd/MM/yyyy").parse(vacaciones.getFecha_inicio());
-					fechaInicio.setDate(dateIn);
-					
-	  				Date dateFin = new SimpleDateFormat("dd/MM/yyyy").parse(vacaciones.getFecha_final());
-	  				fechaFin.setDate(dateFin);
-	  				
-//	  				txtVacaciones.setText(vacaciones.getVacaciones()+"");
-//	  				txtPrimaVacacional.setText(vacaciones.getPrima_vacacional()+"");
-//	  				txtInfonavit.setText(vacaciones.getInfonavit()+"");
-//	  				txtSueldo.setText(vacaciones.getSueldo_semana()+"");
-//	  				txtCorteCaja.setText(vacaciones.getCorte_de_caja()+"");
-//	  				txtFSodas.setText(vacaciones.getFuente_de_sodas()+"");
-//	  				txtPrestamo.setText(vacaciones.getPrestamo()+"");
-//	  				txtPension.setText(vacaciones.getPension_alimenticia()+"");
-//	  				txtDescansoPagado.setText(vacaciones.getDias_descanso_vacaciones()+"");
-//	  				lblTotal.setText(vacaciones.getTotal()+"");
-//	  				chbStatus.setSelected(vacaciones.isStatus());
-//	  				txtVacacionesC.setText(vacaciones.getVacaciones_c()+"");
-//	  				txtPrimaVacacionalC.setText(vacaciones.getPrima_vacacional_c()+"");
-//	  				txtInfonavitC.setText(vacaciones.getInfonavit()+"");
-//	  				txtSueldoC.setText(vacaciones.getSueldo_semana_c()+"");
-//	  				txtPrestamoC.setText(vacaciones.getPrestamo()+"");
-//	  				txtPensionC.setText(vacaciones.getPension_alimenticia()+"");
-//	  				txtVacacionesC.setText(vacaciones.getVacaciones_c()+"");
-//	  				txtPrimaVacacionalC.setText(vacaciones.getPrima_vacacional_c()+"");
-//	  				txtSueldoC.setText(vacaciones.getSueldo_semana_c()+"");
-	  				
-	  				ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
-	  		        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-	  		        btnFoto.setIcon(iconoDefault);
-	  				
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-  				
-  		         btnBuscar.setEnabled(false);
-  		         btnNuevo.setEnabled(false);
-  		          
-  			}
+  			
+//  			public void llenarDatosEmpleado(int folio){
+//  				
+//				try {
+//						fechaInicioVacaciones.setEnabled(true);
+//	  				 
+//  						Obj_Alimentacion_De_Vacaciones vacaciones = new Obj_Alimentacion_De_Vacaciones().buscar_vacaciones_guardadas(folio);
+//  						tabla_model.setRowCount(0);
+//  						Object [][] lista_tabla = new BuscarTablasModel().tabla_de_vacaciones_disfrutadas(folio);
+//	  	                for(Object[] reg: lista_tabla){
+//	  	                        tabla_model.addRow(reg);
+//	  	                }
+//		  	                
+//		  				txtFolioVacaciones.setText(vacaciones.getFolio_vacaciones()+"");
+//		  				txtFolioEmpleado.setText(vacaciones.getFolio_empleado()+"");
+//		  				txtEmpleado.setText(vacaciones.getEmpleado());
+//		  				txtEstablecimiento.setText(vacaciones.getEstablecimiento());
+//		  				txtPuesto.setText(vacaciones.getPuesto());
+//		  				txtFechaIngreso.setText(vacaciones.getFecha_ingreso());
+//		  				txtFechaIngresoIMSS.setText(vacaciones.getFecha_ingreso_imss());
+////		  				txtSalarioDiarioIn.setText(vacaciones.getSalario_diario_integrado()+"");
+//		  				txtGrupoDeVacaciones.setText(vacaciones.getGrupo_vacacional());
+//		  				txtProximasVacaciones.setText(vacaciones.getProximas_vacaciones()+"");
+//		  				
+//					Date dateIn = new SimpleDateFormat("dd/MM/yyyy").parse(vacaciones.getFecha_inicio());
+//					fechaInicioVacaciones.setDate(dateIn);
+//					
+//	  				Date dateFin = new SimpleDateFormat("dd/MM/yyyy").parse(vacaciones.getFecha_regresa());
+//	  				fechaRegreso.setDate(dateFin);
+//	  				
+//	  				ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
+//	  		        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//	  		        btnFoto.setIcon(iconoDefault);
+//	  				
+//				} catch (ParseException e) {
+//					e.printStackTrace();
+//				}
+//  				
+//  		         btnBuscar.setEnabled(false);
+//  		         btnNuevo.setEnabled(false);
+//  			}
   			
   			@SuppressWarnings("unchecked")
   			public void filtro() { 
@@ -1003,12 +1085,14 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   		    	
   		    	int x=100;
   		    	
-  		    	tb.getColumnModel().getColumn(0 ).setMaxWidth(x-50);   
-  		    	tb.getColumnModel().getColumn(0 ).setMinWidth(x-50);   
-  		    	tb.getColumnModel().getColumn(1 ).setMaxWidth(x*3);
-  		    	tb.getColumnModel().getColumn(1 ).setMinWidth(x*3);
-  		    	tb.getColumnModel().getColumn(2 ).setMaxWidth(x*2); 
-  		    	tb.getColumnModel().getColumn(2 ).setMinWidth(x*2); 
+  		    	tb.getColumnModel().getColumn(0 ).setMaxWidth(x-60);   
+  		    	tb.getColumnModel().getColumn(0 ).setMinWidth(x-60);   
+  		    	tb.getColumnModel().getColumn(1 ).setMaxWidth(x*3-30);
+  		    	tb.getColumnModel().getColumn(1 ).setMinWidth(x*3-30);
+  		    	tb.getColumnModel().getColumn(2 ).setMaxWidth(x*2-50); 
+  		    	tb.getColumnModel().getColumn(2 ).setMinWidth(x*2-50); 
+  		    	tb.getColumnModel().getColumn(3 ).setMaxWidth(x); 
+  		    	tb.getColumnModel().getColumn(3 ).setMinWidth(x); 
   		    	                                          
   			}
   			
@@ -1017,8 +1101,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   				tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
   				tabla.getColumnModel().getColumn(1).setHeaderValue("Empleado");
   				tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
-  				
-  				new Connexion();
+  				tabla.getColumnModel().getColumn(3).setHeaderValue("Status");
   				
   				Statement s;
   				ResultSet rs;
@@ -1028,10 +1111,11 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   					
   					while (rs.next())
   					{ 
-  					   String [] fila = new String[3];
+  					   String [] fila = new String[4];
   					   fila[0] = rs.getString(1).trim();
   					   fila[1] = rs.getString(2).trim();
   					   fila[2] = rs.getString(3).trim();
+  					   fila[3] = rs.getString(4).trim();
   					   
   					   model.addRow(fila); 
   					}	
@@ -1043,56 +1127,18 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   			    return scrol; 
   			}
   			
-  			KeyListener validaCantidad = new KeyListener() {
-  				@Override
-  				public void keyTyped(KeyEvent e){
-  					char caracter = e.getKeyChar();				
-  					if(((caracter < '0') ||	
-  					    	(caracter > '9')) && 
-  					    	(caracter != '.' )){
-  					    	e.consume();
-  					    	}
-  				}
-  				@Override
-  				public void keyReleased(KeyEvent e) {	
-  				}
-  				@Override
-  				public void keyPressed(KeyEvent arg0) {
-  				}	
-  			};
-  			
-  			KeyListener validaNumericoConPunto = new KeyListener() {
-  				@Override
-  				public void keyTyped(KeyEvent e) {
-  					char caracter = e.getKeyChar();
-  					
-  				    if(((caracter < '0') ||	
-  				    	(caracter > '9')) && 
-  				    	(caracter != '.')){
-  				    	e.consume();
-  				    	}
-  				    		    		       	
-  				}
-  				@Override
-  				public void keyPressed(KeyEvent e){}
-  				@Override
-  				public void keyReleased(KeyEvent e){}
-  										
-  			};
-  			
   			KeyListener seleccionEmpleadoconteclado = new KeyListener() {
   				@SuppressWarnings({ "static-access", "unused" })
-  				@Override
+				@Override
   				public void keyTyped(KeyEvent e) {
-  					char caracter = e.getKeyChar();
-  					
-  					if(caracter==e.VK_ENTER){
-  					int fila=tabla.getSelectedRow()-1;
-  					String folio = tabla.getValueAt(fila,0).toString().trim();
-  						
-  					btnBuscar.doClick();
-  					dispose();
-  					
+	  					char caracter = e.getKeyChar();
+	  					
+	  					if(caracter==e.VK_ENTER){
+	  					int fila=tabla.getSelectedRow()-1;
+	  					String folio = tabla.getValueAt(fila,0).toString().trim();
+	  						
+	  					btnBuscar.doClick();
+	  					dispose();
   					}
   				}
   				@Override
@@ -1101,8 +1147,6 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   				public void keyReleased(KeyEvent e){}
   										
   			};
-  			
-  			
   		}
 		
 //Filtro Empleado----------------------------------------------------------------------------
@@ -1125,25 +1169,18 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
 		
-		JLabel lblBuscar = new JLabel("BUSCAR : ");
-		JTextField txtBuscar = new JTextField();
+		JTextField txtFiltroColaboradores  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tabla,3);
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Filtro_Empleado_Para_Vacaciones_Nuevas(){
 			this.setModal(true);
 			this.setTitle("Filtro Empleados");
-			txtBuscar.addKeyListener(new KeyAdapter() { 
-				public void keyReleased(final KeyEvent e) { 
-	                filtro(); 
-	            } 
-	        });
 		
 			trsfiltro = new TableRowSorter(model); 
 			tabla.setRowSorter(trsfiltro);  
 			
-			campo.add(lblBuscar).setBounds(30,30,70,20);
-			campo.add(txtBuscar).setBounds(95,30,215,20);
-			campo.add(getPanelTabla()).setBounds(10,70,570,410);
+			campo.add(txtFiltroColaboradores).setBounds(10,30,570,20);
+			campo.add(getPanelTabla()).setBounds(10,50,570,410);
 			
 			cont.add(campo);
 			agregar(tabla);
@@ -1158,7 +1195,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 			tabla.addKeyListener(seleccionEmpleadoconteclado);
 			
 		}
-		private void agregar(final JTable tbl) {
+		public void agregar(final JTable tbl) {
 	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(MouseEvent e) {
 		        	if(e.getClickCount() == 2){
@@ -1168,51 +1205,88 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		    			dispose();
 		    			
 		    			llenarDatosEmpleado(Integer.valueOf(folio));
-		    			fechaInicio.transferFocus();
+		    			fechaInicioVacaciones.transferFocus();
 		        	}
 		        }
 	        });
 	        
 	    }
-		public void llenarDatosEmpleado(int folio){
-			
-				 fechaInicio.setEnabled(true);
-				 btnDeshacer.setEnabled(true);
- 				 
-	  				Obj_Alimentacion_De_Vacaciones vacaciones = new Obj_Alimentacion_De_Vacaciones().buscar(folio);
-					
-	  	            while(tabla_vacaciones_disfrutadas.getRowCount()>0){
-	  	                tabla_model.removeRow(0);
-	  	        }
-	  	        
-	  	        Object [][] lista_tabla = new BuscarTablasModel().tabla_de_vacaciones_disfrutadas(folio);
-	  	        String[] fila = new String[4];
-	  	                for(int i=0; i<lista_tabla.length; i++){
-	  	                        fila[0] = lista_tabla[i][0]+"";
-	  	                        fila[1] = lista_tabla[i][1]+"";
-	  	                        fila[2] = lista_tabla[i][2]+"";
-	  	                        fila[3] = lista_tabla[i][3]+"";
-	  	                        tabla_model.addRow(fila);
-	  	                }
-	  	                
-	  				txtFolioVacaciones.setText(vacaciones.getFolio_vacaciones()+"");
-	  				txtFolioEmpleado.setText(vacaciones.getFolio_empleado()+"");
-	  				txtEmpleado.setText(vacaciones.getEmpleado());
-	  				txtEstablecimiento.setText(vacaciones.getEstablecimiento());
-	  				txtPuesto.setText(vacaciones.getPuesto());
-	  				txtFechaIngreso.setText(vacaciones.getFecha_ingreso());
-	  				txtFechaIngresoIMSS.setText(vacaciones.getFecha_ingreso_imss());
-	  				txtSalarioDiarioIn.setText(vacaciones.getSalario_diario_integrado()+"");
-	  				txtGrupoDeVacaciones.setText(vacaciones.getGrupo_vacacional());
-	  				txtProximasVacaciones.setText(vacaciones.getProximas_vacaciones()+"");
-	  				
- 				ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
- 		         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
- 		         btnFoto.setIcon(iconoDefault);
- 				
-	         btnBuscar.setEnabled(false);
-	         btnNuevo.setEnabled(false);
-		}
+//		public void llenarDatosEmpleado(int folio){
+//			
+//				fechaInicioVacaciones.setEnabled(true);
+//				 btnDeshacer.setEnabled(true);
+//				 activar_descactivar_campos(true);
+// 				 
+//	  	        tabla_model.setRowCount(0);
+//	  	        Object [][] lista_tabla = new BuscarTablasModel().tabla_de_vacaciones_disfrutadas(folio);
+//                for(Object[] reg: lista_tabla){
+//                        tabla_model.addRow(reg);
+//                }
+//	  	                
+//                Obj_Alimentacion_De_Vacaciones vacaciones = new Obj_Alimentacion_De_Vacaciones().buscar(folio);
+//                
+//	  				txtFolioVacaciones.setText(vacaciones.getFolio_vacaciones()+"");
+//	  				txtFolioEmpleado.setText(vacaciones.getFolio_empleado()+"");
+//	  				txtEmpleado.setText(vacaciones.getEmpleado());
+//	  				txtEstablecimiento.setText(vacaciones.getEstablecimiento());
+//	  				txtPuesto.setText(vacaciones.getPuesto());
+//	  				txtFechaIngreso.setText(vacaciones.getFecha_ingreso());
+//	  				txtFechaIngresoIMSS.setText(vacaciones.getFecha_ingreso_imss());
+//	  				txtGrupoDeVacaciones.setText(vacaciones.getGrupo_vacacional());
+//	  				txtProximasVacaciones.setText(vacaciones.getProximas_vacaciones()+"");
+//	  				
+//	  				txtMensualidadDia.setText("0");
+//	  				
+//	  				btnFoto.setIcon(crearIcon(vacaciones.getImagen()));
+//	  				
+//	  				lblDiasVac.setText(vacaciones.getDias_de_vacaciones()+"");
+//	  				lblDescansos_Pagados.setText(vacaciones.getDias_de_descanso_pagados()+"");
+//					
+//	  				sd_nc = vacaciones.getSd_nc();
+//	  				txtCuotaDiaria.setText(sd_nc+"");
+//	  				txtSueldo.setText(vacaciones.getSueldo_nc()+"");
+//	  				txtVacaciones.setText(vacaciones.getVacaciones_nc()+"");
+//	  				txtDescansoPagado.setText(vacaciones.getDescansos_pagados_nc()+"");
+//	  				txtPrimaVacacional.setText(vacaciones.getPrima_vacacional_nc()+"");
+//	  				
+//	  				txtPercepciones.setText(vacaciones.getTotal_percepciones_nc()+"");
+//	  				
+//	  				txtPrestamo.setText(vacaciones.getPrestamo_nc()+"");
+//	  				txtPension.setText(vacaciones.getPension_alimenticia_nc()+"");
+//	  				txtInfonavit.setText(vacaciones.getInfonavit_nc()+"");
+//	  				txtInfonacot.setText(vacaciones.getInfonacot_nc()+"");
+//	  				
+//	  				txtCuotaDiariaC.setText(vacaciones.getSd_c()+"");
+//	  				txtSDI.setText(vacaciones.getSDI_c()+"");
+//	  				
+//	  				txtSueldoC.setText(vacaciones.getSueldo_c()+"");
+//	  				txtVacacionesC.setText(vacaciones.getVacaciones_c()+"");
+//	  				txtDescansoPagadoC.setText(vacaciones.getDescansos_pagados_c()+"");
+//	  				txtPrimaVacacionalC.setText(vacaciones.getPrima_vacacional_c()+"");
+//	  				txtPercepcionesC.setText(vacaciones.getTotal_percepciones_c()+"");
+//	  				
+//	  				txtCheques.setText(vacaciones.getCheque_nc()+"");
+//	  				txtEfectivo.setText(vacaciones.getEfectivo_nc()+"");
+//	  				
+//	  				txtDiasPendientesDePago.setText("");
+//	  				txtPrimaDominical.setText("");
+//	  				txtBonoDespensa.setText("");
+//	  				txtPremioPorPuntualidad.setText("");
+//	  				txtPremioPorAsitencia.setText("");
+//	  				txtSubsidio.setText("");
+//	  				txtOtrasDeducciones.setText("");
+//	  				txtOtrasPercepciones.setText("");
+//	  				
+//	  				calcular();
+//	  				
+//	         btnBuscar.setEnabled(false);
+//	         btnNuevo.setEnabled(false);
+//		}
+		
+//		public Icon crearIcon(byte[] bs){
+//			ImageIcon tmpIconDefault= new ImageIcon(bs);
+//			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+//		}
 		
 		public void render_filtro(final JTable tb){
 				tb.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));
@@ -1238,25 +1312,17 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		    	                                          
 			}
 		
-		@SuppressWarnings("unchecked")
-		public void filtro() { 
-				trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().toUpperCase().trim(), 1));
-		}  
-		
 		private JScrollPane getPanelTabla()	{
 			
 				tabla.getColumnModel().getColumn(0).setHeaderValue("Folio");
 				tabla.getColumnModel().getColumn(1).setHeaderValue("Empleado");
 				tabla.getColumnModel().getColumn(2).setHeaderValue("Establecimiento");
 				
-				
-			new Connexion();
-			
 			Statement s;
 			ResultSet rs;
 			try {
 				s = con.conexion().createStatement();
-				rs = s.executeQuery("exec sp_select_permiso_checador_filtro_empleados" );
+				rs = s.executeQuery("exec filtro_nuevas_vacaciones" );
 				
 				while (rs.next())
 				{ 
@@ -1274,43 +1340,6 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 			   
 		    return scrol; 
 		}
-		
-		KeyListener validaCantidad = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();				
-				if(((caracter < '0') ||	
-				    	(caracter > '9')) && 
-				    	(caracter != '.' )){
-				    	e.consume();
-				    	}
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {	
-			}
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-			}	
-		};
-		
-		KeyListener validaNumericoConPunto = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char caracter = e.getKeyChar();
-				
-			    if(((caracter < '0') ||	
-			    	(caracter > '9')) && 
-			    	(caracter != '.')){
-			    	e.consume();
-			    	}
-			    		    		       	
-			}
-			@Override
-			public void keyPressed(KeyEvent e){}
-			@Override
-			public void keyReleased(KeyEvent e){}
-									
-		};
 		
 		KeyListener seleccionEmpleadoconteclado = new KeyListener() {
 			@SuppressWarnings({ "static-access", "unused" })
@@ -1332,6 +1361,119 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 			public void keyReleased(KeyEvent e){}
 									
 		};
+	}
+	
+	public void llenarDatosEmpleado(int folio){
+		
+		fechaInicioVacaciones.setEnabled(true);
+		btnDeshacer.setEnabled(true);
+		activar_descactivar_campos(true);
+			 
+        tabla_model.setRowCount(0);
+        Object [][] lista_tabla = new BuscarTablasModel().tabla_de_vacaciones_disfrutadas(folio);
+        for(Object[] reg: lista_tabla){
+                tabla_model.addRow(reg);
+        }
+	                
+        Obj_Alimentacion_De_Vacaciones vac = new Obj_Alimentacion_De_Vacaciones().buscar(folio,movimiento);
+        
+				txtFolioVacaciones.setText(vac.getFolio_vacaciones()+"");
+				txtFolioEmpleado.setText(vac.getFolio_empleado()+"");
+				txtEmpleado.setText(vac.getEmpleado());
+				txtEstablecimiento.setText(vac.getEstablecimiento());
+				txtPuesto.setText(vac.getPuesto());
+				txtFechaIngreso.setText(vac.getFecha_ingreso());
+				txtFechaIngresoIMSS.setText(vac.getFecha_ingreso_imss());
+				txtGrupoDeVacaciones.setText(vac.getGrupo_vacacional());
+				txtProximasVacaciones.setText(vac.getProximas_vacaciones()+"");
+				
+				txtMensualidadDia.setText("0");
+				
+				btnFoto.setIcon(crearIcon(vac.getImagen()));
+				
+				lblDiasVac.setText(vac.getDias_de_vacaciones()+"");
+				lblDescansos_Pagados.setText(vac.getDias_de_descanso_pagados()+"");
+			
+				sd_nc = vac.getSd_nc();
+				txtCuotaDiaria.setText(sd_nc+"");
+				txtSueldo.setText(vac.getSueldo_nc()+"");
+				txtVacaciones.setText(vac.getVacaciones_nc()+"");
+				txtDescansoPagado.setText(vac.getDescansos_pagados_nc()+"");
+				txtPrimaVacacional.setText(vac.getPrima_vacacional_nc()+"");
+				
+				txtPercepciones.setText(vac.getTotal_percepciones_nc()+"");
+				
+				txtPrestamo.setText(vac.getPrestamo_nc()+"");
+				txtPension.setText(vac.getPension_alimenticia_nc()+"");
+				txtInfonavit.setText(vac.getInfonavit_nc()+"");
+				txtInfonacot.setText(vac.getInfonacot_nc()+"");
+				
+				txtCuotaDiariaC.setText(vac.getSd_c()+"");
+				txtSDI.setText(vac.getSDI_c()+"");
+				
+				txtSueldoC.setText(vac.getSueldo_c()+"");
+				txtVacacionesC.setText(vac.getVacaciones_c()+"");
+				txtDescansoPagadoC.setText(vac.getDescansos_pagados_c()+"");
+				txtPrimaVacacionalC.setText(vac.getPrima_vacacional_c()+"");
+				txtPercepcionesC.setText(vac.getTotal_percepciones_c()+"");
+				
+				txtCheques.setText(vac.getCheque_nc()+"");
+				txtEfectivo.setText(vac.getEfectivo_nc()+"");
+				
+				txtDiasPendientesDePago.setText("");
+				txtPrimaDominical.setText("");
+				txtBonoDespensa.setText("");
+				txtPremioPorPuntualidad.setText("");
+				txtPremioPorAsitencia.setText("");
+				txtSubsidio.setText("");
+				txtOtrasDeducciones.setText("");
+				txtOtrasPercepciones.setText("");
+				
+				if(movimiento.equals("MODIFICAR")){
+					
+					Date fecha_i;
+					Date fecha_r;
+					try {
+						fecha_i = new SimpleDateFormat("dd/MM/yyyy").parse(vac.getFecha_inicio());
+						fecha_r = new SimpleDateFormat("dd/MM/yyyy").parse(vac.getFecha_regresa());
+						fechaInicioVacaciones.setDate(fecha_i);
+						fechaRegreso.setDate(fecha_r);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
+					txtDiasPendientesDePago.setText(vac.getDias_trabajados_de_la_ultima_semana()+"");
+					txtMensualidad.setText(vac.getMensualidad()+"");
+					txtOtrasDeducciones.setText(vac.getOtras_deducciones()+"");
+					txtOtrasPercepciones.setText(vac.getOtras_percepciones()+"");
+					
+					txtPrimaDominical.setText(vac.getPrima_dominical_c()+"");
+					txtBonoDespensa.setText(vac.getBono_despensa_c()+"");
+					txtPremioPorPuntualidad.setText(vac.getPremio_por_puntualidad_c()+"");
+					txtPremioPorAsitencia.setText(vac.getPremio_por_asistencia_c()+"");
+					txtSubsidio.setText(vac.getSubsidio_c()+"");
+					txtImss.setText(vac.getImss_c()+"");
+					txtIspt.setText(vac.getIspt_c()+"");
+					
+					txaObservacion.setText(vac.getObservacion_vacaciones());
+					
+					
+				}
+				
+				
+				
+				
+				
+				
+				calcular();
+				
+	     btnBuscar.setEnabled(false);
+	     btnNuevo.setEnabled(false);
+	}
+	
+	public Icon crearIcon(byte[] bs){
+		ImageIcon tmpIconDefault= new ImageIcon(bs);
+		return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
 	}
 	
 	public static void main(String [] arg){

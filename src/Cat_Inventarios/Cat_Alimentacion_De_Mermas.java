@@ -138,7 +138,8 @@ public class Cat_Alimentacion_De_Mermas extends JFrame{
 	JCButton btnGuardar   = new JCButton("Guardar"      ,"Guardar.png","Azul");
 	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
 	
-	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_valida_permiso_cambio_de_establecimiento();
+//	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento_valida_permiso_cambio_de_establecimiento();
+	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
@@ -341,30 +342,30 @@ public  Cat_Alimentacion_De_Mermas(){
 		                    	    }
 	                 });
 	                  
-      		if(cmbEstablecimiento.getComponentCount()==2){
-    			cmbEstablecimiento.setSelectedIndex(1);
-    			if(cmbEstablecimiento.getSelectedItem().toString().equals("EL Colaborador No Tiene Asignado Un Establecimiento Valido")){
-    				this.dispose();
-    				
-    				btnBuscar.setEnabled(false);
-    				btnDeshacer.setEnabled(false);
-    				btnNuevo.setEnabled(false);
-    				btnReporte.setEnabled(false);
-    				btnProducto.setEnabled(false);
-    				btnQuitarfila.setEnabled(false);
-    				txtFolio.setEnabled(false);
-    				txtcod_prod.setEnabled(false);
-    				txtFiltro.setEnabled(false);
-    				txaNota.setEnabled(false);
-    				cmbRazonDeMerma.setEnabled(false);
-    				cmbDestinoDeMerma.setEnabled(false);
-    				
-    				JOptionPane.showMessageDialog(null, cmbEstablecimiento.getSelectedItem().toString(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-    	         	return;
-    			}
-    		}else{
-    			cmbEstablecimiento.setSelectedIndex(0);
-    		}
+//      		if(cmbEstablecimiento.getComponentCount()==2){
+//    			cmbEstablecimiento.setSelectedIndex(1);
+//    			if(cmbEstablecimiento.getSelectedItem().toString().equals("EL Colaborador No Tiene Asignado Un Establecimiento Valido")){
+//    				this.dispose();
+//    				
+//    				btnBuscar.setEnabled(false);
+//    				btnDeshacer.setEnabled(false);
+//    				btnNuevo.setEnabled(false);
+//    				btnReporte.setEnabled(false);
+//    				btnProducto.setEnabled(false);
+//    				btnQuitarfila.setEnabled(false);
+//    				txtFolio.setEnabled(false);
+//    				txtcod_prod.setEnabled(false);
+//    				txtFiltro.setEnabled(false);
+//    				txaNota.setEnabled(false);
+//    				cmbRazonDeMerma.setEnabled(false);
+//    				cmbDestinoDeMerma.setEnabled(false);
+//    				
+//    				JOptionPane.showMessageDialog(null, cmbEstablecimiento.getSelectedItem().toString(), "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+//    	         	return;
+//    			}
+//    		}else{
+//    			cmbEstablecimiento.setSelectedIndex(0);
+//    		}
 	                 
     }
    
@@ -494,11 +495,15 @@ public  Cat_Alimentacion_De_Mermas(){
 	ActionListener Establecimiento = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String s = cmbEstablecimiento.getSelectedItem().toString().trim();
-            switch (s) {
+            String color = "";
+            switch (cmbEstablecimiento.getSelectedItem().toString().trim()) {
                 case "Selecciona un Establecimiento":
                 	 JOptionPane.showMessageDialog(null, "Se Requiere Seleccionar Un Establecimiento", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
          			 cmbEstablecimiento.setEnabled(true);
+         			
+         			 color = "EBEBEB";
+         			 txaNota.setBackground(new Color(Integer.parseInt(color,16)));
+             		
         			 cmbEstablecimiento.requestFocus();
         			 cmbEstablecimiento.showPopup();
                 	 break;
@@ -507,6 +512,10 @@ public  Cat_Alimentacion_De_Mermas(){
                 	 btnProducto.setEnabled(true);
                 	 txtcod_prod.setEnabled(true);
                 	 txtcod_prod.requestFocus();
+                	 
+                	color = "FFFFFF";
+             		txaNota.setBackground(new Color(Integer.parseInt(color,16)));
+             		
                      break;
             }
         }
@@ -533,6 +542,7 @@ public  Cat_Alimentacion_De_Mermas(){
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			String folio_inventario="";
+			cmbEstablecimiento.setEnabled(true);
 			folio_inventario= new BuscarSQL().buscar_folio_consecutivo_por_folio_de_transaccion(41);//mermar por establecimiento
 			
 			txtFolio.setText(folio_inventario);
@@ -734,6 +744,10 @@ public  Cat_Alimentacion_De_Mermas(){
 		txaNota.setText("");
 		txtcod_prod.setText("");
 		txtcod_prod.setEnabled(false);
+		
+		String color = "EBEBEB";
+		txaNota.setBackground(new Color(Integer.parseInt(color,16)));
+		txaNota.setEnabled(false);
 		
 		if(cmbEstablecimiento.getItemCount()>2 && tabla.getSelectedRow()>0){
 			cmbEstablecimiento.removeActionListener(Establecimiento);

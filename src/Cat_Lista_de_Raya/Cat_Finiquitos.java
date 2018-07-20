@@ -58,6 +58,9 @@ public class Cat_Finiquitos extends JFrame{
 	Container cont_quitados = getContentPane();
 	JLayeredPane panel_quitados = new JLayeredPane();
 	
+	JLabel lblPendientes = new JLabel("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=WHITE><CENTER><p>Finiquitos Pendientes:</p></CENTER></FONT></html>");
+	JLabel lblNoPendientes = new JLabel();
+	
 	JButton btnNegados = new JCButton("Finiquitos Rechazados", "","Azul");
 	JButton btnGenerar = new JCButton("Generar","refrescar-volver-a-cargar-las-flechas-icono-4094-16.png","Azul");
 	
@@ -172,6 +175,8 @@ public class Cat_Finiquitos extends JFrame{
         
         panel_quitados.add(lblSCOI).setBounds(0,0,1015,475);
 		panel_quitados.add(txtFiltroAsignacion).setBounds(70, 30, 280, 20);
+		panel_quitados.add(lblPendientes).setBounds(430, 30, 230, 20);
+		panel_quitados.add(lblNoPendientes).setBounds(640, 30, 60, 20);
 		panel_quitados.add(scroll_filtro_scoi).setBounds(20, 50, 980, 400);
 		panel_quitados.add(lblAviso).setBounds(20, 450, 745, 20);
 		
@@ -355,6 +360,11 @@ public class Cat_Finiquitos extends JFrame{
     	String comandof="exec filtro_empleados_finiquito '"+baseDeDatos+"'";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tb,(DefaultTableModel)tb.getModel(), columnas, comandof, basedatos,pintar,checkbox);
+		
+		if(columnas==7){
+			lblNoPendientes.setText("<html> <FONT FACE="+"arial"+" SIZE=5 COLOR=WHITE><CENTER><p>"+tb.getRowCount()+"</p></CENTER></FONT></html>");
+		}
+		
     }
 	
 	public void filtro(final JTable tb){
