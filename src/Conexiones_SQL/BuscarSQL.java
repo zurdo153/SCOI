@@ -3972,7 +3972,7 @@ public class BuscarSQL {
 //				vac.setVacaciones_c(rs.getFloat("vacacionesC"));
 //				vac.setDescansos_pagados_c(rs.getFloat("descanso_pagadoC"));
 //				vac.setPrima_vacacional_c(rs.getFloat("prima_vacacionalC"));
-				
+				vac.setSaldo_restante_de_prestamo(rs.getFloat("saldo_restante_de_prestamo"));
 				vac.setPrestamo_nc(rs.getFloat("prestamo"));
 				vac.setPension_alimenticia_nc(rs.getFloat("pension"));
 				vac.setInfonavit_nc(rs.getFloat("infonavit"));

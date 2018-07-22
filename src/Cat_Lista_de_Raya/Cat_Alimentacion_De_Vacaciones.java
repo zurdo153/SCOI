@@ -44,6 +44,7 @@ import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Alimentacion_De_Vacaciones;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
+import Obj_Principal.JCTextArea;
 import Obj_Principal.JCTextField;
 import Obj_Renders.tablaRenderer;
 
@@ -76,6 +77,8 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	
 	String fileFoto = System.getProperty("user.dir")+"/Iconos/Un.JPG";
     ImageIcon tmpIconAuxFoto = new ImageIcon(fileFoto);
+    
+    JTextField txtSaldoRestanteDePrestamo = new Componentes().text( new JCTextField(), "Deuda Pendiete", 15, "Double");
     
 //	campo de vacaciones de empleados
 	JLabel lblMargenVacaciones = new JLabel();
@@ -173,7 +176,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
         	JTable tabla_vacaciones_disfrutadas = new JTable(tabla_model);
         	JScrollPane panelScroll = new JScrollPane(tabla_vacaciones_disfrutadas);
         	
-        	JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "Observaciones", 400);
+        	JTextArea txaObservacion = new Componentes().textArea(new JCTextArea(), "Observaciones", 400);
         	JScrollPane scrollObservacion = new JScrollPane(txaObservacion);
 
     Border blackline;
@@ -247,6 +250,9 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		panel.add(txtMensualidad).setBounds(70, y, 75, 20);
 		panel.add(new JLabel("Mensualidad Dia: ")).setBounds(x+135, y, 140, 20);
 		panel.add(txtMensualidadDia).setBounds(x+220, y, 75, 20);
+		
+		panel.add(new JLabel("Prestamo pendiente: ")).setBounds(x+335, y, 140, 20);
+		panel.add(txtSaldoRestanteDePrestamo).setBounds(x+455, y, 100, 20);
 		
 //		campo de vacaciones no contables de empleados
 		panel.add(lblMargenVacaciones).setBounds(130, 215, 120, 410);
@@ -411,7 +417,8 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 		
         fechaRegreso.setEnabled(false);
         
-        txtMensualidadDia.setEnabled(false);
+        txtMensualidadDia.setEditable(false);
+        txtSaldoRestanteDePrestamo.setEditable(false);
         
         txtCuotaDiaria.setEditable(false);
         txtSDI.setEditable(false);
@@ -445,7 +452,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 	
 	public void activar_descactivar_campos(boolean activ){
 		fechaInicioVacaciones.setEnabled(activ);
-		txtMensualidad.setEnabled(activ);
+		txtMensualidad.setEditable(activ);
 		txtDiasPendientesDePago.setEditable(activ);
 		txtOtrasDeducciones.setEditable(activ);
 		txtOtrasPercepciones.setEditable(activ);
@@ -528,8 +535,29 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
   	  		}
   	    };
   	    
+  	    float prestamoInicial = 0;
   	    public void calcular(){
   	    	
+  	    	float prestamoCalculado = prestamoInicial==0 ? 0:(
+												  				(
+											  						(
+										  								( prestamoInicial / (Integer.valueOf(lblDiasVac.getText())+Integer.valueOf(lblDescansos_Pagados.getText()))  )
+													  				)*
+													  				( Integer.valueOf(lblDiasVac.getText())+
+												  					  Integer.valueOf(lblDescansos_Pagados.getText())+
+												  					  Integer.valueOf(txtDiasPendientesDePago.getText().equals("")?"0":txtDiasPendientesDePago.getText())  )
+												  				)
+													  		);
+  	    	
+  	    	if(prestamoCalculado>Float.valueOf(txtSaldoRestanteDePrestamo.getText())){
+  	    		JOptionPane.showMessageDialog(null, "El Descuento De Prestamo Será Corregido (El Descuento Sugerido Fué: $"+DF.format(prestamoCalculado)+"\nCuando Su Deuda Total Es De: $"+txtSaldoRestanteDePrestamo.getText()+" ).","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+  	    		txtPrestamo.setText(txtSaldoRestanteDePrestamo.getText());
+  	    		
+  	    	}else{
+  	    		txtPrestamo.setText(DF.format(prestamoCalculado));
+  	    	}
+	  	  	
+	  	  	
   	    	txtMensualidadDia.setText(DF.format(Float.valueOf(txtMensualidad.getText().trim().equals("")?"0":txtMensualidad.getText())/30)+"");
   	    	txtCuotaDiaria.setText(DF.format(sd_nc+(Float.valueOf(txtMensualidadDia.getText().trim())))+"");
   	    	
@@ -1388,6 +1416,7 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 				txtProximasVacaciones.setText(vac.getProximas_vacaciones()+"");
 				
 				txtMensualidadDia.setText("0");
+				txtSaldoRestanteDePrestamo.setText(vac.getSaldo_restante_de_prestamo()+"");
 				
 				btnFoto.setIcon(crearIcon(vac.getImagen()));
 				
@@ -1403,7 +1432,8 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 				
 				txtPercepciones.setText(vac.getTotal_percepciones_nc()+"");
 				
-				txtPrestamo.setText(vac.getPrestamo_nc()+"");
+				prestamoInicial=vac.getPrestamo_nc();
+				txtPrestamo.setText(prestamoInicial+"");
 				txtPension.setText(vac.getPension_alimenticia_nc()+"");
 				txtInfonavit.setText(vac.getInfonavit_nc()+"");
 				txtInfonacot.setText(vac.getInfonacot_nc()+"");
@@ -1459,12 +1489,6 @@ public class Cat_Alimentacion_De_Vacaciones extends JFrame {
 					
 					
 				}
-				
-				
-				
-				
-				
-				
 				calcular();
 				
 	     btnBuscar.setEnabled(false);

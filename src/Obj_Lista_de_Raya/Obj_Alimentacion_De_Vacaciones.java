@@ -31,6 +31,7 @@ public class Obj_Alimentacion_De_Vacaciones {
 	int dias_trabajados_de_la_ultima_semana;//
 	
 	float mensualidad;
+	float saldo_restante_de_prestamo;
 	
 //	vacaciones nc
 	float sd_nc;//
@@ -94,7 +95,7 @@ public class Obj_Alimentacion_De_Vacaciones {
 		fecha_inicio="";		fecha_regresa="";		/*anios_a_disfrutar=0;*/
 		dias_de_vacaciones=0;	dias_de_descanso_pagados=0;		dias_trabajados_de_la_ultima_semana=0;
 		
-		mensualidad=0;
+		mensualidad=0;			saldo_restante_de_prestamo=0;
 		
 //		alimentacion de vacaciones nc.
 		sd_nc=0;		sueldo_nc=0;		vacaciones_nc=0;		descansos_pagados_nc=0;
@@ -247,6 +248,14 @@ public class Obj_Alimentacion_De_Vacaciones {
 
 	public void setMensualidad(float mensualidad) {
 		this.mensualidad = mensualidad;
+	}
+
+	public float getSaldo_restante_de_prestamo() {
+		return saldo_restante_de_prestamo;
+	}
+
+	public void setSaldo_restante_de_prestamo(float saldo_restante_de_prestamo) {
+		this.saldo_restante_de_prestamo = saldo_restante_de_prestamo;
 	}
 
 	public int getDias_trabajados_de_la_ultima_semana() {
