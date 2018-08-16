@@ -11049,6 +11049,36 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return Descripcion;
 	}
 
+	public Object[][] GenerarFotos(String folios) throws IOException{
+		Object[][] Matriz = null;
+		String query = "exec fotos_colaboradores '"+folios+"'";
+		
+		Matriz = new Object[getFilas(query)][3];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				//	datos personales
+				Matriz[i][0]  = rs.getString( 1);//folio
+				Matriz[i][1]  = rs.getString( 2);//colaborador
+				
+				InputStream is = rs.getBinaryStream(3);
+			    byte[] bytes = IOUtils.toByteArray(is);
+				Matriz[i][2] = bytes;//foto
+				
+				i++;
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ GenerarFotos ] "+query+" \nmenasaje "+e1.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+		}
+		return Matriz;
+	}
+	
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;

@@ -3,8 +3,6 @@ package Cat_Inventarios;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
-import java.awt.FileDialog;
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -17,7 +15,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 
@@ -29,6 +31,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -369,12 +372,14 @@ public  Cat_Alimentacion_De_Mermas(){
 	                 
     }
    
-	boolean imagenCargada = false ;
-	String rutaFoto = "";
+//	boolean imagenCargada = false ;
+//	String rutaFoto = "";
+	byte[] imagB = null;
+//	JLabel lblImage = new JLabel("");
 	
    public void imagMerma(){
 	   
-	   if(rutaFoto.length()==0){
+	   if((imagB == null ? 0 : imagB.length) == 0){
 		   lblConImag.setVisible(true);
 		   lblSinImag.setVisible(false);
 	   }else{
@@ -396,25 +401,69 @@ public  Cat_Alimentacion_De_Mermas(){
 	   lblTotalCostoMerma.setText("Total Costo De Merma: $"+df.format(total));
    }
    
-	ActionListener opExaminar = new ActionListener(){
+	ActionListener opExaminar = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			FileDialog file = new FileDialog(new Frame());
 			
-			file.setTitle("Selecciona una Imagen");
-			file.setMode(FileDialog.LOAD);
-			file.setVisible(true);
+//			String btn = e.getActionCommand().trim();
 			
-			if(file.getDirectory() != null){
-						imagenCargada = true ;
-						rutaFoto = file.getDirectory()+file.getFile();
-						System.out.println(rutaFoto);
-				    	imagMerma();
-			}else{
-				JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
-				return;
-			}
+			JFileChooser elegir = new JFileChooser();
+        	int opcion = elegir.showOpenDialog(null);
+        	
+             //Si presionamos el boton ABRIR en pathArchivo obtenemos el path del archivo
+             if(opcion == JFileChooser.APPROVE_OPTION){
+                String pathArchivo = elegir.getSelectedFile().getPath(); //Obtiene path del archivo
+                
+                File mi_fichero = new File ( pathArchivo );
+                double tamano_bytes = mi_fichero.length ( );
+                double tamano_megas = tamano_bytes/(1024*1024);
+                
+                if(tamano_megas>3){
+                	JOptionPane.showMessageDialog(null, "El Archivo Que Intenta Agregar Es Muy Grande,\nEl Archivo Debe Medir Maximo 3 MB", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+    				return;
+                }else{
+     					try {
+//     						imagenCargada = true ;
+							imagB  = Files.readAllBytes(Paths.get(pathArchivo));
+							imagMerma();
+						} catch (IOException e1) {
+//							imagenCargada = false ;
+							e1.printStackTrace();
+						}
+                }
+             }
 		}
 	};
+   
+	public Icon crearIcon(byte[] bs){
+		ImageIcon tmpIconDefault= new ImageIcon(bs);
+		
+			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+			int altoRealDeImg = tmpIconDefault.getIconHeight();
+			int anchoDeImagenEscala = (206);
+			int altoDeImgagenEscala = (altoRealDeImg*anchoDeImagenEscala)/anchoRealDeImagen;
+		 
+			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
+	}
+	
+//	ActionListener opExaminar2 = new ActionListener(){
+//		public void actionPerformed(ActionEvent e) {
+//			FileDialog file = new FileDialog(new Frame());
+//			
+//			file.setTitle("Selecciona una Imagen");
+//			file.setMode(FileDialog.LOAD);
+//			file.setVisible(true);
+//			
+//			if(file.getDirectory() != null){
+//						imagenCargada = true ;
+//						rutaFoto = file.getDirectory()+file.getFile();
+//						System.out.println(rutaFoto);
+//				    	imagMerma();
+//			}else{
+//				JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna imagen","Aviso",JOptionPane.WARNING_MESSAGE);
+//				return;
+//			}
+//		}
+//	};
 	
 	ActionListener opFoto = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -447,7 +496,6 @@ public  Cat_Alimentacion_De_Mermas(){
 				}else{
 					JOptionPane.showMessageDialog(null, "Es Necesario Que Se Genere El Folio De La Merma (NUEVO)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				}
-				
 			}
 		}
 	};
@@ -568,14 +616,12 @@ public  Cat_Alimentacion_De_Mermas(){
 	public void validaGuardado(){
 			
 			txtFolio.setEditable(false);
-           
 			btnGuardar.setEnabled(true);
 			btnQuitarfila.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			btnReporte.setEnabled(false);
 			btnNuevo.setEnabled(false);
 			txaNota.setEditable(true);
-			 
 	}
 	
 	ActionListener filtro_productos = new ActionListener(){
@@ -655,51 +701,47 @@ public  Cat_Alimentacion_De_Mermas(){
 			 
 			 if(tipo_de_usuario.equals("SEGURIDAD") ){
 				 
-				 if(imagenCargada){
-					 
-					 mermas.setRutaFoto(rutaFoto);
-					 
-					 if(tabla.getRowCount()==0 && txaNota.getText().equals("")){
-						 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-					    	return;
-					 }else{
-//						 guardar con valiacion de cargar imagen por seguridad
-						  if(mermas.Guardar_Merma(tipo_de_usuario,folio_usuario_valida)){
-				                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-				            	 deshacer();
-					      }else{
-							JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-					    	return;
-					      }
-					 }
-
-					  
-				 }else{
-					 
-//					 permitir guardado sin imagen si  no hay productos mermados
-					 if(tabla.getRowCount()==0){
-						 mermas.setRutaFoto("");
+					 if((imagB == null ? 0 : imagB.length) > 0){
+//					 if(imagenCargada){
+						 mermas.setFoto(imagB);
 						 
-						 if(txaNota.getText().equals("")){
-							 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-						    	return;
-						 }else{
-							  if(mermas.Guardar_Merma(tipo_de_usuario,folio_usuario_valida)){
-					                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-					            	 deshacer();
-						      }else{
-								JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-						    	return;
-						      }
-						 }
+						 	if(tabla.getRowCount()==0 && txaNota.getText().equals("")){
+								 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+							    	return;
+						 	}else{
+//								 guardar con valiacion de cargar imagen por seguridad
+								  if(mermas.Guardar_Merma(tipo_de_usuario,folio_usuario_valida)){
+						                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						            	 deshacer();
+							      }else{
+									JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+							    	return;
+							      }
+							 }
 					 }else{
-						 JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese La Foto De La Merma", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-						 return;
+//						 permitir guardado sin imagen si  no hay productos mermados
+						 if(tabla.getRowCount()==0){
+							 mermas.setFoto(null);
+							 
+							 if(txaNota.getText().equals("")){
+								 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+							    	return;
+							 }else{
+								  if(mermas.Guardar_Merma(tipo_de_usuario,folio_usuario_valida)){
+						                JOptionPane.showMessageDialog(null, "La Merma Fue Guardada Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						            	 deshacer();
+							      }else{
+									JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+							    	return;
+							      }
+							 }
+						 }else{
+							 JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese La Foto De La Merma", "Aviso",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+							 return;
+						 }
 					 }
-				 }
-				 
 			 }else{
-				 mermas.setRutaFoto("");
+				 mermas.setFoto(null);
 				 
 				 if(tabla.getRowCount()==0 && txaNota.getText().equals("")){
 					 	JOptionPane.showMessageDialog(null, "Es Necesario Que Ingrese Una Nota Cuando No Hay Mermas", "Aviso !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
@@ -715,9 +757,6 @@ public  Cat_Alimentacion_De_Mermas(){
 				      }
 				 }
 			 }
-
-			 
-
 		 }
 	  }			
     };
@@ -772,8 +811,8 @@ public  Cat_Alimentacion_De_Mermas(){
 		tipo_de_usuario = "NORMAL";
 		btnQuitarfila.setEnabled((tipo_de_usuario.equals("NORMAL"))?true:false);
 		
-		rutaFoto="";
-		imagenCargada = false;
+		imagB = null;
+//		imagenCargada = false;
 		imagMerma();
 		
 		btnExaminar.setEnabled(false);
@@ -830,7 +869,6 @@ public  Cat_Alimentacion_De_Mermas(){
 						        	  RecorridoFoco(fila, "no");
 						          }
 							    });
-				       
 				}else{
 					fila=1;
 					JOptionPane.showMessageDialog(null, "El Codigo Esta Mal Escrito o El Producto No Existe" ,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -1158,7 +1196,6 @@ public  Cat_Alimentacion_De_Mermas(){
 				
 				cont.add(panel);
 				addWindowListener(opCerrar);
-				 
 			}
 			
 			WindowListener opCerrar = new WindowListener() {
@@ -1248,7 +1285,26 @@ public  Cat_Alimentacion_De_Mermas(){
 					                             			  				
 					                             			  				dispose();
 							                             				}else{
-//							                             					init_tabla("");
+//							                             						init_tabla("");
+								                             					modelo.setRowCount(0);
+								                             					cmbEstablecimiento.setSelectedIndex(0);
+								                             					lblNota.setText("");
+						                             			  				txaNota.setText("");
+						                             			  				folio_usuario_valida = 0;
+						                             			  				tipo_de_usuario = "NORMAL";
+						                             			  				
+						                             			  				txtcod_prod.setEditable(true);
+						                             			  				btnProducto.setEnabled(true);
+						                             			  				btnExaminar.setEnabled(false);
+						                             			  				btnCamara.setEnabled(false);
+						                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
+						                             			  				
+						                             			  				txaGafeteSeguridad.setText("");
+								                             					JOptionPane.showMessageDialog(null, "Esta Intentando Validar La Merma Con El Mismo Usuario Que La Guardó, Lo Cual No Esta Permitido.","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+								                             					return;
+							                             				}
+				                             			  				
+						                             				}else{
 							                             					modelo.setRowCount(0);
 							                             					cmbEstablecimiento.setSelectedIndex(0);
 							                             					lblNota.setText("");
@@ -1258,35 +1314,13 @@ public  Cat_Alimentacion_De_Mermas(){
 					                             			  				
 					                             			  				txtcod_prod.setEditable(true);
 					                             			  				btnProducto.setEnabled(true);
-					                             			  				
 					                             			  				btnExaminar.setEnabled(false);
 					                             			  				btnCamara.setEnabled(false);
 					                             			  				
 					                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
 					                             			  				
-					                             			  				txaGafeteSeguridad.setText("");
-							                             					JOptionPane.showMessageDialog(null, "Esta Intentando Validar La Merma Con El Mismo Usuario Que La Guardó, Lo Cual No Esta Permitido.","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+							                             					JOptionPane.showMessageDialog(null, "Su Puesto No Tiene Acceso A Este Modulo, Comuniquese Con El Administrador","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 							                             					return;
-							                             				}
-				                             			  				
-						                             				}else{
-						                             					modelo.setRowCount(0);
-						                             					cmbEstablecimiento.setSelectedIndex(0);
-						                             					lblNota.setText("");
-				                             			  				txaNota.setText("");
-				                             			  				folio_usuario_valida = 0;
-				                             			  				tipo_de_usuario = "NORMAL";
-				                             			  				
-				                             			  				txtcod_prod.setEditable(true);
-				                             			  				btnProducto.setEnabled(true);
-				                             			  				
-				                             			  				btnExaminar.setEnabled(false);
-				                             			  				btnCamara.setEnabled(false);
-				                             			  				
-				                             			  				btnQuitarfila.setEnabled(tipo_de_usuario.equals("NORMAL")?true:false);
-				                             			  				
-						                             					JOptionPane.showMessageDialog(null, "Su Puesto No Tiene Acceso A Este Modulo, Comuniquese Con El Administrador","Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-						                             					return;
 						                             				}
 						                             				
 				                                          	 }else{
@@ -1320,43 +1354,92 @@ public  Cat_Alimentacion_De_Mermas(){
 				 		}
 				}
 			};
-			
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		}
 		
 		public class Llamar_Camara extends Cat_Camara{
 			
+			boolean fotoTomada = false;
 			public Llamar_Camara(){
-				
 				btnCapturar.addActionListener(opFoto);
+				btnConfirmar.addActionListener(opConfirmar);
+				addWindowListener(actionWindowList);
+				
 			}
 			
 			ActionListener opFoto = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(e.getSource() == btnCapturar){
 						
-						rutaFoto = System.getProperty("user.dir")+"/tmp/tmp_mermas/";
-						File folder = new File(rutaFoto);
-		            	folder.mkdirs();
-		            	
-		            	rutaFoto = rutaFoto+"merma.jpg";
-		            	
 						BufferedImage image = webcam.getImage();
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
 						try {
-							ImageIO.write(image, "JPG", new File(rutaFoto+"merma.jpg"));
-							imagenCargada = true ;
-							imagMerma();
-							System.out.println(rutaFoto);
 							
-							ImageIcon tmpIconDefault = new ImageIcon(rutaFoto+"merma.jpg");
-					        Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
-					        lblVistaPrevia.setIcon(iconoDefault);
+							ImageIO.write(image, "JPG", baos);
+							baos.flush();
+							imagB = baos.toByteArray();
+							baos.close();
+							lblVistaPrevia.setIcon(VistaPrevia(imagB));
 							
-						} catch (Exception ex) {
-							imagenCargada = false ;
+							fotoTomada = true;
+							
+						} catch (IOException ex) {
+//							imagenCargada = false ;
+							System.out.println(ex.getMessage());
 						}	
 					}	
 				}
+			};
+			
+			public Icon VistaPrevia(byte[] bs){
+				ImageIcon tmpIconDefault= new ImageIcon(bs);
+				
+					int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+					int altoRealDeImg = tmpIconDefault.getIconHeight();
+					int anchoDeImagenEscala = (206);
+					int altoDeImgagenEscala = (altoRealDeImg*anchoDeImagenEscala)/anchoRealDeImagen;
+				 
+					return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
+			}
+			
+			ActionListener opConfirmar = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					imagMerma();
+					webcam.close();
+					dispose();
+					
+				}
+			};
+			
+			WindowListener actionWindowList = new WindowListener() {
+				
+				public void windowOpened(WindowEvent e) {}
+				
+				public void windowIconified(WindowEvent e) {
+					System.out.println("webcam viewer paused");
+					panelCam.pause();
+				}
+				
+				public void windowDeiconified(WindowEvent e) {
+					System.out.println("webcam viewer resumed");
+					panelCam.resume();
+				}
+				
+				public void windowDeactivated(WindowEvent e) {}
+				public void windowClosing(WindowEvent e) {
+					System.out.println("Closing");
+//					System.exit(1);
+					imagB=null;
+					imagMerma();
+					webcam.close();
+					dispose();
+				}
+				public void windowClosed(WindowEvent e) {
+					System.out.println("Closed");
+					webcam.close();
+				}	
+				public void windowActivated(WindowEvent e) {}
 			};
 		}
 		

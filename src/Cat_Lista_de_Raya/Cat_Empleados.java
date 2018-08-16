@@ -16,9 +16,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -2178,47 +2179,133 @@ public class Cat_Empleados extends JFrame{
 	
 
 	
+//	public class Llamar_Camara extends Cat_Camara{
+//		
+//		public Llamar_Camara(){
+//			
+//			btnCapturar.addActionListener(opFoto);
+//		}
+//		
+//		boolean imagenCargada = false ;
+//		String rutaFoto = "";
+//		ActionListener opFoto = new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if(e.getSource() == btnCapturar){
+//					
+//					rutaFoto = System.getProperty("user.dir")+"/tmp/tmp_update/";
+//					File folder = new File(rutaFoto);
+//	            	folder.mkdirs();
+//	            	
+//					BufferedImage image = webcam.getImage();
+//					try {
+//						ImageIO.write(image, "JPG", new File(rutaFoto+"tmp.jpg"));
+//						imagenCargada = true ;
+//						System.out.println(rutaFoto);
+//						
+//						try {
+//							imagB  = Files.readAllBytes(Paths.get(rutaFoto+"tmp.jpg"));
+//							btnFoto.setIcon(crearIcon(imagB));
+//						} catch (IOException e1) {
+//							e1.printStackTrace();
+//						}
+//						
+////						ImageIcon tmpIconDefault = new ImageIcon(rutaFoto+"tmp.jpg");
+////				        Icon btnIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
+////				        btnFoto.setIcon(btnIconoDefault);
+////				        Icon lblIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
+//				        lblVistaPrevia.setIcon(crearIcon(imagB));
+//						
+//					} catch (Exception ex) {
+//						imagenCargada = false ;
+//					}	
+//				}	
+//			}
+//		};
+//	}
+	
 	public class Llamar_Camara extends Cat_Camara{
 		
+		boolean fotoTomada = false;
 		public Llamar_Camara(){
-			
 			btnCapturar.addActionListener(opFoto);
+			btnConfirmar.addActionListener(opConfirmar);
+			addWindowListener(actionWindowList);
+			
 		}
 		
-		boolean imagenCargada = false ;
-		String rutaFoto = "";
 		ActionListener opFoto = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == btnCapturar){
 					
-					rutaFoto = System.getProperty("user.dir")+"/tmp/tmp_update/";
-					File folder = new File(rutaFoto);
-	            	folder.mkdirs();
-	            	
 					BufferedImage image = webcam.getImage();
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					try {
-						ImageIO.write(image, "JPG", new File(rutaFoto+"tmp.jpg"));
-						imagenCargada = true ;
-						System.out.println(rutaFoto);
 						
-						try {
-							imagB  = Files.readAllBytes(Paths.get(rutaFoto+"tmp.jpg"));
-							btnFoto.setIcon(crearIcon(imagB));
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+						ImageIO.write(image, "JPG", baos);
+						baos.flush();
+						imagB = baos.toByteArray();
+						baos.close();
+						lblVistaPrevia.setIcon(VistaPrevia(imagB));
 						
-//						ImageIcon tmpIconDefault = new ImageIcon(rutaFoto+"tmp.jpg");
-//				        Icon btnIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-//				        btnFoto.setIcon(btnIconoDefault);
-//				        Icon lblIconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_DEFAULT));
-				        lblVistaPrevia.setIcon(crearIcon(imagB));
+						fotoTomada = true;
 						
-					} catch (Exception ex) {
-						imagenCargada = false ;
+					} catch (IOException ex) {
+//						imagenCargada = false ;
+						System.out.println(ex.getMessage());
 					}	
 				}	
 			}
+		};
+		
+		public Icon VistaPrevia(byte[] bs){
+			ImageIcon tmpIconDefault= new ImageIcon(bs);
+			
+				int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+				int altoRealDeImg = tmpIconDefault.getIconHeight();
+				int anchoDeImagenEscala = (206);
+				int altoDeImgagenEscala = (altoRealDeImg*anchoDeImagenEscala)/anchoRealDeImagen;
+			 
+				return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
+		}
+		
+		ActionListener opConfirmar = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(fotoTomada){
+					btnFoto.setIcon(crearIcon(imagB));
+				}
+				webcam.close();
+				dispose();
+				
+			}
+		};
+		
+		WindowListener actionWindowList = new WindowListener() {
+			
+			public void windowOpened(WindowEvent e) {}
+			
+			public void windowIconified(WindowEvent e) {
+				System.out.println("webcam viewer paused");
+				panelCam.pause();
+			}
+			
+			public void windowDeiconified(WindowEvent e) {
+				System.out.println("webcam viewer resumed");
+				panelCam.resume();
+			}
+			
+			public void windowDeactivated(WindowEvent e) {}
+			public void windowClosing(WindowEvent e) {
+				System.out.println("Closing");
+//				System.exit(1);
+				webcam.close();
+				dispose();
+			}
+			public void windowClosed(WindowEvent e) {
+				System.out.println("Closed");
+				webcam.close();
+			}	
+			public void windowActivated(WindowEvent e) {}
 		};
 	}
 	

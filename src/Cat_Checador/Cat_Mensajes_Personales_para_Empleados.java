@@ -358,7 +358,7 @@ public class Cat_Mensajes_Personales_para_Empleados extends JFrame {
 								MSJ.setRuta_imagen_mensaje("/Imagen/avisos/"+cmb_fondo.getSelectedItem().toString()+".png");
 								MSJ.setColor_fuente(cmb_color.getSelectedItem().toString().trim());
 								MSJ.setMensaje(txaMensaje.getText());
-								MSJ.setStatus(cmb_status.getSelectedIndex());
+								MSJ.setStatus(cmb_status.getSelectedItem().toString().equals("VIGENTE")?1:0);
 								
 								if(MSJ.actualizar(Integer.parseInt(txtFolioMsj.getText()))){
 										MSJ.actualizar2(listadatos());

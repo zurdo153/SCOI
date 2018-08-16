@@ -608,8 +608,6 @@ public class Obj_Alimentacion_De_Vacaciones {
 	}
 	
 //	public boolean actualizar(int folio_vacaciones){ return new ActualizarSQL().Actualizar_Vacaciones(this,folio_vacaciones); }
-
-
 	
 //	buscar empleado para alimentar ultimas vacaciones
 	public Obj_Alimentacion_De_Vacaciones buscar_empleado_para_vacaciones(int folio_empleado){ 

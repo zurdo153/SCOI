@@ -65,7 +65,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 		JTable tabla = new JTable(model);
 		@SuppressWarnings("rawtypes")
 		private TableRowSorter trsfiltro;
-		JTextField txtFolio = new Componentes().text(new JTextField(),"Teclee Folio del Empleado", 150, "Integer");
+		JTextField txtFolio = new Componentes().text(new JTextField(),"Teclee Folio del Empleado", 150, "Int");
 		JTextField txtNombre = new Componentes().text(new JTextField(),"Teclee Nombre del Empleado", 150, "String");
 	    JButton btnAceptar = new JButton("Cobrar",new ImageIcon("Imagen/Aplicar.png"));
 	    JButton btnNegar = new JButton("No Cobrar",new ImageIcon("Imagen/Delete.png"));
@@ -136,14 +136,7 @@ public class Cat_Autorizacion_De_Cobro_De_Cortes_Revisados_Para_Lista_De_Raya ex
 			public void keyReleased(KeyEvent arg0) {
 				trsfiltro.setRowFilter(RowFilter.regexFilter(txtFolio.getText(), 1));
 			}
-			public void keyTyped(KeyEvent arg0) {
-				char caracter = arg0.getKeyChar();
-				if(((caracter < '0') ||
-					(caracter > '9')) &&
-				    (caracter != KeyEvent.VK_BACK_SPACE)){
-					arg0.consume(); 
-				}	
-			}
+			public void keyTyped(KeyEvent arg0) {}
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 		

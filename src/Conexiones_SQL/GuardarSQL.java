@@ -6367,16 +6367,17 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt2.setString(4, mermas.getEstablecimiento().toString().trim());
 				pstmt2.setInt(5, usuario_seguridad==0?usuario.getFolio():usuario_seguridad);
 				
-				String rutaFoto="";
+				InputStream input;
+				int longitudDeImg = 0;
 				if(/*movimiento.equals("TERMINADO") || */(movimiento.equals("SEGURIDAD") && mermas.getArreglo().length>0) ){
-					rutaFoto=mermas.getRutaFoto();
+					input = new ByteArrayInputStream(mermas.getFoto());
+					longitudDeImg = mermas.getFoto().length;
 				}else{
-					rutaFoto=System.getProperty("user.dir")+"/Imagen/merma_default.jpg";
+					File imag = new File(System.getProperty("user.dir")+"/Imagen/merma_default.jpg");
+					input = new FileInputStream(imag);
+					longitudDeImg = (int) imag.length();
 				}
-//				File imag = new File(movimiento.equals("NORMAL")? System.getProperty("user.dir")+"/Imagen/merma_default.jpg" : mermas.getRutaFoto() );
-				File imag = new File(rutaFoto);
-				FileInputStream stream_foto = new FileInputStream(imag);
-				pstmt2.setBinaryStream(6, stream_foto, imag.length());
+				pstmt2.setBinaryStream(6, input, longitudDeImg);
 				
 				pstmt2.executeUpdate();
 			}
