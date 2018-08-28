@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Inventarios.Cat_Consulta_De_Cotizacion;
 import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
@@ -348,6 +349,9 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     		 	JButton btnSolicitarRevision   = new JCButton("Solicitar Autorización Por Condiciones De Precio"  ,"vista-previa-del-ojo-icono-7248-16.png" ,"Azul" );	
     		 	JButton btngenerarSAut         = new JCButton("Imprimir Pre Orden De Compra"                      ,"imprimir-16.png"                        ,"Azul" );
 
+    		 	JButton btnPrecioCompetencia   = new JCButton("Precio De Competencia"                                 ,"Aplicar.png"                            ,"Azul" );
+
+    		 	
     			JToolBar menu_toolbarfiltro    = new JToolBar();
     			
 	    		@SuppressWarnings("rawtypes")
@@ -370,6 +374,9 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
     			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
     			
+    			this.menu_toolbarfiltro.add(btnPrecioCompetencia );
+      		    this.menu_toolbarfiltro.addSeparator(   );
+      			this.menu_toolbarfiltro.addSeparator(   );
     		    this.menu_toolbarfiltro.add(btngenerarSAut  );
     		    this.menu_toolbarfiltro.addSeparator(   );
     			this.menu_toolbarfiltro.addSeparator(   );
@@ -458,6 +465,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
                 btnSolicitar.addActionListener(op_solicitar_revision_de_margenes);
                 btnSolicitarRevision.addActionListener(op_Solicitar_Autorizacion_Por_Condiciones_De_Precio);
                 btnAutorizar.addActionListener(op_autorizar);
+                btnPrecioCompetencia.addActionListener(op_precioCompetencia);
                 contf.add(panelf);
     		}
 
@@ -548,6 +556,29 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     			}
     		};
     		
+    		ActionListener op_precioCompetencia = new ActionListener() {
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				
+    				int filaSeleccionada = tablafp2.getSelectedRow();
+    				
+    				float costoProm 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 4).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 4).toString());
+    				float PrecioVenta 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 5).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 5).toString());
+    				float Margen 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 6).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 6).toString());
+    				float MFamilia 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 7).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 7).toString());
+    				float PrecioPorVolumen 	= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 8).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 8).toString());
+    				
+    				if(filaSeleccionada>=0){
+    					String codProd = tablafp2.getValueAt(filaSeleccionada, 0).toString();
+    					new Cat_Consulta_De_Cotizacion(codProd, costoProm, PrecioVenta, Margen, MFamilia, PrecioPorVolumen).setVisible(true);
+    				}else{
+    					JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Un Producto De La Tabla","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+    					return;
+    				}
+    				
+    			}
+    		};
+    		
     		class opGenerar implements ActionListener{   
     			String parametro;
     		    public opGenerar(final String parametrop){
@@ -579,27 +610,70 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     		private void Seleccionar_Respuesta(final JTable tbl) {
 			    tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 					@SuppressWarnings("deprecation")
-					public void mousePressed(MouseEvent e) {
-			        	if(e.getClickCount()!=0){
-	                         if(tbl.getSelectedColumn()==14){
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+						if(e.getClickCount()!=0){
+//	                         if(tbl.getSelectedColumn()==14){
 	                    	        tbl.getColumnModel().getColumn(14).setCellEditor(new javax.swing.DefaultCellEditor(cmbRazon));
 	                    		    tbl.getColumn("Razon").setCellEditor(new CargaDatosDelCombo());
 							       return;
-	                         } else{
-							        tbl.lostFocus(null, null);
-							        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-							        tbl.getSelectionModel().clearSelection();
-	                        	 return;
-	                         }	
+//	                         } else{
+//							        tbl.lostFocus(null, null);
+//							        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+//							        tbl.getSelectionModel().clearSelection();
+//	                        	 return;
+//	                         }	
 			        	}else{
 					        tbl.lostFocus(null, null);
 					        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 					        tbl.getSelectionModel().clearSelection();
 			        		return;
 			        	}
-			        }
+					}
+//					public void mousePressed(MouseEvent e) {
+//			        	if(e.getClickCount()!=0){
+//	                         if(tbl.getSelectedColumn()==14){
+//	                    	        tbl.getColumnModel().getColumn(14).setCellEditor(new javax.swing.DefaultCellEditor(cmbRazon));
+//	                    		    tbl.getColumn("Razon").setCellEditor(new CargaDatosDelCombo());
+//							       return;
+//	                         } else{
+//							        tbl.lostFocus(null, null);
+//							        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+//							        tbl.getSelectionModel().clearSelection();
+//	                        	 return;
+//	                         }	
+//			        	}else{
+//					        tbl.lostFocus(null, null);
+//					        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+//					        tbl.getSelectionModel().clearSelection();
+//			        		return;
+//			        	}
+//			        }
 			    });
 			}
+    		
+//    		MauseListener opClick = new MouseListener() {
+//				public void mouseReleased(MouseEvent arg0) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//				public void mousePressed(MouseEvent arg0) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//				public void mouseExited(MouseEvent arg0) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//				public void mouseEntered(MouseEvent arg0) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//				public void mouseClicked(MouseEvent arg0) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//			};
     		
     	    private class CargaDatosDelCombo extends DefaultCellEditor{
     	        @SuppressWarnings("rawtypes")

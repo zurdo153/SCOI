@@ -11079,6 +11079,85 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return Matriz;
 	}
 	
+	public Object[] buscarProd(String Cod_prod){
+		Object[] Matriz = null;
+//		String query = "exec sp_existencia_de_un_producto_en_establecimientos '"+Cod_prod+"'";
+		String query = " declare @cod_prod varchar(20)='"+Cod_prod+"' "
+						+ " SELECT   productos.cod_prod"
+						+ "		,productos.descripcion "
+						+ "		,isnull(upper(clases_productos.nombre),'') as clase_producto"
+						+ "		,isnull(upper(categorias.nombre),'') as categoria"
+						+ "		,isnull(upper(familias.nombre),'') as familia"
+						+ "		,isnull(upper(areas.nombre),'') as area	"
+						+ "		,status_productos.nombre as estatus_producto"
+						+ " from productos with (nolock)"
+						+ " inner join status_productos on status_productos.status_producto=productos.status_producto"
+						+ " LEFT OUTER JOIN clases_productos with (nolock) on clases_productos.clase_producto=productos.clase_producto"
+						+ " LEFT OUTER JOIN categorias with (nolock) on categorias.categoria=productos.categoria"
+						+ " LEFT OUTER JOIN familias with (nolock) on familias.familia=productos.familia"
+						+ " LEFT OUTER JOIN areas with (nolock) on areas.area=productos.area"
+						+ " where productos.cod_prod=@cod_prod"
+						+ " group by productos.cod_prod,productos.descripcion,productos.iva_interior,clases_productos.nombre,categorias.nombre,familias.nombre,areas.nombre,status_productos.nombre";
+		
+		System.out.println(query);
+		
+		Matriz = new String[7];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion_IZAGAR().createStatement();
+			rs = s.executeQuery(query);
+//			int i=0;
+			while(rs.next()){
+				Matriz[0]  = rs.getString( 1);
+				Matriz[1]  = rs.getString( 2);
+				Matriz[2]  = rs.getString( 3);
+				Matriz[3]  = rs.getString( 4);
+				Matriz[4]  = rs.getString( 5);
+				Matriz[5]  = rs.getString( 6);
+				Matriz[6]  = rs.getString( 7);
+//				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz;
+	}
+	
+	public Object[][] Tabla_Precio_De_Competencia(String Cod_prod){
+		Object[][] Matriz = null;
+		String query = "exec IZAGAR_precios_de_competencia_por_producto '"+Cod_prod+"'";
+		System.out.println(query);
+		Matriz = new Object[getFilasExterno(query)][13];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion_IZAGAR().createStatement();
+			rs = s.executeQuery(query);
+			int i=0;
+			while(rs.next()){
+				Matriz[i][0]  = rs.getString( 1);
+				Matriz[i][1]  = rs.getString( 2);
+				Matriz[i][2]  = rs.getString( 3);
+				Matriz[i][3]  = rs.getString( 4);
+				Matriz[i][4]  = rs.getString( 5);
+				Matriz[i][5]  = rs.getString( 6);
+				Matriz[i][6]  = rs.getString( 7);
+				Matriz[i][7]  = rs.getString( 8);
+				Matriz[i][8]  = rs.getString( 9);
+				Matriz[i][9]  = rs.getString(10);
+				Matriz[i][10] = rs.getString(11);
+				Matriz[i][11] = rs.getString(12);
+				Matriz[i][12] = rs.getString(13);
+				i++;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz;
+	}
+	
+	
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;
