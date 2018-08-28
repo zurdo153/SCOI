@@ -7667,7 +7667,7 @@ public class BuscarSQL {
 	public String busca_metas_periodo(int anio,int mes,String cod_est) throws SQLException{
 		String Descripcion="";
 		String query = 
-				"declare @thiSql char(2), @establ varchar(20) set @establ=(select  top 1 cod_estab from ventas where establecimiento='"+cod_est+"')"
+				"declare @thiSql char(2), @establ varchar(20) set @establ=(select  top 1 cod_estab from establecimientos where establecimiento='"+cod_est+"')"
 				+" set @thiSql =(select top 1 'si' from metas_mensuales_por_establecimiento where año="+anio+" and cod_estab=@establ and mes="+mes+")"
 				+" if(@thiSql is null) set @thiSql='no'" 
 				+" select @thiSql  as resultado";
@@ -9938,7 +9938,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	 public String[][] Tabla_Orden_Gasto(int folio_gasto){
 			String[][] Matriz = null;
 			String query = "exec orden_de_gasto_consulta "+folio_gasto;
-			Matriz = new String[getFilas(query)][18];
+			Matriz = new String[getFilas(query)][21];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -9964,6 +9964,10 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][15] = rs.getString(16);
 					Matriz[i][16] = rs.getString(17);
 					Matriz[i][17] = rs.getString(18);
+					Matriz[i][18] = rs.getString(19);
+					Matriz[i][19] = rs.getString(20);
+					Matriz[i][20] = rs.getString(21);
+					
 					i++;
 				}
 			} catch (SQLException e1) {

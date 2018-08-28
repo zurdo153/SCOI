@@ -7100,7 +7100,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		  querymod = "delete from orden_de_gasto_datos where folio_orden_de_gasto="+folio_transaccion;
 		}
 		
-		String query = "exec orden_de_gasto_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec orden_de_gasto_insert_y_actualiza_1 ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -7121,10 +7121,11 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setFloat (7 ,  orden.getTotal_gasto());
 				pstmt.setString(8 ,  orden.getGuardar_actualizar());
 				pstmt.setString(9 ,  orden.getTabla_obj()[i][0].toString().trim());
-				pstmt.setFloat (10 , Float.valueOf(orden.getTabla_obj()[i][1].toString().trim()));
-				pstmt.setFloat (11 , Float.valueOf(orden.getTabla_obj()[i][2].toString().trim()));
-				pstmt.setString(12 , orden.getConcepto_gasto());				
-								
+				pstmt.setFloat (10,  Float.valueOf(orden.getTabla_obj()[i][1].toString().trim()));
+				pstmt.setFloat (11,  Float.valueOf(orden.getTabla_obj()[i][2].toString().trim()));
+				pstmt.setString(12,  orden.getConcepto_gasto());				
+				pstmt.setInt   (13,  orden.getFolio_servicio());			
+				pstmt.setString(14,  orden.getTipo());	
 				pstmt.executeUpdate();
 			 con.commit();
 			}

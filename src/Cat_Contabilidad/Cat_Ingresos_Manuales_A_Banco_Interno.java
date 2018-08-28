@@ -84,7 +84,7 @@ public class Cat_Ingresos_Manuales_A_Banco_Interno extends JFrame{
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
 	JTextField txtFolio       = new Componentes().text(new JCTextField()  ,"Folio"                     ,30   ,"String");
-	JTextField txtDescripcion = new Componentes().text(new JCTextField()  ,"Descripcion Del Motivo"    ,350  ,"String");
+	JTextField txtDescripcion = new Componentes().text(new JCTextField()  ,"Descripcion Del Motivo"    ,150  ,"String");
 	JTextField txtFoliosolicit= new Componentes().text(new JCTextField()  ,"Folio Solicita"            ,30   ,"String");
 	JTextField txtSolicitante = new Componentes().text(new JCTextField()  ,"Solicitante"               ,300  ,"String");
 	JTextField txtTotal       = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");

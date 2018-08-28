@@ -58,7 +58,7 @@ public class Cat_Reporte_De_Orden_De_Compra extends JFrame{
     	this.tablafilordenes.getColumnModel().getColumn(7).setMinWidth (200);
     	this.tablafilordenes.getColumnModel().getColumn(8).setMinWidth (120);
     	this.tablafilordenes.getColumnModel().getColumn(9).setMinWidth (200);
-    	this.tablafilordenes.getColumnModel().getColumn(10).setMinWidth (80 );
+    	this.tablafilordenes.getColumnModel().getColumn(10).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(11).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(12).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(13).setMinWidth(80 );

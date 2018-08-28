@@ -37,6 +37,7 @@ import javax.swing.table.TableRowSorter;
 import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -89,7 +90,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
     	this.tabla.getColumnModel().getColumn(20).setMinWidth(60);
     	this.tabla.getColumnModel().getColumn(21).setMinWidth(300);
     	
-		String comando="exec sp_select_seguimiento_a_servicios_pendientes_2 '"+Departamento+"','"+status_pedidos+"',"+usuario.getFolio();
+		String comando="exec servicios_seguimiento_a_servicios_pendientes '"+Departamento+"','"+status_pedidos+"',"+usuario.getFolio();
 		
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
@@ -140,6 +141,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	JCButton btnAtendio         = new JCButton("Atendio"              ,"key-group-icone-5159-16.png","AzulC");
 	JCButton btnEquipo          = new JCButton("Equipo"               ,"los-parametros-de-las-herramientas-de-icono-8319-16.png","AzulC");
 	JCButton btnAsignado        = new JCButton("Asignacion"           ,"verde-de-usuario-icono-7340-16.png","AzulC");
+	JCButton btnImprimir        = new JCButton("Imprimir"     ,"imprimir-16.png"                   ,"Azul");
 	
 	JLabel lblUsuario           = new JLabel("");
 	JLabel lblDepartamento      = new JLabel("");
@@ -255,7 +257,9 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		this.panel.add(txtFolioasignado).setBounds           (x+=40   ,y      ,50       ,height   );
 		this.panel.add(txtAsignado).setBounds                (x+=50   ,y      ,width+180,height   );
 		this.panel.add(btnAsignado).setBounds                (x+=303  ,y      ,width    ,height   );
-		this.panel.add(btnDeshacer).setBounds                (x+=330  ,y      ,width    ,height   );
+		this.panel.add(btnImprimir).setBounds                (x+=160  ,y      ,width    ,height   );
+		
+		this.panel.add(btnDeshacer).setBounds                (x+=sep  ,y      ,width    ,height   );
 		this.panel.add(btnGuardar).setBounds                 (x+=sep  ,y      ,width    ,height   );
 		
 		x=15;
@@ -276,6 +280,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		btnGuardar.addActionListener(guardar);
 		btnDeshacer.addActionListener(deshacer);
 		btnAtendio.addActionListener(modificaratendio);
+		btnImprimir.addActionListener(opImprimir_Reporte);
 		btnEquipo.addActionListener(modificarequipo);
 		btnAsignado.addActionListener(asignanarcolaborador);
 		btnActualizar.addActionListener(actualizartabla);
@@ -377,7 +382,6 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
                 	btnAtendio.setEnabled(true);
                 	btnAsignado.setEnabled(true);
                 	btnGuardar.setEnabled(true);
-                	
                 	//validacion si es el usuario creador para que clasifique la evaluacion
                     if(tabla.getValueAt(fila,6).toString().equals(lblUsuario.getText())){
                     	cmbEvaluacionServicio.setEnabled(true);
@@ -398,6 +402,22 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
     	}
 	};
 	
+    ActionListener opImprimir_Reporte = new ActionListener(){
+	  	public void actionPerformed(ActionEvent e){
+	  		if(txtFolio.getText().toString().equals("")) {
+					JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Servicio","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;	
+	  		}else {
+		  		  String basedatos="2.26";
+		  		  String vista_previa_reporte="no";
+		  		  int vista_previa_de_ventana=0;
+		  		  String comando="servicios_reporte_de_solicitud_de_servicio '"+txtFolio.getText().toString()+"'";
+		  		  String reporte = "Obj_Reporte_De_Solicitud_De_Servicio.jrxml";
+		  		  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	      	} 
+	  	}
+	};
+	  	
 	private void agregar(final JTable tbl) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {

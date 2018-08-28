@@ -66,6 +66,12 @@
 	<field name="plazo" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="plazo"/>
 	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="folio_servicio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_servicio"/>
+	</field>
 	<variable name="Importe" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{cantidad}*$F{precio_unitario}]]></variableExpression>
 	</variable>
@@ -98,17 +104,6 @@
 					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SUPERMERCADO LA COMPETIDORA, S.A. de C.V.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="101" y="51" width="308" height="25" forecolor="#000000" uuid="1dc841bb-60b3-4d39-a458-f2f6f32c5f5c">
-					<property name="local_mesure_unity" value="pixel"/>
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font size="18" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ORDEN DE GASTO]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="449" y="81" width="100" height="20" forecolor="#B80000" uuid="89f0079d-e5b2-4706-a7d5-b8fac6b774d8"/>
@@ -184,11 +179,11 @@
 				<text><![CDATA[Precio]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="6" y="82" width="274" height="19" uuid="f9fafa82-b722-4c16-a9d0-f6d2011fc689"/>
+				<reportElement x="6" y="82" width="164" height="19" uuid="f9fafa82-b722-4c16-a9d0-f6d2011fc689"/>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ESTATUS ORDEN:"+$F{estatus}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ESTATUS:"+$F{estatus}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement key="" x="6" y="1" width="82" height="77" uuid="5c6a70bf-e69e-4e67-8ea8-843c8a904759">
@@ -258,18 +253,32 @@
 				<text><![CDATA[Fecha Imp:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="330" y="82" width="118" height="19" uuid="5ef9eb02-4385-4f63-abf3-35ef59bb7659"/>
+				<reportElement x="238" y="82" width="110" height="19" uuid="5ef9eb02-4385-4f63-abf3-35ef59bb7659"/>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CONCEPTO:"+$F{concepto_solicitud}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="212" y="82" width="118" height="19" uuid="69ade6ca-3ea3-46da-bead-8454fe9d8934"/>
+				<reportElement x="170" y="82" width="68" height="19" uuid="69ade6ca-3ea3-46da-bead-8454fe9d8934"/>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["PLAZO:"+$F{plazo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="54" width="293" height="27" uuid="692589d1-6ed0-4c8f-9594-819ab209cbb2"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ORDEN DE GASTO "+$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="82" width="106" height="19" uuid="021cfc09-eba2-4a0e-9635-a0f489134157"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FOLIO SERV.:"+$F{folio_servicio}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

@@ -278,6 +278,8 @@ public class Cat_Mis_Solicitudes_De_Servicios extends JFrame{
 	        	if(e.getClickCount()==1){
 	        		panelEnabledFalse();
 	        		int fila = tabla.getSelectedRow();
+	        		if(fila<0){fila=0;}
+	        		
 						txtFolio.setText(tabla.getValueAt(fila,0)+"");
 						txaDetalle.setText(tabla.getValueAt(fila,1)+"");
 						cmbEstatus.setSelectedItem(tabla.getValueAt(fila,2)+"");

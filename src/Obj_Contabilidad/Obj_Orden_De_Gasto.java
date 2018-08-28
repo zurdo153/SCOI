@@ -9,6 +9,7 @@ public class Obj_Orden_De_Gasto {
 	int folio_usuario_solicito=0;
 	float total_gasto=0;
 	int cantidad_de_correos=0;
+	int folio_servicio=0;
 	
 	String establecimiento_solicito="";
     String cod_prv="";
@@ -17,7 +18,20 @@ public class Obj_Orden_De_Gasto {
 	String Guardar_actualizar="";
 	String correos="";
 	String concepto_gasto="";
+	String tipo="";
 	
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public int getFolio_servicio() {
+		return folio_servicio;
+	}
+	public void setFolio_servicio(int folio_servicio) {
+		this.folio_servicio = folio_servicio;
+	}
 	public String getConcepto_gasto() {
 		return concepto_gasto;
 	}

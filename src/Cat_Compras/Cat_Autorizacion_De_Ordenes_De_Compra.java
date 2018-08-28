@@ -244,7 +244,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
 			@Override
 			public void keyTyped(KeyEvent e)    {}
 		});
-    }
+      }
 	
 	private void agregar() {
       		int fila = tablafilordenes.getSelectedRow();
@@ -574,7 +574,6 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     				}
     		    }
     		};
-    		
     	
     		private void Seleccionar_Respuesta(final JTable tbl) {
 			    tbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -612,17 +611,6 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     	        	combo.removeAllItems();
     				try {
     					String respuestas= "Benchmarking/Promocion De Proveedor/Sin Existencia Con Proveedor Principal";
-    					
-//    					if(table.getValueAt(row, 8).toString().equals("Extra")){
-//    						respuestas="Si";
-//    					}else{
-//    					    for(int i=0;i<tablacompleta.length;i++){
-//    						 if(table.getValueAt(row, 1).toString().equals(tablacompleta[i][1].toString())){
-//    							respuestas=tablacompleta[i][16].toString();
-//    						 }
-//    					}	
-//    					}
-    					
     					String tipo_de_respuestas[] = respuestas.split("/");
     					for(int i=0; i<tipo_de_respuestas.length; i++)  combo.addItem(tipo_de_respuestas[i]);
     				} catch (NumberFormatException e) {
@@ -631,11 +619,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     	            return combo;          
     	        }
     	    }
-    	    
-    	    
     	}
-    	
-    	
 	
 	public static void main(String[] args) {
 		try{

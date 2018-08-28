@@ -42,6 +42,7 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 	String operador[] = {"Selecciona Un Reporte"
 			                ,"Saldo de Banco Interno en un Periodo por Cuenta" 
 			                ,"Pagos Realizados Pendientes de Realizar Corte" 
+			                ,"Ingresos Manuales en un Periodo"
 							};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
@@ -162,6 +163,11 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 				 cmbEstablecimiento.setEnabled(false);
 			 }
 			 
+			 if(concepto.equals("Ingresos Manuales en un Periodo") ){
+				 c_inicio.setEnabled(true);
+				 c_final.setEnabled(true);
+			 }
+			 
 		}
 	};
 	
@@ -193,6 +199,10 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 									reporte ="Obj_Reporte_De_Banco_Interno_Ordenes_De_Gasto_Pendientes_De_Realizar_Corte.jrxml";
 							    }
 								
+								if(concepto.equals("Ingresos Manuales en un Periodo" )){
+									comando="exec banco_interno_reporte_de_ingresos_manuales '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"'";
+									reporte ="Obj_Reporte_De_Banco_Interno_Ingresos_Manuales_en_un_Periodo.jrxml";
+							    }
 								
 						}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_campos(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));

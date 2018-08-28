@@ -56,9 +56,10 @@ public class Cat_Estado_De_Resultados extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
 	
-	JCButton btn_buscar = new JCButton  ("","buscar-buscar-ampliar-icono-6234-32.png","Azul");
-	JCButton btn_Origen = new JCButton  ("","list-icon-1440-32px.png","Azul");
-	JCButton btn_generarpdf = new JCButton  ("","pdf-icon-png-2081-32px.png","Azul");
+	JCButton btn_buscar     = new JCButton (""         ,"buscar-buscar-ampliar-icono-6234-32.png" , "Azul");
+	JCButton btn_Origen     = new JCButton (""         ,"list-icon-1440-32px.png"                 , "Azul");
+	JCButton btn_generarpdf = new JCButton (""         ,"pdf-icon-png-2081-32px.png"              , "Azul");
+	JCButton btnImprimir    = new JCButton ("Imprimir" ,"imprimir-16.png"                         , "Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );

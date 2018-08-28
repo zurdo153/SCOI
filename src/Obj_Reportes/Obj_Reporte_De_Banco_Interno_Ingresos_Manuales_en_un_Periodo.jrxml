@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Orden_De_Pago_En_Efectivo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1680c4b3-ed3f-448e-b482-3446bd4d59e5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="201"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="793"/>
+	<queryString>
+		<![CDATA[exec banco_interno_reporte_de_ingresos_manuales '01/08/2018', '28/08/2018']]>
+	</queryString>
+	<field name="folio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+	</field>
+	<field name="folio_banco_interno" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_banco_interno"/>
+	</field>
+	<field name="tipo_movimiento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_movimiento"/>
+	</field>
+	<field name="estatus_movimiento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estatus_movimiento"/>
+	</field>
+	<field name="importe_concentrado" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="importe_concentrado"/>
+	</field>
+	<field name="importe_banco_interno_ingreso" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="importe_banco_interno_ingreso"/>
+	</field>
+	<field name="importe_banco_interno_egreso" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="importe_banco_interno_egreso"/>
+	</field>
+	<field name="importe_a_cuenta_de_cheques" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="importe_a_cuenta_de_cheques"/>
+	</field>
+	<field name="usuario_realiza_traspaso" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_realiza_traspaso"/>
+	</field>
+	<field name="fecha_transpaso" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_transpaso"/>
+	</field>
+	<field name="usuario_recibe" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_recibe"/>
+	</field>
+	<field name="fecha_recibe" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_recibe"/>
+	</field>
+	<field name="empleado_destinatario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="empleado_destinatario"/>
+	</field>
+	<field name="observaciones" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+	</field>
+	<field name="nombre_grupo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_grupo"/>
+	</field>
+	<field name="folio_trabajo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_trabajo"/>
+	</field>
+	<field name="folio_grupo_para_cortes" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_grupo_para_cortes"/>
+	</field>
+	<field name="fecha_concentrado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_concentrado"/>
+	</field>
+	<field name="numero_de_cuenta" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.label" value="numero_de_cuenta"/>
+	</field>
+	<field name="nombre_de_cuenta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_de_cuenta"/>
+	</field>
+	<field name="fecha_inicial" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_inicial"/>
+	</field>
+	<field name="fecha_final" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_final"/>
+	</field>
+	<variable name="SUMA IMPORTE" class="java.lang.Double" resetType="Group" resetGroup="solicitud" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe_banco_interno_ingreso}]]></variableExpression>
+	</variable>
+	<group name="solicitud" keepTogether="true">
+		<groupExpression><![CDATA[$F{folio_banco_interno}]]></groupExpression>
+		<groupHeader>
+			<band height="74">
+				<line>
+					<reportElement x="0" y="-1" width="555" height="1" uuid="cc285ec1-f3f8-4cb0-9507-812af4dab82b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<textField>
+					<reportElement x="0" y="2" width="96" height="13" uuid="bd603c14-8346-44b8-8dcc-c98119d656cf">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FOLIO B.I.:"+$F{folio_banco_interno}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="97" y="2" width="62" height="13" uuid="e362ddc1-6cbc-4bbd-b6b2-460c2ad482e1"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tipo_movimiento}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="164" y="2" width="130" height="13" uuid="e04b9bb5-fac7-4a38-a9d9-e72821c45f83">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA["ESTATUS:"+$F{estatus_movimiento}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="46" width="555" height="28" uuid="36fa04bc-b1b4-40ff-a887-658ee93decb3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="20" width="320" height="13" uuid="939a30fa-6e87-4b82-a8e7-e414d7ecd9d9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA["TRASPASA: "+$F{usuario_realiza_traspaso}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="33" width="320" height="13" uuid="648a62e4-42c8-47c9-b51b-d5f856918951">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA["RECIBE: "+$F{usuario_recibe}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="320" y="20" width="100" height="13" uuid="30de0e5b-db16-436d-a1f8-66114dbe41eb"/>
+					<textFieldExpression><![CDATA[$F{fecha_transpaso}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="320" y="33" width="100" height="13" uuid="50f034c0-5926-4191-ab13-33fc0a538b23"/>
+					<textFieldExpression><![CDATA[$F{fecha_concentrado}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="360" y="2" width="100" height="13" uuid="9d862e4b-38f0-49f0-83a7-3c1e8e4274bd"/>
+					<textFieldExpression><![CDATA[$F{nombre_de_cuenta}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="310" y="2" width="50" height="13" uuid="fa25f794-5924-4cc8-99ff-a4dbabde00f1"/>
+					<textFieldExpression><![CDATA["CUENTA:"+$F{numero_de_cuenta}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<line>
+					<reportElement x="250" y="0" width="70" height="1" uuid="17206ef8-e2ab-4e79-8b9e-9aba411e76e2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<textField>
+					<reportElement x="250" y="2" width="70" height="13" uuid="b398f654-7090-43ab-8176-788429e68e3c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{SUMA IMPORTE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="82" y="0" width="473" height="28" forecolor="#000000" uuid="eafce9da-d496-46e1-91b6-77d9d66c7f40"/>
+				<textElement textAlignment="Center">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUPERMERCADO LA COMPETIDORA, S.A. de C.V.]]></text>
+			</staticText>
+			<image>
+				<reportElement key="" x="0" y="0" width="82" height="77" uuid="5c6a70bf-e69e-4e67-8ea8-843c8a904759">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+			</image>
+			<textField pattern="d/MM/yyyy h:mm a">
+				<reportElement x="455" y="50" width="100" height="14" uuid="718f8acb-e829-4f0d-9e87-eb105f375131">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="367" y="50" width="88" height="14" forecolor="#000000" uuid="4c192d97-b8d5-4301-9ee7-8850fa6f0078">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Impresion:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="82" y="28" width="473" height="22" forecolor="#000000" uuid="76aa9b73-9507-4706-a109-7924c6e65bca">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INGRESOS MANUALES A BANCO INTERNO EN UN PERIODO "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="229" y="50" width="100" height="13" uuid="b60cd334-dfd1-4f81-b203-4f35f4183b86"/>
+				<textFieldExpression><![CDATA[$F{fecha_inicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="50" width="100" height="13" uuid="ec769d9a-ff83-4d3b-96be-48026d9b9e89"/>
+				<textFieldExpression><![CDATA[$F{fecha_final}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="82" y="50" width="27" height="13" uuid="33e60d37-1802-4e9a-bf27-df421504fcda">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["DEL: "+$F{estatus_movimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="50" width="20" height="13" uuid="071bbeff-481e-4dbf-b040-c9fb410dbbc6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["AL: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="250" y="0" width="70" height="13" uuid="b058d3c7-96cc-4dd3-bce9-8594a94df69a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{importe_banco_interno_ingreso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="240" y="0" width="10" height="13" uuid="2964d019-ef57-4328-baf5-cb71df368f26"/>
+				<text><![CDATA[$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="240" height="13" uuid="6b826717-a263-4e7e-ba71-c94eb22130d8"/>
+				<textFieldExpression><![CDATA[$F{nombre_grupo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

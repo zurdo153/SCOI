@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Orden_De_Pago_En_Efectivo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1680c4b3-ed3f-448e-b482-3446bd4d59e5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[exec servicios_reporte_de_solicitud_de_servicio 5970]]>
+	</queryString>
+	<field name="folio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+	</field>
+	<field name="detalle" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="detalle"/>
+	</field>
+	<field name="estatus" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estatus"/>
+	</field>
+	<field name="prioridad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="prioridad"/>
+	</field>
+	<field name="fecha_solicitud" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_solicitud"/>
+	</field>
+	<field name="establecimiento_solicito" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="establecimiento_solicito"/>
+	</field>
+	<field name="usuario_solicito" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_solicito"/>
+	</field>
+	<field name="departamento_solicito" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="departamento_solicito"/>
+	</field>
+	<field name="servicio_solicitado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="servicio_solicitado"/>
+	</field>
+	<field name="archivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="archivo"/>
+	</field>
+	<field name="fecha_realizo_servicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_realizo_servicio"/>
+	</field>
+	<field name="usuario_realizo_servicio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_realizo_servicio"/>
+	</field>
+	<field name="COLUMN_13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_realizo_servicio"/>
+	</field>
+	<field name="notas_servicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="notas_servicio"/>
+	</field>
+	<field name="costo_servicio" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="costo_servicio"/>
+	</field>
+	<field name="evaluacion_del_servicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="evaluacion_del_servicio"/>
+	</field>
+	<field name="archivo_respuesta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="archivo_respuesta"/>
+	</field>
+	<field name="comentario_evaluacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comentario_evaluacion"/>
+	</field>
+	<field name="COLUMN_19" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	</field>
+	<field name="folio_colaborador_asignado" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="folio_colaborador_asignado"/>
+	</field>
+	<field name="colaborador_asignado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="colaborador_asignado"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="188" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image>
+				<reportElement key="" x="0" y="0" width="82" height="77" uuid="5c6a70bf-e69e-4e67-8ea8-843c8a904759">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement mode="Transparent" x="80" y="28" width="474" height="17" forecolor="#000000" uuid="76aa9b73-9507-4706-a109-7924c6e65bca">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["USUARIO SOLICITA:"+$F{usuario_solicito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="474" height="28" uuid="cf1c2ba3-7fba-435d-95f4-be711b2a0cc3"/>
+				<textElement textAlignment="Center">
+					<font size="21" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Solicitud De Servicio   Folio:"+$F{folio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="80" y="45" width="474" height="17" forecolor="#000000" uuid="72775653-a5f5-40c3-aa37-72d319bad9a5">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[">>ESTABLECIMIENTO:"+$F{establecimiento_solicito}+ "   >>FECHA:"+$F{fecha_solicitud}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="62" width="474" height="21" uuid="8ceaae3c-3fcb-4fea-b77c-b05d4fb60dda"/>
+				<textElement textAlignment="Left">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servicio_solicitado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="83" width="554" height="58" uuid="d69b8ba6-193f-4c17-a7ac-b3adba07c92d"/>
+				<textElement>
+					<font size="13" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DETALLE:"+$F{detalle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="0" y="141" width="554" height="17" forecolor="#000000" uuid="2bfc25d3-1213-4744-9b4e-dc5ea6b0fec7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[">>ATENDIO:"+$F{COLUMN_13}+"   >>FECHA"+$F{fecha_realizo_servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="158" width="554" height="30" uuid="298697b1-67fc-4aa1-a859-ad93e23325e4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NOTA DEL SERVICIO:"+$F{notas_servicio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="12" uuid="7356eebf-62bf-4fa5-9d04-577c55377577">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement x="398" y="18" width="150" height="1" uuid="c3a366ef-ecee-497b-89fe-02bbce8a84c3">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="398" y="24" width="150" height="12" uuid="91cc856b-070f-49ad-8207-91324453c24d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIRMA REVISA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="24" width="150" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIRMA ATIENDE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="12" y="18" width="150" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

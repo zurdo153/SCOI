@@ -248,6 +248,9 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	JTextField txtEstablecimiento = new Componentes().text(new JCTextField()  ,"Establecimiento"           ,90   ,"String");
 	JTextField txtConcepto        = new Componentes().text(new JCTextField()  ,"Concepto"                  ,90   ,"String");
 	JTextField txtSolicito        = new Componentes().text(new JCTextField()  ,"Solicito"                  ,300  ,"String");
+	JTextField txtFolioservici    = new Componentes().text(new JCTextField()  ,"Folio Servicio"            ,30   ,"String");
+	JTextField txtDetalleServi    = new Componentes().text(new JCTextField()  ,"Detalle Servicio"          ,350  ,"String");
+	JTextField txtTipo            = new Componentes().text(new JCTextField()  ,"Tipo"                      ,35   ,"String");
 	
     JTextArea txaUso       = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia", 300);
 	JScrollPane Uso        = new JScrollPane(txaUso);
@@ -259,6 +262,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	
 	JRadioButton rbProveedorCont = new JRadioButton("Proveedor Contado");
 	JRadioButton rbProveedor     = new JRadioButton("Proveedor");
+	JRadioButton rbColaborador   = new JRadioButton("Colaborador");
 	ButtonGroup  grupo           = new ButtonGroup();
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
@@ -269,7 +273,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
     String guardar_actualizar="";
    public  Cat_Solicitud_De_Orden_De_Gasto_Autorizacion(int folio){
 	    this.cont.add(panel);
-		this.setSize(825,380);
+		this.setSize(825,400);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setModal(true);
@@ -293,19 +297,24 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
    	 
 		int x=20, y=20,width=122,height=20, sep=130;
 		this.panel.add(menu_toolbar).setBounds                        (x         ,y      ,400     ,height );
-		this.panel.add(txtSolicito).setBounds                         (x+440     ,y      ,340     ,height );
+		this.panel.add(txtSolicito).setBounds                         (x+440     ,y      ,300     ,height );
+		this.panel.add(txtTipo).setBounds                             (x+740     ,y      ,40      ,height );		
 		
 		this.panel.add(txtFolio).setBounds                            (x         ,y+=30  ,width   ,height );
 		this.panel.add(txtConcepto).setBounds                         (x+=sep    ,y      ,width   ,height );
 		this.panel.add(txtEstatus).setBounds                          (x+=sep    ,y      ,width   ,height );
-		this.panel.add(txtEstablecimiento).setBounds                  (x+=sep    ,y      ,150     ,height );
+		this.panel.add(txtEstablecimiento).setBounds                  (x+=sep    ,y      ,160     ,height );
 		this.panel.add(new JLabel("Fecha Solicitud:")).setBounds      (x+=170    ,y      ,width   ,height );
 		this.panel.add(txtFecha).setBounds                            (x+=80     ,y      ,140     ,height );
 		
-		this.panel.add(txtFolio_prv).setBounds                        (x=20      ,y+=25  ,50      ,height );
-		this.panel.add(txtProveedor).setBounds                        (x+=50     ,y      ,490     ,height );
+		this.panel.add(txtFolio_prv).setBounds                        (x=20      ,y+=25  ,60      ,height );
+		this.panel.add(txtProveedor).setBounds                        (x+=60     ,y      ,490     ,height );
 		this.panel.add(rbProveedor).setBounds                         (x+500     ,y      ,90      ,height );		
 		this.panel.add(rbProveedorCont).setBounds                     (x+600     ,y      ,130     ,height );  
+		
+		this.panel.add(txtFolioservici).setBounds                     (x=20      ,y+=25  ,60      ,height );	
+		this.panel.add(txtDetalleServi).setBounds                     (x+=60     ,y      ,490     ,height );	
+		this.panel.add(rbColaborador).setBounds                       (x+500     ,y      ,90      ,height );
 		
 		this.panel.add(new JLabel("Descripcion Del Gasto:")).setBounds(x=20      ,y+=20  ,width   ,height );
 		this.panel.add(Uso).setBounds                                 (x         ,y+=15  ,780     ,50     );
@@ -370,7 +379,24 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		txtSolicito.setText (tablacompleta[0][14].toString());
 		txtEstatus.setText(tablacompleta[0][15].toString());
 		txtConcepto.setText(tablacompleta[0][17].toString());
-		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {rbProveedor.setSelected(true); }else {rbProveedorCont.setSelected(true); };
+		
+		System.out.println(tablacompleta[0][9].toString() );
+		System.out.println(tablacompleta[0][19].toString());
+		System.out.println(tablacompleta[0][20].toString());
+		
+		
+		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {
+			rbProveedor.setSelected(true); 
+		}else {        
+			 if(tablacompleta[0][9].toString().equals("COLABORADOR")) {
+			   rbColaborador.setSelected(true);
+			 }else {
+			   rbProveedorCont.setSelected(true); };
+		}	 
+		
+		txtFolioservici.setText(tablacompleta[0][18].toString());
+		txtDetalleServi.setText(tablacompleta[0][19].toString());
+		txtTipo.setText(tablacompleta[0][20].toString());
 
 		txtEstatus.setEditable(false);
 		txtEstablecimiento.setEditable(false);
@@ -380,12 +406,16 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		txtProveedor.setEditable(false);
 		rbProveedorCont.setEnabled(false);
 		rbProveedor.setEnabled(false);
+		rbColaborador.setEnabled(false);
 		txtFecha.setEditable(false);
 		txtFoliosolicit.setEditable(false);
 		txtSolicitante.setEditable(false);
 		txtFolio_prv.setEditable(false);
 		txtTotal.setEditable(false);
 		txtSolicito.setEditable(false);
+		txtFolioservici.setEditable(false);
+		txtDetalleServi.setEditable(false);
+		txtTipo.setEditable(false);
 		calculo();
 	}
 	
