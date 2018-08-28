@@ -7,8 +7,6 @@ import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.BorderFactory;
@@ -36,6 +34,7 @@ public class Cat_Camara extends JDialog{
 	Container cont = getContentPane();
 	public JLayeredPane panelFoto = new JLayeredPane();
 	public JCButton btnCapturar = new JCButton("Tomar Foto", "", "Verde");
+	public JCButton btnConfirmar = new JCButton("Confirmar", "", "Azul");
 	
 	public JLabel lblVistaPrevia = new JLabel();
 	public JLabel lblEtiquetaVistaPrevia = new JLabel("<html>"
@@ -49,7 +48,7 @@ public class Cat_Camara extends JDialog{
 	static final long serialVersionUID = 1L;
 
 	public Webcam webcam = null;
-	WebcamPanel panelCam = null;
+	public WebcamPanel panelCam = null;
 	WebcamPicker picker = null;
 	
 	//declaracion de Bordes
@@ -83,6 +82,8 @@ public class Cat_Camara extends JDialog{
 		panelFoto.add(picker).setBounds(x, y, ancho, 30);
 		panelFoto.add(btnCapturar).setBounds(x+ancho+50, y, ancho/4+50, 30);
 		panelFoto.add(panelCam).setBounds(x, y+=35, ancho+200, ancho+50);
+		
+		panelFoto.add(btnConfirmar).setBounds(x+(ancho+210), y-35, ancho/4+50, 30);
 		panelFoto.add(lblVistaPrevia).setBounds(x+(ancho+210), y, 206, 155);
 		panelFoto.add(lblEtiquetaVistaPrevia).setBounds(x+(ancho+250), y+155, 206, 20);
 		
@@ -97,7 +98,7 @@ public class Cat_Camara extends JDialog{
 
 //		btnCapturar.addActionListener(opFoto);
 		Webcam.addDiscoveryListener(opPiker);
-		addWindowListener(actionWindowList);
+//		addWindowListener(actionWindowList);
 
 		webcam.setViewSize(WebcamResolution.VGA.getSize());
 		webcam.addWebcamListener(actionCam);
@@ -148,33 +149,33 @@ public class Cat_Camara extends JDialog{
 		}
 	};
 
-	WindowListener actionWindowList = new WindowListener() {
-		
-		public void windowOpened(WindowEvent e) {}
-		
-		public void windowIconified(WindowEvent e) {
-			System.out.println("webcam viewer paused");
-			panelCam.pause();
-		}
-		
-		public void windowDeiconified(WindowEvent e) {
-			System.out.println("webcam viewer resumed");
-			panelCam.resume();
-		}
-		
-		public void windowDeactivated(WindowEvent e) {}
-		public void windowClosing(WindowEvent e) {
-			System.out.println("Closing");
-//			System.exit(1);
-			webcam.close();
-			dispose();
-		}
-		public void windowClosed(WindowEvent e) {
-			System.out.println("Closed");
-			webcam.close();
-		}	
-		public void windowActivated(WindowEvent e) {}
-	};
+//	WindowListener actionWindowList = new WindowListener() {
+//		
+//		public void windowOpened(WindowEvent e) {}
+//		
+//		public void windowIconified(WindowEvent e) {
+//			System.out.println("webcam viewer paused");
+//			panelCam.pause();
+//		}
+//		
+//		public void windowDeiconified(WindowEvent e) {
+//			System.out.println("webcam viewer resumed");
+//			panelCam.resume();
+//		}
+//		
+//		public void windowDeactivated(WindowEvent e) {}
+//		public void windowClosing(WindowEvent e) {
+//			System.out.println("Closing");
+////			System.exit(1);
+//			webcam.close();
+//			dispose();
+//		}
+//		public void windowClosed(WindowEvent e) {
+//			System.out.println("Closed");
+//			webcam.close();
+//		}	
+//		public void windowActivated(WindowEvent e) {}
+//	};
 
 	UncaughtExceptionHandler opUnchaug = new UncaughtExceptionHandler() {
 		public void uncaughtException(Thread t, Throwable e) {

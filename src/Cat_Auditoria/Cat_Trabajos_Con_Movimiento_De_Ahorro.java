@@ -59,12 +59,6 @@ public class Cat_Trabajos_Con_Movimiento_De_Ahorro extends JFrame{
             return types[columnIndex];
         }
         public boolean isCellEditable(int fila, int columna){
-       	 switch(columna){
-	        	 	case 0 : return false; 
-	        	 	case 1 : return false;
-	        	 	case 2 : return false;
-	        	 	case 3 : return false;
-       	 	} 				
 			return false;
 		}
 	};

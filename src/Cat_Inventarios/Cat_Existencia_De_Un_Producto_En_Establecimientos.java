@@ -14,7 +14,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -38,7 +37,7 @@ import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Existencia_De_Un_Producto_En_Establecimientos extends JFrame{
+public class Cat_Existencia_De_Un_Producto_En_Establecimientos extends JDialog{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -129,6 +128,7 @@ public class Cat_Existencia_De_Un_Producto_En_Establecimientos extends JFrame{
 	String[][] tablacompleta;
 	  Object[]   vector = new Object[10];
 	public Cat_Existencia_De_Un_Producto_En_Establecimientos(){
+		this.setModal(true);
 		setSize(800,600);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);

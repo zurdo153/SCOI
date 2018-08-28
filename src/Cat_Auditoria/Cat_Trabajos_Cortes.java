@@ -49,6 +49,7 @@ import Conexiones_SQL.Connexion;
 import Conexiones_SQL.GuardarTablasModel;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Principal.Componentes;
+import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_Filtro_Dinamico;
 import Obj_Renders.CaveceraTablaRenderer;
@@ -700,12 +701,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 							double tDolares=0;
 							double tDiferencia=0;
 							double tCorteCV=0;
+							double tRetirosClientes=0;
 							
 							Object[][] lista_cv = new Object[tabla_c_verde.getRowCount()][2];
 							for(int i = 0; i<tabla_c_verde.getRowCount(); i++){
 								
 								lista_cv[i][0] = tabla_c_verde.getValueAt(i, 2).toString().trim();
 								lista_cv[i][1] = tabla_c_verde.getValueAt(i, 11).toString().trim();
+								
 							}
 							
 							for(int i=0; i<tabla_concentrado.getRowCount(); i++){
@@ -715,13 +718,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 								tFS			+=	Double.valueOf(tabla_concentrado.getValueAt(i, 6).toString().trim());
 								tDiferencia	+=	Double.valueOf(tabla_concentrado.getValueAt(i, 9).toString().trim());
 								
-								
 								if(tabla_concentrado.getValueAt(i, 0).toString().trim().equals("TOTAL CAJA VERDE")){
 										tCorteCV	+=	Double.valueOf(tabla_concentrado.getValueAt(i,8).toString().trim());
 								}
 								
+								tRetirosClientes +=	Double.valueOf(tabla_concentrado.getValueAt(i, 10).toString().trim());
+								
 							}
-							new Cat_Reposicion_De_Efectivo(df.format(tFS),df.format(tDolares),df.format(tDiferencia),df.format(tCorteCV),df.format(tVales),txtEfectivoPlanes.getText(), lista_cv).setVisible(true);
+							new Cat_Reposicion_De_Efectivo(df.format(tFS),df.format(tDolares),df.format(tDiferencia),df.format(tCorteCV),df.format(tVales),txtEfectivoPlanes.getText(), lista_cv, df.format(tRetirosClientes)).setVisible(true);
 					}
 			}
 		}
@@ -1369,7 +1373,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		JTextArea txaComentario = new Componentes().textArea(new JTextArea(), "Comnetarios", 420);
 		JScrollPane observacion = new JScrollPane(txaComentario);
 		
-		JTextField txtGastos = new Componentes().text(new JTextField(), "Gastos", 20, "Double");
+		JTextField txtFuenteDeSodas = new Componentes().text(new JTextField(), "Fuente De Sodas", 20, "Double");
 		JTextField txtDolares = new Componentes().text(new JTextField(), "Dolares", 20, "Double");
 		JTextField txtVales = new Componentes().text(new JTextField(), "Vales", 20, "Double");
 		JTextField txtDiferenciaDeCortes = new Componentes().text(new JTextField(), "Diferencia De Cortes", 20, "Double");
@@ -1378,8 +1382,10 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		JTextField txtOtrosSobrentes = new Componentes().text(new JTextField(), "Otros Sobrantes", 20, "Double");
 		JTextField txtCajaVerdeRepEfect = new Componentes().text(new JTextField(), "Caja Verde", 160, "Double");
 		
-		JTextField txtTotal = new Componentes().text(new JTextField(), "Total", 20, "Double");
-		JTextField txtSobrantesFinanazas = new Componentes().text(new JTextField(), "Sobrantes Finanazas", 20, "Double");
+//		JTextField txtTotal = new Componentes().text(new JTextField(), "Total", 20, "Double");
+//		JTextField txtSobrantesFinanazas = new Componentes().text(new JTextField(), "Sobrantes Finanazas", 20, "Double");
+		JTextField txtRetiros_Clientes = new Componentes().text(new JTextField(), "Retiros Clientes", 20, "Double");
+		
 		JTextField txtTotalFinal = new Componentes().text(new JTextField(), "Total Final", 20, "Double");
 		
 		JTextField txtDeposito2 = new Componentes().text(new JTextField(), "Deposito", 20, "Double");
@@ -1389,20 +1395,18 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		JTextField txtEfectivoPlanesRep = new Componentes().text(new JTextField(), "Efectivo De Planes Con Lo Que Se Cuenta", 10, "Double");
 		JTextField txtDiferenciaPlanesRep = new Componentes().text(new JTextField(), "Diferencia De Planes", 10, "Double");
 		
-		JButton btnGuardarReposicionEfectivo = new JButton("Guardar");
+		JCButton btnGuardarReposicionEfectivo = new JCButton("Guardar","guardar.png","Azul");
 		
-		public Cat_Reposicion_De_Efectivo(String tFS, String tDolares, String tDiferencia, String tCorteCV, String tVales, String efectivoPlanTelcel, Object[][] lista_cv2/*, Vector vector_cVerde, String[] caja_verde_totales_de_corte*/){
+		public Cat_Reposicion_De_Efectivo(String tFS, String tDolares, String tDiferencia, String tCorteCV, String tVales, String efectivoPlanTelcel, Object[][] lista_cv2, String tRetirosClientes/*, Vector vector_cVerde, String[] caja_verde_totales_de_corte*/){
 			this.setTitle("Reposicion De Efectivo");
 			
 			txtOtrosFaltantes.setBackground(Color.lightGray);
 			txtOtrosSobrentes.setBackground(Color.lightGray);
-			txtSobrantesFinanazas.setBackground(Color.lightGray);
 			txtDeposito2.setBackground(Color.lightGray);
 			txtTotalPlanesRep.setBackground(Color.lightGray);
 			
 			txtOtrosFaltantes.setBorder(BorderFactory.createLineBorder(Color.black));
 			txtOtrosSobrentes.setBorder(BorderFactory.createLineBorder(Color.black));
-			txtSobrantesFinanazas.setBorder(BorderFactory.createLineBorder(Color.black));
 			txtDeposito2.setBorder(BorderFactory.createLineBorder(Color.black));
 			txtTotalPlanesRep.setBorder(BorderFactory.createLineBorder(Color.black));
 			txaComentario.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -1413,7 +1417,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			txaComentario.setLineWrap(true); 
 			txaComentario.setWrapStyleWord(true);
-			
 			
 			int x=15,y=20,ancho=110;
 			
@@ -1426,43 +1429,41 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			panelRep.add(new JLabel("Fecha Del Trabajo:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(fchTrabajoCorte).setBounds(x+ancho+10,y,ancho,20);
 			
-			panelRep.add(new JLabel("Gastos:")).setBounds(x,y+=25,ancho,20);
-			panelRep.add(txtGastos).setBounds(x+ancho+10,y,ancho,20);								panelRep.add(scroll_caja_verde).setBounds(x+ancho+140,y,ancho+90,97);
+			panelRep.add(new JLabel("Fuente De Sodas:")).setBounds(x,y+=25,ancho,20);
+		panelRep.add(txtFuenteDeSodas).setBounds(x+ancho+10,y,ancho,20);						panelRep.add(scroll_caja_verde).setBounds(x+ancho+140,y,ancho+90,97);	panelRep.add(new JLabel("Planes Telcel (Fisico):")).setBounds(x+ancho*3+140,y,ancho+90,20);    
+			                                                                                                                                                            panelRep.add(txtEfectivoPlanesRep).setBounds(x+ancho*3+265,y,70,20);                           
+			panelRep.add(new JLabel("Dolares:")).setBounds(x,y+=25,ancho,20);                                                                                           panelRep.add(new JLabel("Planes Telcel (Sistema):")).setBounds(x+ancho*3+140,y,ancho+90,20);                                                                                                
+			panelRep.add(txtDolares).setBounds(x+ancho+10,y,ancho,20);                                                                                                  panelRep.add(txtTotalPlanesRep).setBounds(x+ancho*3+265,y,70,20);                                                                                                                           
+			panelRep.add(new JLabel("Vales:")).setBounds(x,y+=25,ancho,20);                                                                                             panelRep.add(new JLabel("Planes Telcel (Diferencia):")).setBounds(x+ancho*3+140,y,ancho+90,20);
+			panelRep.add(txtVales).setBounds(x+ancho+10,y,ancho,20);                                                                                                    panelRep.add(txtDiferenciaPlanesRep).setBounds(x+ancho*3+265,y,70,20);                         
+			                                                                                                                                                                                                                                                                     
+			panelRep.add(new JLabel("Diferencia De Cortes:")).setBounds(x,y+=25,ancho,20);                                                                                          
+			panelRep.add(txtDiferenciaDeCortes).setBounds(x+ancho+10,y,ancho,20);                                                                                                   
 			
-			panelRep.add(new JLabel("Dolares:")).setBounds(x,y+=25,ancho,20);
-			panelRep.add(txtDolares).setBounds(x+ancho+10,y,ancho,20);
-			panelRep.add(new JLabel("Vales:")).setBounds(x,y+=25,ancho,20);
-			panelRep.add(txtVales).setBounds(x+ancho+10,y,ancho,20);
+			panelRep.add(new JLabel("Caja Verde:")).setBounds(x,y+=25,ancho,20);               	panelRep.add(new JLabel("Comentarios:")).setBounds(x+ancho+140,y+10,ancho+90,20);
+			panelRep.add(txtCajaVerdeRepEfect).setBounds(x+ancho+10,y,ancho,20);               	panelRep.add(observacion).setBounds(x+ancho+140,y+25,ancho*3+90,145);               
 			
-			panelRep.add(new JLabel("Diferencia De Cortes:")).setBounds(x,y+=25,ancho,20);
-			panelRep.add(txtDiferenciaDeCortes).setBounds(x+ancho+10,y,ancho,20);
+			panelRep.add(new JLabel("Retiros Clientes:")).setBounds(x,y+=25,ancho+50,20);				
+			panelRep.add(txtRetiros_Clientes).setBounds(x+ancho+10,y,ancho,20);	
 			
-			panelRep.add(new JLabel("Otros Faltantes:")).setBounds(x,y+=25,ancho+50,20);			panelRep.add(new JLabel("Planes Telcel (Fisico):")).setBounds(x+ancho+140,y,ancho+90,20);
-			panelRep.add(txtOtrosFaltantes).setBounds(x+ancho+10,y,ancho,20);						panelRep.add(txtEfectivoPlanesRep).setBounds(x+ancho+265,y,70,20);
+			panelRep.add(new JLabel("Otros Faltantes:")).setBounds(x,y+=25,ancho+50,20);			
+			panelRep.add(txtOtrosFaltantes).setBounds(x+ancho+10,y,ancho,20);						
 			
-//			---------------------------------------------------------------------------------------------------------------
-			panelRep.add(new JLabel("Otros Sobrantes:")).setBounds(x,y+=25,ancho,20);               panelRep.add(new JLabel("Planes Telcel (Sistema):")).setBounds(x+ancho+140,y,ancho+90,20); 
-			panelRep.add(txtOtrosSobrentes).setBounds(x+ancho+10,y,ancho,20);                       panelRep.add(txtTotalPlanesRep).setBounds(x+ancho+265,y,70,20);                              
+//			--------------------------------------------------------------------------------
+			panelRep.add(new JLabel("Otros Sobrantes:")).setBounds(x,y+=25,ancho,20);               
+			panelRep.add(txtOtrosSobrentes).setBounds(x+ancho+10,y,ancho,20);                       
 			
-			panelRep.add(new JLabel("Caja Verde:")).setBounds(x,y+=25,ancho,20);					panelRep.add(new JLabel("Planes Telcel (Diferencia):")).setBounds(x+ancho+140,y,ancho+90,20);
-			panelRep.add(txtCajaVerdeRepEfect).setBounds(x+ancho+10,y,ancho,20);					panelRep.add(txtDiferenciaPlanesRep).setBounds(x+ancho+265,y,70,20);                         
+//			panelRep.add(new JLabel("Total:")).setBounds(x,y+=25,ancho,20);
+//			panelRep.add(txtTotal).setBounds(x+ancho+10,y,ancho,20);								
 			
-			panelRep.add(new JLabel("Total:")).setBounds(x,y+=25,ancho,20);
-			panelRep.add(txtTotal).setBounds(x+ancho+10,y,ancho,20);								panelRep.add(new JLabel("Comentarios:")).setBounds(x+ancho+140,y,ancho+90,20);
-			
-			panelRep.add(new JLabel("Sobrantes Finanazas:")).setBounds(x,y+=25,ancho+50,20);				
-			panelRep.add(txtSobrantesFinanazas).setBounds(x+ancho+10,y,ancho,20);					panelRep.add(observacion).setBounds(x+ancho+140,y,ancho+90,95);
-			
-			panelRep.add(new JLabel("Total Final:")).setBounds(x,y+=25,ancho,20);
-			panelRep.add(txtTotalFinal).setBounds(x+ancho+10,y,ancho,20);
+			panelRep.add(new JLabel("Total Final:")).setBounds(x,y+=25,ancho,20);			
+			panelRep.add(txtTotalFinal).setBounds(x+ancho+10,y,ancho,20);							
 			
 			panelRep.add(new JLabel("Deposito:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(txtDeposito2).setBounds(x+ancho+10,y,ancho,20);
 			
 			panelRep.add(new JLabel("Banco Interno:")).setBounds(x,y+=25,ancho,20);
-			panelRep.add(txtBancoInterno).setBounds(x+ancho+10,y,ancho,20);					
-			
-																									panelRep.add(btnGuardarReposicionEfectivo).setBounds(x+ancho*3+30,y+=25,90,20);
+			panelRep.add(txtBancoInterno).setBounds(x+ancho+10,y,ancho,20);						panelRep.add(btnGuardarReposicionEfectivo).setBounds(x+ancho*5,y+=25,120,20);
 			
 //			panelRep.add(new JLabel(":")).setBounds(x,y+=25,ancho+50,20);
 //			panelRep.add(txtSobrantesJuan).setBounds(x+ancho+50,y,ancho-20,20);
@@ -1472,17 +1473,20 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			txtConcentrado.setEditable(false);
 			txtElaboro.setEditable(false);
-			txtGastos.setEditable(false);
+			txtFuenteDeSodas.setEditable(false);
 			txtDolares.setEditable(false);
 			txtVales.setEditable(false);
 			txtDiferenciaDeCortes.setEditable(false);
 			txtCajaVerdeRepEfect.setEditable(false);
-			txtTotal.setEditable(false);
+			txtRetiros_Clientes.setEditable(false);
+//			txtTotal.setEditable(false);
 			txtTotalFinal.setEditable(false);
 			txtBancoInterno.setEditable(false);
 			
 			txtEfectivoPlanesRep.setEditable(false);
 			txtDiferenciaPlanesRep.setEditable(false);
+			
+			llamar_render2();
 			
 //			txtOtrosFaltantes.setEditable(true);
 //			txtOtrosSobrentes.setEditable(true);
@@ -1495,13 +1499,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			txtElaboro.setText(new Obj_Usuario().LeerSession().getNombre_completo());
 			
-			txtGastos.setText(tFS);
+			txtFuenteDeSodas.setText(tFS);
 			txtVales.setText(tVales);
 			txtDolares.setText(tDolares);
 			txtDiferenciaDeCortes.setText(tDiferencia);
 			txtCajaVerdeRepEfect.setText(tCorteCV);
 			
 			txtEfectivoPlanesRep.setText(efectivoPlanTelcel);
+			txtRetiros_Clientes.setText(tRetirosClientes);
 			
 			llenarCVReposicion(lista_cv2);
 			calcularReposicionDeEfectivo();
@@ -1515,7 +1520,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			reposicionEfectivo(txtOtrosFaltantes,"otroFaltante");
 			reposicionEfectivo(txtOtrosSobrentes,"otroSobrante");
-			reposicionEfectivo(txtSobrantesFinanazas,"sobranteFinanzas");
+			reposicionEfectivo(txtRetiros_Clientes,"sobranteFinanzas");
 			reposicionEfectivo(txtDeposito2,"deposito");
 			
 			txtTotalPlanesRep.addKeyListener(opDiferenciaPlanesTelcel);
@@ -1530,7 +1535,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
                  }
             });
 			
-			this.setSize(500, 470);
+			this.setSize(720, 440);
 			this.setResizable(true);
 			this.setLocationRelativeTo(null);
 		}
@@ -1594,7 +1599,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 						
 						switch(referencia){
 							case "otroFaltante"		: txtOtrosSobrentes.requestFocus(); break;
-							case "otroSobrante"		: txtSobrantesFinanazas.requestFocus(); break;
+							case "otroSobrante"		: txtRetiros_Clientes.requestFocus(); break;
 							case "sobranteFinanzas"	: txtDeposito2.requestFocus(); break;
 							case "deposito"			: txtTotalPlanesRep.requestFocus(); break;
 						}
@@ -1624,17 +1629,19 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		
 		public void calcularReposicionDeEfectivo(){
 			
-			txtTotal.setText(df.format( (Double.valueOf(txtCajaVerdeRepEfect.getText().toString().trim())
-							-Double.valueOf(txtGastos.getText().toString().trim())
+			txtTotalFinal.setText(df.format( (Double.valueOf(txtCajaVerdeRepEfect.getText().toString().trim())
+							-Double.valueOf(txtFuenteDeSodas.getText().toString().trim())
 							-Double.valueOf(txtVales.getText().toString().trim())
 							-Double.valueOf(txtDolares.getText().toString().trim())
 							+Double.valueOf(txtDiferenciaDeCortes.getText().toString().trim())
 							-Double.valueOf(txtOtrosFaltantes.getText().toString().trim().equals("")?"0":txtOtrosFaltantes.getText().toString().trim())
-							+Double.valueOf(txtOtrosSobrentes.getText().toString().trim().equals("")?"0":txtOtrosSobrentes.getText().toString().trim())) )+"");
+							+Double.valueOf(txtOtrosSobrentes.getText().toString().trim().equals("")?"0":txtOtrosSobrentes.getText().toString().trim())) 
+							+Double.valueOf(txtRetiros_Clientes.getText().toString().trim().equals("")?"0":txtRetiros_Clientes.getText().toString().trim()) 
+							) );
 			
 			
-			txtTotalFinal.setText(df.format( (Double.valueOf(txtTotal.getText().toString().trim())
-									+Double.valueOf(txtSobrantesFinanazas.getText().toString().trim().equals("")?"0":txtSobrantesFinanazas.getText().toString().trim())) )+"");
+//			txtTotalFinal.setText(df.format( (Double.valueOf(txtTotal.getText().toString().trim())
+//									/*+Double.valueOf(txtRetiros_Clientes.getText().toString().trim().equals("")?"0":txtRetiros_Clientes.getText().toString().trim())*/) ) );
 			
 			
 			txtBancoInterno.setText(df.format( (Double.valueOf(txtTotalFinal.getText().toString().trim())
@@ -1645,15 +1652,18 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		ActionListener opGuardarRep = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				double gastos 				=	Double.valueOf(txtGastos.getText().toString().trim().equals("")?"0":txtGastos.getText().toString().trim());
+				double gastos 				=	Double.valueOf(txtFuenteDeSodas.getText().toString().trim().equals("")?"0":txtFuenteDeSodas.getText().toString().trim());
 				double dolares 				=	Double.valueOf(txtDolares.getText().toString().trim().equals("")?"0":txtDolares.getText().toString().trim());
 				double valers 				=	Double.valueOf(txtVales.getText().toString().trim().equals("")?"0":txtVales.getText().toString().trim());
 				double diferencia_de_cortes =	Double.valueOf(txtDiferenciaDeCortes.getText().toString().trim().equals("")?"0":txtDiferenciaDeCortes.getText().toString().trim());
 				double otros_faltantes 		=	Double.valueOf(txtOtrosFaltantes.getText().toString().trim().equals("")?"0":txtOtrosFaltantes.getText().toString().trim());
 				double otros_sobrantes 		=	Double.valueOf(txtOtrosSobrentes.getText().toString().trim().equals("")?"0":txtOtrosSobrentes.getText().toString().trim());
 				double caja_verde 			=	Double.valueOf(txtCajaVerdeRepEfect.getText().toString().trim().equals("")?"0":txtCajaVerdeRepEfect.getText().toString().trim());
-				double total 				=	Double.valueOf(txtTotal.getText().toString().trim().equals("")?"0":txtTotal.getText().toString().trim());
-				double sobrante_juan 		=	Double.valueOf(txtSobrantesFinanazas.getText().toString().trim().equals("")?"0":txtSobrantesFinanazas.getText().toString().trim());
+				double total 				=	Double.valueOf(txtTotalFinal.getText().toString().trim().equals("")?"0":txtTotalFinal.getText().toString().trim());
+			
+				//se cambio sobrante_finanza por retiros_clientes
+				double sobrante_juan 		=	Double.valueOf(txtRetiros_Clientes.getText().toString().trim().equals("")?"0":txtRetiros_Clientes.getText().toString().trim());
+			
 				double total_final 			=	Double.valueOf(txtTotalFinal.getText().toString().trim().equals("")?"0":txtTotalFinal.getText().toString().trim());
 				double deposito2 			=	Double.valueOf(txtDeposito2.getText().toString().trim().equals("")?"0":txtDeposito2.getText().toString().trim());
 				double banco_interno 		=	Double.valueOf(txtBancoInterno.getText().toString().trim().equals("")?"0":txtBancoInterno.getText().toString().trim());
@@ -1674,6 +1684,36 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				
 			}
 		};
+		
+		@SuppressWarnings({ })
+		public void llamar_render2(){
+			//		tipo de valor = imagen,chb,texto
+//			tabla.getColumnModel().getColumn(# columna).setCellRenderer(new CellRenderer("tipo_de_valor","alineacion","tipo_de_letra","negrita",# tamanio_fuente));
+	    
+			Color fondoEncabezado_c_verde = new Color(3,178,47);
+			Color textoEncabezado = Color.black;
+			
+			tabla_caja_verde.getColumnModel().getColumn(0).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_c_verde,textoEncabezado,"centro","Arial","negrita",10));
+//			tabla_concentrado.getColumnModel().getColumn(0).setCellRenderer(new tablaRenderer("texto","izquierda","Arial","negrita",10));
+			for(int i = 1; i<tabla_caja_verde.getColumnCount(); i++){
+				tabla_caja_verde.getColumnModel().getColumn(i).setHeaderRenderer(new CaveceraTablaRenderer(fondoEncabezado_c_verde,textoEncabezado,"centro","Arial","negrita",10));
+				
+				switch(i){
+						case 0: tabla_caja_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",11)); break;
+						default: tabla_caja_verde.getColumnModel().getColumn(i).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",11)); break;
+					}
+			}
+	    	
+			int x=70;
+			
+	    	this.tabla_caja_verde.getTableHeader().setReorderingAllowed(false) ;
+	    	this.tabla_caja_verde.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	    	
+	    	this.tabla_caja_verde.getColumnModel().getColumn(0).setMaxWidth(x);
+	    	this.tabla_caja_verde.getColumnModel().getColumn(0).setMinWidth(x);
+	    	this.tabla_caja_verde.getColumnModel().getColumn(1).setMaxWidth(x+40);
+	    	this.tabla_caja_verde.getColumnModel().getColumn(1).setMinWidth(x+40);
+	    }
 		
 		public Object[][] tabla_cv(){
 			Object[][] matrizCV = new Object[tabla_c_verde.getRowCount()][tabla_c_verde.getColumnCount()];
@@ -1708,7 +1748,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			String error = "";
 			if(txtOtrosFaltantes.getText().equals("")) error+=" -Otros Faltantes\n";
 			if(txtOtrosSobrentes.getText().equals("")) error+=" -Otro Sobrantes\n";
-			if(txtSobrantesFinanazas.getText().equals("")) error+=" -Sobrantes Finanzas\n";
+//			if(txtRetiros_Clientes.getText().equals("")) error+=" -Retiros Clientes\n";
 			if(txtDeposito2.getText().equals("")) error+=" -Deposito\n";
 			if(txtTotalPlanesRep.getText().equals("")) error+=" -Planes Telcel (Sistema)\n";
 			

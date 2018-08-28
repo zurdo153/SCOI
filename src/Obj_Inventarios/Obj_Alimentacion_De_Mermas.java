@@ -8,10 +8,10 @@ public class Obj_Alimentacion_De_Mermas {
 	int folio;
 	String establecimiento;
 	String nota;
-	String RutaFoto;
+	byte[] foto;
 	Object[][] arreglo;
 	public Obj_Alimentacion_De_Mermas() {
-		folio = 0;	establecimiento="";		nota="";	arreglo = null;		RutaFoto = "";
+		folio = 0;	establecimiento="";		nota="";	arreglo = null;		foto = null;
 	}
 	public int getFolio() {
 		return folio;
@@ -38,11 +38,11 @@ public class Obj_Alimentacion_De_Mermas {
 		this.arreglo = arreglo;
 	}
 	
-	public String getRutaFoto() {
-		return RutaFoto;
+	public byte[] getFoto() {
+		return foto;
 	}
-	public void setRutaFoto(String rutaFoto) {
-		RutaFoto = rutaFoto;
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
 	}
 	public String[] Razones_De_Mermas(){
 		return new BuscarSQL().Razones_De_Mermas();

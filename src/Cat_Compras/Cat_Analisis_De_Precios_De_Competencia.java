@@ -168,14 +168,11 @@ public class Cat_Analisis_De_Precios_De_Competencia extends JFrame {
     	        
     	        if(col==12){
                     float venta = Float.valueOf(tabla.getValueAt(row,12).toString().trim());
-             
                        if(venta<=0) {                          
                     	   Color c = Color.lightGray;
                       	  componente.setBackground(c);
                        }
-                     
       	        }
-    	        
     	        
     	     return componente;
     	 }
