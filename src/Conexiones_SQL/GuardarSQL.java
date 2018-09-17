@@ -6960,14 +6960,17 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	   public String Finalizar_minimo_maximo_pedido_por_estab(String establecimiento_solicita,String establecimiento_surte,int folio_scoi,String area) throws SQLException{
 		   String folio_pedido="";
 		   int folio_usuario = new Obj_Usuario().LeerSession().getFolio();
-			 String query = "exec pedido_a_establecimiento_2 '"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+area+"',"+folio_usuario;
+			 String query = "exec pedido_a_establecimiento_3 '"+establecimiento_solicita+"','"+establecimiento_surte+"',"+folio_scoi+",'"+area+"',"+folio_usuario;
+			 
+			 System.out.println(query);
+			 
 			 Statement stmt = null;
 			try {
 				Connexion con = new Connexion();
 				stmt = con.conexion().createStatement();
 				ResultSet rs = stmt.executeQuery(query);
 				while(rs.next()){
-					folio_pedido=(rs.getString("folio_pedido"));
+					folio_pedido=(rs.getString(1));
 				}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -8197,6 +8200,22 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 //	           @margen numeric(4,2), @margen_familia numeric(4,2), @folio_razon int, @observaciones varchar(500), @usuario_solicita int,@guardar_actualizar char(1)
 	           
 			for(int i=0; i<cantidad_filas ; i++){
+				
+				System.out.println(orden.getFolio());
+				System.out.println(orden.getFolio_orden_de_compra());
+				System.out.println(orden.getTabla_productos()[i][0].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][2].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][3].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][4].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][5].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][6].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][7].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][14].toString().trim());
+				System.out.println(orden.getTabla_productos()[i][15].toString().trim());
+				System.out.println(usuario.getFolio());
+				System.out.println(orden.GuardarActualizar);
+				
+				
 				pstmt.setInt   (1 ,  orden.getFolio());
 				pstmt.setString(2 ,  orden.getFolio_orden_de_compra());
 				pstmt.setString(3 ,  orden.getTabla_productos()[i][0].toString().trim());
