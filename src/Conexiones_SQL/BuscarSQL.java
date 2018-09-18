@@ -106,7 +106,6 @@ import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
-import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Abono_Clientes;
 import Obj_Punto_De_Venta.Obj_Clientes;
@@ -1293,6 +1292,7 @@ public class BuscarSQL {
 	public Obj_Usuario Usuario(int folio, String color) throws SQLException{
 		Obj_Usuario usuario = new Obj_Usuario();
 		String query = "exec usuario_login_color "+folio+" ,'"+color+"'";
+		System.out.println(query);
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -4423,30 +4423,6 @@ public class BuscarSQL {
 		}
 		return existe;
 	}
-	
-	public Obj_Etapas ExisteEtapa(int folio){
-		Obj_Etapas etapas = new Obj_Etapas();
-		String query = "select * from tb_etapas where folio_etapa ="+ folio;
-		Statement stmt = null;
-		try {
-			stmt = con.conexion().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				etapas.setFolio(rs.getInt("folio_etapa"));
-				etapas.setEtapa(rs.getString("etapa").trim());
-				etapas.setAbreviatura(rs.getString("abreviatura").trim());
-				etapas.setStatus(rs.getInt("status"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion ExisteEtapa en select * from tb_etapas where folio ="+ folio+" SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-			return null;
-		}
-		return etapas;
-	}
-	
-	
-	
 	
 	public Obj_Aspectos_De_La_Etapa ExisteAspecto(int folio){
 		Obj_Aspectos_De_La_Etapa aspecto = new Obj_Aspectos_De_La_Etapa();
@@ -8799,7 +8775,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public Obj_Servicios correo_informa_estatus_solicitud(int folio, int transaccion) throws SQLException{
 		Obj_Servicios servicios = new Obj_Servicios();
 		String query = "exec correos_busca_por_transaccion_y_folio "+folio+","+transaccion;
-		
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -9885,6 +9860,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public Obj_Correos correos_por_transaccion_y_departamento(int transaccion, String departamento) throws SQLException{
 		Obj_Correos correo = new Obj_Correos();
 		String query = "correos_para_envio_automatico_scoi "+transaccion+",'"+departamento+"'";
+		System.out.println(query);
+		
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -11085,7 +11062,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	public Object[] buscarProd(String Cod_prod){
 		Object[] Matriz = null;
-//		String query = "exec sp_existencia_de_un_producto_en_establecimientos '"+Cod_prod+"'";
 		String query = " declare @cod_prod varchar(20)='"+Cod_prod+"' "
 						+ " SELECT   productos.cod_prod"
 						+ "		,productos.descripcion "
@@ -11102,16 +11078,12 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 						+ " LEFT OUTER JOIN areas with (nolock) on areas.area=productos.area"
 						+ " where productos.cod_prod=@cod_prod"
 						+ " group by productos.cod_prod,productos.descripcion,productos.iva_interior,clases_productos.nombre,categorias.nombre,familias.nombre,areas.nombre,status_productos.nombre";
-		
-		System.out.println(query);
-		
 		Matriz = new String[7];
 		Statement s;
 		ResultSet rs;
 		try {			
 			s = con.conexion_IZAGAR().createStatement();
 			rs = s.executeQuery(query);
-//			int i=0;
 			while(rs.next()){
 				Matriz[0]  = rs.getString( 1);
 				Matriz[1]  = rs.getString( 2);
@@ -11120,7 +11092,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[4]  = rs.getString( 5);
 				Matriz[5]  = rs.getString( 6);
 				Matriz[6]  = rs.getString( 7);
-//				i++;
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -11131,7 +11102,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public Object[][] Tabla_Precio_De_Competencia(String Cod_prod){
 		Object[][] Matriz = null;
 		String query = "exec IZAGAR_precios_de_competencia_por_producto '"+Cod_prod+"'";
-		System.out.println(query);
 		Matriz = new Object[getFilasExterno(query)][13];
 		Statement s;
 		ResultSet rs;

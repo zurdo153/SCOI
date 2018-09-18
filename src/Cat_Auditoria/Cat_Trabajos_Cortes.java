@@ -720,10 +720,10 @@ public class Cat_Trabajos_Cortes extends JFrame{
 								
 								if(tabla_concentrado.getValueAt(i, 0).toString().trim().equals("TOTAL CAJA VERDE")){
 										tCorteCV	+=	Double.valueOf(tabla_concentrado.getValueAt(i,8).toString().trim());
+										tRetirosClientes +=	Double.valueOf(tabla_concentrado.getValueAt(i, 10).toString().trim());
 								}
-								
-								tRetirosClientes +=	Double.valueOf(tabla_concentrado.getValueAt(i, 10).toString().trim());
-								
+								//Total dato
+
 							}
 							new Cat_Reposicion_De_Efectivo(df.format(tFS),df.format(tDolares),df.format(tDiferencia),df.format(tCorteCV),df.format(tVales),txtEfectivoPlanes.getText(), lista_cv, df.format(tRetirosClientes)).setVisible(true);
 					}

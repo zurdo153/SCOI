@@ -72,6 +72,9 @@
 	<field name="folio_servicio" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="folio_servicio"/>
 	</field>
+	<field name="nombre_solicitante_servicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_solicitante_servicio"/>
+	</field>
 	<variable name="Importe" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{cantidad}*$F{precio_unitario}]]></variableExpression>
 	</variable>
@@ -274,11 +277,11 @@
 				<textFieldExpression><![CDATA["ORDEN DE GASTO "+$F{tipo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="349" y="82" width="106" height="19" uuid="021cfc09-eba2-4a0e-9635-a0f489134157"/>
+				<reportElement x="349" y="82" width="110" height="19" uuid="021cfc09-eba2-4a0e-9635-a0f489134157"/>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["FOLIO SERV.:"+$F{folio_servicio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["FOL. SERVICIO:"+$F{folio_servicio}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -331,7 +334,7 @@
 		<band height="2" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="58" splitType="Stretch">
+		<band height="74" splitType="Stretch">
 			<line>
 				<reportElement x="413" y="38" width="140" height="1" uuid="c3a366ef-ecee-497b-89fe-02bbce8a84c3">
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -376,7 +379,7 @@
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FIRMA ELABORO]]></text>
+				<text><![CDATA[FIRMA ELABORO ORDEN]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="38" width="140" height="1" uuid="f7d08e8e-d001-4e72-918a-b3dcb8d06322">
@@ -392,7 +395,7 @@
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FIRMA AUDITO]]></text>
+				<text><![CDATA[FIRMA AUDITOR]]></text>
 			</staticText>
 			<line>
 				<reportElement x="283" y="38" width="120" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
@@ -415,7 +418,7 @@
 				<textFieldExpression><![CDATA["Total:$"+$F{importe_total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="152" y="40" width="120" height="12" uuid="d0cd7c48-0706-43f4-8a3b-6d89c899e261">
+				<reportElement x="152" y="45" width="120" height="12" uuid="d0cd7c48-0706-43f4-8a3b-6d89c899e261">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -430,6 +433,13 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
+			<textField>
+				<reportElement x="152" y="39" width="120" height="13" uuid="07d24afb-c55c-4b76-b06a-6b5f48ba11ab"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_solicitante_servicio}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

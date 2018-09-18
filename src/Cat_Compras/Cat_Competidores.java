@@ -1,5 +1,6 @@
 package Cat_Compras;
 
+
 import java.awt.Container;
 import java.awt.Event;
 import java.awt.Toolkit;
@@ -144,7 +145,7 @@ public class Cat_Competidores extends JFrame{
 			btnEditar.setEnabled(false);
 			
 			txtFolio.addKeyListener(buscar_action);
-			btnGuardar.addActionListener(guardar);
+//			btnGuardar.addActionListener(guardar);
 			btnSalir.addActionListener(salir);
 			btnBuscar.addActionListener(buscar);
 			btnDeshacer.addActionListener(deshacer);
@@ -387,7 +388,7 @@ public class Cat_Competidores extends JFrame{
 				return;
 			}else{
 				try {
-					Obj_Etapas etapas = new Obj_Etapas().buscar(Integer.parseInt(txtFolio.getText()));
+					Obj_Etapas etapas = new Obj_Etapas();
 					if(etapas.getFolio() != 0){
 						
 						txtFolio.setText(etapas.getFolio()+"");
@@ -439,75 +440,75 @@ public class Cat_Competidores extends JFrame{
 		}
 	};
 	
-	ActionListener guardar = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			
-				try {
-					if(validaCampos()!="") {
-						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-						return;
-					} else{
-					Obj_Etapas Etapas = new Obj_Etapas().buscar(Integer.parseInt(txtFolio.getText()));
-					if(Etapas.getFolio() == Integer.parseInt(txtFolio.getText())){
-						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
-							if(validaCampos()!="") {
-								JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-								return;
-							}else{
-									Etapas.setEtapa(txtAreaEtapa.getText().toString().toUpperCase().trim());
-									Etapas.setAbreviatura(txtAbreviatura.getText().toString().toUpperCase().trim());
-									switch(cmb_status.getSelectedIndex()){
-															case 0: Etapas.setStatus(1); break;
-															case 1: Etapas.setStatus(0); break;	}
-									
-														if(Etapas.actualizar(Integer.parseInt(txtFolio.getText()))){
-															while(tabla.getRowCount()>0){ modelo.removeRow(0);}
-															refrestabla();
-									JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
-									btnDeshacer.doClick();
-									txtFolio.setEditable(true);
-									txtFolio.requestFocus();
-									return;
-								}else{
-									JOptionPane.showMessageDialog(null, "El registro no se actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-									return;
-								}
-							}
-						}else{
-							return;
-						}
-					}else{
-						
-							Etapas.setFolio(Integer.parseInt(txtFolio.getText()));
-							Etapas.setEtapa(txtAreaEtapa.getText().toUpperCase().trim());
-							Etapas.setAbreviatura(txtAbreviatura.getText().toUpperCase().trim());
-							switch(cmb_status.getSelectedIndex()){
-							case 0: Etapas.setStatus(1); break;
-							case 1: Etapas.setStatus(0); break;	}
-							
-								if(Etapas.guardar()){
-									
-									while(tabla.getRowCount()>0){ modelo.removeRow(0);}
-									refrestabla();
-									
-									JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
-									btnDeshacer.doClick();
-									txtFolio.setEditable(true);
-									txtFolio.requestFocus();
-									return;
-									
-								}else{
-									JOptionPane.showMessageDialog(null, "El registro no se guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
-									return;
-								}
-							}
-					}
-				} catch (NumberFormatException e1) {
-					e1.printStackTrace();
-				} 				
-					
-		}
-	};
+//	ActionListener guardar = new ActionListener(){
+//		public void actionPerformed(ActionEvent e){
+//			
+//				try {
+//					if(validaCampos()!="") {
+//						JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n "+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//						return;
+//					} else{
+//					Obj_Etapas Etapas = new Obj_Etapas().buscar(Integer.parseInt(txtFolio.getText()));
+//					if(Etapas.getFolio() == Integer.parseInt(txtFolio.getText())){
+//						if(JOptionPane.showConfirmDialog(null, "El registro ya existe, ¿desea cambiarlo?") == 0){
+//							if(validaCampos()!="") {
+//								JOptionPane.showMessageDialog(null, "los siguientes campos son requeridos:\n"+validaCampos(), "Error al guardar registro", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//								return;
+//							}else{
+//									Etapas.setEtapa(txtAreaEtapa.getText().toString().toUpperCase().trim());
+//									Etapas.setAbreviatura(txtAbreviatura.getText().toString().toUpperCase().trim());
+//									switch(cmb_status.getSelectedIndex()){
+//															case 0: Etapas.setStatus(1); break;
+//															case 1: Etapas.setStatus(0); break;	}
+//									
+//														if(Etapas.actualizar(Integer.parseInt(txtFolio.getText()))){
+//															while(tabla.getRowCount()>0){ modelo.removeRow(0);}
+//															refrestabla();
+//									JOptionPane.showMessageDialog(null,"El registró se actualizó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+//									btnDeshacer.doClick();
+//									txtFolio.setEditable(true);
+//									txtFolio.requestFocus();
+//									return;
+//								}else{
+//									JOptionPane.showMessageDialog(null, "El registro no se actualizó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//									return;
+//								}
+//							}
+//						}else{
+//							return;
+//						}
+//					}else{
+//						
+//							Etapas.setFolio(Integer.parseInt(txtFolio.getText()));
+//							Etapas.setEtapa(txtAreaEtapa.getText().toUpperCase().trim());
+//							Etapas.setAbreviatura(txtAbreviatura.getText().toUpperCase().trim());
+//							switch(cmb_status.getSelectedIndex()){
+//							case 0: Etapas.setStatus(1); break;
+//							case 1: Etapas.setStatus(0); break;	}
+//							
+//								if(Etapas.guardar()){
+//									
+//									while(tabla.getRowCount()>0){ modelo.removeRow(0);}
+//									refrestabla();
+//									
+//									JOptionPane.showMessageDialog(null,"El registró se guardó de forma segura","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//Exito.png"));
+//									btnDeshacer.doClick();
+//									txtFolio.setEditable(true);
+//									txtFolio.requestFocus();
+//									return;
+//									
+//								}else{
+//									JOptionPane.showMessageDialog(null, "El registro no se guardó", "Error !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Iconos//critica.png"));
+//									return;
+//								}
+//							}
+//					}
+//				} catch (NumberFormatException e1) {
+//					e1.printStackTrace();
+//				} 				
+//					
+//		}
+//	};
 	
 	public int  busqueda_proximo_folio() {
 		Connexion con = new Connexion();
@@ -566,6 +567,7 @@ public class Cat_Competidores extends JFrame{
 		txtAbreviatura.setEditable(true);
 	}
 	
+	@SuppressWarnings("unused")
 	private String validaCampos(){
 		String error="";
 		if(txtAreaEtapa.getText().equals("")) 		error+= "Etapa\n";

@@ -71,7 +71,7 @@ public class Cat_Matrices extends JFrame{
 	
 	JCButton btnReporte    = new JCButton("Reporte"    ,"Lista.png","Azul"); 
 	
-	String []Etapa= obm.Combo_Respuesta_Etapa();
+	String []Etapa= {"PENDIENTE","AUTORIZADO","CANCELADO","FINALIZADO","NEGADO"};;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEtapa= new JComboBox(Etapa);
 	
@@ -79,11 +79,11 @@ public class Cat_Matrices extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbDepartamento=new JComboBox(Departamento);
 	
-	String []UnidadDeInspeccion=obm.Combo_Respuesta_UnidadDeInspeccion();
+	String []UnidadDeInspeccion={"PENDIENTE","AUTORIZADO","CANCELADO","FINALIZADO","NEGADO"};;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbUnidadDeInspeccion=new JComboBox(UnidadDeInspeccion);
 	
-	 String Establecimiento[] = obm.Combo_Respuesta_Establecimiento();
+	 String Establecimiento[] ={"PENDIENTE","AUTORIZADO","CANCELADO","FINALIZADO","NEGADO"};;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento= new JComboBox(Establecimiento);
 	

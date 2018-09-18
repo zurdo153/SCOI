@@ -122,7 +122,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	JCButton btnModificar  = new JCButton("Modificar"    ,"Modify.png"                        ,"Azul");
 	JCButton btnServicio   = new JCButton(""             ,"los-parametros-de-las-herramientas-de-icono-8319-16.png"    ,"Azul");
 	
-	String status[] = {"PENDIENTE","AUTORIZADO","CANCELADO","FINALIZADO","NEGADO"};
+	String status[] = new Obj_Orden_De_Gasto().Combo_Cuentas();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
 	
@@ -143,9 +143,9 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 
 	JRadioButton rbProveedorCont = new JRadioButton("Proveedor NC");
-	JRadioButton rbProveedor     = new JRadioButton("Proveedor");
-	JRadioButton rbColaborador   = new JRadioButton("Colaborador");
-	ButtonGroup  grupo           = new ButtonGroup();
+	JRadioButton rbProveedor     = new JRadioButton("Proveedor"   );
+	JRadioButton rbColaborador   = new JRadioButton("Colaborador" );
+	ButtonGroup  grupo           = new ButtonGroup (              );
 	
 	Border blackline, etched, raisedbevel, loweredbevel, empty;
 
@@ -224,10 +224,10 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		this.panel.add(scroll_tabla).setBounds                        (x=20      ,y+=20  ,825     ,270    );
 		this.panel.add(txtFoliosolicit).setBounds                     (x         ,y+=270 ,60      ,height );		
 		this.panel.add(txtSolicitante).setBounds                      (x+60      ,y      ,320     ,height );
-		this.panel.add(new JLabel("Fecha Actual:")).setBounds         (x+=340    ,y      ,width   ,height );
+		this.panel.add(new JLabel("Fecha Actual:")).setBounds         (x+=567    ,y      ,width   ,height );
 		this.panel.add(txtFecha).setBounds                            (x+=70     ,y      ,77      ,height );
 	
-		this.panel.add(txtTotal).setBounds                            (x+627     ,y      ,98      ,height );
+		this.panel.add(txtTotal).setBounds                            (x+=90     ,y      ,98      ,height );
 
 		panel_booleano(false);
 		init_tabla();
@@ -239,6 +239,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		btnServicio.addActionListener(opFiltroServicios);
 		
 		cmb_concepto.addActionListener      (opConcepto                );
+		cmb_tipo.addActionListener          (optipo                    );
 		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento);
 		btnSolicitante.addActionListener    (opFiltroBuscarSolicitante );
 		btnAgregar.addActionListener        (opAgregarProducto         );
@@ -275,12 +276,14 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
     public void panel_booleano(boolean boleano){
 		cmb_status.setEnabled(boleano);
 		cmbEstablecimiento.setEnabled(boleano);
+		cmb_forma_pago.setEnabled(boleano);
 	    txtDescripcion.setEditable(boleano); 
 	    cmb_concepto.setEnabled(boleano);
 		cmb_tipo.setEnabled(boleano);
 		txaUso.setEditable(boleano);
 		btnModificar.setEnabled(false);
 		txtFolio.setEditable(false);
+		txtFolioCheque.setEditable(boleano);
 		txtProveedor.setEditable(boleano);
 		txtFolioservici.setEditable(boleano);
 		txtDetalleServi.setEditable(boleano);
@@ -292,6 +295,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		rbProveedorCont.setEnabled(boleano);
 		rbProveedor.setEnabled(boleano);
 		rbColaborador.setEnabled(boleano);
+		
     }
    
     public void panel_limpiar(){
@@ -299,9 +303,12 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		cmb_status.setSelectedIndex(0);
 		cmbEstablecimiento.setSelectedIndex(0);
 		cmb_tipo.setSelectedIndex(0);
+		cmb_forma_pago.setSelectedIndex(0);
 		txtFolio.setText("");
+		txtDetalleServi.setText("");
 	    txtDescripcion.setText(""); 
 	    txtProveedor.setText("");
+	    txtFolioCheque.setText("");
 	    txtFolio_prv.setText("");
 		txtProveedor.setText("");
 		txtFolioservici.setText("");
@@ -328,9 +335,34 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			cmbEstablecimiento.setEnabled(true);
 			cmbEstablecimiento.requestFocus();
 			cmbEstablecimiento.showPopup();
+		  if(cmb_concepto.getSelectedItem().toString().equals("COMPRA")&& cmb_tipo.getSelectedItem().toString().equals("C")) {
+			JOptionPane.showMessageDialog(null, "La Orden de Gasto Para Compra Tiene Que Ser Tipo NC","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			cmb_tipo.setSelectedItem("NC");
+			return;
+		  }
  		}
  	};	
  	
+ 	ActionListener optipo = new ActionListener(){
+  		public void actionPerformed(ActionEvent e){
+  			if(cmb_tipo.getSelectedItem().toString().equals("C")) {
+  				cmb_forma_pago.setSelectedItem("CHEQUE");
+  				cmb_forma_pago.setEnabled(false);
+  				
+  			}else {
+  				cmb_forma_pago.setSelectedItem("CONTADO");
+  				cmb_forma_pago.setEnabled(true);
+  			}
+  				
+  			
+ 		  if(cmb_concepto.getSelectedItem().toString().equals("COMPRA")&& cmb_tipo.getSelectedItem().toString().equals("C")) {
+ 			JOptionPane.showMessageDialog(null, "La Orden de Gasto Para Compra Tiene Que Ser Tipo NC","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+ 			cmb_tipo.setSelectedItem("NC");
+ 			return;
+ 		  }
+  		}
+  	};	
+  	
     ActionListener opFiltroServicios = new ActionListener(){
  		public void actionPerformed(ActionEvent e){
  			new Cat_Filtro_Buscar_Servicio().setVisible(true);
@@ -352,10 +384,12 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			btnQuitarfila.setEnabled(true);
 			txaUso.setEditable(true);
 			cmb_concepto.setEnabled(true);
+			cmb_tipo.setEnabled(true);
+			cmb_forma_pago.setEnabled(true);
+			
 			cmbEstablecimiento.setEnabled(true);
 			cmbEstablecimiento.requestFocus();
 			cmbEstablecimiento.showPopup();
-			
     		tabla.setEnabled(true );
  		}
  	};
@@ -443,6 +477,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 			cmb_concepto.setEnabled(true);
 			cmb_concepto.requestFocus();
 			cmb_concepto.showPopup();
+			cmb_forma_pago.setEnabled(true);
     		tabla.setEnabled(true );
 		}
 	};
@@ -495,11 +530,18 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	@SuppressWarnings("unlikely-arg-type")
 	public void actionPerformed(ActionEvent e){
 			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
+			 
+			 if(cmb_concepto.getSelectedItem().toString().equals("COMPRA")&& cmb_tipo.getSelectedItem().toString().equals("C")) {
+				JOptionPane.showMessageDialog(null, "La Orden de Gasto Para Compra Tiene Que Ser Tipo NC","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				cmb_tipo.setSelectedItem("NC");
+				return;
+			 }
+				
 			 if(tabla.isEditing()){	tabla.getCellEditor().stopCellEditing();}
 				calculo();
 			 if(txtTotal.getText().equals("")||Float.valueOf(txtTotal.getText())==0){
-					JOptionPane.showMessageDialog(null, "Es Requerido Alimente Productos Con Cantidad y Precio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-				 return;
+				JOptionPane.showMessageDialog(null, "Es Requerido Alimente Productos Con Cantidad y Precio","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				return;
 			 }else{		 
 				   String productos="Descripcion / Cantidad / Importe\n";
 				   for(int i=0;i<tabla.getRowCount();i++) {
@@ -521,8 +563,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	                   gasto.setConcepto_gasto(cmb_concepto.getSelectedItem().toString());
 	                   gasto.setTipo(cmb_tipo.getSelectedItem().toString());    
 					if(gasto.GuardarActualizar().getFolio()>0){
-		                Obj_Correos correos = new Obj_Correos().buscar_correos(84, "");
-						String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+"Con un valor total de:$"+txtTotal.getText().toString()+"\n "
+		               Obj_Correos correos = new Obj_Correos().buscar_correos(84, "");
+					   String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+"\nSolicita los siguientes productos\n"+productos+"Con un valor total de:$"+txtTotal.getText().toString()+"\n "
 						                  +"\nPara El Establecimiento:"+cmbEstablecimiento.getSelectedItem().toString().trim()+"\nBeneficiario:"+txtProveedor.getText()+"\nMotivo del(a) Gasto/Compra:"+txaUso.getText();
 //						                  +"\nResponda Si Para Autorizar el Gasto \nResponda No Para Negar el Gasto";
 						new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I. Solicitud De "+cmb_concepto.getSelectedItem().toString()+" Folio:§"+gasto.getFolio()+" Por Un Total De:"+txtTotal.getText().toString(),"Gastos");
@@ -531,7 +573,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 						btnImprimir.doClick();
 						btnDeshacer.doClick();
 						JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-						
 					}else{
 						JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 						return;

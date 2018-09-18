@@ -10,10 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 
 import javax.swing.JTable;
 
@@ -57,7 +55,6 @@ import Obj_Lista_de_Raya.Obj_Tipo_De_Bancos;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_AUXF;
 import Obj_Lista_de_Raya.Obj_Fue_Sodas_DH;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
-import Obj_Matrices.Obj_Etapas;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Punto_De_Venta.Obj_Clientes;
 
@@ -2199,43 +2196,6 @@ public class ActualizarSQL {
 		return true;
 	}
 	
-	public boolean Etapas(Obj_Etapas etapas, int folio){
-		String query = "update tb_etapas set etapa=?, abreviatura=?, status=?,ultima_modificacion=getdate() where folio_etapa=" + folio;
-		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
-		try {
-			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(query);
-			
-			pstmt.setString(1, etapas.getEtapa().toUpperCase().trim());
-			pstmt.setString(2, etapas.getAbreviatura().toUpperCase().trim());
-			pstmt.setInt(3, etapas.getStatus());
-			
-			pstmt.executeUpdate();
-			con.commit();
-		} catch (Exception e) {
-			System.out.println("SQLException: "+e.getMessage());
-			if(con != null){
-				try{
-					System.out.println("La transacción ha sido abortada");
-					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ etapas ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ etapas ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			return false;
-		}finally{
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
-		return true;
-	}
-	
 	public boolean Aspectos_de_la_Etapa(Obj_Aspectos_De_La_Etapa aspecto, int folio){
 		String query = "update tb_aspectos_de_la_etapa set aspecto_de_la_etapa=?, abreviatura=?, status=?,ultima_modificacion=getdate() where folio_aspecto=" + folio;
 		Connection con = new Connexion().conexion();
@@ -4001,10 +3961,8 @@ public boolean Borrar_Observacion_DH(){
 public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion){
 		String query ="update orden_de_gasto set fecha_autorizacion=getdate(), usuario_autorizo="+usuario.getFolio()+",estatus='"+Accion+"' where folio="+folio;
 		Connection con = new Connexion().conexion();
-		
 		try {
 			con.setAutoCommit(false);
-			System.out.println(query);
 			PreparedStatement pstmt = con.prepareStatement(query);
 	        pstmt.executeUpdate();	
 			con.commit();
@@ -4029,7 +3987,6 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 				}
 		}		
 		return true;
-	
 	}	
 
 	public boolean Autorizar_Equipos_Para_Usar_Lector_De_Huella(int folio_establecimiento, int status){

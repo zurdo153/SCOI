@@ -1,10 +1,8 @@
 package Cat_Contabilidad;
 
-import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,7 +54,6 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
-import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Correos;
 
@@ -377,11 +372,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	
 	 ActionListener opReporte = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			try {
-				new Cat_Filtro_Order_De_Pago_Efectivo().setVisible(true);
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+				new Cat_Reimpresion_De_Pagos_De_Caja_Chica().setVisible(true);
 		}
 	};
 	
@@ -395,7 +386,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
                //		int folio_orden_de_gasto                               ,float cantidad                                         , String fecha                                               , String observaciones                     , String tipoBeneficiario        , int folioBeneficiario, String Concepto,String Guardar_actualizar){
 			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar )){
 				           Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
-				           
 				           String productos="\nDescripcion / Cantidad / Importe\n";
 						   for(int i=0;i<tablaog.getRowCount();i++) {
 							   productos=productos+tablaog.getValueAt(i, 0)+"  / "+tablaog.getValueAt(i, 1)+"  /$"+tablaog.getValueAt(i, 3)+" \n";
@@ -466,7 +456,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		}
 	};
 	
-	
 	private String validaCampos(){
 		String error="";
 		String fecha = "";
@@ -488,8 +477,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		String reporte = "Obj_Reporte_De_Orden_De_Gasto_Pago_En_Efectivo.jrxml";
 		new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	} ;
-	
-	
 
 	//TODO inicia filtro_Buscar ORDEN DE GASTO
 			public class Cat_Filtro_Buscar_Orden_De_Gasto extends JDialog{
@@ -626,7 +613,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			
 /////termina filtro busqueda de orden de gasto		
 //TODO Filtro de Referencia ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public class Cat_Filtro_Referencia extends JDialog{
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
@@ -732,148 +718,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			txaConcepto.requestFocus();
    		    dispose();
 	    }
-		 
-	}
-	
-	//TODO FILTRO ORDEN DE PAGO
-	public class Cat_Filtro_Order_De_Pago_Efectivo extends JDialog{
-		Container cont = getContentPane();
-		JLayeredPane campo = new JLayeredPane();
-		
-		Obj_tabla  Objetotabla = new Obj_tabla();
-		
-		int columnas = 5,checkbox=-1;
-		public void init_tabla(){
-			String fechaInicial = new SimpleDateFormat("dd/MM/yyyy").format(fhFechaReporte.getDate())+" 00:00:00";
-	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(1).setMinWidth(130);
-	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(3).setMinWidth(240);
-	    	this.tabla_Filtro_Ref.getColumnModel().getColumn(4).setMinWidth(350);
-			String comando="exec orden_de_gasto_pago_en_efectivo_filtro '"+fechaInicial+"'";
-			String basedatos="26",pintar="si";
-			Objetotabla.Obj_Refrescar(tabla_Filtro_Ref,modelo_Filtro_Ref, columnas, comando, basedatos,pintar,checkbox);
-	    }
-		
-		DefaultTableModel modelo_Filtro_Ref = new DefaultTableModel(null,
-	            new String[]{"Folio", "Fecha", "Importe", "Beneficiario", "Concepto"}
-				){
-		     @SuppressWarnings("rawtypes")
-			Class[] types = new Class[]{
-		    	 java.lang.String.class,
-		    	 java.lang.String.class,
-		    	 java.lang.String.class,
-		    	 java.lang.String.class,
-		    	java.lang.String.class
-		    	                       };
-		     @SuppressWarnings({ "rawtypes", "unchecked" })
-			public Class getColumnClass(int columnIndex) {
-	             return types[columnIndex];
-	         }
-	         public boolean isCellEditable(int fila, int columna){
-	        	 switch(columna){
-		        	 	case 0 : return false; 
-		        	 	case 1 : return false; 
-		        	 	case 2 : return false; 
-		        	 	case 3 : return false; 
-		        	 	case 4 : return false; 
-	        	 	} 				
-	 			return false;
-	 		}
-		};
-		JTable tabla_Filtro_Ref = new JTable(modelo_Filtro_Ref);
-	    JScrollPane scroll_Filtro_Ref = new JScrollPane(tabla_Filtro_Ref);
-		
-		JTextField txtCodigo = new JTextField();
-		JDateChooser fhFechaReporte 	= new JDateChooser();
-		
-		JLabel lblNota = new JLabel("");
-		
-		public Cat_Filtro_Order_De_Pago_Efectivo() throws SQLException{			
-			this.setModal(true);			
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
-			this.setTitle("Filtro De Ordern De Pago En Efectivo");
-			campo.setBorder(BorderFactory.createTitledBorder("Seleccionar Orden De Pago"));
-			lblNota.setText("<html><p><h4><font color='blue'>Para Generar Una Orden De Pago En Efectivo\nEs Necesario Dar Doble Click En La Orden Requerida</font></h4></p></html>");
-			campo.add(new JLabel("Buscar Ordenes De Pago En Efectivo A Partir De La Fecha: ")).setBounds(20,20,390,20);
-			campo.add(fhFechaReporte).setBounds(320,20,90,20);			
-			campo.add(lblNota).setBounds(415,0,210,60);			
-			campo.add(txtCodigo).setBounds(15,45,390,20);			
-			campo.add(scroll_Filtro_Ref).setBounds(15,65,760,540);
-			fhFechaReporte.setDate(cargar_fecha_Sugerida(20));
-			
-			init_tabla();
-			agregar(tabla_Filtro_Ref);
-			
-			cont.add(campo);
-			
-			fhFechaReporte.addPropertyChangeListener(opBusqueda);
-			txtCodigo.addKeyListener(opFiltroLoco);
-			
-			this.setSize(790,650);
-			this.setResizable(false);
-			this.setLocationRelativeTo(null);
-			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			
-            this.addWindowListener(new WindowAdapter() {
-                    public void windowOpened( WindowEvent e ){
-                    	txtCodigo.requestFocus();
-                 }
-            });
-              
-		}
-		
-		public Date cargar_fecha_Sugerida(Integer dias){
-		Date date1 = null;
-			  try {
-						date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return date1;
-		};
-		
-		PropertyChangeListener opBusqueda = new PropertyChangeListener() {
-		  	  public void propertyChange(PropertyChangeEvent e) {
-		  		  
-	  	            if ("date".equals(e.getPropertyName())){
-	  	            	init_tabla();
-	  	            }
-		  	  }
-		};
-		
-		private void agregar(final JTable tbl) {
-	        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-		        public void mouseClicked(MouseEvent e) {
-		        	
-		        	if(e.getClickCount() == 2){
-		    			imprimir_ultimo_guardado(Integer.valueOf(tabla_Filtro_Ref.getValueAt( tabla_Filtro_Ref.getSelectedRow(), 0).toString().trim()));
-		    			dispose();
-		        	}
-		        }
-	        });
-	    }
-		
-		public void iniciarSeleccionConTeclado(){
-			Robot robot;
-			try {
-	            robot = new Robot();
-	            robot.keyPress(KeyEvent.VK_A);
-	            robot.keyRelease(KeyEvent.VK_A);
-	        } catch (AWTException e) {
-	            e.printStackTrace();
-	        }
- 	     };
- 	     
-		KeyListener opFiltroLoco = new KeyListener(){
-			public void keyReleased(KeyEvent arg0) {
-				
-				int[] columnas = {0,1,2,3,4};
-				new Obj_Filtro_Dinamico_Plus(tabla_Filtro_Ref, txtCodigo.getText().toUpperCase(), columnas);
-			}
-			public void keyTyped(KeyEvent arg0) {}
-			public void keyPressed(KeyEvent arg0) {}		
-		};
 	}
 	
 	public static void main(String[] args) {

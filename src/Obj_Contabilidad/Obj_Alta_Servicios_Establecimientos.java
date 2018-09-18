@@ -63,7 +63,7 @@ public class Obj_Alta_Servicios_Establecimientos {
 	
 	public String[] Combo_Respuesta_Establecimiento(){
 		try {
-			return new Cargar_Combo().Combo_Matriz_Establecimiento();
+			return new Cargar_Combo().Establecimiento_Todos("tb_establecimientos");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

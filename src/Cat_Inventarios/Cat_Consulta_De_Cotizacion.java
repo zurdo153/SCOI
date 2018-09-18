@@ -145,7 +145,7 @@ public class Cat_Consulta_De_Cotizacion extends JDialog{
 	  Object[]   vector = new Object[10];
 
 	  String codProd = "";
-	public Cat_Consulta_De_Cotizacion(String codigo, float costoProm, float PrecioVenta , float Margen, float MFamilia, float PrecioPorVolumen){
+	public Cat_Consulta_De_Cotizacion(String codigo, float costoProm, float PrecioVenta , float Margen, float MFamilia, String PrecioPorVolumen){
 		this.setModal(true);
 		setSize(1024,600);
 		this.setResizable(false);
@@ -198,6 +198,7 @@ public class Cat_Consulta_De_Cotizacion extends JDialog{
 		
 		cont.add(panel);
 		
+		JLBdescripcion.setVerticalAlignment(1);
 		buscar();
 		JLBCostoPromedio.setText(htmlini+costoProm+htmlfin);
 		JLBPrecioVenta.setText(htmlini+PrecioVenta+htmlfin);
@@ -247,7 +248,7 @@ public class Cat_Consulta_De_Cotizacion extends JDialog{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Consulta_De_Cotizacion("00015",0,0,0,0,0).setVisible(true);
+			new Cat_Consulta_De_Cotizacion("00015",0,0,0,0,"0").setVisible(true);
 		}catch(Exception e){	}
 	}
 }

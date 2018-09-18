@@ -96,50 +96,15 @@ public class Obj_Matriz {
 		Establecimiento = establecimiento;
 	}
 	
-	//etapa
-	public String[] Combo_Respuesta_Etapa(){
-		try {
-			return new Cargar_Combo().Combo_Matriz_Etapa();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	//aspecto de Etapa
-	public String[] Combo_Respuesta_AspectoEtapa(){
-		try {
-			return new Cargar_Combo().Combo_Matriz_AspectosDeLaEtapa();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+
 	//departamento
 		public String[] Combo_Respuesta_Departamento() {
 			try {return new Cargar_Combo().Combos("departamentos");
 			} catch (SQLException e) {e.printStackTrace();}
 			return null; 
 		}
-		
-		
-	//unidad de Inspeccion
-	public String[] Combo_Respuesta_UnidadDeInspeccion(){
-		try {
-			return new Cargar_Combo().Combo_Matriz_Unidad_De_Inspeccion();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	//establecimiento pendiente
-	public String[] Combo_Respuesta_Establecimiento(){
-		try {
-			return new Cargar_Combo().Combo_Matriz_Establecimiento();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+			
+	
 	public String FolioSiguiente(){
 		try {
 			return new BuscarSQL().Folio_Siguiente();

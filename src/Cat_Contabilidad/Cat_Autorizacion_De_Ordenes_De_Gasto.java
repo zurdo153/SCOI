@@ -44,6 +44,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
+import Obj_Servicios.Obj_Correos;
 import Obj_Servicios.Obj_Servicios;
 
 @SuppressWarnings("serial")
@@ -69,7 +70,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			return tip;
 		}
 		
-		int Cantidad_Real_De_Columnas=13,checkboxindex=1;
+		int Cantidad_Real_De_Columnas=21,checkboxindex=1;
 		public void init_tabla_principal(){
 			this.tabla.getColumnModel().getColumn( 0).setMinWidth(20);
 			this.tabla.getColumnModel().getColumn( 0).setMaxWidth(20);
@@ -86,12 +87,19 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 	    	this.tabla.getColumnModel().getColumn(10).setMinWidth(120);
 	    	this.tabla.getColumnModel().getColumn(11).setMinWidth(200);
 	    	this.tabla.getColumnModel().getColumn(12).setMinWidth(140);
+	    	this.tabla.getColumnModel().getColumn(13).setMinWidth(90);
+	    	this.tabla.getColumnModel().getColumn(14).setMinWidth(150);
+	    	this.tabla.getColumnModel().getColumn(15).setMinWidth(100);
+	    	this.tabla.getColumnModel().getColumn(16).setMinWidth(200);
+	    	this.tabla.getColumnModel().getColumn(18).setMinWidth(200);
+	    	this.tabla.getColumnModel().getColumn(19).setMinWidth(400);
+	    	
 			String comando = "orden_de_gasto_autorizacion_filtro '"+cmb_status.getSelectedItem().toString().trim()+"'";
 			String basedatos="26",pintar="si";
 			ObjTab.Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, basedatos,pintar,checkboxindex);
 	    }
 		
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"S","Folio","Proveedor","Concepto","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo","Tipo Provedor"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"S","Folio","Proveedor","Concepto","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo","Tipo Provedor","Folio Servicio", "Servicio", "Tipo","Usuario Valida", "Folio Pago", "Usuario Realizo Pago", "Observaciones Del Pago", "Folio Corte Caja Chica"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = tipos();
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -106,8 +114,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 	    JTable tabla = new JTable(modelo);
 		public JScrollPane scroll_tabla = new JScrollPane(tabla);
 		
-		
-		String status[] = {"PENDIENTE","AUTORIZADO","CANCELADO","FINALIZADO","NEGADO","TODOS"};
+		String status[] = new Obj_Orden_De_Gasto().Combo_Cuentas();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		JComboBox cmb_status = new JComboBox(status);
 		
@@ -115,6 +122,11 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 		JTextField txtPedientes  = new Componentes().text(new JCTextField(), "Cant. Pendientes", 150, "String");
 		JTextField txtFiltro     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<",300 , "String",tabla,Cantidad_Real_De_Columnas );
 		JTextField txtTotal      = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
+		
+		JCButton btnActualizar   = new JCButton("Actualizar"           ,"Actualizar.png","Azul");
+		JCButton btnReportes     = new JCButton("Reportes B.I."        ,"Lista.png"     ,"Azul");
+		JCButton btnReimPagos    = new JCButton("Reportes Pagos"       ,"Dollar.png"     ,"Azul");
+		
 		
 		Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
 	    String aceptar_negar="";
@@ -129,16 +141,22 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 			this.setTitle("Autorizacion De Ordenes de Gasto");
 			campo.setBorder(BorderFactory.createTitledBorder("Seleccione Las Ordenes De Gasto Que Desea Autorizar o Negar"));
 
-			int x=15,y=15,height=20;	
-			this.campo.add(new JLabel("Registros:")).setBounds(x      ,y      ,150    ,height );
-			this.campo.add(txtPedientes).setBounds            (x+=50  ,y      ,100    ,height );
-			this.campo.add(new JLabel("Busqueda Por Estatus:")).setBounds(x+=150,y,110  ,height   );
-			this.campo.add(cmb_status).setBounds              (x+=120 ,y      ,120    ,height   );
-			this.campo.add(txtFiltro).setBounds               (x=15   ,y+=25  ,ancho-40,height  );
-			this.campo.add(scroll_tabla).setBounds            (x      ,y+=20  ,ancho-40,alto-150);
+			int x=15,y=15,height=20,width=127;	
+			this.campo.add(new JLabel("Registros:")).setBounds(x      ,y      ,width    ,height );
+			this.campo.add(txtPedientes).setBounds            (x+=50  ,y      ,width    ,height );
+			this.campo.add(new JLabel("Busqueda Por Estatus:")).setBounds(x+=140,y,width,height );
+			this.campo.add(cmb_status).setBounds              (x+=110 ,y      ,width    ,height );
+			this.campo.add(btnActualizar).setBounds           (x+=140 ,y      ,width    ,height );
+			this.campo.add(btnReportes).setBounds             (x+=140 ,y      ,150      ,height );
+			this.campo.add(btnReimPagos).setBounds            (x+=165 ,y      ,150      ,height );
+			this.campo.add(txtFiltro).setBounds               (x=15   ,y+=25  ,ancho-40 ,height);
+			this.campo.add(scroll_tabla).setBounds            (x      ,y+=20  ,ancho-40 ,alto-150);
 			agregar(tabla);
 			init_tabla_principal();
 			cantidad();
+			btnActualizar.addActionListener(OpActualizar);
+			btnReportes.addActionListener(OpReportes);
+			btnReimPagos.addActionListener(OpReportespagos);
 			
 			txtTotal.setEditable(false);
 			txtPedientes.setEditable(false);
@@ -153,7 +171,27 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 		public void cantidad() {
 			txtPedientes.setText(tabla.getRowCount()+"");
 		}
-		
+
+	   ActionListener OpActualizar = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+				init_tabla_principal();
+				cantidad();
+			txtFiltro.requestFocus();
+		 }
+	   };
+	   
+	   ActionListener OpReportes = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+				new Cat_Reportes_De_Movimientos_De_Banco_Interno().setVisible(true);
+		 }
+	   };
+	   
+	   ActionListener OpReportespagos = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+				new Cat_Reimpresion_De_Pagos_De_Caja_Chica().setVisible(true);
+		 }
+	   };
+	   
 	   ActionListener opImprimir_Reporte = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String basedatos="2.26";
@@ -349,6 +387,9 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	ActionListener opaceptar = new ActionListener() {
     	public void actionPerformed(ActionEvent e) {
 			aceptar_negar="AUTORIZADA";
+			if(txtTipo.getText().toString().equals("C") ) {
+				aceptar_negar="TERMINADO";
+			}
 			Guardar();
 		}
 	};
@@ -379,11 +420,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		txtSolicito.setText (tablacompleta[0][14].toString());
 		txtEstatus.setText(tablacompleta[0][15].toString());
 		txtConcepto.setText(tablacompleta[0][17].toString());
-		
-		System.out.println(tablacompleta[0][9].toString() );
-		System.out.println(tablacompleta[0][19].toString());
-		System.out.println(tablacompleta[0][20].toString());
-		
 		
 		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {
 			rbProveedor.setSelected(true); 
@@ -433,12 +469,39 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	  
 				 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 				  if(new ActualizarSQL().Guardar_Autorizacion_De_Orden_De_Gasto(txtFolio.getText().toString(),aceptar_negar.substring(0, 1))){
+					  
+					  System.out.println(txtTipo.getText());
+					  System.out.println(aceptar_negar);
+					  
+					  
+						if(txtTipo.getText().toString().equals("C")&& aceptar_negar.equals("TERMINADO")) {
+						         Obj_Correos correos = new Obj_Correos().buscar_correos(48, "");	
+								   String productos="\nDescripcion / Cantidad / Importe\n";
+								   for(int i=0;i<tablago.getRowCount();i++) {
+									   productos=productos+tablago.getValueAt(i, 0)+"  / "+tablago.getValueAt(i, 1)+"  /$"+tablago.getValueAt(i, 3)+" \n";
+								   }
+						           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFecha.getText().toString()+" con folio:"+txtFolio.getText().toString()
+									  		      +"\nUn Pago de Gasto La Competidora con un valor total de:$ "+txtTotal.getText().toString()
+												  +"\nDescripcion del gasto/compra: "+txtConcepto.getText().toString()
+												  +"\n"+productos
+												  +"\nPara el establecimiento: "+txtEstablecimiento.getText().toString().trim()
+												  +"\nBeneficiario: "+txtProveedor.getText().trim()
+												  +"\nAutorizó pago: "+txtSolicitante.getText().toString().trim();
+								  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago La Competidora por un total de $:"+txtTotal.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
+							
+								  System.out.println(correos.getCorreos());
+								  System.out.println(Mensaje);
+								  System.out.println(txtTipo.getText());
+								  System.out.println(aceptar_negar);
+								  
+						}else {
 						   try {servicios_solicitud = new BuscarSQL().correo_informa_estatus_solicitud(Integer.valueOf(txtFolio.getText().toString().trim()),84);
-							} catch (SQLException e1) {e1.printStackTrace();}
-						   if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
+						   } catch (SQLException e1) {e1.printStackTrace();}
+						     if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
 						      String Mensaje= "Hola "+tabla_guardado[0][7].toString()+" Tu Solicitud De Orden De Gasto Folio:"+tabla_guardado[0][1].toString()+" a Nombre De "+tabla_guardado[0][2].toString()+" Fue "+aceptar_negar+" Por "+usuario.getNombre_completo()   ;
 				      							  new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "INFORME DE SOLICITUD "+aceptar_negar+" DE LA ORDEN DE GASTO FOLIO:"+tabla_guardado[0][1].toString(),"Gastos");
 						   }
+						}
 						   
 			        	init_tabla_principal();
 			        	txtTotal.setText("");

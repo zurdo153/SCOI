@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Inventarios.Cat_Consulta_De_Cotizacion;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -340,6 +341,7 @@ public class Cat_Autorizacion_De_Solicitudes_De_Revision_De_Ordenes_De_Compra ex
     			
     		 	JButton btnAutorizar           = new JCButton("Autorizar"                    ,"Aplicar.png"                     ,"Azul" );
     		 	JButton btngenerarSAut         = new JCButton("Imprimir Pre Orden De Compra" ,"imprimir-16.png"                 ,"Azul" );
+    		 	JButton btnPrecioCompetencia   = new JCButton("Precio De Competencia"        ,"Aplicar.png"                     ,"Azul" );
     		 	
     			JToolBar menu_toolbarfiltro    = new JToolBar();
     			
@@ -364,6 +366,10 @@ public class Cat_Autorizacion_De_Solicitudes_De_Revision_De_Ordenes_De_Compra ex
     			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
     			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
     			
+    			
+    		    this.menu_toolbarfiltro.add(btnPrecioCompetencia  );
+    		    this.menu_toolbarfiltro.addSeparator(   );
+    			this.menu_toolbarfiltro.addSeparator(   );
     		    this.menu_toolbarfiltro.add(btngenerarSAut  );
     		    this.menu_toolbarfiltro.addSeparator(   );
     			this.menu_toolbarfiltro.addSeparator(   );
@@ -422,9 +428,31 @@ public class Cat_Autorizacion_De_Solicitudes_De_Revision_De_Ordenes_De_Compra ex
     			this.init_tablafp2(folio);
     			Seleccionar_Respuesta(tablafp2);
                 btnAutorizar.addActionListener(op_autorizar);
+                btnPrecioCompetencia.addActionListener(op_precioCompetencia);
                 contf.add(panelf);
     		}
 
+    		ActionListener op_precioCompetencia = new ActionListener() {
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				int filaSeleccionada = tablafp2.getSelectedRow();
+    				if(filaSeleccionada>=0){
+        				float costoProm 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 4).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 4).toString());
+        				float PrecioVenta 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 5).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 5).toString());
+        				float Margen 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 6).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 6).toString());
+        				float MFamilia 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 7).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 7).toString());
+        				String PrecioPorVolumen	= (tablafp2.getValueAt(filaSeleccionada, 8).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 8).toString());
+        				
+    					String codProd = tablafp2.getValueAt(filaSeleccionada, 0).toString();
+    					new Cat_Consulta_De_Cotizacion(codProd, costoProm, PrecioVenta, Margen, MFamilia, PrecioPorVolumen).setVisible(true);
+    				}else{
+    					JOptionPane.showMessageDialog(null,"Se Requiere Seleccionar Un Producto De La Tabla","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+    					return;
+    				}
+    				
+    			}
+    		};
+    		
       		ActionListener op_autorizar = new ActionListener() {
     			@Override
     			public void actionPerformed(ActionEvent e) {

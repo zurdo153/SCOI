@@ -138,7 +138,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
 	JTextField txtFoliousuariobms= new Componentes().text      (new JCTextField(), "Folio Usuario BMS"                                      , 150, "String");
 	JTextField txtNombrebms      = new Componentes().text      (new JCTextField(), "Nombre Usuario BMS"                                     , 150, "String");
 	
-	JCButton btnActualizar     = new JCButton("Actualizar"       ,"Actions-view-refresh-icon.png","Azul"); 
+	JCButton btnActualizar       = new JCButton("Actualizar"       ,"Actions-view-refresh-icon.png","Azul"); 
 
 	JLabel fondo = new JLabel();
 	JToolBar menu_toolbar       = new JToolBar();
@@ -350,7 +350,6 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     		 	JButton btngenerarSAut         = new JCButton("Imprimir Pre Orden De Compra"                      ,"imprimir-16.png"                        ,"Azul" );
 
     		 	JButton btnPrecioCompetencia   = new JCButton("Precio De Competencia"                                 ,"Aplicar.png"                            ,"Azul" );
-
     		 	
     			JToolBar menu_toolbarfiltro    = new JToolBar();
     			
@@ -559,16 +558,14 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     		ActionListener op_precioCompetencia = new ActionListener() {
     			@Override
     			public void actionPerformed(ActionEvent e) {
-    				
     				int filaSeleccionada = tablafp2.getSelectedRow();
-    				
-    				float costoProm 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 4).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 4).toString());
-    				float PrecioVenta 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 5).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 5).toString());
-    				float Margen 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 6).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 6).toString());
-    				float MFamilia 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 7).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 7).toString());
-    				float PrecioPorVolumen 	= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 8).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 8).toString());
-    				
     				if(filaSeleccionada>=0){
+        				float costoProm 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 4).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 4).toString());
+        				float PrecioVenta 		= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 5).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 5).toString());
+        				float Margen 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 6).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 6).toString());
+        				float MFamilia 			= Float.valueOf(tablafp2.getValueAt(filaSeleccionada, 7).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 7).toString());
+        				String PrecioPorVolumen	= (tablafp2.getValueAt(filaSeleccionada, 8).toString().equals("")?"0":tablafp2.getValueAt(filaSeleccionada, 8).toString());
+        				
     					String codProd = tablafp2.getValueAt(filaSeleccionada, 0).toString();
     					new Cat_Consulta_De_Cotizacion(codProd, costoProm, PrecioVenta, Margen, MFamilia, PrecioPorVolumen).setVisible(true);
     				}else{
@@ -610,18 +607,10 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
 			    tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 					@SuppressWarnings("deprecation")
 					public void mouseReleased(MouseEvent e) {
-						// TODO Auto-generated method stub
 						if(e.getClickCount()!=0){
-//	                         if(tbl.getSelectedColumn()==14){
 	                    	        tbl.getColumnModel().getColumn(14).setCellEditor(new javax.swing.DefaultCellEditor(cmbRazon));
 	                    		    tbl.getColumn("Razon").setCellEditor(new CargaDatosDelCombo());
 							       return;
-//	                         } else{
-//							        tbl.lostFocus(null, null);
-//							        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-//							        tbl.getSelectionModel().clearSelection();
-//	                        	 return;
-//	                         }	
 			        	}else{
 					        tbl.lostFocus(null, null);
 					        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
@@ -629,50 +618,8 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
 			        		return;
 			        	}
 					}
-//					public void mousePressed(MouseEvent e) {
-//			        	if(e.getClickCount()!=0){
-//	                         if(tbl.getSelectedColumn()==14){
-//	                    	        tbl.getColumnModel().getColumn(14).setCellEditor(new javax.swing.DefaultCellEditor(cmbRazon));
-//	                    		    tbl.getColumn("Razon").setCellEditor(new CargaDatosDelCombo());
-//							       return;
-//	                         } else{
-//							        tbl.lostFocus(null, null);
-//							        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-//							        tbl.getSelectionModel().clearSelection();
-//	                        	 return;
-//	                         }	
-//			        	}else{
-//					        tbl.lostFocus(null, null);
-//					        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-//					        tbl.getSelectionModel().clearSelection();
-//			        		return;
-//			        	}
-//			        }
 			    });
 			}
-    		
-//    		MauseListener opClick = new MouseListener() {
-//				public void mouseReleased(MouseEvent arg0) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//				public void mousePressed(MouseEvent arg0) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//				public void mouseExited(MouseEvent arg0) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//				public void mouseEntered(MouseEvent arg0) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//				public void mouseClicked(MouseEvent arg0) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//			};
     		
     	    private class CargaDatosDelCombo extends DefaultCellEditor{
     	        @SuppressWarnings("rawtypes")

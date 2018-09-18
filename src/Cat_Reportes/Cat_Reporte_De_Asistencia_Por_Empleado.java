@@ -22,6 +22,7 @@ import javax.swing.UIManager;
 
 import com.toedter.calendar.JDateChooser;
 
+import Cat_Checador.Cat_Reportes_De_Asistencia;
 import Conexiones_SQL.BuscarSQL;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -141,7 +142,7 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 			String folios_empleados=txtFolio.getText()+"";
 			
 			if(c_inicio.getDate().before(c_final.getDate())){
-				new Cat_Reporte_De_Asistencia().Reporte_de_Asistencia_consideraciones(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados,e.getActionCommand().equals("Consideraciones")?"SI":"NO");
+				new Cat_Reportes_De_Asistencia().Reporte_de_Asistencia_consideraciones(fecha_inicio,fecha_final,Establecimiento,Departamento,folios_empleados,e.getActionCommand().equals("Consideraciones")?"SI":"NO");
 				
 			}else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
@@ -163,7 +164,7 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 			String folios_empleados=txtFolio.getText()+"";
 			
 			if(c_inicio.getDate().before(c_final.getDate())){
-				new Cat_Reporte_De_Asistencia().Reporte_de_Permisos(fecha_inicio, fecha_final, Establecimiento, folios_empleados);
+				new Cat_Reportes_De_Asistencia().Reporte_de_Permisos(fecha_inicio, fecha_final, Establecimiento, folios_empleados);
 				
 			}else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);
@@ -186,7 +187,7 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 			String folios_empleados=txtFolio.getText()+"";
 			
 			if(c_inicio.getDate().before(c_final.getDate())){
-				new Cat_Reporte_De_Asistencia().Reporte_de_faltas(fecha_inicio, fecha_final, Establecimiento,Departamento, folios_empleados);
+				new Cat_Reportes_De_Asistencia().Reporte_de_faltas(fecha_inicio, fecha_final, Establecimiento,Departamento, folios_empleados);
 				
 			}else{
 				JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE);

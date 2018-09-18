@@ -1,4 +1,4 @@
-package Cat_Reportes;
+package Cat_Checador;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -29,7 +29,7 @@ import com.toedter.calendar.JDateChooser;
 
 
 @SuppressWarnings("serial")
-public class Cat_Reporte_De_Asistencia extends JFrame {
+public class Cat_Reportes_De_Asistencia extends JFrame {
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -49,13 +49,14 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	JCButton btn_generar_consideraciones = new JCButton  ("Reporte de Consideraciones","check-vcard-icone-9025-16.png","Azul");
 	JCButton btn_generar_Permisos        = new JCButton  ("Reporte de Permisos a Empleados","apoyo-y-asistencia-icono-6525-16.png","Azul");
 	JCButton btn_generar_completo        = new JCButton  ("Reporte de Asistencia Completo","proceso-para-los-usuarios-icono-5903-16.png","Azul");
+	JCButton btn_generar_ruta            = new JCButton  ("Reporte de Asistencia Ruta","huella_cargada_16.png","Azul");
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );
 	JLabel JLBestablecimiento= new JLabel(new ImageIcon("Imagen/folder-home-home-icone-5663-16.png") );
 	JLabel JLBdepartamento= new JLabel(new ImageIcon("Imagen/departamento-icono-5365-16.png") );
 	
-	public Cat_Reporte_De_Asistencia(){
+	public Cat_Reportes_De_Asistencia(){
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia-comunitaria-icono-9465-32.png"));
 		this.setTitle("Reportes de Asistencia");
 		this.panel.setBorder(BorderFactory.createTitledBorder("Reportes de Asistencia"));
@@ -72,14 +73,15 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.panel.add(new JLabel("Departamento:")).setBounds(225,55,150,height);
 		this.panel.add(JLBdepartamento).setBounds(300,55,height,height);
 		this.panel.add(cmbDepartamento).setBounds(320,55,170,height);
-		x=110;width=280;height=35;
-		this.panel.add(btn_generar_faltas).setBounds             (x     ,100    ,width,height);
-		this.panel.add(btn_generar_consideraciones).setBounds    (x     ,145    ,width,height);
-		this.panel.add(btn_generar_Permisos).setBounds           (x     ,190    ,width,height);
-		this.panel.add(btn_generar_completo).setBounds           (x     ,235    ,width,height);
-				
+		x=110;y=100;width=280;height=35;
+		this.panel.add(btn_generar_faltas).setBounds             (x     ,y      ,width,height);
+		this.panel.add(btn_generar_consideraciones).setBounds    (x     ,y+=45  ,width,height);
+		this.panel.add(btn_generar_Permisos).setBounds           (x     ,y+=45  ,width,height);
+		this.panel.add(btn_generar_completo).setBounds           (x     ,y+=45  ,width,height);
+		this.panel.add(btn_generar_ruta).setBounds               (x     ,y+=45  ,width,height);			
+		
 		this.cont.add(panel);
-		this.setSize(510,330);
+		this.setSize(510,360);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		 cargar_fechas();
@@ -87,8 +89,8 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		this.btn_generar_completo.addActionListener(op_generar);
 		this.btn_generar_Permisos.addActionListener(op_generar_permisos);
 		this.btn_generar_consideraciones.addActionListener(op_generar);
-		btn_generar_faltas.addActionListener(op_generar_faltas); 
-		
+		this.btn_generar_faltas.addActionListener(op_generar_faltas); 
+		this.btn_generar_ruta.addActionListener(op_generar_ruta); 
 	}
 	
 	public void cargar_fechas(){
@@ -185,11 +187,31 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 		}
 	};
 	
+	ActionListener op_generar_ruta = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(validar_fechas().equals("")){
+				String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
+				String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:59";
+				String Establecimiento = cmbEstablecimiento.getSelectedItem().toString();
+	
+				if(c_inicio.getDate().before(c_final.getDate())){
+					   reporte = "Obj_Reporte_De_Tiempo_En_Recorrido.jrxml";
+					   comando = "exec reporte_de_entradas_y_salidas_ruta '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"'";
+				 	  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana); 
+				}else{
+					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                      return;
+				}
+			}else{
+				  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+                  return;
+			}
+		}
+	};
 	
 	public void Reporte_de_faltas(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados){
 		 reporte = "Obj_Reporte_De_Asistencia_Faltas.jrxml";
 		 comando = "exec sp_Reporte_De_Faltas '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"'";
-		 System.out.println(comando);
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
 	
@@ -202,8 +224,6 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	public void Reporte_de_Asistencia_consideraciones(String fecha_inicio, String fecha_final,String Establecimiento,String Departamento,String folios_empleados,String solo_consideraciones){
 		 reporte = "Obj_Reporte_De_Asistencia_General.jrxml";
 		 comando = "exec sp_Reporte_De_Asistencia_Por_Establecimiento_Con_Consideraciones '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"','"+Departamento+"','"+folios_empleados+"','"+solo_consideraciones+"'";
-		 System.out.println(reporte);
-		 System.out.println(comando);
 		 		 
 		 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	}
@@ -221,7 +241,7 @@ public class Cat_Reporte_De_Asistencia extends JFrame {
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Reporte_De_Asistencia().setVisible(true);
+			new Cat_Reportes_De_Asistencia().setVisible(true);
 		}catch(Exception e){	}
 	}
 

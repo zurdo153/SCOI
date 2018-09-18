@@ -120,7 +120,7 @@ public class RippleEffect {
                     .setEndBehavior(Animator.EndBehavior.HOLD)
                     .setInterpolator(new AccelerationInterpolator(0.2, 0.19))
                     .addTarget(SafePropertySetter.getTarget(rippleRadius, 0, maxRadius / 2, maxRadius, maxRadius))
-                    .addTarget(SafePropertySetter.getTarget(rippleOpacity, 0.0, 0.4, 0.3, 0.0))
+                    .addTarget(SafePropertySetter.getTarget(rippleOpacity, 1.0, 0.4, 0.3, 0.0))
                     .addTarget(new TimingTargetAdapter() {
                         @Override
                         public void end(Animator source) {

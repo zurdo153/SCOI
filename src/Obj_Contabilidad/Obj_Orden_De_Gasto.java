@@ -1,6 +1,9 @@
 package Obj_Contabilidad;
 
+import java.sql.SQLException;
+
 import Conexiones_SQL.BuscarSQL;
+import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.GuardarSQL;
 
 
@@ -106,6 +109,15 @@ public class Obj_Orden_De_Gasto {
 	}
 	public void setCorreos(String correos) {
 		this.correos = correos;
+	}
+	
+	public String[] Combo_Cuentas() {
+		try {
+			return new Cargar_Combo().Combos("estatusorden");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
 	}
 	
 	public Obj_Orden_De_Gasto GuardarActualizar(){ 
