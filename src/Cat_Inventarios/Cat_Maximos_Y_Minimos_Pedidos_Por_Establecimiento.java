@@ -66,6 +66,8 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
     	String comandof=" exec consulta_maximos_y_minimos '"+consulta_bd+"','"+lblEstabSolicita.getText().trim()+"','"+lblEstabSurte.getText().trim()+"',"+lblFolioPedido.getText().toString().trim()+",'"+lblAreaTipoDistribucion.getText().trim()+"'";
     	String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnasb, comandof, basedatos,pintar,checkbox);
+		
+		System.out.println("Filas Generadas: "+tabla.getRowCount());
     }
 	
 	@SuppressWarnings("rawtypes")
@@ -166,8 +168,8 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
 							e1.printStackTrace();
 						}
 						//si esta en el rango siguiente es el folio del pedido-----------------------------------------------------------------
-						if(folioPedidoBMS.length() > 0 && folioPedidoBMS.length() <= 13){
-							JOptionPane.showMessageDialog(null,"El Registro Se Finalizo Correctamente Con El Folio: "+folioPedidoBMS,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						if(folioPedidoBMS.length() > 0 /*&& folioPedidoBMS.length() <= 13*/){
+							JOptionPane.showMessageDialog(null,"El Registro Se Finalizo Correctamente Con Los Folios:\n"+folioPedidoBMS.replace(",", "\n"),"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							dispose();
 							return;
 						}else{
