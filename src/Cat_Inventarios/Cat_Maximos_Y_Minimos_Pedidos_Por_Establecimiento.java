@@ -64,6 +64,7 @@ public class Cat_Maximos_Y_Minimos_Pedidos_Por_Establecimiento extends JDialog{
     	this.tabla.getColumnModel().getColumn(13).setMinWidth(100);
     	
     	String comandof=" exec consulta_maximos_y_minimos '"+consulta_bd+"','"+lblEstabSolicita.getText().trim()+"','"+lblEstabSurte.getText().trim()+"',"+lblFolioPedido.getText().toString().trim()+",'"+lblAreaTipoDistribucion.getText().trim()+"'";
+//    	System.out.println(comandof);
     	String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnasb, comandof, basedatos,pintar,checkbox);
 		

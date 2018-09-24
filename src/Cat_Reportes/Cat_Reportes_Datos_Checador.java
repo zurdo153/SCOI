@@ -194,6 +194,7 @@ public class Cat_Reportes_Datos_Checador extends JFrame {
 				   if( cmbTipoDeReporte.getSelectedItem().toString().trim().equals("Tiempo En Ruta")){
 					   reporte = "Obj_Reporte_De_Tiempo_En_Recorrido.jrxml";
 					   comando = "exec reporte_de_entradas_y_salidas_ruta '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"'";
+					   System.out.println(comando);
 				   }	
 				   
 				   if( cmbTipoDeReporte.getSelectedItem().toString().trim().equals("Detalles De Huellas")){
