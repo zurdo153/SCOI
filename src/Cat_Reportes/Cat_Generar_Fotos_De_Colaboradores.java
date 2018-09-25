@@ -191,6 +191,10 @@ public class Cat_Generar_Fotos_De_Colaboradores extends JFrame{
 						}
 					}
 					
+					String onlyPath = "C:\\FotosColaborador";
+				    String completeCmd = "explorer.exe /select," + onlyPath;
+				    new ProcessBuilder(("explorer.exe " + completeCmd).split(" ")).start();
+					
 					chbSelect.setSelected(false);
 					init_tablaf();
 					JOptionPane.showMessageDialog(null, "Las Fotos Fueron Creadas En La Siguente Ruta: "+rutaPrincipalFotos,"Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));

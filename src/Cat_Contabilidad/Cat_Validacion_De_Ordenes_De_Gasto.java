@@ -18,9 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
-import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
+import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Contabilidad.Obj_Orden_De_Gasto;
 import Obj_Principal.Componentes;
@@ -148,7 +148,7 @@ public class Cat_Validacion_De_Ordenes_De_Gasto extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				int fila;
 				if(tabla.getSelectedRowCount()==0) {
-				 JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Registro De La Tabla \nPara Poder Generar La Solicitud De Gasto","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+				 JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Registro De La Tabla \nPara Poder Generar El Reporte De La Solicitud De Gasto","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				}else {
 					fila = tabla.getSelectedRow();
 					String basedatos="2.26";
@@ -188,22 +188,19 @@ public class Cat_Validacion_De_Ordenes_De_Gasto extends JFrame {
 		};
 		
 		public void actualizar(){
-		Object[][] arreglo_guardado= new Object[tabla.getRowCount()][9];
+		Object[][] arreglo_guardado= new Object[tabla.getRowCount()][3];
 		for (int i=0;i<tabla.getRowCount();i++){
-			if(tabla.getValueAt(i,0).toString().trim().equals("true")){
-	       	 arreglo_guardado[i][0]=tabla.getValueAt(i,1).toString().trim();//folio_solicitud
-	         arreglo_guardado[i][1]=usuario.getFolio();//usuario_valida
+			 arreglo_guardado[i][0]=tabla.getValueAt(i,0).toString().trim();//selecionado	
+	       	 arreglo_guardado[i][1]=tabla.getValueAt(i,1).toString().trim();//folio_solicitud
 	         arreglo_guardado[i][2]=aceptar_negar;//usuario_valida
-			}
 	    }
 		
-		if(new ActualizarSQL().Aceptar_Negar_Sueldo_o_Bono(arreglo_guardado)){
+		if(new GuardarSQL().Aceptar_Negar_Solicitudes_De_Orden_De_Gasto_De_Servicios(arreglo_guardado)){
         	init_tabla_principal();;
 			JOptionPane.showMessageDialog(null, "Se Guardaron Los Registros Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 		}else{
 			JOptionPane.showMessageDialog(null, "Error Al Actualizar", "Avise al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 		}
-		
 		
 		}
 		

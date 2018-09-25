@@ -29,7 +29,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Autorizacion_Auditoria;

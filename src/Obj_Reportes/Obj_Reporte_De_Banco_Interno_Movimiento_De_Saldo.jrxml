@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<queryString>
-		<![CDATA[exec banco_interno_reporte_de_movimiento_de_saldo 4]]>
+		<![CDATA[exec banco_interno_reporte_de_movimiento_de_saldo 4,'E']]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
@@ -15,10 +15,10 @@
 	<field name="observaciones" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
 	</field>
-	<field name="importe_ingreso" class="java.lang.Double">
+	<field name="importe_ingreso" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="importe_ingreso"/>
 	</field>
-	<field name="importe_egreso" class="java.lang.Double">
+	<field name="importe_egreso" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="importe_egreso"/>
 	</field>
 	<field name="fecha" class="java.sql.Timestamp">
@@ -36,20 +36,23 @@
 	<field name="tipo_movimiento" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tipo_movimiento"/>
 	</field>
-	<field name="acumulado" class="java.lang.Double">
+	<field name="acumulado" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="acumulado"/>
 	</field>
-	<field name="saldo" class="java.lang.Double">
+	<field name="saldo" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="saldo"/>
 	</field>
 	<field name="estatus_movimiento" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="estatus_movimiento"/>
 	</field>
-	<field name="RunningTotal" class="java.lang.Double">
+	<field name="RunningTotal" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="RunningTotal"/>
 	</field>
 	<field name="movimiento_consultado" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="movimiento_consultado"/>
+	</field>
+	<field name="total_movimiento" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total_movimiento"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -96,7 +99,7 @@
 				<imageExpression><![CDATA["C:/SCOI/imagen/logPrincipal.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="364" y="72" width="101" height="14" uuid="3d03dee7-e520-4b51-8c50-cecab2029ff8">
+				<reportElement x="261" y="72" width="101" height="14" uuid="3d03dee7-e520-4b51-8c50-cecab2029ff8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -106,7 +109,7 @@
 				<textFieldExpression><![CDATA["Fecha Movimiento:"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="6" y="86" width="334" height="17" forecolor="#000000" uuid="9b1460c0-c12c-4094-bb7f-34a6e7ebfc71">
+				<reportElement key="" x="6" y="86" width="334" height="17" forecolor="#000000" uuid="9b1460c0-c12c-4094-bb7f-34a6e7ebfc71">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -117,7 +120,7 @@
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="340" y="86" width="70" height="17" forecolor="#000000" uuid="c84163a5-29bc-4e41-92be-d1dd2368ef0d">
+				<reportElement key="" x="340" y="86" width="70" height="17" forecolor="#000000" uuid="c84163a5-29bc-4e41-92be-d1dd2368ef0d">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -128,7 +131,7 @@
 				<text><![CDATA[Ingreso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="86" width="70" height="17" forecolor="#000000" uuid="13351154-1f32-4467-afd2-6c28d274c0fd">
+				<reportElement key="" x="410" y="86" width="70" height="17" forecolor="#000000" uuid="13351154-1f32-4467-afd2-6c28d274c0fd">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -139,7 +142,7 @@
 				<text><![CDATA[Egreso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="480" y="86" width="64" height="17" forecolor="#000000" uuid="92e1c902-f4c9-4b77-8e4d-e7e31e5477f2">
+				<reportElement key="" x="480" y="86" width="64" height="17" forecolor="#000000" uuid="92e1c902-f4c9-4b77-8e4d-e7e31e5477f2">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -150,7 +153,7 @@
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
 			<textField pattern="d/MM/yyyy h:mm a">
-				<reportElement x="452" y="58" width="100" height="14" uuid="718f8acb-e829-4f0d-9e87-eb105f375131">
+				<reportElement x="161" y="72" width="100" height="14" uuid="718f8acb-e829-4f0d-9e87-eb105f375131">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -159,7 +162,7 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="364" y="58" width="88" height="14" forecolor="#000000" uuid="4c192d97-b8d5-4301-9ee7-8850fa6f0078">
+				<reportElement x="73" y="72" width="88" height="14" forecolor="#000000" uuid="4c192d97-b8d5-4301-9ee7-8850fa6f0078">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -181,7 +184,7 @@
 				<textFieldExpression><![CDATA["SALDO POR  MOVIMIENTO EN BANCO INTERNO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="82" y="58" width="282" height="18" forecolor="#000000" uuid="3d6c1e33-45cd-4734-9545-76c0fce6aa0a">
+				<reportElement mode="Transparent" x="82" y="51" width="282" height="18" forecolor="#000000" uuid="3d6c1e33-45cd-4734-9545-76c0fce6aa0a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -191,7 +194,7 @@
 				<textFieldExpression><![CDATA["CUENTA: " +$F{numero_de_cuenta}+" - "+$F{nombre_de_cuenta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="465" y="72" width="87" height="14" uuid="17abfcee-33e6-402d-b460-29e534bec38a">
+				<reportElement x="362" y="72" width="87" height="14" uuid="17abfcee-33e6-402d-b460-29e534bec38a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">

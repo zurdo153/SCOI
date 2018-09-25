@@ -1429,12 +1429,12 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			panelRep.add(new JLabel("Fecha Del Trabajo:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(fchTrabajoCorte).setBounds(x+ancho+10,y,ancho,20);
 			
-			panelRep.add(new JLabel("Fuente De Sodas:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(new JLabel("(-)Fuente De Sodas:")).setBounds(x,y+=25,ancho,20);
 		panelRep.add(txtFuenteDeSodas).setBounds(x+ancho+10,y,ancho,20);						panelRep.add(scroll_caja_verde).setBounds(x+ancho+140,y,ancho+90,97);	panelRep.add(new JLabel("Planes Telcel (Fisico):")).setBounds(x+ancho*3+140,y,ancho+90,20);    
 			                                                                                                                                                            panelRep.add(txtEfectivoPlanesRep).setBounds(x+ancho*3+265,y,70,20);                           
-			panelRep.add(new JLabel("Dolares:")).setBounds(x,y+=25,ancho,20);                                                                                           panelRep.add(new JLabel("Planes Telcel (Sistema):")).setBounds(x+ancho*3+140,y,ancho+90,20);                                                                                                
+			panelRep.add(new JLabel("(-)Dolares:")).setBounds(x,y+=25,ancho,20);                                                                                           panelRep.add(new JLabel("Planes Telcel (Sistema):")).setBounds(x+ancho*3+140,y,ancho+90,20);                                                                                                
 			panelRep.add(txtDolares).setBounds(x+ancho+10,y,ancho,20);                                                                                                  panelRep.add(txtTotalPlanesRep).setBounds(x+ancho*3+265,y,70,20);                                                                                                                           
-			panelRep.add(new JLabel("Vales:")).setBounds(x,y+=25,ancho,20);                                                                                             panelRep.add(new JLabel("Planes Telcel (Diferencia):")).setBounds(x+ancho*3+140,y,ancho+90,20);
+			panelRep.add(new JLabel("(-)Vales:")).setBounds(x,y+=25,ancho,20);                                                                                             panelRep.add(new JLabel("Planes Telcel (Diferencia):")).setBounds(x+ancho*3+140,y,ancho+90,20);
 			panelRep.add(txtVales).setBounds(x+ancho+10,y,ancho,20);                                                                                                    panelRep.add(txtDiferenciaPlanesRep).setBounds(x+ancho*3+265,y,70,20);                         
 			                                                                                                                                                                                                                                                                     
 			panelRep.add(new JLabel("Diferencia De Cortes:")).setBounds(x,y+=25,ancho,20);                                                                                          
@@ -1443,14 +1443,14 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			panelRep.add(new JLabel("Caja Verde:")).setBounds(x,y+=25,ancho,20);               	panelRep.add(new JLabel("Comentarios:")).setBounds(x+ancho+140,y+10,ancho+90,20);
 			panelRep.add(txtCajaVerdeRepEfect).setBounds(x+ancho+10,y,ancho,20);               	panelRep.add(observacion).setBounds(x+ancho+140,y+25,ancho*3+90,145);               
 			
-			panelRep.add(new JLabel("Retiros Clientes:")).setBounds(x,y+=25,ancho+50,20);				
+			panelRep.add(new JLabel("(+)Retiros Clientes:")).setBounds(x,y+=25,ancho+50,20);				
 			panelRep.add(txtRetiros_Clientes).setBounds(x+ancho+10,y,ancho,20);	
 			
-			panelRep.add(new JLabel("Otros Faltantes:")).setBounds(x,y+=25,ancho+50,20);			
+			panelRep.add(new JLabel("(-)Otros Faltantes:")).setBounds(x,y+=25,ancho+50,20);			
 			panelRep.add(txtOtrosFaltantes).setBounds(x+ancho+10,y,ancho,20);						
 			
 //			--------------------------------------------------------------------------------
-			panelRep.add(new JLabel("Otros Sobrantes:")).setBounds(x,y+=25,ancho,20);               
+			panelRep.add(new JLabel("(+)Otros Sobrantes:")).setBounds(x,y+=25,ancho,20);               
 			panelRep.add(txtOtrosSobrentes).setBounds(x+ancho+10,y,ancho,20);                       
 			
 //			panelRep.add(new JLabel("Total:")).setBounds(x,y+=25,ancho,20);
@@ -1459,7 +1459,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			panelRep.add(new JLabel("Total Final:")).setBounds(x,y+=25,ancho,20);			
 			panelRep.add(txtTotalFinal).setBounds(x+ancho+10,y,ancho,20);							
 			
-			panelRep.add(new JLabel("Deposito:")).setBounds(x,y+=25,ancho,20);
+			panelRep.add(new JLabel("Deposito Cheques:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(txtDeposito2).setBounds(x+ancho+10,y,ancho,20);
 			
 			panelRep.add(new JLabel("Banco Interno:")).setBounds(x,y+=25,ancho,20);
