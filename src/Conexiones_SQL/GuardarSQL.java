@@ -106,6 +106,7 @@ import Obj_Marketing.Obj_Alimentacion_De_Meta_Mensual_De_Venta;
 import Obj_Marketing.Obj_Configuracion_Meta_Mensual_De_Ventas;
 import Obj_Matrices.Obj_Aspectos_De_La_Etapa;
 import Obj_Matrices.Obj_Etapas;
+import Obj_Matrices.Obj_Matrices_Conceptos_Etapas_UnidadDeInspeccion;
 import Obj_Matrices.Obj_Unidades_de_Inspeccion;
 import Obj_Planeacion.Obj_Actividades_De_Una_Planeacion;
 import Obj_Planeacion.Obj_Frecuencia_De_Actividades;
@@ -8333,6 +8334,45 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Matrices_Conceptos_Etapas_UnidadDeInspeccion(Obj_Matrices_Conceptos_Etapas_UnidadDeInspeccion mat){
+		String query   = "exec matrices_conceptos_etapas_unidad_de_inspeccion ?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt   (1, mat.getFolio()      );
+			pstmt.setString(2, mat.getDescripcion());
+			pstmt.setString(3, mat.getAbreviatura());
+			pstmt.setString(4, mat.getEstatus()    );
+			pstmt.setString(5, mat.getCatalogo()    );
+			pstmt.setString(6, mat.getGuardaModifica());
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Matrices_Conceptos_Etapas_UnidadDeInspeccion ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Matrices_Conceptos_Etapas_UnidadDeInspeccion ] Insert  SQLException: sp_insert_atributo "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Matrices_Conceptos_Etapas_UnidadDeInspeccion ] Insert  SQLException: sp_insert_atributo "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 		}		
 		return true;

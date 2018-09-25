@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+=======
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2018-09-21T19:17:55 -->
+>>>>>>> 224a555204079a802cdd36097a8c5f687085f91d
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Lista_De_Firmas_LR_Actual" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a482f055-143f-43a2-a7b0-f7419a7d1d61">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -169,6 +174,9 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
 				</textField>
+				<line>
+					<reportElement x="0" y="14" width="569" height="1" uuid="b349b6d3-1d9c-4990-a411-5ed50e19f919"/>
+				</line>
 			</frame>
 		</band>
 	</detail>

@@ -1,6 +1,7 @@
 package Cat_Reportes;
 
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -194,6 +195,12 @@ public class Cat_Generar_Fotos_De_Colaboradores extends JFrame{
 					String onlyPath = "C:\\FotosColaborador";
 				    String completeCmd = "explorer.exe /select," + onlyPath;
 				    new ProcessBuilder(("explorer.exe " + completeCmd).split(" ")).start();
+					Desktop ficheroAEjecutar=Desktop.getDesktop();
+				    try {
+				         ficheroAEjecutar.open(new File(rutaPrincipalFotos));
+				    } catch (IOException e2) {
+				        JOptionPane.showMessageDialog(null, e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				    }
 					
 					chbSelect.setSelected(false);
 					init_tablaf();
