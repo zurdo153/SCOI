@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<queryString>
-		<![CDATA[exec banco_interno_reporte_de_movimiento_de_saldo 4,'E']]>
+		<![CDATA[exec banco_interno_reporte_de_movimiento_de_saldo 778,'T']]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
@@ -51,8 +51,11 @@
 	<field name="movimiento_consultado" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="movimiento_consultado"/>
 	</field>
-	<field name="total_movimiento" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="total_movimiento"/>
+	<field name="total_movimiento_egreso" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total_movimiento_egreso"/>
+	</field>
+	<field name="total_movimiento_ingreso" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total_movimiento_ingreso"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -202,6 +205,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="364" y="51" width="85" height="18" uuid="2cc8f869-32ab-412b-bee9-79d833a40acd"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["T.M.:"+$F{tipo_movimiento}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -211,7 +221,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="14" splitType="Stretch">
 			<rectangle radius="10">
 				<reportElement x="0" y="0" width="551" height="14" uuid="b4474aa7-7191-4fd7-99a0-9c73635cb51a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -253,15 +263,15 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="40" splitType="Stretch">
+		<band height="56" splitType="Stretch">
 			<line>
-				<reportElement x="399" y="18" width="150" height="1" uuid="c3a366ef-ecee-497b-89fe-02bbce8a84c3">
+				<reportElement x="399" y="36" width="150" height="1" uuid="c3a366ef-ecee-497b-89fe-02bbce8a84c3">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
 			<textField>
-				<reportElement x="399" y="19" width="150" height="12" uuid="81d4a306-2561-43cf-9251-3669610184e8">
+				<reportElement x="399" y="37" width="150" height="12" uuid="81d4a306-2561-43cf-9251-3669610184e8">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -271,7 +281,7 @@
 				<textFieldExpression><![CDATA[$F{usuario_recibe}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="399" y="26" width="150" height="12" uuid="91cc856b-070f-49ad-8207-91324453c24d">
+				<reportElement x="399" y="44" width="150" height="12" uuid="91cc856b-070f-49ad-8207-91324453c24d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -281,7 +291,7 @@
 				<text><![CDATA[FIRMA RECIBE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="205" y="23" width="150" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
+				<reportElement x="205" y="41" width="150" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -291,13 +301,13 @@
 				<text><![CDATA[FIRMA AUDITO]]></text>
 			</staticText>
 			<line>
-				<reportElement x="205" y="18" width="150" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
+				<reportElement x="205" y="36" width="150" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="2" y="23" width="150" height="12" uuid="ea9fb191-a67c-4fdc-a786-20c4b59aa83e">
+				<reportElement x="2" y="41" width="150" height="12" uuid="ea9fb191-a67c-4fdc-a786-20c4b59aa83e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -307,11 +317,37 @@
 				<text><![CDATA[FIRMA  ENTREGA]]></text>
 			</staticText>
 			<line>
-				<reportElement x="2" y="18" width="150" height="1" uuid="c90889a6-30c9-4c29-ab90-40af511525bb">
+				<reportElement x="2" y="36" width="150" height="1" uuid="c90889a6-30c9-4c29-ab90-40af511525bb">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
+			<textField pattern="#,##0.00#">
+				<reportElement x="410" y="0" width="70" height="17" uuid="8193792a-9deb-4883-8e24-5de4bd96ed73"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{total_movimiento_egreso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement key="" x="340" y="0" width="70" height="17" uuid="d6667bb7-5335-4b8c-af1c-c0cefc538000">
+					<printWhenExpression><![CDATA[$F{tipo_movimiento}.equals("INGRESO")]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{total_movimiento_ingreso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" x="300" y="0" width="40" height="17" forecolor="#000000" uuid="12df1de0-7206-4d58-a675-0954a593c580">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

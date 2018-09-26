@@ -6,7 +6,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -80,7 +79,7 @@ public class Cat_Matrices_Unidad_De_Inspeccion extends JFrame{
      @SuppressWarnings({ "rawtypes" })
     private TableRowSorter trsfiltro;
 	     
-	JTextField txtBuscar  = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
+	JTextField txtBuscar  = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String",tabla,columnas);
 	JTextField txtFolio   = new Componentes().text(new JCTextField(), "Folio", 10, "Int");
 	JTextField txtDescripcion = new Componentes().text(new JCTextField(), "Descripcion", 100, "String");
 	JTextField txtAbreviatura   = new Componentes().text(new JCTextField(), "Abreviatura", 5, "String");
@@ -130,7 +129,7 @@ public class Cat_Matrices_Unidad_De_Inspeccion extends JFrame{
 		this.panel.add(new JLabel("Descripcion:")).setBounds     (x     ,y+=30  ,width      ,height );
 		this.panel.add(txtDescripcion).setBounds                 (x+=sep+10,y      ,width*3-10    ,height );
 		 x=15;
-		this.panel.add(new JLabel("Abrebiatura:")).setBounds (x,y+=30      ,width      ,height );
+		this.panel.add(new JLabel("Abreviatura:")).setBounds (x,y+=30      ,width      ,height );
 		this.panel.add(txtAbreviatura).setBounds                   (x+=sep+10 ,y      ,width      ,height );
 		
 		 x=440;y=20;width=500;
@@ -141,7 +140,6 @@ public class Cat_Matrices_Unidad_De_Inspeccion extends JFrame{
 		this.panelEnabledFalse();
 		
 		this.agregar(tabla);
-		this.txtBuscar.addKeyListener  (opFiltro );
 		this.btnNuevo.addActionListener(nuevo    );
 		
 		trsfiltro = new TableRowSorter(modelo); 
@@ -221,14 +219,6 @@ public class Cat_Matrices_Unidad_De_Inspeccion extends JFrame{
 	        }
         });
     }
-	
-	KeyListener opFiltro = new KeyListener(){
-		public void keyReleased(KeyEvent arg0) {
-			ObjTab.Obj_Filtro(tabla, txtBuscar.getText(), columnas,txtBuscar);
-		}
-		public void keyTyped(KeyEvent arg0) {}
-		public void keyPressed(KeyEvent arg0) {}		
-	};
 
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e) {

@@ -703,6 +703,7 @@ public void constructor_Ingreso(String tipo) {
 	  			int vista_previa_de_ventana=0;
 	  			String comando="banco_interno_reporte_de_movimiento_de_saldo "+folio+",'"+tipo_movimiento+"'"     ;
 	  			String reporte = "Obj_Reporte_De_Banco_Interno_Movimiento_De_Saldo.jrxml";
+	  			System.out.println(comando);
 	  		    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			} 
   		}
@@ -882,7 +883,7 @@ public void constructor_Ingreso(String tipo) {
 		};
 	}
 	
-	//TODO inicia filtro_Buscar traspaso
+	//TODO inicia filtro_Buscar Movimiento de Banco Interno
 		public class Cat_Filtro_Buscar_Orden_De_Gasto extends JDialog{
 			Container contfb = getContentPane();
 			JLayeredPane panelfb = new JLayeredPane();
@@ -983,6 +984,7 @@ public void constructor_Ingreso(String tipo) {
 		        		modelo.setRowCount(0);
 						int fila = tablab.getSelectedRow();
 						txtFolio_impresion.setText(tablab.getValueAt(fila, 0).toString());
+						tipo_movimiento=tablab.getValueAt(fila, 0).toString();
 						dispose();
 						btnImprimir.doClick();
 					}
