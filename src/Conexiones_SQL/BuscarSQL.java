@@ -11131,6 +11131,38 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return Matriz;
 	}
 	
+	public Object[] imagen_aviso_checador(int folio){
+		Object[] Matriz = null;
+		String query = "select archivo,extencion "
+					 + " FROM imagenes_aviso_checador "
+					 + " where folio = "+folio;
+		Matriz = new Object[2];
+		Statement s;
+		ResultSet rs;
+		try {			
+			s = con.conexion().createStatement();
+			rs = s.executeQuery(query);
+			
+			
+			while(rs.next()){
+				
+				InputStream is = rs.getBinaryStream(1);
+			    byte[] bytes;
+				try {
+					bytes = IOUtils.toByteArray(is);
+					Matriz[0]  = bytes;
+					Matriz[1]  = rs.getString( 2);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return Matriz;
+	}
+	
 	
 //	public ImageIcon crearImagIcon(){
 //		

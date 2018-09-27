@@ -32,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.Connexion;
+import Conexiones_SQL.Generacion_Reportes;
 import Obj_Cuadrantes.Obj_Cuadrantes;
 import Obj_Lista_de_Raya.Obj_Departamento;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
@@ -200,7 +201,7 @@ public class Cat_Cuadrantes extends JFrame{
     	this.tablafa.getColumnModel().getColumn(8).setMinWidth(60);
     	this.tablafa.getColumnModel().getColumn(9).setMinWidth(60);
     	this.tablafa.getColumnModel().getColumn(10).setMinWidth(60);
-		String comandof="exec cuadrantes_actividades_filtro_cuadrantes";
+		String comandof="exec cuadrantes_actividades_filtro_cuadrantes ";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tablafa,modeloa, columnas2, comandof, basedatos,pintar,checkbox2);
     }
@@ -277,6 +278,9 @@ public class Cat_Cuadrantes extends JFrame{
 	JCButton btnfilpuestos= new JCButton(""          ,"Filter-List-icon16.png"     ,"Azul");
 	JCButton btnfilrepora = new JCButton(""          ,"Filter-List-icon16.png"     ,"Azul");
 	
+	JCButton btnReporte   = new JCButton("Reporte"   ,"Lista.png"                ,"Azul");
+	JCButton btnReporteL   = new JCButton("Reporte Limpio"   ,"Lista.png"                ,"Azul");
+
 	JToolBar toolbarLunes         = new JToolBar();
 	JCButton btnAgregLunes        = new JCButton("Agregar Lunes","double-arrow-icone-3883-16.png"  ,"Azul" );
 	JCButton btnSubLunes          = new JCButton("Subir"  ,"Up.png"                          ,"Azul" );
@@ -363,6 +367,12 @@ public class Cat_Cuadrantes extends JFrame{
 		this.menu_toolbar.addSeparator(  );
 		this.menu_toolbar.addSeparator(  );
 		this.menu_toolbar.add(btnGuardar );
+		this.menu_toolbar.addSeparator(  );
+		this.menu_toolbar.addSeparator(  );
+		this.menu_toolbar.add(btnReporte );
+		this.menu_toolbar.addSeparator(  );
+		this.menu_toolbar.addSeparator(  );
+		this.menu_toolbar.add(btnReporteL);
 		this.menu_toolbar.setFloatable(false);
 		
 		this.pestanas.addTab("Lunes"    ,pLunes    );
@@ -381,7 +391,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.init_tablaDomingo();
 	
 		 int x=15, y=20,width=120,height=20,sep=75;
-		this.panel.add(menu_toolbar).setBounds                  (x     ,y      ,width*4    ,height );
+		this.panel.add(menu_toolbar).setBounds                  (x     ,y      ,width*6    ,height );
 		this.panel.add(new JLabel("Folio:")).setBounds          (x     ,y+=40  ,width      ,height );
 		this.panel.add(txtFolio).setBounds                      (x+=sep,y      ,width      ,height );
         this.panel.add(btnizquierda).setBounds                  (x+=125,y      ,height     ,height );
@@ -420,6 +430,9 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnSimilar.addActionListener   (op_similar     );
 		this.btnderecha.addActionListener   (opDerecha      );
 		this.btnizquierda.addActionListener (opIzquierda    );
+		
+		this.btnReporte.addActionListener(reporte);
+		this.btnReporteL.addActionListener(reporte);
 		
 		cont.add(panel);
 		
@@ -1022,7 +1035,24 @@ public class Cat_Cuadrantes extends JFrame{
 	    }
 	};
     
-
+	ActionListener reporte = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			
+			String tipo = e.getActionCommand().toString();
+			
+			if(!txtFolio.getText().trim().equals("")){
+					String basedatos="2.26";
+					String vista_previa_reporte="no";
+					int vista_previa_de_ventana=0;
+					String reporte = "Obj_Reporte_De_Cuadrantes"+(tipo.equals("Reporte")?"":"_Limpio")+".jrxml";
+				    String comando = "exec reporte_de_cuadrante "+txtFolio.getText().trim();
+				    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			}else{
+				JOptionPane.showMessageDialog(null, "Es Necesario Ingresar El Folio Del Cuadrante","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+				return;
+			}
+		}		
+	};
 	
 	ActionListener editar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
