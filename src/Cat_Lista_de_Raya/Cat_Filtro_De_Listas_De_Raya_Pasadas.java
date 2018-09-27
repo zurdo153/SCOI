@@ -29,7 +29,6 @@ import Cat_Reportes.Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_R
 import Cat_Reportes.Cat_Reportes_De_Fuente_De_Sodas;
 import Cat_Reportes.Cat_Reportes_De_Infonacot_De_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Infonavit_De_Lista_De_Raya;
-import Cat_Reportes.Cat_Reportes_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Revision_De_Lista_Raya;
 import Obj_Principal.Componentes;

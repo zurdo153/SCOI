@@ -192,6 +192,9 @@ public class Cat_Generar_Fotos_De_Colaboradores extends JFrame{
 						}
 					}
 					
+					String onlyPath = "C:\\FotosColaborador";
+				    String completeCmd = "explorer.exe /select," + onlyPath;
+				    new ProcessBuilder(("explorer.exe " + completeCmd).split(" ")).start();
 					Desktop ficheroAEjecutar=Desktop.getDesktop();
 				    try {
 				         ficheroAEjecutar.open(new File(rutaPrincipalFotos));

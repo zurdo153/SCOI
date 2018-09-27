@@ -130,7 +130,7 @@ public class Cat_Matrices_Conceptos extends JFrame{
 		this.panel.add(new JLabel("Descripcion:")).setBounds     (x     ,y+=30  ,width      ,height );
 		this.panel.add(txtDescripcion).setBounds                 (x+=sep+10,y      ,width*3-10    ,height );
 		 x=15;
-		this.panel.add(new JLabel("Abrebiatura:")).setBounds (x,y+=30      ,width      ,height );
+		this.panel.add(new JLabel("Abreviatura:")).setBounds (x,y+=30      ,width      ,height );
 		this.panel.add(txtAbreviatura).setBounds                   (x+=sep+10 ,y      ,width      ,height );
 		
 		 x=440;y=20;width=500;

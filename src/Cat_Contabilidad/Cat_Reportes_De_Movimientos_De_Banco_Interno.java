@@ -87,7 +87,6 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 		width=300;
 		this.panel.add(btngenerar_reporte).setBounds            (x=70  ,y+=35  ,width    ,height*2  );
 		this.cont.add(panel);
-		
 		btngenerar_reporte.addActionListener(opGenerar_reporte);
 		cmbConcepto.addActionListener(op_seleccion_reporte);
 		estatus(false);

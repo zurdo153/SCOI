@@ -1,4 +1,4 @@
-package Cat_Reportes;
+package Cat_Lista_de_Raya;
 
 import java.awt.Container;
 import java.awt.Toolkit;
@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import Cat_Lista_de_Raya.Cat_Filtro_De_Listas_De_Raya_Pasadas;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
