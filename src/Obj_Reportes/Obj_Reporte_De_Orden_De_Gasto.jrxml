@@ -75,6 +75,9 @@
 	<field name="nombre_solicitante_servicio" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre_solicitante_servicio"/>
 	</field>
+	<field name="valida" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="valida"/>
+	</field>
 	<variable name="Importe" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{cantidad}*$F{precio_unitario}]]></variableExpression>
 	</variable>
@@ -82,7 +85,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="198" splitType="Stretch">
+		<band height="233" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<rectangle radius="5">
@@ -116,13 +119,13 @@
 				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="6" y="119" width="544" height="61" uuid="bd5e9276-b594-4aa9-896b-b56cb8638139">
+				<reportElement x="6" y="154" width="544" height="61" uuid="bd5e9276-b594-4aa9-896b-b56cb8638139">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["DESCRIPCION:"+$F{descripcion_gasto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["DESCRIPCION DEL GASTO:"+$F{descripcion_gasto}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Transparent" x="88" y="29" width="322" height="22" forecolor="#F70202" uuid="33b9630e-057c-4da3-88f5-a6d8e12dfd81">
@@ -142,14 +145,14 @@
 				<textFieldExpression><![CDATA["Fecha Doc.:"+$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="6" y="102" width="544" height="19" uuid="c92c49aa-1585-4b78-af32-f348299de6a7"/>
+				<reportElement x="6" y="130" width="544" height="19" uuid="c92c49aa-1585-4b78-af32-f348299de6a7"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["BENEFICIARIO ("+$F{tipo_proveedor}+"): "+$F{proveedor}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="6" y="181" width="334" height="17" forecolor="#000000" uuid="9b1460c0-c12c-4094-bb7f-34a6e7ebfc71">
+				<reportElement x="6" y="215" width="334" height="17" forecolor="#000000" uuid="9b1460c0-c12c-4094-bb7f-34a6e7ebfc71">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -160,7 +163,7 @@
 				<text><![CDATA[Descripcion De Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="340" y="181" width="70" height="17" forecolor="#000000" uuid="c84163a5-29bc-4e41-92be-d1dd2368ef0d">
+				<reportElement x="340" y="215" width="70" height="17" forecolor="#000000" uuid="c84163a5-29bc-4e41-92be-d1dd2368ef0d">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -171,7 +174,7 @@
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="181" width="70" height="17" forecolor="#000000" uuid="13351154-1f32-4467-afd2-6c28d274c0fd">
+				<reportElement x="410" y="215" width="70" height="17" forecolor="#000000" uuid="13351154-1f32-4467-afd2-6c28d274c0fd">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -182,7 +185,9 @@
 				<text><![CDATA[Precio]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="6" y="82" width="164" height="19" uuid="f9fafa82-b722-4c16-a9d0-f6d2011fc689"/>
+				<reportElement x="6" y="82" width="164" height="15" uuid="f9fafa82-b722-4c16-a9d0-f6d2011fc689">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
@@ -225,7 +230,7 @@
 				<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Paper_16.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="480" y="181" width="64" height="17" forecolor="#000000" uuid="92e1c902-f4c9-4b77-8e4d-e7e31e5477f2">
+				<reportElement x="480" y="215" width="64" height="17" forecolor="#000000" uuid="92e1c902-f4c9-4b77-8e4d-e7e31e5477f2">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -256,14 +261,18 @@
 				<text><![CDATA[Fecha Imp:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="238" y="82" width="110" height="19" uuid="5ef9eb02-4385-4f63-abf3-35ef59bb7659"/>
+				<reportElement x="6" y="97" width="164" height="15" uuid="5ef9eb02-4385-4f63-abf3-35ef59bb7659">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CONCEPTO:"+$F{concepto_solicitud}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="170" y="82" width="68" height="19" uuid="69ade6ca-3ea3-46da-bead-8454fe9d8934"/>
+				<reportElement x="170" y="82" width="68" height="15" uuid="69ade6ca-3ea3-46da-bead-8454fe9d8934">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
@@ -277,7 +286,9 @@
 				<textFieldExpression><![CDATA["ORDEN DE GASTO "+$F{tipo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="349" y="82" width="110" height="19" uuid="021cfc09-eba2-4a0e-9635-a0f489134157"/>
+				<reportElement x="320" y="81" width="110" height="15" uuid="021cfc09-eba2-4a0e-9635-a0f489134157">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
@@ -388,14 +399,14 @@
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="283" y="40" width="120" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
+				<reportElement x="280" y="45" width="120" height="12" uuid="10a4fcb0-d221-48de-a9e8-b79fd1936461">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FIRMA AUDITOR]]></text>
+				<text><![CDATA[FIRMA VALIDA]]></text>
 			</staticText>
 			<line>
 				<reportElement x="283" y="38" width="120" height="1" uuid="a5a8541f-e147-402f-afdf-95d1a418f906">
@@ -425,7 +436,7 @@
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FIRMA  VALIDA]]></text>
+				<text><![CDATA[FIRMA  SOLICITA SERVICIO]]></text>
 			</staticText>
 			<line>
 				<reportElement x="152" y="38" width="120" height="1" uuid="93946f8c-aaa4-4bdb-bfca-7a198e5c9ae6">
@@ -439,6 +450,13 @@
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre_solicitante_servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="38" width="120" height="14" uuid="950303a8-8365-4ded-b891-692882e84bb1"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valida}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
