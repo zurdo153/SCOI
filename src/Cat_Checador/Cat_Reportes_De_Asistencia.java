@@ -197,6 +197,9 @@ public class Cat_Reportes_De_Asistencia extends JFrame {
 				if(c_inicio.getDate().before(c_final.getDate())){
 					   reporte = "Obj_Reporte_De_Tiempo_En_Recorrido.jrxml";
 					   comando = "exec reporte_de_entradas_y_salidas_ruta '"+fecha_inicio+"','"+fecha_final+"','"+Establecimiento+"'";
+					   
+					   System.out.println(comando);
+					   
 				 	  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana); 
 				}else{
 					  JOptionPane.showMessageDialog(null, "El Rango De Fechas Esta Invertido","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));

@@ -36,6 +36,7 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 							,"Reporte De Servicios Atendidos Por Establecimiento Totales"
 							,"Reporte De Servicios Terminados A Detalle"
 							,"Reporte De Servicios Pendientes y En Proceso A Detalle"
+							,"Reporte De Servicios Asignados"
 	};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbConcepto = new JComboBox(operador);
@@ -127,7 +128,10 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 									comando="exec sp_Reporte_De_Servicios_a_Detalle_Por_Departamento '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"','SOLICITADO Y EN PROCESO'";
 									reporte ="Obj_Reporte_De_Servicios_A_Detalle.jrxml";
 							   }
-								
+								if(concepto.equals("Reporte De Servicios Asignados")){
+									comando="servicios_asignados_reporte '"+cmbDepartamento.getSelectedItem().toString().trim()+"'";
+							  		reporte = "Obj_Reporte_De_Servicios_Asignados.jrxml";
+							   }
 								
 							  }else{
 						        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));

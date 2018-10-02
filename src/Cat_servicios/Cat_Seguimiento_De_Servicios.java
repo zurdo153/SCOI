@@ -92,6 +92,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
     	
 		String comando="exec servicios_seguimiento_a_servicios_pendientes '"+Departamento+"','"+status_pedidos+"',"+usuario.getFolio();
 		
+		System.out.println(comando);
+		
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
 		
@@ -142,6 +144,8 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	JCButton btnEquipo          = new JCButton("Equipo"               ,"los-parametros-de-las-herramientas-de-icono-8319-16.png","AzulC");
 	JCButton btnAsignado        = new JCButton("Asignacion"           ,"verde-de-usuario-icono-7340-16.png","AzulC");
 	JCButton btnImprimir        = new JCButton("Imprimir"     ,"imprimir-16.png"                   ,"Azul");
+
+	JCButton btnRAsignados        = new JCButton("Asignados"     ,"imprimir-16.png"                   ,"Azul");
 	
 	JLabel lblUsuario           = new JLabel("");
 	JLabel lblDepartamento      = new JLabel("");
@@ -258,6 +262,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		this.panel.add(txtAsignado).setBounds                (x+=50   ,y      ,width+180,height   );
 		this.panel.add(btnAsignado).setBounds                (x+=303  ,y      ,width    ,height   );
 		this.panel.add(btnImprimir).setBounds                (x+=160  ,y      ,width    ,height   );
+		this.panel.add(btnRAsignados).setBounds              (x       ,y+25   ,width    ,height   );
 		
 		this.panel.add(btnDeshacer).setBounds                (x+=sep  ,y      ,width    ,height   );
 		this.panel.add(btnGuardar).setBounds                 (x+=sep  ,y      ,width    ,height   );
@@ -281,6 +286,7 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 		btnDeshacer.addActionListener(deshacer);
 		btnAtendio.addActionListener(modificaratendio);
 		btnImprimir.addActionListener(opImprimir_Reporte);
+		btnRAsignados.addActionListener(opImprimir_Reporte);
 		btnEquipo.addActionListener(modificarequipo);
 		btnAsignado.addActionListener(asignanarcolaborador);
 		btnActualizar.addActionListener(actualizartabla);
@@ -404,17 +410,34 @@ public class Cat_Seguimiento_De_Servicios extends JFrame{
 	
     ActionListener opImprimir_Reporte = new ActionListener(){
 	  	public void actionPerformed(ActionEvent e){
-	  		if(txtFolio.getText().toString().equals("")) {
-					JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Servicio","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-					return;	
-	  		}else {
-		  		  String basedatos="2.26";
-		  		  String vista_previa_reporte="no";
-		  		  int vista_previa_de_ventana=0;
-		  		  String comando="servicios_reporte_de_solicitud_de_servicio '"+txtFolio.getText().toString()+"'";
-		  		  String reporte = "Obj_Reporte_De_Solicitud_De_Servicio.jrxml";
-		  		  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
-	      	} 
+	  		
+	  		String basedatos="2.26";
+	  		String vista_previa_reporte="no";
+	  		int vista_previa_de_ventana=0;
+	  		String comando="";
+	  		String reporte = "";
+	  		  
+	  		if(e.getActionCommand().toString().trim().equals("Asignados")){
+	  			 
+  					comando="servicios_asignados_reporte '"+lblDepartamento.getText().trim()+"'";
+			  		reporte = "Obj_Reporte_De_Servicios_Asignados.jrxml";
+			  		new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+	  		  }
+
+	  		if(e.getActionCommand().toString().trim().equals("Imprimir")){
+	  			 
+	  				comando="servicios_reporte_de_solicitud_de_servicio '"+txtFolio.getText().toString()+"'";
+		  			reporte = "Obj_Reporte_De_Solicitud_De_Servicio.jrxml";
+			  		 
+			  		if(txtFolio.getText().toString().equals("")) {
+						JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Servicio","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						return;	
+			  		}else {
+				  		  new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			      	} 
+	  		  }
+	  		
+	  		
 	  	}
 	};
 	  	
