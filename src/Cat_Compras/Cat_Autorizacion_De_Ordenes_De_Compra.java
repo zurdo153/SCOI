@@ -513,8 +513,8 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     			@Override
     			public void actionPerformed(ActionEvent e) {
     			 for(int i=0;i<tablafp2.getRowCount();i++) {
-                    if(Float.valueOf(tablafp2.getValueAt(i,7).toString().trim())>Float.valueOf(tablafp2.getValueAt(i,6).toString().trim()) && tablafp2.getValueAt(i,15).toString().trim().equals("")  ) {
-    	    	  	  JOptionPane.showMessageDialog(null, "Debe De Capturar Una Observación Para la condicion Del Precio Pactado","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));  
+                    if(Float.valueOf(tablafp2.getValueAt(i,7).toString().trim())>Float.valueOf(tablafp2.getValueAt(i,6).toString().trim()) && tablafp2.getValueAt(i,14).toString().trim().equals("") && tablafp2.getValueAt(i,15).toString().trim().equals("")  ) {
+    	    	  	  JOptionPane.showMessageDialog(null, "Debe De Capturar Una Observación Para la condicion Del Precio Pactado o","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));  
     	    	  	  return;
                     }
                  }        	

@@ -40,9 +40,6 @@ public class Cat_Matrices_Unidad_De_Inspeccion extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
-	
-//	String cat = "MATRICES_CONCEPTOS";
-//	String cat = "MATRICES_ETAPAS";
 	String cat = "MATRICES_UNIDAD_DE_INSPECCION";
 	
 	Obj_tabla ObjTab =new Obj_tabla();
