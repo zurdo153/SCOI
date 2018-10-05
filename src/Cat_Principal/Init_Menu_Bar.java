@@ -306,10 +306,8 @@ public class Init_Menu_Bar extends Init_Login{
 		}
 	};
 	
-	
 	ActionListener opSalir = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
-						
 			txtFolio.setText("");
 			txtUsuario.setText("");
 			txtContrasena.setText("");
@@ -319,7 +317,7 @@ public class Init_Menu_Bar extends Init_Login{
 			btnAceptar.setVisible(true);
 			btnAceptar.setEnabled(false);
 			btnBuscar.setEnabled(true);
-            btnBanco.setEnabled(false);
+            btnOrden_Gasto.setEnabled(false);
 			btnCaja.setEnabled(false);
 			btnSolSer.setEnabled(false);
 			btnCortes_Cajeros.setEnabled(false);
@@ -329,7 +327,6 @@ public class Init_Menu_Bar extends Init_Login{
 			btnListaRaya.setEnabled(false);
 			btnListaFirma.setEnabled(false);
 			btnColaborador.setEnabled(false);
-			btnChecador.setEnabled(false);
 			btnCambiarContrasena.setVisible(false);
 			fotolb.setVisible(false);
 			deshabilitarCambiarContrasena ();

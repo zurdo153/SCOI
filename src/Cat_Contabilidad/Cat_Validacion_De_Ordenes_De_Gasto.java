@@ -22,7 +22,6 @@ import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Contabilidad.Obj_Orden_De_Gasto;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -94,9 +93,12 @@ public class Cat_Validacion_De_Ordenes_De_Gasto extends JFrame {
 	    JTable tabla = new JTable(modelo);
 		public JScrollPane scroll_tabla = new JScrollPane(tabla);
 		
-		String status[] = new Obj_Orden_De_Gasto().Combo_Cuentas();
+//		String status[] = new Obj_Orden_De_Gasto().Combo_Cuentas();
+		String status[] ={"EN VALIDACION","PENDIENTE"};
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		JComboBox cmb_status = new JComboBox(status);
+		
+		
 		
 		JTextField txtFolio      = new Componentes().text(new JCTextField()  ,"Folio"   ,30   ,"String");
 		JTextField txtPedientes  = new Componentes().text(new JCTextField(), "Cant. Pendientes", 150, "String");
@@ -128,7 +130,7 @@ public class Cat_Validacion_De_Ordenes_De_Gasto extends JFrame {
 			campo.add(btnAceptar).setBounds   (x+=130 ,y     ,width    ,height  );
 			campo.add(scroll_tabla).setBounds (x=15   ,y+=25 , ancho-25,alto-125);
 			cmb_status.setSelectedItem("EN VALIDACION");
-			cmb_status.setEnabled(false);
+//			cmb_status.setEnabled(false);
 			
 			init_tabla_principal();			
 			cont.add(campo);
@@ -150,6 +152,10 @@ public class Cat_Validacion_De_Ordenes_De_Gasto extends JFrame {
 				if(tabla.getSelectedRowCount()==0) {
 				 JOptionPane.showMessageDialog(null, "Es Requerido Seleccione Un Registro De La Tabla \nPara Poder Generar El Reporte De La Solicitud De Gasto","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				}else {
+				if(cmb_status.getSelectedItem().toString().trim().equals("EN VALIDACION")){
+						JOptionPane.showMessageDialog(null, "Las Ordenes De Gastos Que Se Originan De Un Servicio Es Requerido Sea Validada Para Poder Imprimir","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						return;
+				}else {
 					fila = tabla.getSelectedRow();
 					String basedatos="2.26";
 					String vista_previa_reporte="no";
@@ -157,6 +163,7 @@ public class Cat_Validacion_De_Ordenes_De_Gasto extends JFrame {
 					String comando="orden_de_gasto_reporte '"+tabla.getValueAt(fila, 1)+"'";
 					String reporte = "Obj_Reporte_De_Orden_De_Gasto.jrxml";
 			  	    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			    }
 				}
 			}
 	  	};

@@ -41,8 +41,9 @@ public class Cat_Reporte_De_Asistencia_Por_Empleado extends JDialog{
 	JTextField txtEstablecimiento = new Componentes().text(new JTextField(), "Establecimiento",100, "String");
 	JTextField txtDepartamento = new Componentes().text(new JTextField(), "Departamento",100, "String");
 	
-	JDateChooser c_inicio = new JDateChooser();
-	JDateChooser c_final = new JDateChooser();
+	JDateChooser c_inicio= new Componentes().jchooser(new JDateChooser()  ,"",0);
+	JDateChooser c_final = new Componentes().jchooser(new JDateChooser()  ,"",1);
+	
 	
 	JLabel JLBlinicio= new JLabel(new ImageIcon("Imagen/iniciar-icono-4628-16.png") );
 	JLabel JLBfin= new JLabel(new ImageIcon("Imagen/acabado-icono-7912-16.png") );

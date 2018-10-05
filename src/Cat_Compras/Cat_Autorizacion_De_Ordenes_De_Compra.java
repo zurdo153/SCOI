@@ -68,7 +68,6 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     	this.tablafilordenes.getColumnModel().getColumn(1).setMinWidth (120);		
     	this.tablafilordenes.getColumnModel().getColumn(2).setMinWidth (120);
     	this.tablafilordenes.getColumnModel().getColumn(2).setMaxWidth (120);
-
     	this.tablafilordenes.getColumnModel().getColumn(3).setMinWidth (150);
     	this.tablafilordenes.getColumnModel().getColumn(3).setMaxWidth (150);
     	this.tablafilordenes.getColumnModel().getColumn(4).setMinWidth (150);
@@ -78,11 +77,11 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     	this.tablafilordenes.getColumnModel().getColumn(7).setMinWidth (200);
     	this.tablafilordenes.getColumnModel().getColumn(8).setMinWidth (120);
     	this.tablafilordenes.getColumnModel().getColumn(9).setMinWidth (200);
-    	this.tablafilordenes.getColumnModel().getColumn(10).setMinWidth (80 );
+    	this.tablafilordenes.getColumnModel().getColumn(10).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(11).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(12).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(13).setMinWidth(80 );
-    	this.tablafilordenes.getColumnModel().getColumn(14).setMinWidth(80);
+    	this.tablafilordenes.getColumnModel().getColumn(14).setMinWidth(80 );
     	this.tablafilordenes.getColumnModel().getColumn(15).setMinWidth(350);
     	
 		String comandof="exec orden_de_compra_filtro_autorizacion ";
@@ -514,7 +513,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra extends JFrame{
     			public void actionPerformed(ActionEvent e) {
     			 for(int i=0;i<tablafp2.getRowCount();i++) {
                     if(Float.valueOf(tablafp2.getValueAt(i,7).toString().trim())>Float.valueOf(tablafp2.getValueAt(i,6).toString().trim()) && tablafp2.getValueAt(i,14).toString().trim().equals("") && tablafp2.getValueAt(i,15).toString().trim().equals("")  ) {
-    	    	  	  JOptionPane.showMessageDialog(null, "Debe De Capturar Una Observación Para la condicion Del Precio Pactado o","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));  
+    	    	  	  JOptionPane.showMessageDialog(null, "Debe De Capturar Una Observación Para la condicion Del Precio Pactado y/o Seleccionar una Razon","Aviso", JOptionPane.INFORMATION_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));  
     	    	  	  return;
                     }
                  }        	

@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -33,9 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
-import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.ActualizarSQL;
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -44,7 +41,6 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
-import Obj_Servicios.Obj_Correos;
 import Obj_Servicios.Obj_Servicios;
 
 @SuppressWarnings("serial")
@@ -90,8 +86,8 @@ public class Cat_Autorizacion_De_Ordenes_De_Gasto extends JFrame {
 	    	this.tabla.getColumnModel().getColumn(13).setMinWidth(90);
 	    	this.tabla.getColumnModel().getColumn(14).setMinWidth(150);
 	    	this.tabla.getColumnModel().getColumn(15).setMinWidth(100);
-	    	this.tabla.getColumnModel().getColumn(16).setMinWidth(200);
-	    	this.tabla.getColumnModel().getColumn(18).setMinWidth(200);
+	     	this.tabla.getColumnModel().getColumn(16).setMinWidth(200);
+	        this.tabla.getColumnModel().getColumn(18).setMinWidth(200);
 	    	this.tabla.getColumnModel().getColumn(19).setMinWidth(400);
 	    	
 			String comando = "orden_de_gasto_autorizacion_filtro '"+cmb_status.getSelectedItem().toString().trim()+"'";
@@ -390,6 +386,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 			if(txtTipo.getText().toString().equals("C") ) {
 				aceptar_negar="TERMINADO";
 			}
+		
+			
 			Guardar();
 		}
 	};
@@ -467,41 +465,37 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	public void Guardar(){
 	             if(tabla.isEditing()){tabla.getCellEditor().stopCellEditing();}
 	  
-				 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
+//				 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
 				  if(new ActualizarSQL().Guardar_Autorizacion_De_Orden_De_Gasto(txtFolio.getText().toString(),aceptar_negar.substring(0, 1))){
 					  
-					  System.out.println(txtTipo.getText());
-					  System.out.println(aceptar_negar);
-					  
-					  
-						if(txtTipo.getText().toString().equals("C")&& aceptar_negar.equals("TERMINADO")) {
-						         Obj_Correos correos = new Obj_Correos().buscar_correos(48, "");	
-								   String productos="\nDescripcion / Cantidad / Importe\n";
-								   for(int i=0;i<tablago.getRowCount();i++) {
-									   productos=productos+tablago.getValueAt(i, 0)+"  / "+tablago.getValueAt(i, 1)+"  /$"+tablago.getValueAt(i, 3)+" \n";
-								   }
-						           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFecha.getText().toString()+" con folio:"+txtFolio.getText().toString()
-									  		      +"\nUn Pago de Gasto La Competidora con un valor total de:$ "+txtTotal.getText().toString()
-												  +"\nDescripcion del gasto/compra: "+txtConcepto.getText().toString()
-												  +"\n"+productos
-												  +"\nPara el establecimiento: "+txtEstablecimiento.getText().toString().trim()
-												  +"\nBeneficiario: "+txtProveedor.getText().trim()
-												  +"\nAutorizó pago: "+txtSolicitante.getText().toString().trim();
-								  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago La Competidora por un total de $:"+txtTotal.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
-							
-								  System.out.println(correos.getCorreos());
-								  System.out.println(Mensaje);
-								  System.out.println(txtTipo.getText());
-								  System.out.println(aceptar_negar);
-								  
-						}else {
-						   try {servicios_solicitud = new BuscarSQL().correo_informa_estatus_solicitud(Integer.valueOf(txtFolio.getText().toString().trim()),84);
-						   } catch (SQLException e1) {e1.printStackTrace();}
-						     if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
-						      String Mensaje= "Hola "+tabla_guardado[0][7].toString()+" Tu Solicitud De Orden De Gasto Folio:"+tabla_guardado[0][1].toString()+" a Nombre De "+tabla_guardado[0][2].toString()+" Fue "+aceptar_negar+" Por "+usuario.getNombre_completo()   ;
-				      							  new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "INFORME DE SOLICITUD "+aceptar_negar+" DE LA ORDEN DE GASTO FOLIO:"+tabla_guardado[0][1].toString(),"Gastos");
-						   }
-						}
+//						if(txtTipo.getText().toString().equals("C")&& aceptar_negar.equals("TERMINADO")) {
+//						         Obj_Correos correos = new Obj_Correos().buscar_correos(48, "");	
+//								   String productos="\nDescripcion / Cantidad / Importe\n";
+//								   for(int i=0;i<tablago.getRowCount();i++) {
+//									   productos=productos+tablago.getValueAt(i, 0)+"  / "+tablago.getValueAt(i, 1)+"  /$"+tablago.getValueAt(i, 3)+" \n";
+//								   }
+//						           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFecha.getText().toString()+" con folio:"+txtFolio.getText().toString()
+//									  		      +"\nUn Pago de Gasto La Competidora con un valor total de:$ "+txtTotal.getText().toString()
+//												  +"\nDescripcion del gasto/compra: "+txtConcepto.getText().toString()
+//												  +"\n"+productos
+//												  +"\nPara el establecimiento: "+txtEstablecimiento.getText().toString().trim()
+//												  +"\nBeneficiario: "+txtProveedor.getText().trim()
+//												  +"\nAutorizó pago: "+txtSolicitante.getText().toString().trim();
+//								  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago La Competidora por un total de $:"+txtTotal.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
+//							
+//								  System.out.println(correos.getCorreos());
+//								  System.out.println(Mensaje);
+//								  System.out.println(txtTipo.getText());
+//								  System.out.println(aceptar_negar);
+//								  
+//						}else {
+//						   try {servicios_solicitud = new BuscarSQL().correo_informa_estatus_solicitud(Integer.valueOf(txtFolio.getText().toString().trim()),84);
+//						   } catch (SQLException e1) {e1.printStackTrace();}
+//						     if(!servicios_solicitud.getCorreos().toString().trim().equals("NO TIENE")){
+//						      String Mensaje= "Hola "+tabla_guardado[0][7].toString()+" Tu Solicitud De Orden De Gasto Folio:"+tabla_guardado[0][1].toString()+" a Nombre De "+tabla_guardado[0][2].toString()+" Fue "+aceptar_negar+" Por "+usuario.getNombre_completo()   ;
+//				      							  new EmailSenderService().enviarcorreo(servicios_solicitud.getCorreos(),servicios_solicitud.getCantidad_de_correos(),Mensaje, "INFORME DE SOLICITUD "+aceptar_negar+" DE LA ORDEN DE GASTO FOLIO:"+tabla_guardado[0][1].toString(),"Gastos");
+//						   }
+//						}
 						   
 			        	init_tabla_principal();
 			        	txtTotal.setText("");
