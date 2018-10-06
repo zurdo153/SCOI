@@ -13,6 +13,7 @@ public class Obj_Orden_De_Gasto {
 	float total_gasto=0;
 	int cantidad_de_correos=0;
 	int folio_servicio=0;
+	String plazo="";
 	
 	String establecimiento_solicito="";
     String cod_prv="";
@@ -22,7 +23,27 @@ public class Obj_Orden_De_Gasto {
 	String correos="";
 	String concepto_gasto="";
 	String tipo="";
+	String forma_de_pago="";
+	String cheque="";
 	
+	public String getCheque() {
+		return cheque;
+	}
+	public void setCheque(String cheque) {
+		this.cheque = cheque;
+	}
+	public String getPlazo() {
+		return plazo;
+	}
+	public void setPlazo(String plazo) {
+		this.plazo = plazo;
+	}
+	public String getForma_de_pago() {
+		return forma_de_pago;
+	}
+	public void setForma_de_pago(String forma_de_pago) {
+		this.forma_de_pago = forma_de_pago;
+	}
 	public String getTipo() {
 		return tipo;
 	}

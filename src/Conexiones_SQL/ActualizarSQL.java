@@ -3959,7 +3959,7 @@ public boolean Borrar_Observacion_DH(){
 	
 	
 public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion){
-		String query ="update orden_de_gasto set fecha_autorizacion=getdate(), usuario_autorizo="+usuario.getFolio()+",estatus='"+Accion+"' where folio="+folio;
+		String query ="exec orden_de_gasto_update_autorizacion "+usuario.getFolio()+","+folio+","+Accion;
 		Connection con = new Connexion().conexion();
 		try {
 			con.setAutoCommit(false);

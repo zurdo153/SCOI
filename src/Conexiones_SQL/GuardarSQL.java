@@ -7105,7 +7105,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		  querymod = "delete from orden_de_gasto_datos where folio_orden_de_gasto="+folio_transaccion;
 		}
 		
-		String query = "exec orden_de_gasto_insert_y_actualiza_1 ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		String query = "exec orden_de_gasto_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		
 		try {
@@ -7131,6 +7131,10 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString(12,  orden.getConcepto_gasto());				
 				pstmt.setInt   (13,  orden.getFolio_servicio());			
 				pstmt.setString(14,  orden.getTipo());	
+				pstmt.setString(15,  orden.getForma_de_pago());	
+				pstmt.setString(16,  orden.getCheque());	
+				pstmt.setString(17,  orden.getPlazo().equals("")?"0":orden.getPlazo());	
+				
 				pstmt.executeUpdate();
 			 con.commit();
 			}
@@ -7160,16 +7164,21 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 //	@folio int,@folio_orden_de_gasto int,@cantidad money, @fecha datetime, @observaciones varchar(150), @tipo_beneficiario char(1), @folio_beneficiario int, @usuario int, @concepto varchar(200)
 	
-	public boolean Guardar_Orden_De_Gasto_Pago_En_Efectivo(int folio_orden_de_gasto,float cantidad, String fecha, String observaciones, String tipoBeneficiario, int folioBeneficiario, String Concepto,String Guardar_actualizar){
+	public boolean Guardar_Orden_De_Gasto_Pago_En_Efectivo(int folio_orden_de_gasto,float cantidad, String fecha, String observaciones, String tipoBeneficiario, int folioBeneficiario, String Concepto,String Guardar_actualizar,String Cuenta_Bancaria){
 		int folio_transaccion=0;
-
+		int folio_saldo=0;
+		
 		if(Guardar_actualizar.equals("N")){
 		  folio_transaccion=busca_y_actualiza_proximo_folio(85);
+		  folio_saldo=busca_y_actualiza_proximo_folio(49);
 		}
+
 		
-		String query = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
+		String query      = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
+		String querysaldo = "exec orden_de_pago_en_efectivo_insert_saldo_nuevo ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt   = null;
+		PreparedStatement pstmtsa = null;
 		try {
 				con.setAutoCommit(false);
 				pstmt = con.prepareStatement(query);
@@ -7183,12 +7192,23 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setInt   ( 8, usuario.getFolio());		
 				pstmt.setString( 9, Concepto.toUpperCase().trim());
 				pstmt.setString(10, Guardar_actualizar);
-
 				pstmt.executeUpdate();
 			
+				pstmtsa = con.prepareStatement(querysaldo);
+//				 @folio int  ,@folio_pago int ,@observaciones varchar(160) ,@importe_ingreso numeric(15,2)  ,@importe_egreso numeric(15,2) ,@nombre_de_cuenta varchar(70),@tipo_movimiento char(1)
+				
+				pstmtsa.setInt   ( 1, folio_saldo                  );
+				pstmtsa.setInt   ( 2, folio_transaccion            );
+				pstmtsa.setString( 3, "Pago CCH:"+folio_transaccion);
+				pstmtsa.setInt   ( 4, 0                            );
+				pstmtsa.setFloat ( 5, cantidad                     );
+				pstmtsa.setString( 6, Cuenta_Bancaria              );
+				pstmtsa.setString( 7, "Egreso"                     );
+				
+				pstmtsa.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {
-			System.out.println("SQLException: "+e.getMessage()+"\n"+query);
+			System.out.println("SQLException: "+e.getMessage()+"\n"+query+"  "+querysaldo);
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Gasto_Pago_En_Efectivo ] Insert   \nSQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			if(con != null){
 				try{

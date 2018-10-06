@@ -13,9 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -50,6 +48,7 @@ import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
 import Obj_Contabilidad.Obj_Orden_De_Gasto;
+import Obj_Contabilidad.Obj_Saldo_Banco_Interno;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -64,6 +63,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	JLayeredPane panel = new JLayeredPane();
 	Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
 	Obj_tabla  ObjTab = new Obj_tabla();
+	Obj_Saldo_Banco_Interno banco_interno= new Obj_Saldo_Banco_Interno();	
 	
 	int columnasog = 4,checkbox=-1;
 	public void init_tabla(){
@@ -96,7 +96,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	JTable tablaog = new JTable(modelog);
 	public JScrollPane scroll_tabla = new JScrollPane(tablaog);
 	
-	JTextField txtBeneficiario= new Componentes().text(new JCTextField()  ,"Beneficiario"   ,250   ,"String");
+	JTextField txtBeneficiario   = new Componentes().text(new JCTextField()  ,"Beneficiario"              ,250  ,"String");
 	JTextField txtSaldo          = new Componentes().text(new JCTextField()  ,"Saldo"                     ,30   ,"String");
 	JTextField txtSaldo_Nuevo    = new Componentes().text(new JCTextField()  ,"Nuevo Saldo"               ,30   ,"String");
 	JTextField txtFolio          = new Componentes().text(new JCTextField()  ,"Folio"                     ,30   ,"String");
@@ -108,10 +108,10 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	JTextField txtFechaAutorizo  = new Componentes().text(new JCTextField()  ,"Fecha Autorizó"            ,60   ,"String");
 	JTextField txtCantidad       = new Componentes().text(new JCTextField()  ,"Cantidad"                  ,30   ,"Double");
 	
-    JTextArea  txtaUso           = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia"      , 300);
+    JTextArea  txtaUso           = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia"      ,300);
 	JScrollPane txtUso           = new JScrollPane(txtaUso);
 	
-	JDateChooser fhFecha 	= new JDateChooser();
+	JDateChooser fhFecha 	     = new Componentes().jchooser(new JDateChooser()  ,"",0);
 	
 	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -120,6 +120,10 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	public String[] concepto(){try {return new Cargar_Combo().conceptos_de_ordenes_de_pago();} catch (SQLException e) {e.printStackTrace();}return null;}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbConcepto = new JComboBox(concepto());
+	
+	String cuentas[] =  banco_interno.Combo_Cuentaspago();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbcuenta_bancaria = new JComboBox(cuentas);
 	
 	JTextArea txaConcepto = new Componentes().textArea(new JTextArea(), "Concepto", 135);
 	JScrollPane Concepto = new JScrollPane(txaConcepto);
@@ -149,7 +153,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	JToolBar menu_toolbar       = new JToolBar();
 	int folioBeneficiario = 0;
 	public Cat_Orden_De_Gasto_Pago_En_Efectivo(){
-		this.setSize(565, 570);
+		this.setSize(565, 590);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Pay-Per-Click-icon64px.png"));
@@ -199,13 +203,20 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		this.panel.add(new JLabel("Descripcion Del Gasto:")).setBounds(x=15  ,y+=25 ,300     ,height);
 		this.panel.add(txtUso).setBounds                             (x      ,y+=15 ,520     ,60    );
 		
-		this.panel.add(scroll_tabla).setBounds                       (x      ,y+=65 ,520     ,100    );
+		this.panel.add(scroll_tabla).setBounds                       (x      ,y+=65 ,520     ,100   );
 		
-		this.panel.add(new JLabel("Cantidad:$")).setBounds           (x=15   ,y+=120,70      ,height);
-		this.panel.add(txtCantidad).setBounds                        (x+=sep ,y     ,width   ,height);
-		this.panel.add(new JLabel("Saldo:$")).setBounds              (x+=125 ,y     ,width   ,height);
+		this.panel.add(new JLabel("Cuenta:")).setBounds              (x=15   ,y+=110,width   ,height);
+		this.panel.add(cmbcuenta_bancaria).setBounds                 (x+=sep ,y     ,130     ,height);
+		
+		this.panel.add(new JLabel("Fecha:")).setBounds               (x+=145 ,y     ,width   ,height);
+		this.panel.add(fhFecha).setBounds                            (x+=sep ,y     ,130     ,height);
+		
+		
+		this.panel.add(new JLabel("Cantidad:$")).setBounds           (x=15   ,y+=25 ,width   ,height);
+		this.panel.add(txtCantidad).setBounds                        (x+=sep ,y     ,130     ,height);
+		this.panel.add(new JLabel("Saldo:$")).setBounds              (x+=145 ,y     ,width   ,height);
 		this.panel.add(txtSaldo).setBounds                           (x+=40  ,y     ,width   ,height);
-		this.panel.add(new JLabel("Nuevo Saldo:$")).setBounds        (x+=125 ,y     ,width   ,height);
+		this.panel.add(new JLabel("Nuevo Saldo:$")).setBounds        (x+=105 ,y     ,width   ,height);
 		this.panel.add(txtSaldo_Nuevo).setBounds                     (x+=80  ,y     ,width   ,height);
 		
 		this.panel.add(new JLabel("Concepto:")).setBounds            (x=15   ,y+=25 ,150     ,height);
@@ -214,7 +225,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		this.panel.add(new JLabel("Beneficiario:")).setBounds        (x=15   ,y+=25 ,70      ,height);
 		this.panel.add(txtBeneficiario).setBounds                    (x+=sep ,y     ,300     ,height);
 		this.panel.add(btnBuscarBen).setBounds                       (x+=300 ,y     ,30      ,height);
-
 		
 		this.panel.add(rbProveedor).setBounds                        (x=430  ,y     ,90      ,height);
 		this.panel.add(rbEmpleado).setBounds                         (x      ,y+=20 ,90      ,height);
@@ -244,7 +254,6 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		cmbEstablecimiento.setEnabled(false);
 
 		cont.add(panel);
-		
 		cargar_datos_iniciales(); 
 		
 		btnBuscar.addActionListener(buscarorden);
@@ -255,6 +264,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		btnDeshacer.addActionListener(deshacer);
 		btnImprimir.addActionListener(opReporte);
 		btnAltaproveedor.addActionListener(opproveedor);
+		cmbcuenta_bancaria.addActionListener(cambio_de_cuenta);
 		cmbConcepto.addKeyListener(enterpasaratexareaConcepto);
 		txtautorizo.addKeyListener(enterpasaraBeneficiario);
 		rbEmpleado.addKeyListener(enterpasarafiltroBeneficiario);
@@ -262,8 +272,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		txtBeneficiario.addKeyListener(enterpasaracantidad);
 		
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscarbtn");
-         getRootPane().getActionMap().put("buscarbtn", new AbstractAction(){
-             public void actionPerformed(ActionEvent e)
+         getRootPane().getActionMap().put("buscarbtn", new AbstractAction(){public void actionPerformed(ActionEvent e)
              {                 	    btnBuscar.doClick();                   	    }	                 });
          
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "referencia");
@@ -290,23 +299,26 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	}
 	
 	public void cargar_datos_iniciales() {
-		Date date1 = null;
 		try {
 			txtFolio.setText(new BuscarSQL().folio_siguiente(85+""));
-			date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		} 
+		saldo() ;
+	};
 	
-		float saldo=new BuscarSQL().saldo_actual_para_pagos_en_efectivo();
+	
+	public void saldo() {
+		float saldo=new BuscarSQL().saldo_actual_para_pagos_en_efectivo(cmbcuenta_bancaria.getSelectedItem().toString().trim());
 		float cantidad=txtCantidad.getText().equals("")?0:Float.valueOf(txtCantidad.getText());
-		 
-		fhFecha.setDate(date1);
 		txtSaldo.setText(saldo+"");
 	    txtSaldo_Nuevo.setText( (saldo-cantidad)+"");
-	 
+	}
+	
+	ActionListener cambio_de_cuenta = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			saldo() ;
+		 }
 	};
 	
 	ActionListener buscarorden = new ActionListener(){
@@ -384,23 +396,23 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 				return;
 			}else{
                //		int folio_orden_de_gasto                               ,float cantidad                                         , String fecha                                               , String observaciones                     , String tipoBeneficiario        , int folioBeneficiario, String Concepto,String Guardar_actualizar){
-			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar )){
-				           Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
-				           String productos="\nDescripcion / Cantidad / Importe\n";
-						   for(int i=0;i<tablaog.getRowCount();i++) {
-							   productos=productos+tablaog.getValueAt(i, 0)+"  / "+tablaog.getValueAt(i, 1)+"  /$"+tablaog.getValueAt(i, 3)+" \n";
-						   }
-						   
-				           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFechaSolicito.getText().toString()+" con folio:"+txtFolioSolicitud.getText().toString()
-							  		      +"\nUn pago con un valor total de:$ "+txtCantidad.getText().toString()
-										  +"\nDescripcion del gasto/compra: "+txtaUso.getText().toString()
-										  +"\n"+productos
-										  +"\nPara el establecimiento: "+cmbEstablecimiento.getSelectedItem().toString().trim()
-										  +"\nBeneficiario: "+txtProveedor.getText().trim()
-										  +"\nAutorizó pago: "+txtautorizo.getText().toString().trim()+" el dia "+txtFechaAutorizo.getText().toString().trim()
-										  +"\nRecibio efectivo: "+txtBeneficiario.getText().trim();
-
-						  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago por un total de $:"+txtCantidad.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
+			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar,cmbcuenta_bancaria.getSelectedItem().toString().trim()) ){
+//				           Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
+//				           String productos="\nDescripcion / Cantidad / Importe\n";
+//						   for(int i=0;i<tablaog.getRowCount();i++) {
+//							   productos=productos+tablaog.getValueAt(i, 0)+"  / "+tablaog.getValueAt(i, 1)+"  /$"+tablaog.getValueAt(i, 3)+" \n";
+//						   }
+//						   
+//				           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFechaSolicito.getText().toString()+" con folio:"+txtFolioSolicitud.getText().toString()
+//							  		      +"\nUn pago con un valor total de:$ "+txtCantidad.getText().toString()
+//										  +"\nDescripcion del gasto/compra: "+txtaUso.getText().toString()
+//										  +"\n"+productos
+//										  +"\nPara el establecimiento: "+cmbEstablecimiento.getSelectedItem().toString().trim()
+//										  +"\nBeneficiario: "+txtProveedor.getText().trim()
+//										  +"\nAutorizó pago: "+txtautorizo.getText().toString().trim()+" el dia "+txtFechaAutorizo.getText().toString().trim()
+//										  +"\nRecibio efectivo: "+txtBeneficiario.getText().trim();
+//
+//						  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago por un total de $:"+txtCantidad.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
 
 						        btnDeshacer.doClick();
 								Guardar_actualizar="";

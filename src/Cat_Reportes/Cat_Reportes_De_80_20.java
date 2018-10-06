@@ -4,10 +4,7 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -18,9 +15,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
+import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 
 import com.toedter.calendar.JDateChooser;
@@ -30,7 +27,7 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-	JDateChooser c_inicio = new JDateChooser();
+	JDateChooser c_inicio= new Componentes().jchooser(new JDateChooser()  ,"",1);
 	JDateChooser c_final = new JDateChooser();
 	
 	String[] establecimiento = new Obj_Establecimiento().Combo_Establecimiento201();
@@ -78,21 +75,8 @@ public class Cat_Reportes_De_80_20 extends JFrame {
 		this.panel.add(btngenerar_reporte).setBounds          (x    ,y+=50   ,width   ,height*2 );
 		this.cont.add(panel);
 		
-		c_inicio.setDate( cargar_fechas(0));
 		btngenerar_reporte.addActionListener(opGenerar_reporte);
 	}
-	
-	public Date cargar_fechas(Integer dias){
-		Date date1 = null;
-				  try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(dias));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		return date1;
-	};
 	
 	public String validar_campos(){
 		String error = "";

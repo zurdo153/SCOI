@@ -344,7 +344,6 @@ public void constructor_Ingreso(String tipo) {
 		 		tipo_movimiento="T";
 	 		}
 	 		
-	 		
 	 		if(tipo.equals("Egreso Dls y Vales")){
 	 			this.setSize(745,230);
 	 			this.cmb_status.setSelectedItem("RECIBIDO");
@@ -397,8 +396,6 @@ public void constructor_Ingreso(String tipo) {
 		 		txttotalImporte_BI.addKeyListener(valorEgreso);
 		 		tipo_movimiento="D";
 	 		}
-	 		
-	 		
 	 		
    }
    
@@ -488,7 +485,6 @@ public void constructor_Ingreso(String tipo) {
 			String folio="";
 			try {folio= new BuscarSQL().folio_siguiente(45+"");
 			} catch (SQLException e1) {	e1.printStackTrace();}
-
 			txtFolio_impresion.setEditable(false);
 			txtFolio.setText(folio);
 			txtFolio.setEditable(false);
@@ -500,7 +496,6 @@ public void constructor_Ingreso(String tipo) {
 			cmbcuenta_bancaria.setEnabled(true);
 	 		float saldo=new BuscarSQL().saldo_banco_interno_por_cuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
 	 		txtSaldo_Actual.setText(saldo+"");
-	 		
 	 		btnSolicitante.setEnabled(true);
 	 		btnSolicitante.doClick();
 		}

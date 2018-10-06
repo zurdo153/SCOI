@@ -9910,12 +9910,11 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}
 			return cuest;
 		}
-
 	
 	 public String[][] Tabla_Orden_Gasto(int folio_gasto){
 			String[][] Matriz = null;
 			String query = "exec orden_de_gasto_consulta "+folio_gasto;
-			Matriz = new String[getFilas(query)][21];
+			Matriz = new String[getFilas(query)][24];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -9944,7 +9943,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][18] = rs.getString(19);
 					Matriz[i][19] = rs.getString(20);
 					Matriz[i][20] = rs.getString(21);
-					
+					Matriz[i][21] = rs.getString(22);
+					Matriz[i][22] = rs.getString(23);
+					Matriz[i][23] = rs.getString(24);
 					i++;
 				}
 			} catch (SQLException e1) {
@@ -9993,20 +9994,20 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 
 	 
 	 
-	 public float saldo_actual_para_pagos_en_efectivo(){
-			String query = "select top 1 saldo from orden_de_gasto_pago_en_efectivo order by fecha_mov desc"; 
-			float folio =0;
+	 public float saldo_actual_para_pagos_en_efectivo(String cuenta){
+			String query = "orden_de_pago_en_efectivo_calculo_de_saldo '"+cuenta+"'"; 
+			float saldo =0;
 			try {
 				Statement stmt = new Connexion().conexion().createStatement();
 				ResultSet rs = stmt.executeQuery(query);
 				while(rs.next()){
-					folio =  rs.getFloat(1);
+					saldo =  rs.getFloat(1);
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Error en BuscarTablasModel  en la funcion [saldo_actual_para_pagos_en_efectivo] SQLException: "+e1.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen//usuario-icono-eliminar5252-64.png"));
 			}
-		    return folio; 
+		    return saldo; 
 		}
 	
 	public Obj_Asignacion_De_Cuestionarios asig_cuest(int folio) throws SQLException{

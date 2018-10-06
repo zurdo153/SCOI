@@ -40,7 +40,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Imagenes_Para_Aviso_Checador extends JFrame{
+public class Cat_Asignacion_De_Imagenes_Para_Aviso_Checador extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -69,7 +69,7 @@ public class Cat_Imagenes_Para_Aviso_Checador extends JFrame{
 	
 	Border blackline;
 	
-	public Cat_Imagenes_Para_Aviso_Checador() {
+	public Cat_Asignacion_De_Imagenes_Para_Aviso_Checador() {
 		
 		this.cont.add(panel);
 		this.setSize(435,515);
@@ -417,7 +417,7 @@ public class Cat_Imagenes_Para_Aviso_Checador extends JFrame{
 	public static void main(String [] arg){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Imagenes_Para_Aviso_Checador().setVisible(true);
+			new Cat_Asignacion_De_Imagenes_Para_Aviso_Checador().setVisible(true);
 		}catch(Exception e){	}
 	}
 

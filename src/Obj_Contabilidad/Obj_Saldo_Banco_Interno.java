@@ -98,6 +98,15 @@ public class Obj_Saldo_Banco_Interno {
 		return null; 
 	}
 
+	public String[] Combo_Cuentaspago() {
+		try {
+			return new Cargar_Combo().Combos("cuentaspago");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
 	public String[] Combo_Cuentas_reposicion_caja_chica() {
 		try {
 			return new Cargar_Combo().Combos("reposicioncajachica");
