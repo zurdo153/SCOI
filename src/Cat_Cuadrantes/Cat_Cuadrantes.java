@@ -278,8 +278,7 @@ public class Cat_Cuadrantes extends JFrame{
 	JCButton btnfilpuestos= new JCButton(""          ,"Filter-List-icon16.png"     ,"Azul");
 	JCButton btnfilrepora = new JCButton(""          ,"Filter-List-icon16.png"     ,"Azul");
 	
-	JCButton btnReporte   = new JCButton("Reporte"   ,"Lista.png"                ,"Azul");
-	JCButton btnReporteL   = new JCButton("Reporte Limpio"   ,"Lista.png"                ,"Azul");
+	JCButton btnCatReporte   = new JCButton("Reporte"   ,"Lista.png"                ,"Azul");
 
 	JToolBar toolbarLunes         = new JToolBar();
 	JCButton btnAgregLunes        = new JCButton("Agregar Lunes","double-arrow-icone-3883-16.png"  ,"Azul" );
@@ -369,10 +368,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.menu_toolbar.add(btnGuardar );
 		this.menu_toolbar.addSeparator(  );
 		this.menu_toolbar.addSeparator(  );
-		this.menu_toolbar.add(btnReporte );
-		this.menu_toolbar.addSeparator(  );
-		this.menu_toolbar.addSeparator(  );
-		this.menu_toolbar.add(btnReporteL);
+		this.menu_toolbar.add(btnCatReporte );
 		this.menu_toolbar.setFloatable(false);
 		
 		this.pestanas.addTab("Lunes"    ,pLunes    );
@@ -431,8 +427,7 @@ public class Cat_Cuadrantes extends JFrame{
 		this.btnderecha.addActionListener   (opDerecha      );
 		this.btnizquierda.addActionListener (opIzquierda    );
 		
-		this.btnReporte.addActionListener(reporte);
-		this.btnReporteL.addActionListener(reporte);
+		this.btnCatReporte.addActionListener(cat_reporte);
 		
 		cont.add(panel);
 		
@@ -1035,18 +1030,11 @@ public class Cat_Cuadrantes extends JFrame{
 	    }
 	};
     
-	ActionListener reporte = new ActionListener(){
+	ActionListener cat_reporte = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
-			String tipo = e.getActionCommand().toString();
-			
 			if(!txtFolio.getText().trim().equals("")){
-					String basedatos="2.26";
-					String vista_previa_reporte="no";
-					int vista_previa_de_ventana=0;
-					String reporte = "Obj_Reporte_De_Cuadrantes"+(tipo.equals("Reporte")?"":"_Limpio")+".jrxml";
-				    String comando = "exec reporte_de_cuadrante "+txtFolio.getText().trim();
-				    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				    new Cat_Reporte_Cuadrante().setVisible(true);
 			}else{
 				JOptionPane.showMessageDialog(null, "Es Necesario Ingresar El Folio Del Cuadrante","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 				return;
@@ -1872,6 +1860,101 @@ public class Cat_Cuadrantes extends JFrame{
 				public void keyPressed(KeyEvent arg0) {}		
 			};
 		}
+		
+	public class Cat_Reporte_Cuadrante extends JDialog{
+		
+		Container contReport = getContentPane();
+		JLayeredPane panelReport = new JLayeredPane();
+		
+		JCButton btnReporte   = new JCButton("Reporte"   ,"Lista.png"                ,"Azul");
+		JCButton btnReporteL   = new JCButton("Reporte Limpio"   ,"Lista.png"                ,"Azul");
+		
+		JCheckBox chTodos = new JCheckBox("Todos");
+		JCheckBox chLunes = new JCheckBox("Lunes");
+		JCheckBox chMartes = new JCheckBox("Martes");
+		JCheckBox chMiercoles = new JCheckBox("Miércoles");
+		JCheckBox chJueves = new JCheckBox("Jueves");
+		JCheckBox chViernes = new JCheckBox("Viernes");
+		JCheckBox chSabado = new JCheckBox("Sábado");
+		JCheckBox chDomingo = new JCheckBox("Domingo");
+		
+		public Cat_Reporte_Cuadrante(){
+			this.setSize(350,160);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/favoritos-ver-boton-icono-8318-32.png"));
+			this.setTitle("Reportes De Cuadrantes");
+			this.panelReport.setBorder(BorderFactory.createTitledBorder("Reprotes"));
+			
+			int x=20,y=15,ancho=80;
+			panelReport.add(new JLabel("Dias:")).setBounds(x, y, ancho, 20);
+			
+			panelReport.add(chTodos).setBounds(x, y+=25, ancho, 20);
+			panelReport.add(chLunes).setBounds(x, y+25, ancho, 20);
+			panelReport.add(chMartes).setBounds(x+=80, y, ancho, 20);
+			panelReport.add(chMiercoles).setBounds(x, y+25, ancho, 20);
+			
+			panelReport.add(chJueves).setBounds(x+=80, y, ancho, 20);
+			panelReport.add(chViernes).setBounds(x, y+25, ancho, 20);
+			
+			panelReport.add(chSabado).setBounds(x+=80, y, ancho, 20);
+			panelReport.add(chDomingo).setBounds(x, y+25, ancho, 20);
+			
+			panelReport.add(btnReporte).setBounds(x=20, y+50, ancho*2-30, 20);
+			panelReport.add(btnReporteL).setBounds(x+140, y+50, ancho*2, 20);
+			
+			contReport.add(panelReport);
+			
+			btnReporte.addActionListener(reporte);
+			btnReporteL.addActionListener(reporte);
+			
+			chTodos.addActionListener(dias);
+		}
+		
+		ActionListener dias = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				
+					chLunes.setSelected(chTodos.isSelected());
+					chMartes.setSelected(chTodos.isSelected());
+					chMiercoles.setSelected(chTodos.isSelected());
+					chJueves.setSelected(chTodos.isSelected());
+					chViernes.setSelected(chTodos.isSelected());
+					chSabado.setSelected(chTodos.isSelected());
+					chDomingo.setSelected(chTodos.isSelected());
+			}		
+		};
+		
+		ActionListener reporte = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				
+				String dias = "";
+				
+				dias += chLunes.isSelected()?"Lunes,":"";
+				dias += chMartes.isSelected()?"Martes,":"";
+				dias += chMiercoles.isSelected()?"Miércoles,":"";
+				dias += chJueves.isSelected()?"Jueves,":"";
+				dias += chViernes.isSelected()?"Viernes,":"";
+				dias += chSabado.isSelected()?"Sábado,":"";
+				dias += chDomingo.isSelected()?"Domingo,":"";
+				
+				dias = dias.equals("") ? "" : dias.substring(0, dias.length()-1);
+				String tipo = e.getActionCommand().toString();
+				
+				if(!dias.equals("")){
+						String basedatos="2.26";
+						String vista_previa_reporte="no";
+						int vista_previa_de_ventana=0;
+						String reporte = "Obj_Reporte_De_Cuadrantes"+(tipo.equals("Reporte")?"":"_Limpio")+".jrxml";
+					    String comando = "exec reporte_de_cuadrante "+txtFolio.getText().trim()+",'"+dias+"'";
+					    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+				}else{
+					JOptionPane.showMessageDialog(null, "Es Necesario Seleccionar Días","Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+					return;
+				}
+			}		
+		};
+	}
 
 	public static void main(String args[]){
 		try{UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
