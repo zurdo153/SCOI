@@ -25,6 +25,7 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Generacion_Reportes;
 import Conexiones_SQL.GuardarSQL;
+import Obj_Contabilidad.Obj_Saldo_Banco_Interno;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
@@ -36,6 +37,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	Obj_tabla ObjTab= new Obj_tabla();
+	Obj_Saldo_Banco_Interno banco_interno= new Obj_Saldo_Banco_Interno();	
 	
 	int columnas = 10,checkbox=10;	
 	public void refrescar(){
@@ -53,7 +55,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		this.tabla.getColumnModel().getColumn(8).setMaxWidth(57);
 		this.tabla.getColumnModel().getColumn(9).setMaxWidth(20);
 		this.tabla.getColumnModel().getColumn(9).setMinWidth(20);
-		String comando="exec orden_de_gasto_corte_de_caja_chica '"+cmb_concepto.getSelectedItem().toString().trim()+"'";
+		String comando="exec orden_de_gasto_corte_de_caja_chica '"+cmb_concepto.getSelectedItem().toString().trim()+"','"+cmbcuenta_bancaria.getSelectedItem().toString()+"'";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
     }
@@ -90,6 +92,10 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_concepto = new JComboBox(conceptos);
 	
+	String cuentas[] =  banco_interno.Combo_Cuentaspago();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmbcuenta_bancaria = new JComboBox(cuentas);
+	
 	public Cat_Corte_Del_Pago_De_Ordenes_De_Gasto(){
 		this.setSize(1024, 710);
 		this.setLocationRelativeTo(null);
@@ -97,14 +103,23 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/ok-lista-de-verificacion-icono-7906-64.png"));
 		this.setTitle("Corte De Ordenes De Pago En Efectivo");
 		panel.setBorder(BorderFactory.createTitledBorder("Selecciona Las Ordenes De Pago Que Quieres Incluir En El Corte"));
-		this.panel.add(txtFiltro).setBounds                    (10  ,20 ,500  ,20 );
-		this.panel.add(cmb_concepto).setBounds                 (520 ,20 ,70   ,20 );
-		panel.add(new JLabel("Folio Corte Ordenes De Pago:")).setBounds(600,20,190 ,20 );
-		this.panel.add(txtfoliocorte).setBounds                (745 ,20 ,75   ,20 );
-		this.panel.add(btnGuardar).setBounds                   (850 ,20 ,145  ,20 );
-		this.panel.add(scroll_tabla).setBounds                 ( 10 ,40 ,985  ,600);
-		this.panel.add(txtfolio_corte_consulta).setBounds      (700 ,645,145  ,20 );
-		this.panel.add(btnReporte).setBounds                   (850 ,645,145  ,20 );
+		
+		int x=10,y=20,width=145,height=20;
+
+		this.panel.add(new JLabel("Folio Corte Ordenes De Pago:")).setBounds(x      ,y     ,width  ,height );
+		this.panel.add(txtfoliocorte).setBounds                             (x+=145 ,y     ,75     ,height );
+		this.panel.add(new JLabel("Concepto:")).setBounds                   (x+=90  ,y     ,width  ,height );
+		this.panel.add(cmb_concepto).setBounds                              (x+=53  ,y     ,90     ,height );
+		this.panel.add(new JLabel("Cuenta:")).setBounds                     (x+=100 ,y     ,width  ,height );
+		this.panel.add(cmbcuenta_bancaria).setBounds                        (x+=43  ,y     ,110    ,height );
+		this.panel.add(txtfolio_corte_consulta).setBounds                   (x+=120 ,y     ,width  ,height );
+		this.panel.add(btnReporte).setBounds                                (x+=150 ,y     ,120    ,height );
+		this.panel.add(btnGuardar).setBounds                                (x+=180 ,y     ,100    ,height );
+
+		this.panel.add(txtFiltro).setBounds                                 (x=10   ,y+=25 ,985    ,height );
+		this.panel.add(scroll_tabla).setBounds                              (x      ,y+=20 ,985    ,600    );
+		
+
 		this.cont.add(panel);
 		this.refrescar();
 		this.txtfoliocorte.setEditable(false);
@@ -117,6 +132,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 		btnGuardar.addActionListener(op_guardar);
 		btnReporte.addActionListener(opReporte_De_Corte_De_Ordenes_De_Compra);
 		cmb_concepto.addActionListener(opCambiar_Concepto);
+		cmbcuenta_bancaria.addActionListener(opCambiar_Concepto);
 	}
 
 	ActionListener op_guardar = new ActionListener() {
@@ -162,6 +178,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 			   refrescar();
 		   }
 	};
+	
 	
 	  private KeyListener opFiltroGeneral = new KeyListener(){
 			public void keyReleased(KeyEvent arg0) {
