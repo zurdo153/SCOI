@@ -133,7 +133,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	JTextField txtEdadIn = new Componentes().text(new JCTextField(), "", 2, "Int");
 	JTextField txtEdadFin = new Componentes().text(new JCTextField(), "", 2, "Int");
 	
-	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO","INDEFINIDO"};
+	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO","INDISTINTO"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbSexo = new JComboBox(sexo);
 	

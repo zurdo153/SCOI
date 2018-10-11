@@ -7174,7 +7174,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}
 
 		
-		String query      = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?";
+		String query      = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
 		String querysaldo = "exec orden_de_pago_en_efectivo_insert_saldo_nuevo ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt   = null;
@@ -7191,11 +7191,12 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setInt   ( 7, folioBeneficiario);
 				pstmt.setInt   ( 8, usuario.getFolio());		
 				pstmt.setString( 9, Concepto.toUpperCase().trim());
-				pstmt.setString(10, Cuenta_Bancaria);
-				pstmt.setString(11, Guardar_actualizar);
+				pstmt.setString(10, Guardar_actualizar);
 				pstmt.executeUpdate();
 			
 				pstmtsa = con.prepareStatement(querysaldo);
+//				 @folio int  ,@folio_pago int ,@observaciones varchar(160) ,@importe_ingreso numeric(15,2)  ,@importe_egreso numeric(15,2) ,@nombre_de_cuenta varchar(70),@tipo_movimiento char(1)
+				
 				pstmtsa.setInt   ( 1, folio_saldo                  );
 				pstmtsa.setInt   ( 2, folio_transaccion            );
 				pstmtsa.setString( 3, "Pago CCH:"+folio_transaccion);
@@ -7203,6 +7204,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmtsa.setFloat ( 5, cantidad                     );
 				pstmtsa.setString( 6, Cuenta_Bancaria              );
 				pstmtsa.setString( 7, "Egreso"                     );
+				
 				pstmtsa.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {
