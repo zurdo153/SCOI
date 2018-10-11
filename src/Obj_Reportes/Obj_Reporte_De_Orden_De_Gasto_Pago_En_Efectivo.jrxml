@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Orden_De_Pago_En_Efectivo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1680c4b3-ed3f-448e-b482-3446bd4d59e5">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRuebas"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="343"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="647"/>
@@ -29,7 +29,7 @@
 	<field name="tipo_proveedor" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tipo_proveedor"/>
 	</field>
-	<field name="importe_total" class="java.math.BigDecimal">
+	<field name="importe_total" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="importe_total"/>
 	</field>
 	<field name="usuario_solicito" class="java.lang.Integer">
@@ -62,13 +62,13 @@
 	<field name="folio_del_pago" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="folio_del_pago"/>
 	</field>
-	<field name="cantidad" class="java.math.BigDecimal">
+	<field name="cantidad" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
 	</field>
 	<field name="cantidad_con_letra" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="cantidad_con_letra"/>
 	</field>
-	<field name="saldo" class="java.math.BigDecimal">
+	<field name="saldo" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="saldo"/>
 	</field>
 	<field name="fecha_a_la_que_corresponde_el_pago" class="java.lang.String">
@@ -88,6 +88,9 @@
 	</field>
 	<field name="concepto_compra_gasto" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="concepto_compra_gasto"/>
+	</field>
+	<field name="nombre_de_cuenta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_de_cuenta"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -299,6 +302,13 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["TIPO: "+$F{concepto_compra_gasto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="96" width="110" height="13" uuid="dfc9d9d4-7584-463c-b4f5-0a454d4a59f0"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_de_cuenta}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

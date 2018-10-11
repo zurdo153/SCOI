@@ -123,7 +123,7 @@ public class Cat_Banco_Interno extends JFrame{
     	this.tablaegresos.getColumnModel().getColumn(4).setMinWidth(20);
     	this.tablaegresos.getColumnModel().getColumn(4).setMaxWidth(20);
     	
-    	String comando="banco_interno_relacion_de_cortes_de_caja_chica_para_reposicion_de_efectivo " ;
+    	String comando="banco_interno_relacion_de_cortes_de_caja_chica_para_reposicion_de_efectivo '"+cmbcuenta_bancaria.getSelectedItem().toString().trim()+"'" ;
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tablaegresos,modelo_egresos, columnas2, comando, basedatos,pintar,checkbox2);
     }
@@ -297,8 +297,6 @@ public void constructor_Ingreso(String tipo) {
 		 	    for(int i=0;i<cuentas.length;i++){
 		 	    	cmbcuenta_bancaria.addItem(cuentas[i].toString().trim());
 		 		  }
-		 	    
-		 		init_tabla_egresos();
 		 		tablaegresos.addMouseListener(opAgregarCalculoClickEgreso);
 		 		tablaegresos.setEnabled(false);
 		 		btnNuevo.addActionListener(nuevo_egreso);
@@ -514,6 +512,7 @@ public void constructor_Ingreso(String tipo) {
 		public void actionPerformed(ActionEvent e){
 			float saldo=new BuscarSQL().saldo_banco_interno_por_cuenta(cmbcuenta_bancaria.getSelectedItem().toString().trim());
 	 		txtSaldo_Actual.setText(saldo+"");
+	 		init_tabla_egresos();
 			tablaegresos.setEnabled(true);
 		}
 	};
