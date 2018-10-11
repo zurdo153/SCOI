@@ -41,7 +41,6 @@ import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
-import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
@@ -54,7 +53,6 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
-import Obj_Servicios.Obj_Correos;
 
 @SuppressWarnings("serial")
 public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{

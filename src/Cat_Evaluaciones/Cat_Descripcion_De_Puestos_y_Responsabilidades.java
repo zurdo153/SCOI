@@ -133,7 +133,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	JTextField txtEdadIn = new Componentes().text(new JCTextField(), "", 2, "Int");
 	JTextField txtEdadFin = new Componentes().text(new JCTextField(), "", 2, "Int");
 	
-	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO"};
+	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO","INDEFINIDO"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbSexo = new JComboBox(sexo);
 	
@@ -263,8 +263,11 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	String movimiento = "";
 	
 //	boolean mostrarPuestosDisponibles = false;
+	@SuppressWarnings("unchecked")
 	public Cat_Descripcion_De_Puestos_y_Responsabilidades() {
 		
+		cmbEstadoCivil.addItem("INDEFINIDO");
+				
 		this.panelBase.setBorder(BorderFactory.createTitledBorder(blackline, "Ingresar Datos DPR"));
 		
 		this.menu_toolbar.add(btnNuevo);

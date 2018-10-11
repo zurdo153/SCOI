@@ -8068,8 +8068,8 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 pstmt.setInt(i+=1,dpr.getEdadIn());
 			 pstmt.setInt(i+=1,dpr.getEdadFin());
 			 pstmt.setInt(i+=1,dpr.getFolioReportaA());
-			 pstmt.setString(i+=1,dpr.getSexo());
-			 pstmt.setString(i+=1,dpr.getEstadoCivil());
+			 pstmt.setString(i+=1,dpr.getSexo()); // SE GUARDARA LA INICIAL DEL STATUS
+			 pstmt.setString(i+=1,dpr.getEstadoCivil()); // SE GUARDA EL FOLIO DEL ESTADO CIVIL, SI ES INDEFINIDO GUARDARÁ (0)
 			 
 			 pstmt.setString(i+=1,dpr.getObjetivoPuesto());
 			 
