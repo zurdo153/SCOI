@@ -379,7 +379,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			
 			if(validarCampos.equals("")){
 				if(txtFolioPuesto.getText().trim().equals(txtFolioReportaA.getText().trim())){
-					limpiarCampos();
+//					limpiarCampos();
 					camposActivos(false);
 					btnBuscarPuesto.setEnabled(true);
 					JOptionPane.showMessageDialog(null, "Los Campos De Puesto Y Reporta A, No Pueden Ser Iguales\n(Los Puestos No Pueden Reportar A Sí Mismos)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -447,6 +447,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		dpr.setOtro(chbOtro.isSelected());
 		
 		dpr.setNotaOtro(txtOtro.getText().trim().toUpperCase());
+		
 		
 		if(dpr.guardar(movimiento)){
 			limpiarCampos();

@@ -272,7 +272,7 @@ public class Cat_Validar_Llegada_De_Chofer_Con_Tranferencia extends JDialog  {
     		lblAviso.setHorizontalAlignment(0);
     		lblAviso2.setHorizontalAlignment(0);
     		
-//    		llenarTabla();
+    		llenarTabla();
     		
     		btnRegistrarLlegada.addActionListener(opPasarTransferencias);
     		
