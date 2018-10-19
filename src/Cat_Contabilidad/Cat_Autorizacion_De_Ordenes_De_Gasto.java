@@ -275,7 +275,9 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	JTextField txtFolio_prv       = new Componentes().text(new JCTextField()  ,"Folio Prv"                 ,30   ,"String");
 	JTextField txtProveedor       = new Componentes().text(new JCTextField()  ,"Proveedor"                 ,250  ,"String");
 	JTextField txtFoliosolicit    = new Componentes().text(new JCTextField()  ,"Folio Solicita"            ,30   ,"String");
-	JTextField txtSolicitante     = new Componentes().text(new JCTextField()  ,"Autoriza"                  ,300  ,"String");
+	JTextField txtValida          = new Componentes().text(new JCTextField()  ,"Valida"                    ,30   ,"String");
+	JTextField txtFechaValida     = new Componentes().text(new JCTextField()  ,"Fecha Valida"              ,30   ,"String");
+	JTextField txtAutoriza        = new Componentes().text(new JCTextField()  ,"Autorizó"                  ,300  ,"String");
 	JTextField txtFecha           = new Componentes().text(new JCTextField()  ,"Fecha"                     ,60   ,"String");
 	JTextField txtTotal           = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
 	JTextField txtEstatus         = new Componentes().text(new JCTextField()  ,"Estatus"                   ,50   ,"String");
@@ -285,6 +287,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	JTextField txtFolioservici    = new Componentes().text(new JCTextField()  ,"Folio Servicio"            ,30   ,"String");
 	JTextField txtDetalleServi    = new Componentes().text(new JCTextField()  ,"Detalle Servicio"          ,350  ,"String");
 	JTextField txtTipo            = new Componentes().text(new JCTextField()  ,"Tipo"                      ,35   ,"String");
+	JTextField txtForma_pago      = new Componentes().text(new JCTextField()  ,"Forma Pago "               ,35   ,"String");
+	JTextField txtPlazo           = new Componentes().text(new JCTextField()  ,"Plazo"                     ,35   ,"String");
 	
     JTextArea txaUso       = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia", 300);
 	JScrollPane Uso        = new JScrollPane(txaUso);
@@ -307,7 +311,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
     String guardar_actualizar="";
    public  Cat_Solicitud_De_Orden_De_Gasto_Autorizacion(int folio){
 	    this.cont.add(panel);
-		this.setSize(825,400);
+		this.setSize(825,450);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setModal(true);
@@ -331,15 +335,31 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
    	 
 		int x=20, y=20,width=122,height=20, sep=130;
 		this.panel.add(menu_toolbar).setBounds                        (x         ,y      ,400     ,height );
-		this.panel.add(txtSolicito).setBounds                         (x+440     ,y      ,300     ,height );
-		this.panel.add(txtTipo).setBounds                             (x+740     ,y      ,40      ,height );		
+
+		this.panel.add(new JLabel("Solicita:")).setBounds             (x=20      ,y+=30  ,width   ,height );
+		this.panel.add(txtSolicito).setBounds                         (x+=40     ,y      ,300     ,height );
+		this.panel.add(new JLabel("Fecha Solicitud:")).setBounds      (x+=310    ,y      ,width   ,height );
+		this.panel.add(txtFecha).setBounds                            (x+=80     ,y      ,130     ,height );
+		this.panel.add(new JLabel("Concepto:")).setBounds             (x+=140    ,y      ,width   ,height );
+		this.panel.add(txtConcepto).setBounds                         (x+=50     ,y      ,width   ,height );
 		
-		this.panel.add(txtFolio).setBounds                            (x         ,y+=30  ,width   ,height );
-		this.panel.add(txtConcepto).setBounds                         (x+=sep    ,y      ,width   ,height );
-		this.panel.add(txtEstatus).setBounds                          (x+=sep    ,y      ,width   ,height );
-		this.panel.add(txtEstablecimiento).setBounds                  (x+=sep    ,y      ,160     ,height );
-		this.panel.add(new JLabel("Fecha Solicitud:")).setBounds      (x+=170    ,y      ,width   ,height );
-		this.panel.add(txtFecha).setBounds                            (x+=80     ,y      ,140     ,height );
+		
+		this.panel.add(new JLabel("Valida:")).setBounds               (x=20      ,y+=25  ,width   ,height );
+		this.panel.add(txtValida).setBounds                           (x+=40     ,y      ,300     ,height );
+		this.panel.add(new JLabel("Fecha Valida:")).setBounds         (x+=310    ,y      ,width   ,height );
+		this.panel.add(txtFechaValida).setBounds                      (x+=80     ,y      ,130     ,height );
+		this.panel.add(new JLabel("Estatus:")).setBounds              (x+=140    ,y      ,width   ,height );
+		this.panel.add(txtEstatus).setBounds                          (x+=50     ,y      ,width   ,height );
+		
+		this.panel.add(new JLabel("Folio:")).setBounds                (x=20      ,y+=25  ,width   ,height );
+		this.panel.add(txtFolio).setBounds                            (x+=40     ,y      ,width   ,height );
+		this.panel.add(txtEstablecimiento).setBounds                  (x+=sep    ,y      ,170     ,height );
+		this.panel.add(new JLabel("Forma de Pago:")).setBounds        (x+=180    ,y      ,width   ,height );
+		this.panel.add(txtForma_pago).setBounds                       (x+=80     ,y      ,130     ,height );
+		this.panel.add(new JLabel("Tipo:")).setBounds                 (x+=140    ,y      ,width   ,height );
+		this.panel.add(txtTipo).setBounds                             (x+=40     ,y      ,40      ,height );	
+		this.panel.add(new JLabel("Plazo:")).setBounds                (x+=50     ,y      ,width   ,height );
+		this.panel.add(txtPlazo).setBounds                            (x+=40     ,y      ,42      ,height );	
 		
 		this.panel.add(txtFolio_prv).setBounds                        (x=20      ,y+=25  ,60      ,height );
 		this.panel.add(txtProveedor).setBounds                        (x+=60     ,y      ,490     ,height );
@@ -354,8 +374,10 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		this.panel.add(Uso).setBounds                                 (x         ,y+=15  ,780     ,50     );
 		this.panel.add(scroll_tabla).setBounds                        (x=20      ,y+=55  ,780     ,150    );
 		this.panel.add(txtFoliosolicit).setBounds                     (x         ,y+=150 ,60      ,height );		
-		this.panel.add(txtSolicitante).setBounds                      (x+60      ,y      ,320     ,height );
-		this.panel.add(txtTotal).setBounds                            (x+682     ,y      ,98      ,height );
+		this.panel.add(txtAutoriza).setBounds                         (x+=60     ,y      ,320     ,height );
+
+		
+		this.panel.add(txtTotal).setBounds                            (702       ,y      ,98      ,height );
 		this.init_tabla();
 		this.Buscar(folio);
 
@@ -363,7 +385,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		this.btnAceptar.addActionListener(opaceptar);
 		this.btnNegar.addActionListener(opnegar);
 		this.btnCancelar.addActionListener(opacancelar);
-		this.txtSolicitante.setText(usuario.getNombre_completo());
 		this.txtFoliosolicit.setText(usuario.getFolio()+"");
 		
 		if(cmb_status.getSelectedItem().equals("PENDIENTE")||cmb_status.getSelectedItem().equals("AUTORIZADO")){
@@ -386,7 +407,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 			if(txtTipo.getText().toString().equals("C") ) {
 				aceptar_negar="TERMINADO";
 			}
-		
 			
 			Guardar();
 		}
@@ -417,6 +437,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		txtFecha.setText(tablacompleta[0][12].toString());
 		txtSolicito.setText (tablacompleta[0][14].toString());
 		txtEstatus.setText(tablacompleta[0][15].toString());
+		txtAutoriza.setText(tablacompleta[0][16].toString());
 		txtConcepto.setText(tablacompleta[0][17].toString());
 		
 		if(tablacompleta[0][9].toString().equals("PROVEEDOR")) {
@@ -431,7 +452,12 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		txtFolioservici.setText(tablacompleta[0][18].toString());
 		txtDetalleServi.setText(tablacompleta[0][19].toString());
 		txtTipo.setText(tablacompleta[0][20].toString());
+		txtForma_pago.setText(tablacompleta[0][21].toString());
+		txtPlazo.setText(tablacompleta[0][23].toString());
+		txtValida.setText(tablacompleta[0][24].toString());
+		txtFechaValida.setText(tablacompleta[0][25].toString());
 
+		
 		txtEstatus.setEditable(false);
 		txtEstablecimiento.setEditable(false);
 	    txtConcepto.setEditable(false);
@@ -443,13 +469,17 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		rbColaborador.setEnabled(false);
 		txtFecha.setEditable(false);
 		txtFoliosolicit.setEditable(false);
-		txtSolicitante.setEditable(false);
+		txtAutoriza.setEditable(false);
 		txtFolio_prv.setEditable(false);
 		txtTotal.setEditable(false);
 		txtSolicito.setEditable(false);
 		txtFolioservici.setEditable(false);
 		txtDetalleServi.setEditable(false);
 		txtTipo.setEditable(false);
+		txtForma_pago.setEditable(false);
+		txtValida.setEditable(false);
+		txtFechaValida.setEditable(false);
+		txtPlazo.setEditable(false);
 		calculo();
 	}
 	
@@ -474,13 +504,13 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 //								   for(int i=0;i<tablago.getRowCount();i++) {
 //									   productos=productos+tablago.getValueAt(i, 0)+"  / "+tablago.getValueAt(i, 1)+"  /$"+tablago.getValueAt(i, 3)+" \n";
 //								   }
-//						           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFecha.getText().toString()+" con folio:"+txtFolio.getText().toString()
+//						           String Mensaje= "El usuario:"+txtAutoriza.getText().toString()+" solicitó el dia "+txtFecha.getText().toString()+" con folio:"+txtFolio.getText().toString()
 //									  		      +"\nUn Pago de Gasto La Competidora con un valor total de:$ "+txtTotal.getText().toString()
 //												  +"\nDescripcion del gasto/compra: "+txtConcepto.getText().toString()
 //												  +"\n"+productos
 //												  +"\nPara el establecimiento: "+txtEstablecimiento.getText().toString().trim()
 //												  +"\nBeneficiario: "+txtProveedor.getText().trim()
-//												  +"\nAutorizó pago: "+txtSolicitante.getText().toString().trim();
+//												  +"\nAutorizó pago: "+txtAutoriza.getText().toString().trim();
 //								  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago La Competidora por un total de $:"+txtTotal.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
 //							
 //								  System.out.println(correos.getCorreos());

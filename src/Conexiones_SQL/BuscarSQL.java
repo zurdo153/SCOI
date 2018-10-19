@@ -9914,7 +9914,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	 public String[][] Tabla_Orden_Gasto(int folio_gasto){
 			String[][] Matriz = null;
 			String query = "exec orden_de_gasto_consulta "+folio_gasto;
-			Matriz = new String[getFilas(query)][24];
+			Matriz = new String[getFilas(query)][26];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -9946,6 +9946,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][21] = rs.getString(22);
 					Matriz[i][22] = rs.getString(23);
 					Matriz[i][23] = rs.getString(24);
+					Matriz[i][24] = rs.getString(25);
+					Matriz[i][25] = rs.getString(26);
 					i++;
 				}
 			} catch (SQLException e1) {
@@ -11163,8 +11165,71 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		}
 		return Matriz;
 	}
-	
-	
+
+	   public String[][] Tabla_Programacion_de_pago(String folio_programacion){
+			String[][] Matriz = null;
+			String query = "exec programacion_de_pago_revision '"+folio_programacion+"'";
+			
+			Matriz = new String[getFilas(query)][20];
+			Statement s;
+			ResultSet rs;
+			try {			
+				s = con.conexion().createStatement();
+				rs = s.executeQuery(query);
+				int i=0;
+				while(rs.next()){
+					Matriz[i][0]  = rs.getString( 1);
+					Matriz[i][1]  = rs.getString( 2);
+					Matriz[i][2]  = rs.getString( 3);
+					Matriz[i][3]  = rs.getString( 4);
+					Matriz[i][4]  = rs.getString( 5);
+					Matriz[i][5]  = rs.getString( 6);
+					Matriz[i][6]  = rs.getString( 7);
+					Matriz[i][7]  = rs.getString( 8);
+					Matriz[i][8]  = rs.getString( 9);
+					Matriz[i][9]  = rs.getString(10);
+					Matriz[i][10] = rs.getString(11);
+					Matriz[i][11] = rs.getString(12);
+					Matriz[i][12] = rs.getString(13);
+					Matriz[i][13] = rs.getString(14);
+					Matriz[i][14] = rs.getString(15);
+					Matriz[i][15] = rs.getString(16);
+					Matriz[i][16] = rs.getString(17);
+					Matriz[i][17] = rs.getString(18);
+					Matriz[i][18] = rs.getString(19);
+					Matriz[i][19] = rs.getString(20);
+					i++;
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Matriz;
+		}
+	   
+	   
+	   public String[][] Tabla_Programacion_de_pago_clasificadores(){
+				String[][] Matriz = null;
+				String query = "select clasificador,0,0,0 from programacion_de_pagos_clasificadores";
+				Matriz = new String[getFilas(query)][4];
+				Statement s;
+				ResultSet rs;
+				try {			
+					s = con.conexion().createStatement();
+					rs = s.executeQuery(query);
+					int i=0;
+					while(rs.next()){
+						Matriz[i][0]  = rs.getString( 1);
+						Matriz[i][1]  = rs.getString( 2);
+						Matriz[i][2]  = rs.getString( 3);
+						Matriz[i][3]  = rs.getString( 4);
+						i++;
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				return Matriz;
+			}
+	   
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;

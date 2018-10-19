@@ -369,7 +369,7 @@
 		<band height="2" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="58" splitType="Stretch">
+		<band height="99" splitType="Stretch">
 			<line>
 				<reportElement x="409" y="38" width="140" height="1" uuid="c3a366ef-ecee-497b-89fe-02bbce8a84c3">
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -484,6 +484,32 @@
 				</textElement>
 				<textFieldExpression><![CDATA["FIRMA ELECTRONICA SOLICITA SERVICIO:"+$F{nombre_solicitante_servicio}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="210" y="80" width="113" height="1" uuid="e39d650f-8f48-46fa-a91b-413785863fd9">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="210" y="87" width="113" height="12" uuid="8651f2cd-80ec-477c-ada8-271dfe0c33c0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIRMA  DIRECTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="80" width="113" height="12" uuid="9b0d183a-ae82-472e-addd-6f238d170bb8">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[OMAR IZABAL TORRES]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
