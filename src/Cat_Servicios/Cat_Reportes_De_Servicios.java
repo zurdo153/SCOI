@@ -34,6 +34,8 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 	
 	String operador[] = {"Selecciona Un Reporte"
 							,"Reporte De Servicios Atendidos Por Establecimiento Totales"
+							,"Reporte De Servicios Atendidos Por Colaborador"
+							,"Reporte De Servicios Atendidos Por Colaborador Totales"
 							,"Reporte De Servicios Terminados A Detalle"
 							,"Reporte De Servicios Pendientes y En Proceso A Detalle"
 							,"Reporte De Servicios Asignados"
@@ -117,7 +119,16 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 								if(concepto.equals("Reporte De Servicios Atendidos Por Establecimiento Totales")){
 										comando="exec sp_Reporte_De_Servicios_Atendidos_Por_Establecimientos_En_Un_Periodo '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"'";
 										reporte ="Obj_Reporte_De_Servicios_Atendidos_Por_Establecimientos_En_Un_Periodo.jrxml";
-								   }
+								}
+								
+								if(concepto.equals("Reporte De Servicios Atendidos Por Colaborador")){
+									comando="exec Reporte_De_Servicios_Atendidos_Por_Colaborador '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"'";
+									reporte ="Obj_Reporte_De_Servicios_Atendidos_Por_Colaborador.jrxml";
+								}
+								if(concepto.equals("Reporte De Servicios Atendidos Por Colaborador Totales")){
+									comando="exec Reporte_De_Servicios_Atendidos_Por_Colaborador_Totales '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"'";
+									reporte ="Obj_Reporte_De_Servicios_Atendidos_Por_Colaborador_Totales.jrxml";
+								}
 								
 								if(concepto.equals("Reporte De Servicios Terminados A Detalle")){
 									comando="exec sp_Reporte_De_Servicios_a_Detalle_Por_Departamento '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"','TERMINADO'";
@@ -127,15 +138,17 @@ public class Cat_Reportes_De_Servicios extends JFrame {
 								if(concepto.equals("Reporte De Servicios Pendientes y En Proceso A Detalle")){
 									comando="exec sp_Reporte_De_Servicios_a_Detalle_Por_Departamento '"+fecha_inicio+"','"+fecha_final+"','"+cmbDepartamento.getSelectedItem().toString()+"','SOLICITADO Y EN PROCESO'";
 									reporte ="Obj_Reporte_De_Servicios_A_Detalle.jrxml";
-							   }
+								}
+								
 								if(concepto.equals("Reporte De Servicios Asignados")){
 									comando="servicios_asignados_reporte '"+cmbDepartamento.getSelectedItem().toString().trim()+"'";
 							  		reporte = "Obj_Reporte_De_Servicios_Asignados.jrxml";
-							   }
+								}
+								
 								
 							  }else{
-						        JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-							     return;
+									   JOptionPane.showMessageDialog(null,"El Rango de Fechas Esta Invertido","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+									   return;
 							  }
 						}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_fechas(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));

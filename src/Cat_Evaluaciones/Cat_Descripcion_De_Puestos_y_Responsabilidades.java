@@ -133,7 +133,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	JTextField txtEdadIn = new Componentes().text(new JCTextField(), "", 2, "Int");
 	JTextField txtEdadFin = new Componentes().text(new JCTextField(), "", 2, "Int");
 	
-	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO"};
+	String sexo[] = {"SELECCIONE UN GENERO","MASCULINO","FEMENINO","INDISTINTO"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbSexo = new JComboBox(sexo);
 	
@@ -263,8 +263,11 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 	String movimiento = "";
 	
 //	boolean mostrarPuestosDisponibles = false;
+	@SuppressWarnings("unchecked")
 	public Cat_Descripcion_De_Puestos_y_Responsabilidades() {
 		
+		cmbEstadoCivil.addItem("INDEFINIDO");
+				
 		this.panelBase.setBorder(BorderFactory.createTitledBorder(blackline, "Ingresar Datos DPR"));
 		
 		this.menu_toolbar.add(btnNuevo);
@@ -376,7 +379,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 			
 			if(validarCampos.equals("")){
 				if(txtFolioPuesto.getText().trim().equals(txtFolioReportaA.getText().trim())){
-					limpiarCampos();
+//					limpiarCampos();
 					camposActivos(false);
 					btnBuscarPuesto.setEnabled(true);
 					JOptionPane.showMessageDialog(null, "Los Campos De Puesto Y Reporta A, No Pueden Ser Iguales\n(Los Puestos No Pueden Reportar A Sí Mismos)", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -444,6 +447,7 @@ public class Cat_Descripcion_De_Puestos_y_Responsabilidades extends JFrame{
 		dpr.setOtro(chbOtro.isSelected());
 		
 		dpr.setNotaOtro(txtOtro.getText().trim().toUpperCase());
+		
 		
 		if(dpr.guardar(movimiento)){
 			limpiarCampos();

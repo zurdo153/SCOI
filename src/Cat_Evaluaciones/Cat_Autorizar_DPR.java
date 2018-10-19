@@ -43,8 +43,9 @@ public class Cat_Autorizar_DPR extends JDialog{
 	JLayeredPane panelf = new JLayeredPane();
 	Connexion con = new Connexion();
 	
-	JTextField txtFolio = new Componentes().text(new JTextField(), "Folio", 5, "Int");
-	JTextField txtPuesto = new Componentes().text(new JTextField(), "Puesto", 100, "String");
+	JTextField txtFolio = new Componentes().text(new JCTextField(), "Folio", 5, "Int");
+	JTextField txtPuesto = new Componentes().text(new JCTextField(), "Puesto", 100, "String");
+	JTextField txtStatus = new Componentes().text(new JCTextField(), "Status", 100, "String");
 	
 	JTextArea txaObservacion = new Componentes().textArea(new JTextArea(), "", 350);
 	JScrollPane scrollObservacion = new JScrollPane(txaObservacion);
@@ -54,12 +55,13 @@ public class Cat_Autorizar_DPR extends JDialog{
 	JCButton btnNegar = new JCButton("Negar", "", "Azul");
 	
 	Obj_tabla ObjTab =new Obj_tabla();
-	int columnasp = 2,checkbox=-1;
+	int columnasp = 3,checkbox=-1;
 	public void init_tablafp(){
     	this.tablafp.getColumnModel().getColumn(0).setMinWidth(55);
     	this.tablafp.getColumnModel().getColumn(1).setMinWidth(375);
+    	this.tablafp.getColumnModel().getColumn(2).setMinWidth(55);
     	
-    	String comandof="exec dpr_revision 'R'";
+    	String comandof="exec dpr_revision";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tablafp,modelof, columnasp, comandof, basedatos,pintar,checkbox);
     }
@@ -71,7 +73,7 @@ public class Cat_Autorizar_DPR extends JDialog{
 		 return types;
 	}
 	
-	public DefaultTableModel modelof = new DefaultTableModel(null, new String[]{"Folio","Puesto"}){
+	public DefaultTableModel modelof = new DefaultTableModel(null, new String[]{"Folio","Puesto","Estatus"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = base();
 			@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -88,17 +90,19 @@ public class Cat_Autorizar_DPR extends JDialog{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	
 	public Cat_Autorizar_DPR(){
-		this.setSize(500,500);
+		this.setSize(550,500);
 		trsfiltro = new TableRowSorter(modelof); 
 		tablafp.setRowSorter(trsfiltro);
 		this.panelf.add(txtBuscarfp).setBounds      (10 ,20 ,470 , 20 );
-		this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,470 ,255 );
+		this.panelf.add(scroll_tablafp).setBounds   (10 ,40 ,520 ,255 );
 		
 		this.panelf.add(new JLabel("Puesto: ")).setBounds   (10 ,295 ,50 ,20 );
-		this.panelf.add(txtFolio).setBounds   (60 ,295 ,50 ,20 );
-		this.panelf.add(txtPuesto).setBounds   (110 ,295 ,370 ,20 );
+		this.panelf.add(txtFolio).setBounds   (50 ,295 ,40 ,20 );
+		this.panelf.add(txtPuesto).setBounds   (90 ,295 ,360 ,20 );
+		this.panelf.add(txtStatus).setBounds   (450 ,295 ,80 ,20 );
+		
 		this.panelf.add(new JLabel("Observacion: ")).setBounds   (10 ,320 ,80 ,20 );
-		this.panelf.add(scrollObservacion).setBounds   (90 ,320 ,390 ,60 );
+		this.panelf.add(scrollObservacion).setBounds   (90 ,320 ,440 ,60 );
 		this.panelf.add(btnReporte).setBounds   (110 ,390 ,110 ,20 );
 		this.panelf.add(btnGuardar).setBounds   (225 ,390 ,110 ,20 );
 		this.panelf.add(btnNegar).setBounds   (340 ,390 ,110 ,20 );
@@ -107,6 +111,7 @@ public class Cat_Autorizar_DPR extends JDialog{
 		
 		txtFolio.setEditable(false);
 		txtPuesto.setEditable(false);
+		txtStatus.setEditable(false);
 		
 //		String color = status?"FFFFFF":"EBEBEB";
 		txaObservacion.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
@@ -134,6 +139,7 @@ public class Cat_Autorizar_DPR extends JDialog{
 				int fila = tbl.getSelectedRow();
 	    		txtFolio.setText(tbl.getValueAt(fila, 0)+"");
 	    		txtPuesto.setText(tbl.getValueAt(fila, 1)+"");
+	    		txtStatus.setText(tbl.getValueAt(fila, 2)+"");
 	    		txaObservacion.requestFocus();
 			}
 			public void mouseEntered(java.awt.event.MouseEvent e) {			}

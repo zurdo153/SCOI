@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultCellEditor;
@@ -470,21 +469,25 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 		
 		public void llenado_de_modelo_desde_datos_tabla_precargados(String[][] tablacompleta, JTable tabla){
 			DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
-			int columnas=tabla.getColumnCount();
 			modelo.setRowCount(0);
-			 Object[]   vector = new Object[columnas];
-			for(int i=0;i<tablacompleta.length;i++){
-				   for(int j=0;j<columnas;j++){
-					vector[j] = tablacompleta[i][j].toString();
-					}
-				   modelo.addRow(vector);
+			
+			for(Object[] vec : tablacompleta){
+				modelo.addRow(vec);
 			}
+			
+//			int columnas=tabla.getColumnCount();
+//			 Object[]   vector = new Object[columnas];
+//			for(int i=0;i<tablacompleta.length;i++){
+//				   for(int j=0;j<columnas;j++){
+//					vector[j] = tablacompleta[i][j].toString();
+//					}
+//				   modelo.addRow(vector);
+//			}
 		}
 		
 ///////funciones para convertir tabla en arreglo y guardar	
-		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public  String[][] tabla_guardar(JTable tabla){ 
-			int columnas=tabla.getColumnCount();
+//			int columnas=tabla.getColumnCount();
 			DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
 			String[][] matriz = null ;
 			if(tabla.isEditing()){
@@ -496,29 +499,36 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 				 matriz = new String[0][0];
 			}else{ 
 			
-				Vector vector = new Vector();
-				for(int i=0; i<tabla.getRowCount(); i++){
-					for(int c=0; c<columnas; c++){
-							  vector.add(modelo.getValueAt(i,c).toString().trim());
+//				Vector vector = new Vector();
+//				for(int i=0; i<tabla.getRowCount(); i++){
+//					for(int c=0; c<columnas; c++){
+//							  vector.add(modelo.getValueAt(i,c).toString().trim());
+//					}		  
+//				}
+//							matriz = new String[vector.size()/columnas][columnas];
+//					 int i=0,j =0,columnafor=0;
+//					while(i<vector.size()){
+//						columnafor=0;
+//					      for(int f =0;  f<columnas;  f++,columnafor++,i++  ){	
+//					  matriz[j][columnafor] = vector.get(i).toString();
+//					  }
+//					  j++;
+//				}
+				
+				matriz = new String[modelo.getRowCount()][modelo.getColumnCount()];
+				for(int i=0; i<modelo.getRowCount(); i++){
+					for(int c=0; c<modelo.getColumnCount(); c++){
+							  matriz[i][c]=modelo.getValueAt(i,c).toString().trim();
 					}		  
-				}
-							matriz = new String[vector.size()/columnas][columnas];
-					 int i=0,j =0,columnafor=0;
-					while(i<vector.size()){
-						columnafor=0;
-					      for(int f =0;  f<columnas;  f++,columnafor++,i++  ){	
-					  matriz[j][columnafor] = vector.get(i).toString();
-					  }
-					  j++;
 				}
 			}	
 				
 			return matriz;
 		}
 		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
+//		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public  String[][] tabla_guardar_sin_validacion(JTable tabla){ 
-			int columnas=tabla.getColumnCount();
+//			int columnas=tabla.getColumnCount();
 			DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
 			String[][] matriz = null ;
 			if(tabla.isEditing()){
@@ -526,22 +536,29 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 			}
 			if(tabla.getRowCount()==0){
 				 matriz = new String[0][0];
-				 return matriz;
+//				 return matriz;
 			}else{ 
-				Vector vector = new Vector();
-				for(int i=0; i<tabla.getRowCount(); i++){
-					for(int c=0; c<columnas; c++){
-							  vector.add(modelo.getValueAt(i,c).toString().trim());
+//				Vector vector = new Vector();
+//				for(int i=0; i<tabla.getRowCount(); i++){
+//					for(int c=0; c<columnas; c++){
+//							  vector.add(modelo.getValueAt(i,c).toString().trim());
+//					}		  
+//				}
+//							matriz = new String[vector.size()/columnas][columnas];
+//					 int i=0,j =0,columnafor=0;
+//					while(i<vector.size()){
+//						columnafor=0;
+//					      for(int f =0;  f<columnas;  f++,columnafor++,i++  ){	
+//					  matriz[j][columnafor] = vector.get(i).toString();
+//					  }
+//					  j++;
+//				}
+				
+				matriz = new String[modelo.getRowCount()][modelo.getColumnCount()];
+				for(int i=0; i<modelo.getRowCount(); i++){
+					for(int c=0; c<modelo.getColumnCount(); c++){
+							  matriz[i][c]=modelo.getValueAt(i,c).toString().trim();
 					}		  
-				}
-							matriz = new String[vector.size()/columnas][columnas];
-					 int i=0,j =0,columnafor=0;
-					while(i<vector.size()){
-						columnafor=0;
-					      for(int f =0;  f<columnas;  f++,columnafor++,i++  ){	
-					  matriz[j][columnafor] = vector.get(i).toString();
-					  }
-					  j++;
 				}
 			}	
 			return matriz;

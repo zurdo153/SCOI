@@ -34,7 +34,6 @@ import javax.swing.table.TableRowSorter;
 //import Cat_Cuadrantes.Cat_Captura_De_Cuadrantes.CargaDatosDelCombo;
 import Conexiones_SQL.Connexion;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-import Obj_Contabilidad.Obj_Orden_De_Gasto;
 import Obj_Contabilidad.Obj_Revision_De_Programacion_de_Pago;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -106,7 +105,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			this.tablat.getColumnModel().getColumn( 2).setMaxWidth(110);
 			this.tablat.getColumnModel().getColumn( 3).setMinWidth(110);
 			this.tablat.getColumnModel().getColumn( 3).setMaxWidth(110);
-			String comandot = "select clasificador,0,0,0 from programacion_de_pagos_clasificadores ";
+			String comandot = "select clasificador,0,0,0 from programacion_de_pagos_clasificadores";
 			ObjTab.Obj_Refrescar(tablat,modelot, 4, comandot, "26","si",-1);
 	 }
 		
@@ -222,7 +221,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			public JScrollPane scroll_tablatptales = new JScrollPane(tablat);
 			
 		String status[] = programacion.combo_estatus_programacion();
-		@SuppressWarnings("rawtypes")
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmb_status = new JComboBox(status);
 		
 		@SuppressWarnings("rawtypes")
@@ -286,13 +285,35 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			btnActualizar.addActionListener(OpActualizar);
 			btnImprimir.addActionListener(opImprimir_Reporte);
 			btnFiltro.addActionListener(opfiltro);
+			chb_invertir.addActionListener(OpInvertir);
 		}
+		
+		public void inicializartablatotales() {
+			 tablaclafificadores= programacion.Tabla_Programacion_de_pago_clasificadores();
+			 ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablaclafificadores, tablat);
+		}
+		
+		ActionListener OpInvertir = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(chb_invertir.isSelected()) {
+					for(int i=0;i<tabla.getRowCount();i++) {
+						tabla.setValueAt("true", i, 0);
+					}
+				}else {
+					for(int i=0;i<tabla.getRowCount();i++) {
+						tabla.setValueAt("false", i, 0);
+					}
+				}
+			}
+		}; 
+		
 		
 		public void calculo_De_totales() {
 			float totalprogramado=0;
 			float totalpagado=0;
 			float totalpendiente=0;
-			init_tabla_totales();
+			 ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablaclafificadores, tablat);
 
 			for(int i=0;i<tabla.getRowCount();i++) {
 				for(int t=0;t<tablat.getRowCount();t++) {
@@ -313,9 +334,6 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 					tablat.setValueAt(totalpendiente+"", t, 3);
 				}
 			}
-			
-			
-			
 		}
 		
 	    ActionListener OpActualizar = new ActionListener() {
@@ -522,6 +540,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 	  ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablacompleta, tabla);
 	  txtFolio.setText(tablab.getValueAt(fila,0).toString() );
 	  dispose();
+	  inicializartablatotales();
 	  calculo_De_totales();
 	}
 	

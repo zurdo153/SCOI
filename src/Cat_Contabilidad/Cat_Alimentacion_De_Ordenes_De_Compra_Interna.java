@@ -1,5 +1,6 @@
 package Cat_Contabilidad;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Event;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -39,6 +41,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+//import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -83,18 +86,24 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	JTable tabla = new JTable(modelo);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
-	JTextField txtFolio       = new Componentes().text(new JCTextField()  ,"Folio"                        ,30   ,"String");
-	JTextField txtDescripcion = new Componentes().text(new JCTextField()  ,"Descripcion Del Producto"     ,30   ,"String");
-	JTextField txtSolicitante = new Componentes().text(new JCTextField()  ,"Persona Que Solicita"         ,30   ,"String");
+	JTextField txtFolio       = new Componentes().text(new JCTextField()  ,"Folio"						,30   ,"String");
+	JTextField txtDescripcion = new Componentes().text(new JCTextField()  ,"Descripcion Del Producto"	,30   ,"String");
+	JTextField txtFolioSolic= new Componentes().text(new JCTextField()  ,"Folio Solicita"				,30   ,"String");
+	JTextField txtSolicitante = new Componentes().text(new JCTextField()  ,"Persona Que Solicita"		,30   ,"String");
+	JTextField txtFolioservici= new Componentes().text(new JCTextField()  ,"Folio Servicio"				,30   ,"String");
+	JTextField txtDetalleServi= new Componentes().text(new JCTextField()  ,"Detalle Servicio"			,350  ,"String");
 	
     JTextArea txaUso       = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia", 300);
 	JScrollPane Uso        = new JScrollPane(txaUso);
 
 	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
 	JCButton btnNuevo      = new JCButton("Nuevo"        ,"Nuevo.png"             ,"Azul");
+	JCButton btnEditar      = new JCButton("Editar"        ,"Modify.png"             ,"Azul");
 	JCButton btnGuardar    = new JCButton("Guardar"      ,"Guardar.png"           ,"Azul");
 	JCButton btnDeshacer   = new JCButton("Deshacer"     ,"deshacer16.png"        ,"Azul");
 	JCButton btnSolicitante= new JCButton(""             ,"Usuario.png"           ,"Azul");	
+	JCButton btnServicio   = new JCButton(""             ,"los-parametros-de-las-herramientas-de-icono-8319-16.png"    ,"Azul");
+
 	JCButton btnQuitarfila = new JCButton("Eliminar"     ,"boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnAgregar    = new JCButton("Agregar"      ,"double-arrow-icone-3883-16.png"    ,"Azul");
 	
@@ -120,7 +129,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 
    public  Cat_Alimentacion_De_Ordenes_De_Compra_Interna(){
 	    this.cont.add(panel);
-		this.setSize(650,500);
+		this.setSize(650,530);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -134,6 +143,9 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
    		this.rbEmpleado.setSelected(true);
    		
    	    this.menu_toolbar.add(btnNuevo    );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.addSeparator(   );
+		this.menu_toolbar.add(btnEditar   );
 		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.add(btnDeshacer );
@@ -151,17 +163,22 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		panel.add(cmb_status).setBounds                         (x+=sep    ,y      ,width   ,height );
 		panel.add(new JLabel("Destino De Mercancia:")).setBounds(x+=sep    ,y      ,width   ,height );
 		panel.add(cmbEstablecimiento).setBounds                 (x+=110    ,y      ,233     ,height );
-		panel.add(txtSolicitante).setBounds                     (x=20      ,y+=25  ,370     ,height );
+		panel.add(txtFolioSolic).setBounds                     	(x=20      ,y+=25  ,50     ,height );
+		panel.add(txtSolicitante).setBounds                     (x=70      ,y	   ,370     ,height );
 		panel.add(btnSolicitante).setBounds                     (x+370     ,y      ,20      ,height );
-		panel.add(rbEmpleado).setBounds                         (x+400     ,y      ,90      ,height );		
-		panel.add(rbProveedor).setBounds                        (x+500     ,y      ,90      ,height );  
+		panel.add(rbEmpleado).setBounds                         (x+390     ,y      ,90      ,height );		
+		panel.add(rbProveedor).setBounds                        (x+480     ,y      ,90      ,height );  
 		
-		panel.add(new JLabel("Uso De La Mercancia:")).setBounds (x         ,y+=20  ,width   ,height );
+		this.panel.add(txtFolioservici).setBounds               (x=20      ,y+=25  ,50      ,height );
+		this.panel.add(txtDetalleServi).setBounds               (x=70      ,y      ,515     ,height );
+		this.panel.add(btnServicio).setBounds                   (x+515     ,y      ,40      ,height );
+		
+		panel.add(new JLabel("Uso De La Mercancia:")).setBounds (x=20      ,y+=20  ,width   ,height );
 		panel.add(Uso).setBounds                                (x         ,y+=15  ,602     ,50     );
 		panel.add(txtDescripcion).setBounds                     (x         ,y+=55  ,390     ,height );
 		panel.add(btnAgregar).setBounds                         (x+395     ,y      ,102     ,height ); 
 		panel.add(btnQuitarfila).setBounds                      (x+503     ,y      ,99      ,height ); 
-		panel.add(scroll_tabla).setBounds                       (x         ,y+=22  ,602     ,270    );
+		panel.add(scroll_tabla).setBounds                       (x         ,y+=22  ,602     ,250    );
 
 		panel_false();
 		init_tabla();
@@ -169,6 +186,8 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		Seleccionar(tabla);
 		
 		btnNuevo.addActionListener(nuevo);
+		btnEditar.addActionListener(opEditar);
+		btnBuscar.addActionListener(opBuscar);
 		btnDeshacer.addActionListener(deshacer);
 		btnGuardar.addActionListener(guardar);
 		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento);
@@ -178,6 +197,8 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		
         txtDescripcion.addKeyListener       (opAgregarConEnter         );
 		tabla.addKeyListener                (op_validanumero_en_celda  );
+		
+		btnServicio.addActionListener(opFiltroServicios);
 		
 		btnDeshacer.setToolTipText("<ESC> Tecla Directa");
 		btnGuardar.setToolTipText("<CTRL+G> Tecla Directa");
@@ -193,6 +214,12 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	             
 	    this.addWindowListener(new WindowAdapter() {  public void windowOpened( WindowEvent e ){ txtFolio.requestFocus();  }  });                
     }
+   
+   ActionListener opFiltroServicios = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			new Cat_Filtro_Buscar_Servicio().setVisible(true);
+		}
+	};	
 	
     public void panel_false(){
 		cmb_status.setEnabled(false);
@@ -201,13 +228,19 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		txaUso.setLineWrap(true); 
 		txaUso.setWrapStyleWord(true);
 		txaUso.setEditable(false);
+		txtFolioSolic.setEnabled(false);
 		txtSolicitante.setEditable(false);
+		btnEditar.setEnabled(false);
 		btnSolicitante.setEnabled(false);
 		btnGuardar.setEnabled(false);
 		btnAgregar.setEnabled(false);
 		btnQuitarfila.setEnabled(false);
 		rbEmpleado.setEnabled(false);
 		rbProveedor.setEnabled(false);
+		
+		txtFolioservici.setEnabled(false);
+		txtDetalleServi.setEditable(false);
+		btnServicio.setEnabled(false);
     }
    
     public void panel_limpiar(){
@@ -215,10 +248,17 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		cmbEstablecimiento.setSelectedIndex(0);;
 		txtFolio.setText("");
 	    txtDescripcion.setText(""); 
+	    txtFolioSolic.setText("");
 	    txtSolicitante.setText("");
 		txaUso.setText("");
 		rbEmpleado.setSelected(true);
 		modelo.setRowCount(0);
+		
+		movimiento = "";
+		
+		txtFolioservici.setText("");
+		txtDetalleServi.setText("");
+		txaUso.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
     }
     
 	public void RecorridoFoco(int filap,String parametrosacarfoco){
@@ -296,6 +336,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 			String folio_inventario="";
 			try {
 				folio_inventario= new BuscarSQL().folio_siguiente(79+"");
+				movimiento = "GUARDAR";
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -304,11 +345,42 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 			btnGuardar.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			btnNuevo.setEnabled(false);
+			btnServicio.setEnabled(false);
 			cmbEstablecimiento.setEnabled(true);
 			cmbEstablecimiento.requestFocus();
 			cmbEstablecimiento.showPopup();
 		}
 	};
+	
+	ActionListener opEditar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			cmb_status.setEnabled(true);
+			cmbEstablecimiento.setEnabled(true);
+			btnSolicitante.setEnabled(true);
+			rbEmpleado.setEnabled(true);
+			rbProveedor.setEnabled(true);
+			btnServicio.setEnabled(true);
+			
+			txaUso.setEditable(true);
+			txtDescripcion.setEditable(true);
+			txaUso.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
+			btnAgregar.setEnabled(true);
+			btnQuitarfila.setEnabled(true);
+			
+			btnGuardar.setEnabled(true);
+			btnEditar.setEnabled(false);
+			btnNuevo.setEnabled(false);
+			
+			movimiento="MODIFICAR";
+		}
+	};
+	
+	ActionListener opBuscar = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			new Cat_Filtro_Buscar_Orden_De_Compra_Interna().setVisible(true);
+		}
+	};
+	
 	
     ActionListener opSeleccionEstablecimiento = new ActionListener(){
  	  public void actionPerformed(ActionEvent e){
@@ -387,31 +459,58 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		}
 	};
 	
-	
-	
-	
-	
+	String movimiento = "";
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
-			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
-			 if(tabla_guardado.length==0){
-				 return;
-			 }else{		 
-//				 Obj_Alimentacion_De_Inventarios_Parciales Inventarios_Parciales= new Obj_Alimentacion_De_Inventarios_Parciales();
-//				  Inventarios_Parciales.setTabla_obj(tabla_guardado);
-////				  Inventarios_Parciales.setUsos    (txaUso.getText().toString().trim()+" ");
-//				  Inventarios_Parciales.setStatus("V");
+//			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
+		
+//		int[] ignorarColumnas = {-1};
+		 
+		String validarCampos = validaCampos();
+			 
+			 if(validarCampos.equals("")){
+//				 Obj_Alimentacion_De_Ordenes_De_Compra_Interna compraInterna = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna();
+				 
+//				 compraInterna.setFolio(Integer.valueOf(txtFolio.getText().trim()));
+//				 compraInterna.setStatus(cmb_status.getSelectedItem().toString().trim());
+//				 compraInterna.setEstab_destino(cmbEstablecimiento.getSelectedItem().toString().trim());
+//				 
+//				 compraInterna.setFolio_persona_solicita(Integer.valueOf(txtFolioSolic.getText().trim()));
+//				 compraInterna.setPersona_solicita(txtSolicitante.getText().trim().toUpperCase());
+//				 compraInterna.setTipo_de_solicitante(rbEmpleado.isSelected()?"E":"P");
+//				 
+//				 compraInterna.setFolio_servicio(Integer.valueOf(txtFolioservici.getText().trim()));
+//				 compraInterna.setServicio(txtDetalleServi.getText().trim().toUpperCase());
+//				 compraInterna.setUso_de_mercancia(txaUso.getText().trim().toUpperCase());
+//				 
+//				 compraInterna.setLista_de_productos(new CrearXmlString().CadenaXML(tabla, ignorarColumnas));
 //				  
-//				  if(Inventarios_Parciales.Guardar_inventario_parcial()){
-//		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente el inventario parcial", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-////		           	btnReporte.doClick();
+//				  if(compraInterna.guardar(movimiento)){
+//		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente La Orden De Compra Interna", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 //			      }else{
-//					JOptionPane.showMessageDialog(null, "El Registro No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+//					JOptionPane.showMessageDialog(null, "La Orden De Compra Interna No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 //			    	return;
 //			      }
+			 }else{	
+				 JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validarCampos, "Aviso !!!",JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			    	return;
 			 }
 	  }			
     };
+    
+    public String validaCampos(){
+    	String campos = "";
+		 
+    		campos += txtFolio.getText().trim().equals("") ? "- Folio\n" : "";
+    		campos += txtFolioSolic.getText().trim().equals("") ? "- Seleccione Un Solicitante\n" : "";
+    		campos += txtFolioservici.getText().trim().equals("") ? "- Seleccione Un Servicio\n" : "";
+//    		campos += cmb_status.getSelectedIndex()==0 ? "- Seleccione Un Status\n" : "";
+    		campos += cmbEstablecimiento.getSelectedIndex()==0 ? "- Seleccione Un Establecimiento\n" : "";
+    		campos += txaUso.getText().trim().equals("") ? "- Uso De Mercancia\n" : "";
+    		campos += tabla.getRowCount()==0 ? "- Ingrese Productos\n" : "";
+    	
+    	return campos;
+	}
 	
 	//TODO inicia filtro_Buscar	
 	public class Cat_Filtro_Buscar_Proveedor extends JDialog{
@@ -479,12 +578,14 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 				public void mouseClicked(MouseEvent e) {
 		        	if(e.getClickCount()==1){
 		        		int fila = tablab.getSelectedRow();
+		        		txtFolioSolic.setText   (tablab.getValueAt(fila,0)+"");
 						txtSolicitante.setText   (tablab.getValueAt(fila,1)+"");
 						txtDescripcion.setEditable(true);
 						btnAgregar.setEnabled(true);
+						btnServicio.setEnabled(true);
 						btnQuitarfila.setEnabled(true);
-						txaUso.setEditable(true);
-						txaUso.requestFocus();
+						txaUso.setEditable(false);
+						btnServicio.requestFocus();
 						dispose();
 		        	}
 		        }
@@ -499,6 +600,254 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 			public void keyPressed(KeyEvent arg0) {}		
 		};
 	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////TODO inicia filtro_Buscar ORDEN DE COMPRA INTERNA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
+	
+	Container contfb = getContentPane();
+	JLayeredPane panelfb = new JLayeredPane();
+	Connexion con = new Connexion();
+	Obj_tabla ObjTab =new Obj_tabla();
+	int columnasb = 9,checkbox=-1;
+	
+	public void init_tablafp(){
+		this.tablab.getColumnModel().getColumn( 0).setMinWidth(50);
+		this.tablab.getColumnModel().getColumn( 0).setMaxWidth(50);
+		this.tablab.getColumnModel().getColumn( 1).setMinWidth(350);
+		this.tablab.getColumnModel().getColumn( 2).setMinWidth(140);
+		this.tablab.getColumnModel().getColumn( 3).setMinWidth(200);
+		this.tablab.getColumnModel().getColumn( 4).setMinWidth(160);
+		this.tablab.getColumnModel().getColumn( 5).setMinWidth(100);
+		this.tablab.getColumnModel().getColumn( 6).setMinWidth(230);
+		this.tablab.getColumnModel().getColumn( 7).setMinWidth(130);
+		this.tablab.getColumnModel().getColumn( 8).setMinWidth(130);
+		
+		String comandob = "orden_de_compra_interna_filtro";
+		String basedatos="26",pintar="si";
+		ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public Class[] base (){
+	Class[] types = new Class[columnasb];
+	for(int i = 0; i<columnasb; i++){types[i]= java.lang.Object.class;}
+		return types;
+	}
+
+	public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio","Uso De Mercancia","Tipo Solicitante","Nombre De Solicitante","Fecha","Establecimiento","Status","Fecha Autorizacion","Usuario Autorizo"}){
+		@SuppressWarnings("rawtypes")
+		Class[] types = base();
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+		public boolean isCellEditable(int fila, int columna){return false;}
+	};
+
+	JTable tablab = new JTable(modelob);
+	public JScrollPane scroll_tablab = new JScrollPane(tablab);
+	@SuppressWarnings({ "rawtypes" })
+	private TableRowSorter trsfiltro;
+
+	JTextField txtBuscarb  = new Componentes().textfiltro(new JCTextField() ,">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<" ,500 ,"String" ,tablab ,columnasb );
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Cat_Filtro_Buscar_Orden_De_Compra_Interna(){
+		this.setSize(825,400);
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setModal(true);
+		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+		this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
+		this.setTitle("Filtro De Ordenes De Compra Interna");
+		
+		trsfiltro = new TableRowSorter(modelob); 
+		tablab.setRowSorter(trsfiltro);
+		this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,800 , 20 );
+		this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,800 ,300 );
+		this.init_tablafp();
+		this.agregar(tablab);
+		this.txtBuscarb.addKeyListener  (opFiltropuestos );
+		contfb.add(panelfb);
+	}
+
+	private void agregar(final JTable tbl) {
+	tbl.addMouseListener(new MouseListener() {
+		public void mouseReleased(MouseEvent e){
+			if(e.getClickCount() == 2){agregarf(); }
+		}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseExited(MouseEvent e)  {}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseClicked(MouseEvent e) {}
+	});
+
+	tbl.addKeyListener(new KeyListener() {
+		@Override
+		public void keyPressed(KeyEvent e)  {
+		if(e.getKeyCode()==KeyEvent.VK_ENTER){
+		agregarf();	
+		}
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {}
+		@Override
+		public void keyTyped(KeyEvent e)    {}
+	});
+}
+
+private void agregarf() {
+//	int fila = tablab.getSelectedRow();
+//	Obj_Alimentacion_De_Ordenes_De_Compra_Interna obj = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna().buscar(Integer.valueOf(tablab.getValueAt(fila, 0).toString()) );
+	
+//	txtFolio.setText(obj.getFolio()+"");
+//	cmb_status.setSelectedItem(obj.getStatus());
+//	cmbEstablecimiento.setSelectedItem(obj.getEstab_destino());
+//	txtFolioSolic.setText(obj.getFolio_persona_solicita()+"");
+//	txtSolicitante.setText(obj.getPersona_solicita());
+//	txtFolioservici.setText(obj.getFolio_servicio()+"");
+//	txtDetalleServi.setText(obj.getServicio());
+//	txaUso.setText(obj.getUso_de_mercancia());
+//	
+//		if(obj.getTipo_de_solicitante().equals("EMPLEADO")){
+//			rbEmpleado.setSelected(true);
+//		}else{
+//			rbProveedor.setSelected(true);
+//		}
+		
+//		Object[][] productos = obj.getArreglo_de_productos();
+//		for(Object[] reg: productos){
+//			modelo.addRow(reg);
+//		}
+		
+		btnEditar.setEnabled(true);
+		txtFolio.setEditable(false);
+		btnSolicitante.setEnabled(false);
+		rbEmpleado.setEnabled(false);
+		rbProveedor.setEnabled(false);
+		dispose();
+	}
+
+	private KeyListener opFiltropuestos = new KeyListener(){
+		public void keyReleased(KeyEvent arg0) {
+		ObjTab.Obj_Filtro(tablab, txtBuscarb.getText().toUpperCase(), columnasb,txtBuscarb);
+		}
+		public void keyTyped(KeyEvent arg0) {}
+		public void keyPressed(KeyEvent arg0) {}		
+	};
+}
+	
+	///////TODO inicia filtro_Buscar SERVICIO////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	public class Cat_Filtro_Buscar_Servicio extends JDialog{
+		Container contfb = getContentPane();
+		JLayeredPane panelfb = new JLayeredPane();
+		Connexion con = new Connexion();
+		Obj_tabla ObjTab =new Obj_tabla();
+		int columnasc = 4,checkbox=-1;
+		public void init_tablafp(){
+	    	this.tablac.getColumnModel().getColumn( 0).setMinWidth(55);
+	    	this.tablac.getColumnModel().getColumn( 1).setMinWidth(450);
+	    	this.tablac.getColumnModel().getColumn( 2).setMinWidth(250);
+			String comandob="orden_de_gasto_filtro_seleccion_de_servicio '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"'" ;
+			String basedatos="98",pintar="si";
+			ObjTab.Obj_Refrescar(tablac,modeloc, columnasc, comandob, basedatos,pintar,checkbox);
+	    }
+		
+		@SuppressWarnings("rawtypes")
+		public Class[] base (){
+			Class[] types = new Class[columnasc];
+			for(int i = 0; i<columnasc; i++){types[i]= java.lang.Object.class;}
+			 return types;
+		}
+		
+		public DefaultTableModel modeloc = new DefaultTableModel(null, new String[]{"Folio","Servicio","Solicito","Fecha"}){
+			 @SuppressWarnings("rawtypes")
+				Class[] types = base();
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
+				public boolean isCellEditable(int fila, int columna){return false;}
+		};
+		
+		JTable tablac = new JTable(modeloc);
+		public JScrollPane scroll_tablab = new JScrollPane(tablac);
+	     @SuppressWarnings({ "rawtypes" })
+	    private TableRowSorter trsfiltro;
+		
+		JTextField txtBuscarb         = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 500, "String" ,tablac ,columnasc );
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public Cat_Filtro_Buscar_Servicio(){
+			this.setSize(800,450);
+			this.setResizable(false);
+			this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.setModal(true);
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+			this.panelfb.setBorder(BorderFactory.createTitledBorder("Selecione Un Registro Con Doble Click"));
+			this.setTitle("Filtro De Solicitante");
+			trsfiltro = new TableRowSorter(modeloc); 
+			tablac.setRowSorter(trsfiltro);
+			this.panelfb.add(txtBuscarb).setBounds      (10 ,20 ,750 , 20 );
+			this.panelfb.add(scroll_tablab).setBounds   (10 ,40 ,750 ,370 );
+			this.init_tablafp();
+			this.agregar(tablac);
+			this.txtBuscarb.addKeyListener  (opFiltropuestos );
+			contfb.add(panelfb);
+		}
+		
+	    private void agregar(final JTable tbl) {
+		  tbl.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e){
+			 if(e.getClickCount() == 2){agregarf(); }
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e)  {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {}
+		});
+		  
+		tbl.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e)  {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					agregarf();	
+				}
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			@Override
+			public void keyTyped(KeyEvent e)    {}
+		});
+      }
+	    
+		private void agregarf() {
+		   rbProveedor.setEnabled(false);
+//		   rbProveedorCont.setEnabled(false);
+		   int fila = tablac.getSelectedRow();
+		   btnServicio.setEnabled(true);
+		   txtFolioservici.setText (tablac.getValueAt(fila,0)+"");
+		   txtDetalleServi.setText (tablac.getValueAt(fila,1)+"");
+		   txtDescripcion.setEditable(true);
+//		   Servicio=txaUso.getText().toString().trim()+"  >>Servicio:"+tablac.getValueAt(fila,1)+" >>Solicitado Por:"+tablac.getValueAt(fila,2)+" El Dia "+tablac.getValueAt(fila,3);
+//		   txaUso.setText(tablac.getValueAt(fila, 1).toString());
+		   btnAgregar.setEnabled(true);
+		   btnQuitarfila.setEnabled(true);
+		   txaUso.setEditable(true);
+		   txaUso.requestFocus();
+		   txaUso.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
+		   dispose();
+	    }
+		
+        private KeyListener opFiltropuestos = new KeyListener(){
+			public void keyReleased(KeyEvent arg0) {
+				ObjTab.Obj_Filtro(tablac, txtBuscarb.getText().toUpperCase(), columnasc,txtBuscarb);
+			}
+			public void keyTyped(KeyEvent arg0) {}
+			public void keyPressed(KeyEvent arg0) {}		
+		};
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
 		
 	public static void main(String args[]){
 		try{
