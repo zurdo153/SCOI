@@ -56,6 +56,7 @@ import Obj_Compras.Obj_Venta_De_Cascos_A_Proveedores;
 import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Registrar_Zona_Completada;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
+import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 //import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
@@ -8443,54 +8444,54 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-//	public boolean Guardar_Orden_De_Compra_Interna (Obj_Alimentacion_De_Ordenes_De_Compra_Interna orden,String movimiento){
-//		
-//		orden.setFolio( movimiento.equals("GUARDAR")?busca_y_actualiza_proximo_folio(79):orden.getFolio());//actualizar o deja el folio segun el movimiento que se realizará
-//		
-//		String query = "exec guardar_orden_de_compra_interna ?,?,?,?,?,?,?,?,?,'"+orden.getLista_de_productos()+"'" ;
-//		Connection con    = new Connexion().conexion();
-//		PreparedStatement pstmt    = null;
-//		
-//		try {
-//			con.setAutoCommit(false);
-//			pstmt    = con.prepareStatement(query);
-//		
-//				pstmt.setInt   	(1 ,  orden.getFolio());
-//				pstmt.setInt	(2 ,  orden.getFolio_persona_solicita());
-//				pstmt.setInt	(3 ,  orden.getFolio_servicio());
-//				pstmt.setString	(4 ,  orden.getStatus());			
-//				pstmt.setString	(5 ,  orden.getEstab_destino());
-//				pstmt.setString	(6 ,  orden.getTipo_de_solicitante());
-//				pstmt.setString	(7 ,  orden.getUso_de_mercancia());
-//				pstmt.setInt   	(8 ,  usuario.getFolio());
-//				pstmt.setString	(9,  movimiento);
-//			
-//				pstmt.executeUpdate();
-//				con.commit();
-//		
-//		} catch (Exception e) {
-//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Compra_Interna ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-//			
-//			System.out.println("SQLException: " + e.getMessage());
-//			if (con != null){
-//				try {
-//					System.out.println("La transacción ha sido abortada");
-//					con.rollback();
-//				} catch(SQLException ex) {
-//					System.out.println(ex.getMessage());
-//				}
-//			} 
-//			return false;
-//		}finally{
-//			try {
-//				pstmt.close();
-//				con.close();
-//			} catch(SQLException e){
-//				e.printStackTrace();
-//			}
-//		}		
-//		return true;
-//	}
+	public boolean Guardar_Orden_De_Compra_Interna (Obj_Alimentacion_De_Ordenes_De_Compra_Interna orden,String movimiento){
+		
+		orden.setFolio( movimiento.equals("GUARDAR")?busca_y_actualiza_proximo_folio(79):orden.getFolio());//actualizar o deja el folio segun el movimiento que se realizará
+		
+		String query = "exec guardar_orden_de_compra_interna ?,?,?,?,?,?,?,?,?,'"+orden.getLista_de_productos()+"'" ;
+		Connection con    = new Connexion().conexion();
+		PreparedStatement pstmt    = null;
+		
+		try {
+			con.setAutoCommit(false);
+			pstmt    = con.prepareStatement(query);
+		
+				pstmt.setInt   	(1 ,  orden.getFolio());
+				pstmt.setInt	(2 ,  orden.getFolio_persona_solicita());
+				pstmt.setInt	(3 ,  orden.getFolio_servicio());
+				pstmt.setString	(4 ,  orden.getStatus());			
+				pstmt.setString	(5 ,  orden.getEstab_destino());
+				pstmt.setString	(6 ,  orden.getTipo_de_solicitante());
+				pstmt.setString	(7 ,  orden.getUso_de_mercancia());
+				pstmt.setInt   	(8 ,  usuario.getFolio());
+				pstmt.setString	(9,  movimiento);
+			
+				pstmt.executeUpdate();
+				con.commit();
+		
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Compra_Interna ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
 	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		

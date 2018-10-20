@@ -41,6 +41,7 @@ import javax.swing.table.TableRowSorter;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
+import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 //import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
@@ -698,35 +699,46 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 }
 
 private void agregarf() {
-//	int fila = tablab.getSelectedRow();
-//	Obj_Alimentacion_De_Ordenes_De_Compra_Interna obj = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna().buscar(Integer.valueOf(tablab.getValueAt(fila, 0).toString()) );
+	int fila = tablab.getSelectedRow();
+	Obj_Alimentacion_De_Ordenes_De_Compra_Interna obj = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna().buscar(Integer.valueOf(tablab.getValueAt(fila, 0).toString()) );
 	
-//	txtFolio.setText(obj.getFolio()+"");
-//	cmb_status.setSelectedItem(obj.getStatus());
-//	cmbEstablecimiento.setSelectedItem(obj.getEstab_destino());
-//	txtFolioSolic.setText(obj.getFolio_persona_solicita()+"");
-//	txtSolicitante.setText(obj.getPersona_solicita());
-//	txtFolioservici.setText(obj.getFolio_servicio()+"");
-//	txtDetalleServi.setText(obj.getServicio());
-//	txaUso.setText(obj.getUso_de_mercancia());
-//	
-//		if(obj.getTipo_de_solicitante().equals("EMPLEADO")){
-//			rbEmpleado.setSelected(true);
-//		}else{
-//			rbProveedor.setSelected(true);
-//		}
+	if(obj.getStatus().equals("VIGENTE") || obj.getStatus().equals("NEGADO")){
+		txtFolio.setText(obj.getFolio()+"");
+		cmb_status.setSelectedItem(obj.getStatus());
+		cmbEstablecimiento.setSelectedItem(obj.getEstab_destino());
+		txtFolioSolic.setText(obj.getFolio_persona_solicita()+"");
+		txtSolicitante.setText(obj.getPersona_solicita());
+		txtFolioservici.setText(obj.getFolio_servicio()+"");
+		txtDetalleServi.setText(obj.getServicio());
+		txaUso.setText(obj.getUso_de_mercancia());
 		
-//		Object[][] productos = obj.getArreglo_de_productos();
-//		for(Object[] reg: productos){
-//			modelo.addRow(reg);
-//		}
-		
-		btnEditar.setEnabled(true);
-		txtFolio.setEditable(false);
-		btnSolicitante.setEnabled(false);
-		rbEmpleado.setEnabled(false);
-		rbProveedor.setEnabled(false);
-		dispose();
+			if(obj.getTipo_de_solicitante().equals("EMPLEADO")){
+				rbEmpleado.setSelected(true);
+			}else{
+				rbProveedor.setSelected(true);
+			}
+			
+			Object[][] productos = obj.getArreglo_de_productos();
+			for(Object[] reg: productos){
+				modelo.addRow(reg);
+			}
+			
+			btnEditar.setEnabled(true);
+			txtFolio.setEditable(false);
+			btnSolicitante.setEnabled(false);
+			rbEmpleado.setEnabled(false);
+			rbProveedor.setEnabled(false);
+			dispose();
+		}else{
+			
+			panel_limpiar();
+			panel_false();
+			txtFolio.requestFocus();
+			btnNuevo.setEnabled(true);
+			JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+obj.getTipo_de_solicitante()+"\n "
+												+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[VIGENTE,NEGADO]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			return;
+		}
 	}
 
 	private KeyListener opFiltropuestos = new KeyListener(){

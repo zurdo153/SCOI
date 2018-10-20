@@ -62,6 +62,7 @@ import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Registrar_Zona_Completada;
 import Obj_Compras.Obj_Ubicaciones_De_Productos;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
+import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Indicadores;
@@ -11232,42 +11233,42 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				return Matriz;
 			}
 	   
-//	public Obj_Alimentacion_De_Ordenes_De_Compra_Interna ordenDeCompraInterna(int folio) throws SQLException{
-//		Obj_Alimentacion_De_Ordenes_De_Compra_Interna prod = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna();
-//		String query = "exec orden_de_compra_interna_buscar "+folio;
-//		System.out.println(query);
-//		Statement stmt = null;
-//		try {
-//			stmt = con.conexion().createStatement();
-//		    ResultSet rs = stmt.executeQuery(query);
-//			while(rs.next()){
-//				
-//				prod.setFolio(rs.getInt("folio"));
-//				prod.setFolio_persona_solicita(rs.getInt("folio_de_solicitante"));
-//				prod.setPersona_solicita(rs.getString("nombre_de_solicitante").trim());
-//				prod.setTipo_de_solicitante(rs.getString("tipo_de_solicitante").trim());
-//				prod.setFolio_servicio(rs.getInt("folio_servicio"));
-//				prod.setServicio(rs.getString("servicio"));
-//				prod.setUso_de_mercancia(rs.getString("uso_de_mercancia"));
-//				prod.setStatus(rs.getString("status"));
-//				prod.setEstab_destino(rs.getString("establecimiento_destino"));
-//				
-//				Object[][] arreglo = new LeerXml().arregloLleno(rs.getString("filas"));
-//				prod.setArreglo_de_productos(arreglo);
-//				
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.err.println("Error");
-//			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Productos ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-//			return null;
-//		}
-//		finally{
-//			 if (stmt != null) { stmt.close(); }
-//		}
-//		return prod;
-//	}
+	public Obj_Alimentacion_De_Ordenes_De_Compra_Interna ordenDeCompraInterna(int folio) throws SQLException{
+		Obj_Alimentacion_De_Ordenes_De_Compra_Interna prod = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna();
+		String query = "exec orden_de_compra_interna_buscar "+folio;
+		System.out.println(query);
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				
+				prod.setFolio(rs.getInt("folio"));
+				prod.setFolio_persona_solicita(rs.getInt("folio_de_solicitante"));
+				prod.setPersona_solicita(rs.getString("nombre_de_solicitante").trim());
+				prod.setTipo_de_solicitante(rs.getString("tipo_de_solicitante").trim());
+				prod.setFolio_servicio(rs.getInt("folio_servicio"));
+				prod.setServicio(rs.getString("servicio"));
+				prod.setUso_de_mercancia(rs.getString("uso_de_mercancia"));
+				prod.setStatus(rs.getString("status"));
+				prod.setEstab_destino(rs.getString("establecimiento_destino"));
+				
+				Object[][] arreglo = new LeerXml().arregloLleno(rs.getString("filas"));
+				prod.setArreglo_de_productos(arreglo);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error");
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Productos ] SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		finally{
+			 if (stmt != null) { stmt.close(); }
+		}
+		return prod;
+	}
 	
 //	public ImageIcon crearImagIcon(){
 //		
