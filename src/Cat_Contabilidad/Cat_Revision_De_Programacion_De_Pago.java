@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
@@ -18,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -30,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 
 //import Cat_Cuadrantes.Cat_Captura_De_Cuadrantes.CargaDatosDelCombo;
 import Conexiones_SQL.Connexion;
@@ -180,6 +183,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		    JTable tablat = new JTable(modelot){
 		       	 public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
 		       	     Component componente = super.prepareRenderer(renderer, row, col);
+		       	     
 		       	       if(col==0){
 		       	        	Color c = new java.awt.Color(255,0,0);
 		       	           if(tablat.getValueAt(row,0).toString().trim().equals("Posfechado")){
@@ -222,22 +226,25 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			
 		String status[] = programacion.combo_estatus_programacion();
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmb_status = new JComboBox(status);
+		JComboBox cmbAplicarClasificador = new JComboBox(status);
 		
 		@SuppressWarnings("rawtypes")
 		JComboBox cmbAgrupacion  = new JComboBox();
 		
 		JToolBar menu_toolbar    = new JToolBar();
-		JTextField txtFolio      = new Componentes().text(new JCTextField()  ,"Folio Programacion"   ,15   ,"Int");
-		JTextField txtPedientes  = new Componentes().text(new JCTextField(), "Cant. Pendientes", 150, "String");
+		JTextField txtFolio      = new Componentes().text(new JCTextField()  ,"Folio Programacion"         ,15   ,"Int"   );
+		JTextField txtPedientes  = new Componentes().text(new JCTextField(), "Cant. Pendientes"            , 150, "String");
 		JTextField txtFiltro     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<",300 , "String",tabla,Cantidad_Real_De_Columnas );
-		JTextField txtTotal      = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
+		
+		JTextField txtProgramacion= new Componentes().text(new JCTextField() ,"Total Programacion"         ,30   ,"String");
+		JTextField txtPresupuesto= new Componentes().text(new JCTextField()  ,"Total Presupuesto"          ,30   ,"String");
+		JTextField txtTotal      = new Componentes().text(new JCTextField()  ,"Total Propuesto"            ,30   ,"String");
 		
 		JCButton btnFiltro       = new JCButton("Filtro"      ,"Filter-List-icon16.png","Azul" );
 		JCButton btnGuardar      = new JCButton("Guardar"     ,"Guardar.png"           ,"Azul");
 		JCButton btnActualizar   = new JCButton("Actualizar"  ,"Actualizar.png"        ,"Azul" );	
 		JCButton btnImprimir     = new JCButton("Imprimir"    ,"imprimir-16.png"       ,"Azul" );
-		JCButton btnAplicar      = new JCButton("Aplicar"     ,"Aplicar.png"           ,"Verde");
+		JCButton btnAplicar      = new JCButton("Aplicar A Seleccion ","Aplicar.png"   ,"AzulO");
 		
 		private JCheckBox chb_invertir = new JCheckBox("Invertir");
 		
@@ -266,16 +273,22 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			
             int x=15 ,y=20 ,width=130 ,height=20;
 
-			this.campo.add(menu_toolbar).setBounds        (x     ,y     ,400      ,40      );
-			this.campo.add(new JLabel("Folio:")).setBounds(x     ,y+=45 ,width    ,height  );
-			this.campo.add(txtFolio).setBounds            (x+40  ,y     ,width    ,height  );
-			this.campo.add(new JLabel("Fecha:")).setBounds(x+190 ,y     ,width    ,height  );
-			this.campo.add(chb_invertir).setBounds        (x     ,y+=30 ,width    ,height  );
-			this.campo.add(cmb_status).setBounds          (x+150 ,y     ,width    ,height  );
+			this.campo.add(menu_toolbar).setBounds               (x     ,y     ,400      ,20      );
+			this.campo.add(new JLabel("Folio:")).setBounds       (x     ,y+=25 ,width    ,height  );
+			this.campo.add(txtFolio).setBounds                   (x+30  ,y     ,width    ,height  );
+			this.campo.add(new JLabel("Programacion:")).setBounds(x+170 ,y     ,width    ,height  );
+			this.campo.add(txtProgramacion).setBounds            (x+250 ,y     ,width    ,height  );
+			this.campo.add(new JLabel("Presupuesto:")).setBounds (x+170 ,y+=25 ,width    ,height  );
+			this.campo.add(txtPresupuesto).setBounds             (x+250 ,y     ,width    ,height  );
+			this.campo.add(new JLabel("Propuesto:")).setBounds   (x+170 ,y+=25 ,width    ,height  );
+			this.campo.add(txtTotal).setBounds                   (x+250 ,y     ,width    ,height  );
 			
-			this.campo.add(scroll_tablatptales).setBounds (x+420 ,y=5   ,480      ,125     );
-			campo.add(txtFiltro).setBounds                (x     ,y+=125,ancho-25 ,height  );
-			campo.add(scroll_tabla).setBounds             (x     ,y+=20 ,ancho-25 ,alto-235);
+			this.campo.add(chb_invertir).setBounds               (x     ,y+=30 ,62       ,height  );
+			this.campo.add(cmbAplicarClasificador).setBounds     (x+70  ,y     ,width    ,height  );
+			this.campo.add(btnAplicar ).setBounds                (x+210 ,y     ,170      ,height  );
+			this.campo.add(scroll_tablatptales).setBounds        (x+405 ,y=5   ,480      ,145     );
+			this.campo.add(txtFiltro).setBounds                  (x     ,y+=145,ancho-25 ,height  );
+			campo.add(scroll_tabla).setBounds                    (x     ,y+=20 ,ancho-25 ,alto-235);
 			
 			init_tabla_principal();		
 			init_tabla_totales();
@@ -285,29 +298,50 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			btnActualizar.addActionListener(OpActualizar);
 			btnImprimir.addActionListener(opImprimir_Reporte);
 			btnFiltro.addActionListener(opfiltro);
+			btnAplicar.addActionListener(OpAplicar);
 			chb_invertir.addActionListener(OpInvertir);
+			
+//			txtProgramacion.setEditable(false);
+			txtPresupuesto.setEditable(false);
+			txtTotal.setEditable(false);
+			
+//			JFormattedTextField ftext = new JFormattedTextField();
+//			MaskFormatter mask;
+//			try {
+//			    mask = new MaskFormatter("'###'###.##");
+//			    mask.install(ftext);
+//			} catch (java.text.ParseException e) {
+//			    e.printStackTrace();
+//			}
+			
+			
+			
 		}
 		
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	
+		    private MaskFormatter mascara() {
+		     	    MaskFormatter mascara = new MaskFormatter();		   
+		        try {
+		            mascara = new MaskFormatter("(###) ###-####");
+		       } catch (ParseException e) {
+		             e.printStackTrace();
+		       }
+		       return mascara;
+		    }
+		    
+		 
 		public void inicializartablatotales() {
 			 tablaclafificadores= programacion.Tabla_Programacion_de_pago_clasificadores();
 			 ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablaclafificadores, tablat);
+			 
+	
+			
+		
+			
+				
 		}
 		
-		ActionListener OpInvertir = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(chb_invertir.isSelected()) {
-					for(int i=0;i<tabla.getRowCount();i++) {
-						tabla.setValueAt("true", i, 0);
-					}
-				}else {
-					for(int i=0;i<tabla.getRowCount();i++) {
-						tabla.setValueAt("false", i, 0);
-					}
-				}
-			}
-		}; 
-		
+	
 		
 		public void calculo_De_totales() {
 			float totalprogramado=0;
@@ -335,6 +369,40 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 				}
 			}
 		}
+		
+		ActionListener OpInvertir = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(chb_invertir.isSelected()) {
+					for(int i=0;i<tabla.getRowCount();i++) {
+						tabla.setValueAt("true", i, 0);
+					}
+				}else {
+					for(int i=0;i<tabla.getRowCount();i++) {
+						tabla.setValueAt("false", i, 0);
+					}
+				}
+			}
+		}; 
+		
+		ActionListener OpAplicar = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for(int i=0;i<tabla.getRowCount();i++) {
+					if(tabla.getValueAt(i,0).toString().equals("true")) {
+						tabla.setValueAt(cmbAplicarClasificador.getSelectedItem().toString().trim(), i, 9);
+						tabla.setValueAt(usuario.getNombre_completo(), i, 17); 
+					}
+				}	
+				calculo_De_totales();
+				chb_invertir.setSelected(false);
+				txtFiltro.setText("");
+				ObjTab.Obj_Filtro(tabla, "", Cantidad_Real_De_Columnas, txtFiltro);
+				for(int i=0;i<tabla.getRowCount();i++) {
+					tabla.setValueAt("false", i, 0);
+				}
+			}
+		};
 		
 	    ActionListener OpActualizar = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -539,6 +607,9 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 	  tablacompleta= programacion.refrescar_tabla_programacion(tablab.getValueAt(fila,0).toString() );
 	  ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablacompleta, tabla);
 	  txtFolio.setText(tablab.getValueAt(fila,0).toString() );
+	  txtProgramacion.setText(tablacompleta[0][20].toString() );
+	  txtPresupuesto.setText(tablacompleta[0][21].toString() );
+	  
 	  dispose();
 	  inicializartablatotales();
 	  calculo_De_totales();
