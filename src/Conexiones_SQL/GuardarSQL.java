@@ -57,6 +57,7 @@ import Obj_Compras.Obj_Puntos_De_Venta_De_Tiempo_Aire;
 import Obj_Compras.Obj_Registrar_Zona_Completada;
 import Obj_Compras.Obj_Unidades_De_Medida_De_Producto;
 import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
+//import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
