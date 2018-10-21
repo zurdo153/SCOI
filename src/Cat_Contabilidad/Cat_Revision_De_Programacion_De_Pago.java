@@ -19,7 +19,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -319,7 +318,8 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		}
 		
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     	
-		    private MaskFormatter mascara() {
+		    @SuppressWarnings("unused")
+			private MaskFormatter mascara() {
 		     	    MaskFormatter mascara = new MaskFormatter();		   
 		        try {
 		            mascara = new MaskFormatter("(###) ###-####");
