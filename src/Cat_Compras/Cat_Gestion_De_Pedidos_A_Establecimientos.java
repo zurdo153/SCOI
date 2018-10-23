@@ -362,7 +362,7 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			
 			if(new BuscarSQL().existenPedidosActivos()){
 				
-//				System.out.println(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim()));
+				System.out.println(new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim()));
 				if(!new BuscarSQL().existeInventarioElDiaActual(cmbEstablecimientos.getSelectedItem().toString().trim())){
 					//limpiar pedidos
 					cargarInventario("FINALIZAR_PEDIDOS");

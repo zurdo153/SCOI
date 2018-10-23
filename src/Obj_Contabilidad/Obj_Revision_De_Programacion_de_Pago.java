@@ -4,21 +4,44 @@ import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
+import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Revision_De_Programacion_de_Pago {
-	
-	int folio_programacion;
-	int folio_colaborador;
-	
-	String Turno;
+	float total_programacion=0;
+	float total_presupuesto=0;
+	float total_propuesto=0;
 	String [][] tabla_programacion;
-	 
-	public Obj_Revision_De_Programacion_de_Pago(){
-		this.folio_programacion=0;
-		this.folio_colaborador=0;
-		this.Turno="";
-		
-		this.tabla_programacion=null;
+
+	public float getTotal_programacion() {
+		return total_programacion;
+	}
+
+	public void setTotal_programacion(float total_programacion) {
+		this.total_programacion = total_programacion;
+	}
+
+	public float getTotal_presupuesto() {
+		return total_presupuesto;
+	}
+
+	public void setTotal_presupuesto(float total_presupuesto) {
+		this.total_presupuesto = total_presupuesto;
+	}
+
+	public float getTotal_propuesto() {
+		return total_propuesto;
+	}
+
+	public void setTotal_propuesto(float total_propuesto) {
+		this.total_propuesto = total_propuesto;
+	}
+
+	public String[][] getTabla_programacion() {
+		return tabla_programacion;
+	}
+
+	public void setTabla_programacion(String[][] tabla_programacion) {
+		this.tabla_programacion = tabla_programacion;
 	}
 
 	public String[][] refrescar_tabla_programacion(String folio_programacion){
@@ -42,6 +65,7 @@ public class Obj_Revision_De_Programacion_de_Pago {
 //	public boolean Guardar(){
 //		return new GuardarSQL().Guardar_Cuadrante(this);
 //	}
+	
 //	
 //	
 //	public String[][] refrescar_tabla_captura_cuadrante(String clave_checador){

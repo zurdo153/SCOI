@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
@@ -96,8 +97,6 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			String comando = "select '','','','','',0,0,'','','','','','','','','','','','' ";
 			ObjTab.Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, "26","si",checkboxindex);
 			modelo.setRowCount(0);
-			
-
 	    }
 		
 	 public void init_tabla_totales(){
@@ -236,13 +235,12 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		JTextField txtPedientes  = new Componentes().text(new JCTextField(), "Cant. Pendientes"            , 150, "String");
 		JTextField txtFiltro     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<",300 , "String",tabla,Cantidad_Real_De_Columnas );
 		
-		JTextField txtProgramacion= new Componentes().text(new JCTextField() ,"Total Programacion"         ,30   ,"String");
-		JTextField txtPresupuesto= new Componentes().text(new JCTextField()  ,"Total Presupuesto"          ,30   ,"String");
-		JTextField txtTotal      = new Componentes().text(new JCTextField()  ,"Total Propuesto"            ,30   ,"String");
+		JTextField txtProgramacion= new Componentes().text(new JCTextField() ,"Total Programacion" ,20   ,"Double");
+		JTextField txtPresupuesto= new Componentes().text(new JCTextField()  ,"Total Presupuesto"          ,20   ,"Double");
+		JTextField txtTotal      = new Componentes().text(new JCTextField()  ,"Total Propuesto"            ,20   ,"Double");
 		
 		JCButton btnFiltro       = new JCButton("Filtro"      ,"Filter-List-icon16.png","Azul" );
 		JCButton btnGuardar      = new JCButton("Guardar"     ,"Guardar.png"           ,"Azul");
-		JCButton btnActualizar   = new JCButton("Actualizar"  ,"Actualizar.png"        ,"Azul" );	
 		JCButton btnImprimir     = new JCButton("Imprimir"    ,"imprimir-16.png"       ,"Azul" );
 		JCButton btnAplicar      = new JCButton("Aplicar A Seleccion ","Aplicar.png"   ,"AzulO");
 		
@@ -262,9 +260,6 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			this.menu_toolbar.add(btnFiltro     );
 		    this.menu_toolbar.addSeparator(     );
 		    this.menu_toolbar.addSeparator(     );
-			this.menu_toolbar.add(btnActualizar );
-			this.menu_toolbar.addSeparator(     );
-			this.menu_toolbar.addSeparator(     );
 			this.menu_toolbar.add(btnImprimir   );
 		    this.menu_toolbar.addSeparator(     );
 		    this.menu_toolbar.addSeparator(     );
@@ -273,7 +268,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			
             int x=15 ,y=20 ,width=130 ,height=20;
 
-			this.campo.add(menu_toolbar).setBounds               (x     ,y     ,400      ,20      );
+			this.campo.add(menu_toolbar).setBounds               (x     ,y     ,350      ,20      );
 			this.campo.add(new JLabel("Folio:")).setBounds       (x     ,y+=25 ,width    ,height  );
 			this.campo.add(txtFolio).setBounds                   (x+30  ,y     ,width    ,height  );
 			this.campo.add(new JLabel("Programacion:")).setBounds(x+170 ,y     ,width    ,height  );
@@ -295,79 +290,63 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			Seleccionar_Respuesta(tabla);
 			cont.add(campo);
 			btnGuardar.addActionListener(opaceptar);
-			btnActualizar.addActionListener(OpActualizar);
 			btnImprimir.addActionListener(opImprimir_Reporte);
 			btnFiltro.addActionListener(opfiltro);
 			btnAplicar.addActionListener(OpAplicar);
 			chb_invertir.addActionListener(OpInvertir);
 			
-//			txtProgramacion.setEditable(false);
+			txtProgramacion.setEditable(false);
 			txtPresupuesto.setEditable(false);
 			txtTotal.setEditable(false);
-			
-//			JFormattedTextField ftext = new JFormattedTextField();
-//			MaskFormatter mask;
-//			try {
-//			    mask = new MaskFormatter("'###'###.##");
-//			    mask.install(ftext);
-//			} catch (java.text.ParseException e) {
-//			    e.printStackTrace();
-//			}
-			
-			
-			
+			txtFolio.setEditable(false);
 		}
-		
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	
-		    private MaskFormatter mascara() {
-		     	    MaskFormatter mascara = new MaskFormatter();		   
-		        try {
-		            mascara = new MaskFormatter("(###) ###-####");
-		       } catch (ParseException e) {
-		             e.printStackTrace();
-		       }
-		       return mascara;
-		    }
-		    
 		 
 		public void inicializartablatotales() {
 			 tablaclafificadores= programacion.Tabla_Programacion_de_pago_clasificadores();
 			 ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablaclafificadores, tablat);
-			 
-	
-			
-		
-			
-				
 		}
 		
-	
-		
+		float totalpropuesto=0;
 		public void calculo_De_totales() {
+		
 			float totalprogramado=0;
 			float totalpagado=0;
 			float totalpendiente=0;
+			totalpropuesto=0;
 			 ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablaclafificadores, tablat);
 
 			for(int i=0;i<tabla.getRowCount();i++) {
+				
 				for(int t=0;t<tablat.getRowCount();t++) {
-					if(tabla.getValueAt(i, 9).toString().trim().equals(tablat.getValueAt(t, 0).toString().trim()) && tabla.getValueAt(i, 13).toString().trim().equals("")  ) {
+					
+					if(tabla.getValueAt(i, 9).toString().trim().equals(tablat.getValueAt(t, 0).toString().trim())) {
 					   totalprogramado= Float.valueOf(tablat.getValueAt(t, 1).toString().trim())+Float.valueOf(tabla.getValueAt(i, 5).toString().trim());
 					   tablat.setValueAt(totalprogramado+"", t, 1);
-					}else{
-						if(tabla.getValueAt(i, 9).toString().trim().equals(tablat.getValueAt(t, 0).toString().trim()) && !tabla.getValueAt(i, 13).toString().trim().equals("") ) { 
+					}
+					
+					if(tabla.getValueAt(i, 9).toString().trim().equals(tablat.getValueAt(t, 0).toString().trim()) && !tabla.getValueAt(i, 13).toString().trim().equals("") ) { 
 					       totalpagado= Float.valueOf(tablat.getValueAt(t, 2).toString().trim())+Float.valueOf(tabla.getValueAt(i, 5).toString().trim());
 						   tablat.setValueAt(totalpagado+"", t, 2);
-					    }
 					}
-					if(totalprogramado==0){
-						totalpendiente=0;
-					}else {
-						totalpendiente=totalprogramado-totalpagado;
+					
+				    totalpendiente=0;
+					if(tabla.getValueAt(i, 9).toString().trim().equals(tablat.getValueAt(t, 0).toString().trim()) && totalpagado>0 && totalprogramado>0) {
+						totalpendiente=(totalpagado/totalprogramado)*100 ;
+						tablat.setValueAt(totalpendiente+"", t, 3);
 					}
-					tablat.setValueAt(totalpendiente+"", t, 3);
 				}
 			}
+			
+			for(int t=0;t<tablat.getRowCount();t++) {
+				if(t>0) {
+					totalpropuesto=totalpropuesto+Float.valueOf(tablat.getValueAt(t, 1).toString().trim());
+					System.out.println(totalpropuesto+"");
+				}
+			}
+		
+			  DecimalFormat formateador = new DecimalFormat("###,###.##"); 
+			  txtTotal.setText(formateador.format (totalpropuesto ));
+			  txtTotal.setHorizontalAlignment(JTextField.RIGHT);
 		}
 		
 		ActionListener OpInvertir = new ActionListener() {
@@ -404,20 +383,6 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			}
 		};
 		
-	    ActionListener OpActualizar = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(txtFolio.getText().toString().equals("")) {
-				 JOptionPane.showMessageDialog(null, "Es Requerido Teclee el Folio de una Programación de pagos \n o busque una en el filtro y la seleccione antes de dar Actualizar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-				 txtFolio.requestFocus();
-				 return;
-				}else {
-					 tablacompleta= programacion.refrescar_tabla_programacion(txtFolio.getText().toString().trim());
-					 ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablacompleta, tabla);
-					 calculo_De_totales();
-				}
-			 }
-	    };
-	    
 	    ActionListener opImprimir_Reporte = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 //				int fila;
@@ -473,7 +438,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 				}
 		    });
 		}
-	  	
+
 	  	
 	  	 private class CargaDatosDelCombo extends DefaultCellEditor{
 		        @SuppressWarnings("rawtypes")
@@ -607,8 +572,16 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 	  tablacompleta= programacion.refrescar_tabla_programacion(tablab.getValueAt(fila,0).toString() );
 	  ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablacompleta, tabla);
 	  txtFolio.setText(tablab.getValueAt(fila,0).toString() );
-	  txtProgramacion.setText(tablacompleta[0][20].toString() );
-	  txtPresupuesto.setText(tablacompleta[0][21].toString() );
+	  
+	  DecimalFormat formateador = new DecimalFormat("###,###.##"); 
+	  Double totalprogramacion= Double.valueOf(tablacompleta[0][20].toString());
+	  Double totalpresupuesto = Double.valueOf(tablacompleta[0][21].toString());
+	  
+	  txtProgramacion.setText(formateador.format (totalprogramacion));
+	  txtPresupuesto.setText(formateador.format (totalpresupuesto ));
+	  
+	  txtProgramacion.setHorizontalAlignment(JTextField.RIGHT);
+	  txtPresupuesto.setHorizontalAlignment(JTextField.RIGHT);
 	  
 	  dispose();
 	  inicializartablatotales();
