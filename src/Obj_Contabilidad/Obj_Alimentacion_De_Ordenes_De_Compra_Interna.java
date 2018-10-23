@@ -2,6 +2,7 @@ package Obj_Contabilidad;
 
 import java.sql.SQLException;
 
+import Conexiones_SQL.ActualizarSQL;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.GuardarSQL;
 
@@ -143,5 +144,9 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 	
 	public boolean guardar(String movimiento){
 		return new GuardarSQL().Guardar_Orden_De_Compra_Interna(this, movimiento);
+	}
+	
+	public boolean autorizacion(int folio, String status){
+		return new ActualizarSQL().Autorizar_Orden_De_Compra_Interna(folio, status);
 	}
 }

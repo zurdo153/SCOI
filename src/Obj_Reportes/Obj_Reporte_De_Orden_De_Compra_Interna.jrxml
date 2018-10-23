@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2018-10-20T18:15:29 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Orden_De_Compra_Interna" pageWidth="612" pageHeight="400" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4f0a4e9-bbbd-4b79-8254-10901b741efa">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="2.98_SCOI"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[declare @folio int
+set @folio = 4
+select RIGHT('0000000000'+convert(varchar(10),ci.folio),10) as folio
+		,case ci.status when 'V' then 'VIGENTE'
+						when 'N' then 'NEGADO'
+						when 'C' then 'CANCELADO'
+						when 'S' then 'SURTIDO' end status
+		,convert(varchar(20),case ci.status when 'V' then ci.fecha_autorizado
+																	when 'N' then ci.fecha_autorizado
+																	when 'C' then ci.fecha_autorizado
+																	when 'S' then ci.fecha_autorizado end,103) as fecha
+		,'' as surte
+		,estab_dest.establecimiento as destino
+		,ci.uso_de_mercancia
+		,case ci.status when 'S' then pci.cantidad_surtida
+						else pci.cantidad_solicitada end cantidad
+		,case ci.status when 'S' then 
+										case pci.unidad_surtida when 'B' then 'BOLSA'
+																when 'L' then 'LITROS'
+																when 'M' then 'METROS'
+																when 'P' then 'PIEZAS' end
+						else			case pci.unidad_solicitada when 'B' then 'BOLSA'
+																	when 'L' then 'LITROS'
+																	when 'M' then 'METROS'
+																	when 'P' then 'PIEZAS' end
+						end unidad
+		,pci.descripcion_de_producto+case ci.status when 'S' then ' ('+pci.cod_prod+')'
+						else '' end producto
+from orden_de_compra_interna ci
+inner join tb_establecimientosBMS_por_servidor estab_dest on estab_dest.cod_estab = ci.cod_estab_destino
+inner join productos_en_orden_de_compra_interna pci on pci.folio_orden_de_compra_interna = ci.folio
+where ci.folio = @folio]]>
+	</queryString>
+	<field name="folio" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="surte" class="java.lang.String"/>
+	<field name="destino" class="java.lang.String"/>
+	<field name="uso_de_mercancia" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="unidad" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="111" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="9" width="572" height="102" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="9650c819-c3b4-44b6-9810-5fbe2689ab27">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<rectangle radius="4">
+					<reportElement x="260" y="39" width="311" height="44" uuid="c3850a40-311b-48d6-8c49-72a55143e2e7">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="0" y="0" width="290" height="36" backcolor="#EDEDED" uuid="0d494ddb-547a-4131-adb6-b73055c64dec"/>
+				</rectangle>
+				<rectangle radius="4">
+					<reportElement x="312" y="0" width="82" height="36" uuid="fb31af2f-e4f1-402a-92b1-ddedca523ee7"/>
+				</rectangle>
+				<line>
+					<reportElement x="312" y="17" width="82" height="1" uuid="6fdfd293-2c24-480e-acd4-d124c016b074"/>
+				</line>
+				<rectangle radius="4">
+					<reportElement x="426" y="0" width="145" height="36" uuid="3e666307-c72d-4576-974d-6fae2cf38ea5"/>
+				</rectangle>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="290" height="36" forecolor="#000000" uuid="a4f1c93e-b76a-408a-9dae-3b5e05f9556b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="24" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Orden De Compra Interna]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="313" y="0" width="81" height="18" forecolor="#000000" uuid="85a8feeb-6177-4115-b3aa-c93fea8623ce"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[FECHA:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="313" y="18" width="81" height="18" uuid="aabdab44-7e2b-4380-b0b2-4663c07e7630"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="426" y="18" width="61" height="18" forecolor="#000000" uuid="e92d103c-3294-48a1-88be-3b3269909baf"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[FOLIO:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="487" y="18" width="84" height="18" uuid="62653bc2-4ec1-49a2-b53c-a55c64ac890e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="0" y="48" width="70" height="18" forecolor="#000000" uuid="162a37ca-96f5-4c0f-8be0-fc6d34ef2715"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ORIGEN:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="70" y="48" width="180" height="18" uuid="67030159-9ac6-48bf-b6d7-90ceae1e54ef"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{surte}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="0" y="66" width="70" height="18" forecolor="#000000" uuid="8c85a828-0d7e-4e96-b406-ddebdcbd2cc9"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[DESTINO:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="70" y="66" width="180" height="18" uuid="d2671023-98fd-4ade-a883-320b8b5ac381"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{destino}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="260" y="39" width="311" height="44" uuid="3ebb7786-6e64-4c59-b612-23a2d4647cf8">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["USO DE MERCANCIA:  "+$F{uso_de_mercancia}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="426" y="0" width="61" height="18" forecolor="#000000" uuid="ef61cced-aedd-4450-a1de-e6ca4a31f8d4"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[STATUS:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="487" y="0" width="84" height="18" uuid="bf13ddb2-1ae5-4a91-8a93-321ae7203b82"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+				</textField>
+				<rectangle radius="0">
+					<reportElement x="0" y="84" width="572" height="18" backcolor="#EDEDED" uuid="68f9a025-4878-4027-872d-33f41555cb74"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement x="426" y="17" width="145" height="1" uuid="6547a701-9e2c-4851-b160-7598b2ed09e2"/>
+				</line>
+				<line>
+					<reportElement x="70" y="65" width="180" height="1" uuid="f2ad806b-1496-463e-8a6d-9ae13bbbe870"/>
+				</line>
+				<staticText>
+					<reportElement x="0" y="37" width="250" height="11" forecolor="#002FFF" uuid="1dec8f88-80d1-4987-9731-f38fc652e74f"/>
+					<textElement rotation="None">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Original: Archivo Tienda     Copia: Contabilidad]]></text>
+				</staticText>
+			</frame>
+			<staticText>
+				<reportElement style="Column header" x="0" y="93" width="61" height="18" forecolor="#000000" uuid="04d3c180-2d7e-448f-bf00-8372cf53e86a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="61" y="93" width="69" height="18" forecolor="#000000" uuid="e6770b15-3c5d-4242-8f38-d3c856cdbdc3"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIDAD]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="110" width="572" height="1" uuid="c88a69d1-5360-4eec-8c00-ae82c052026f">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="70" y="92" width="180" height="1" uuid="03ca86e4-1386-49c1-86a9-32213304fe3e"/>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="130" y="93" width="442" height="18" forecolor="#000000" uuid="b313d04b-8abf-4d5c-83b0-4a07fdf947e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="572" height="18" uuid="5b88811f-cac1-4e30-8ff2-6bc0d09d9d19">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="61" height="18" uuid="7557569b-ea38-4802-86c6-111e353dd62b"/>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cantidad}+" "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="61" y="0" width="69" height="18" uuid="58d87b66-4ecc-45f5-b012-9c041c0be309"/>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="130" y="0" width="442" height="18" uuid="c8c909f3-1d30-446a-8914-c3d80dbe39de">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.1" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" "+$F{producto}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<rectangle>
+				<reportElement x="0" y="0" width="572" height="20" backcolor="#EDEDED" uuid="54797597-7ad1-410d-b8d3-3267bd1e6581">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="190" height="20" uuid="53bde9b8-ac50-4d4f-bab6-8971ddb5110e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supermercado La Competidora S.A. de C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="382" height="20" uuid="a14ee134-0a5a-410c-8406-e4ca59ce0b54"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fco. Javier Mina y Desiderio Ochoa. Eldorado, Sinaloa, México. R.F.C SCO-931214-857]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

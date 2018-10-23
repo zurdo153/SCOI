@@ -48,6 +48,7 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
+import Obj_Xml.CrearXmlString;
 
 @SuppressWarnings("serial")
 public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
@@ -463,35 +464,32 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	String movimiento = "";
 	ActionListener guardar = new ActionListener(){
 	public void actionPerformed(ActionEvent e){
-//			 String[][] tabla_guardado = ObjTab.tabla_guardar(tabla);
-		
-//		int[] ignorarColumnas = {-1};
-		 
+		int[] ignorarColumnas = {-1};
 		String validarCampos = validaCampos();
 			 
 			 if(validarCampos.equals("")){
-//				 Obj_Alimentacion_De_Ordenes_De_Compra_Interna compraInterna = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna();
+				 Obj_Alimentacion_De_Ordenes_De_Compra_Interna compraInterna = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna();
 				 
-//				 compraInterna.setFolio(Integer.valueOf(txtFolio.getText().trim()));
-//				 compraInterna.setStatus(cmb_status.getSelectedItem().toString().trim());
-//				 compraInterna.setEstab_destino(cmbEstablecimiento.getSelectedItem().toString().trim());
-//				 
-//				 compraInterna.setFolio_persona_solicita(Integer.valueOf(txtFolioSolic.getText().trim()));
-//				 compraInterna.setPersona_solicita(txtSolicitante.getText().trim().toUpperCase());
-//				 compraInterna.setTipo_de_solicitante(rbEmpleado.isSelected()?"E":"P");
-//				 
-//				 compraInterna.setFolio_servicio(Integer.valueOf(txtFolioservici.getText().trim()));
-//				 compraInterna.setServicio(txtDetalleServi.getText().trim().toUpperCase());
-//				 compraInterna.setUso_de_mercancia(txaUso.getText().trim().toUpperCase());
-//				 
-//				 compraInterna.setLista_de_productos(new CrearXmlString().CadenaXML(tabla, ignorarColumnas));
-//				  
-//				  if(compraInterna.guardar(movimiento)){
-//		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente La Orden De Compra Interna", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-//			      }else{
-//					JOptionPane.showMessageDialog(null, "La Orden De Compra Interna No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-//			    	return;
-//			      }
+				 compraInterna.setFolio(Integer.valueOf(txtFolio.getText().trim()));
+				 compraInterna.setStatus(cmb_status.getSelectedItem().toString().trim());
+				 compraInterna.setEstab_destino(cmbEstablecimiento.getSelectedItem().toString().trim());
+				 
+				 compraInterna.setFolio_persona_solicita(Integer.valueOf(txtFolioSolic.getText().trim()));
+				 compraInterna.setPersona_solicita(txtSolicitante.getText().trim().toUpperCase());
+				 compraInterna.setTipo_de_solicitante(rbEmpleado.isSelected()?"E":"P");
+				 
+				 compraInterna.setFolio_servicio(Integer.valueOf(txtFolioservici.getText().trim()));
+				 compraInterna.setServicio(txtDetalleServi.getText().trim().toUpperCase());
+				 compraInterna.setUso_de_mercancia(txaUso.getText().trim().toUpperCase());
+				 
+				 compraInterna.setLista_de_productos(new CrearXmlString().CadenaXML(tabla, ignorarColumnas));
+				  
+				  if(compraInterna.guardar(movimiento)){
+		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente La Orden De Compra Interna", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+			      }else{
+					JOptionPane.showMessageDialog(null, "La Orden De Compra Interna No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+			    	return;
+			      }
 			 }else{	
 				 JOptionPane.showMessageDialog(null, "Los Siguientes Campos Son Requeridos:\n"+validarCampos, "Aviso !!!",JOptionPane.WARNING_MESSAGE, new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 			    	return;
@@ -619,8 +617,8 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 		this.tablab.getColumnModel().getColumn( 2).setMinWidth(140);
 		this.tablab.getColumnModel().getColumn( 3).setMinWidth(200);
 		this.tablab.getColumnModel().getColumn( 4).setMinWidth(160);
-		this.tablab.getColumnModel().getColumn( 5).setMinWidth(100);
-		this.tablab.getColumnModel().getColumn( 6).setMinWidth(230);
+		this.tablab.getColumnModel().getColumn( 5).setMinWidth(230);
+		this.tablab.getColumnModel().getColumn( 6).setMinWidth(100);
 		this.tablab.getColumnModel().getColumn( 7).setMinWidth(130);
 		this.tablab.getColumnModel().getColumn( 8).setMinWidth(130);
 		
@@ -735,7 +733,7 @@ private void agregarf() {
 			panel_false();
 			txtFolio.requestFocus();
 			btnNuevo.setEnabled(true);
-			JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+obj.getTipo_de_solicitante()+"\n "
+			JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+obj.getStatus()+"\n "
 												+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[VIGENTE,NEGADO]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 			return;
 		}

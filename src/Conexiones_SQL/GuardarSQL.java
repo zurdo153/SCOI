@@ -8444,7 +8444,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	public boolean Guardar_Orden_De_Compra_Interna (Obj_Alimentacion_De_Ordenes_De_Compra_Interna orden,String movimiento){
+	public boolean Guardar_Orden_De_Compra_Interna(Obj_Alimentacion_De_Ordenes_De_Compra_Interna orden,String movimiento){
 		
 		orden.setFolio( movimiento.equals("GUARDAR")?busca_y_actualiza_proximo_folio(79):orden.getFolio());//actualizar o deja el folio segun el movimiento que se realizará
 		
