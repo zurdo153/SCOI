@@ -8075,6 +8075,7 @@ public boolean existenPedidosActivos(){
 	    ResultSet rs = stmt.executeQuery(query);
 		while(rs.next()){
 			mov = rs.getBoolean("activar_inventario"); 
+			System.out.println( rs.getBoolean("activar_inventario"));
 		}
 		
 	} catch (Exception e) {
