@@ -162,12 +162,12 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 					
 			 	 if(e.getClickCount() == 1){
 			 		 
-			 		if(status_orden.equals("VIGENTE")){
+			 		if(status_orden.equals("EN VALIDACION")){
 	                     	new Cat_Ordenes_De_Compra_Interna_Detalle(Integer.valueOf(tablaP.getValueAt(fila, 0).toString())).setVisible(true);
 		 			}else{
 		 				
 		 				JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+status_orden+"\n "
-		 													+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[VIGENTE]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+		 													+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[EN VALIDACION]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 		 				return;
 		 			}
 	    				
@@ -393,7 +393,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 					String comando="declare @folio int"
 							+ " set @folio = '"+txtFolio.getText().toString()+"' "
 							+ " select RIGHT('0000000000'+convert(varchar(10),ci.folio),10) as folio "
-							+ "		,case ci.status when 'V' then 'VIGENTE' "
+							+ "		,case ci.status when 'E' then 'EN VALIDACION' "
 							+ "						when 'N' then 'NEGADO' "
 							+ "						when 'C' then 'CANCELADO' "
 							+ "						when 'S' then 'SURTIDO' end status "

@@ -109,7 +109,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	JCButton btnQuitarfila = new JCButton("Eliminar"     ,"boton-rojo-menos-icono-5393-16.png","Azul");
 	JCButton btnAgregar    = new JCButton("Agregar"      ,"double-arrow-icone-3883-16.png"    ,"Azul");
 	
-	String status[] = {"Vigente","Cancelado"};
+	String status[] = {"EN VALIDACION","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
 	
@@ -441,8 +441,10 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	
 	ActionListener deshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
+			
 			if(tabla.getRowCount()>0){
 				if(JOptionPane.showConfirmDialog(null, "Hay Datos Capturados y No Han Sido Guardados, ¿Desea Borrar Todo?", "Aviso", JOptionPane.INFORMATION_MESSAGE,0, new ImageIcon("Imagen/usuario-icono-noes_usuario9131-64.png") )== 0){
+					btnBuscar.setEnabled(true);
 					panel_limpiar();
 					panel_false();
 					txtFolio.requestFocus();
@@ -452,6 +454,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
               				return;
 			}
 		}else{
+			btnBuscar.setEnabled(true);
 			panel_limpiar();
 			panel_false();
 			txtFolio.requestFocus();
@@ -700,7 +703,7 @@ private void agregarf() {
 	int fila = tablab.getSelectedRow();
 	Obj_Alimentacion_De_Ordenes_De_Compra_Interna obj = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna().buscar(Integer.valueOf(tablab.getValueAt(fila, 0).toString()) );
 	
-	if(obj.getStatus().equals("VIGENTE") || obj.getStatus().equals("NEGADO")){
+	if(obj.getStatus().equals("EN VALIDACION") || obj.getStatus().equals("NEGADO")){
 		txtFolio.setText(obj.getFolio()+"");
 		cmb_status.setSelectedItem(obj.getStatus());
 		cmbEstablecimiento.setSelectedItem(obj.getEstab_destino());
@@ -734,7 +737,7 @@ private void agregarf() {
 			txtFolio.requestFocus();
 			btnNuevo.setEnabled(true);
 			JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+obj.getStatus()+"\n "
-												+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[VIGENTE,NEGADO]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+												+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[EN VALIDACION,NEGADO]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 			return;
 		}
 	}
