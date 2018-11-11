@@ -11172,7 +11172,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			String[][] Matriz = null;
 			String query = "exec programacion_de_pago_revision '"+folio_programacion+"'";
 			
-			Matriz = new String[getFilas(query)][22];
+			Matriz = new String[getFilas(query)][24];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -11202,6 +11202,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][19] = rs.getString(20);
 					Matriz[i][20] = rs.getString(21);
 					Matriz[i][21] = rs.getString(22);
+					Matriz[i][22] = rs.getString(23);
+					Matriz[i][23] = rs.getString(24);
 					i++;
 				}
 			} catch (SQLException e1) {
@@ -11269,6 +11271,33 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			 if (stmt != null) { stmt.close(); }
 		}
 		return prod;
+	}
+
+	
+	public boolean Status_Programacion_de_Pago(String folio_programa){
+		boolean aviso = false;
+		String query =  "exec programacion_de_pago_estatus '"+folio_programa+"'";
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()){
+				aviso = rs.getBoolean(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}}
+		}
+		return aviso;
 	}
 	
 //	public ImageIcon crearImagIcon(){

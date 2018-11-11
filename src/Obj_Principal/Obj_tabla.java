@@ -475,19 +475,10 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 				modelo.addRow(vec);
 			}
 			
-//			int columnas=tabla.getColumnCount();
-//			 Object[]   vector = new Object[columnas];
-//			for(int i=0;i<tablacompleta.length;i++){
-//				   for(int j=0;j<columnas;j++){
-//					vector[j] = tablacompleta[i][j].toString();
-//					}
-//				   modelo.addRow(vector);
-//			}
 		}
 		
 ///////funciones para convertir tabla en arreglo y guardar	
 		public  String[][] tabla_guardar(JTable tabla){ 
-//			int columnas=tabla.getColumnCount();
 			DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
 			String[][] matriz = null ;
 			if(tabla.isEditing()){
