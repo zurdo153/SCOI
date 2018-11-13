@@ -12,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
@@ -32,7 +31,6 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
-import javax.swing.text.MaskFormatter;
 
 //import Cat_Cuadrantes.Cat_Captura_De_Cuadrantes.CargaDatosDelCombo;
 import Conexiones_SQL.Connexion;

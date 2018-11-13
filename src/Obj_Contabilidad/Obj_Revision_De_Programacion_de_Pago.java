@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
-import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Revision_De_Programacion_de_Pago {
 	float total_programacion=0;

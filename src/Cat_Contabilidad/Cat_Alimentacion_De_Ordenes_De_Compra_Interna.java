@@ -42,7 +42,6 @@ import javax.swing.table.TableRowSorter;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
-//import Obj_Contabilidad.Obj_Alimentacion_De_Ordenes_De_Compra_Interna;
 import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
@@ -190,6 +189,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		btnNuevo.addActionListener(nuevo);
 		btnEditar.addActionListener(opEditar);
 		btnBuscar.addActionListener(opBuscar);
+		txtFolio.addActionListener(buscar);
 		btnDeshacer.addActionListener(deshacer);
 		btnGuardar.addActionListener(guardar);
 		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento);
@@ -406,7 +406,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 				if(txtDescripcion.getText().equals("")){
 					JOptionPane.showMessageDialog(null, "Es Requerido Teclee La Descripcion Del Producto Para Poder Agregar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 					txtDescripcion.requestFocus();
-					return;
+//					return;
 				}else {
 					Object[] Vector_Producto = new Object[3];
 					Vector_Producto[0]=txtDescripcion.getText().toUpperCase().trim();		
@@ -444,25 +444,31 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 			
 			if(tabla.getRowCount()>0){
 				if(JOptionPane.showConfirmDialog(null, "Hay Datos Capturados y No Han Sido Guardados, ¿Desea Borrar Todo?", "Aviso", JOptionPane.INFORMATION_MESSAGE,0, new ImageIcon("Imagen/usuario-icono-noes_usuario9131-64.png") )== 0){
-					btnBuscar.setEnabled(true);
-					panel_limpiar();
-					panel_false();
-					txtFolio.requestFocus();
-					btnNuevo.setEnabled(true);
+					deshacer();
 					return;
 			     }else{
               				return;
 			}
 		}else{
-			btnBuscar.setEnabled(true);
-			panel_limpiar();
-			panel_false();
-			txtFolio.requestFocus();
-			btnNuevo.setEnabled(true);
+			deshacer();
+//			btnBuscar.setEnabled(true);
+//			panel_limpiar();
+//			panel_false();
+//			txtFolio.requestFocus();
+//			btnNuevo.setEnabled(true);
 			return;
 		}
 		}
 	};
+	
+	public void deshacer(){
+		btnBuscar.setEnabled(true);
+		txtFolio.setEditable(true);
+		panel_limpiar();
+		panel_false();
+		btnNuevo.setEnabled(true);
+		txtFolio.requestFocus();
+	}
 	
 	String movimiento = "";
 	ActionListener guardar = new ActionListener(){
@@ -485,11 +491,17 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 				 compraInterna.setServicio(txtDetalleServi.getText().trim().toUpperCase());
 				 compraInterna.setUso_de_mercancia(txaUso.getText().trim().toUpperCase());
 				 
-				 compraInterna.setLista_de_productos(new CrearXmlString().CadenaXML(tabla, ignorarColumnas));
+				 String xml = new CrearXmlString().CadenaXML(tabla, ignorarColumnas);
+				 System.out.println("--------------------------------------------------------------------");
+				 System.out.println(xml);
+				 System.out.println("--------------------------------------------------------------------");
+				 compraInterna.setLista_de_productos(xml);
 				  
 				  if(compraInterna.guardar(movimiento)){
+					  deshacer();
 		                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente La Orden De Compra Interna", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-			      }else{
+		                return;
+				  }else{
 					JOptionPane.showMessageDialog(null, "La Orden De Compra Interna No Se Guardo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 			    	return;
 			      }
@@ -512,6 +524,60 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
     		campos += tabla.getRowCount()==0 ? "- Ingrese Productos\n" : "";
     	
     	return campos;
+	}
+    
+    ActionListener buscar = new ActionListener(){
+    	public void actionPerformed(ActionEvent e){
+    		agregarf(Integer.valueOf(txtFolio.getText().trim()));
+    	}
+    };
+    
+	public void agregarf(int folio_OCI) {
+		
+		Obj_Alimentacion_De_Ordenes_De_Compra_Interna obj = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna().buscar(folio_OCI);
+		
+		if(!obj.getStatus().equals("")){
+			if(obj.getStatus().equals("EN VALIDACION") || obj.getStatus().equals("NEGADO")){
+				txtFolio.setText(obj.getFolio()+"");
+				cmb_status.setSelectedItem(obj.getStatus());
+				cmbEstablecimiento.setSelectedItem(obj.getEstab_destino());
+				txtFolioSolic.setText(obj.getFolio_persona_solicita()+"");
+				txtSolicitante.setText(obj.getPersona_solicita());
+				txtFolioservici.setText(obj.getFolio_servicio()+"");
+				txtDetalleServi.setText(obj.getServicio());
+				txaUso.setText(obj.getUso_de_mercancia());
+				
+					if(obj.getTipo_de_solicitante().equals("EMPLEADO")){
+						rbEmpleado.setSelected(true);
+					}else{
+						rbProveedor.setSelected(true);
+					}
+					
+					Object[][] productos = obj.getArreglo_de_productos();
+					for(Object[] reg: productos){
+						modelo.addRow(reg);
+					}
+					
+					btnEditar.setEnabled(true);
+					txtFolio.setEditable(false);
+					btnSolicitante.setEnabled(false);
+					rbEmpleado.setEnabled(false);
+					rbProveedor.setEnabled(false);
+				}else{
+			
+						panel_limpiar();
+						panel_false();
+						txtFolio.requestFocus();
+						btnNuevo.setEnabled(true);
+						JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+obj.getStatus()+"\n "
+															+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[EN VALIDACION,NEGADO]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						return;
+				}
+		}else{
+			JOptionPane.showMessageDialog(null,  "La Orden De Compra Interna Que Intenta Buscar, No Existe","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+			return;
+		}
+		
 	}
 	
 	//TODO inicia filtro_Buscar	
@@ -625,7 +691,7 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 		this.tablab.getColumnModel().getColumn( 7).setMinWidth(130);
 		this.tablab.getColumnModel().getColumn( 8).setMinWidth(130);
 		
-		String comandob = "orden_de_compra_interna_filtro";
+		String comandob = "orden_de_compra_interna_filtro 'AUTORIZACION'";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 	}
@@ -677,7 +743,10 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 	private void agregar(final JTable tbl) {
 	tbl.addMouseListener(new MouseListener() {
 		public void mouseReleased(MouseEvent e){
-			if(e.getClickCount() == 2){agregarf(); }
+			if(e.getClickCount() == 2){
+				agregarf(Integer.valueOf(tablab.getValueAt(tablab.getSelectedRow(), 0).toString()) );
+				dispose();
+			}
 		}
 		public void mousePressed(MouseEvent e) {}
 		public void mouseExited(MouseEvent e)  {}
@@ -689,7 +758,8 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 		@Override
 		public void keyPressed(KeyEvent e)  {
 		if(e.getKeyCode()==KeyEvent.VK_ENTER){
-		agregarf();	
+			agregarf(Integer.valueOf(tablab.getValueAt(tablab.getSelectedRow(), 0).toString()) );	
+			dispose();
 		}
 		}
 		@Override
@@ -698,49 +768,6 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 		public void keyTyped(KeyEvent e)    {}
 	});
 }
-
-private void agregarf() {
-	int fila = tablab.getSelectedRow();
-	Obj_Alimentacion_De_Ordenes_De_Compra_Interna obj = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna().buscar(Integer.valueOf(tablab.getValueAt(fila, 0).toString()) );
-	
-	if(obj.getStatus().equals("EN VALIDACION") || obj.getStatus().equals("NEGADO")){
-		txtFolio.setText(obj.getFolio()+"");
-		cmb_status.setSelectedItem(obj.getStatus());
-		cmbEstablecimiento.setSelectedItem(obj.getEstab_destino());
-		txtFolioSolic.setText(obj.getFolio_persona_solicita()+"");
-		txtSolicitante.setText(obj.getPersona_solicita());
-		txtFolioservici.setText(obj.getFolio_servicio()+"");
-		txtDetalleServi.setText(obj.getServicio());
-		txaUso.setText(obj.getUso_de_mercancia());
-		
-			if(obj.getTipo_de_solicitante().equals("EMPLEADO")){
-				rbEmpleado.setSelected(true);
-			}else{
-				rbProveedor.setSelected(true);
-			}
-			
-			Object[][] productos = obj.getArreglo_de_productos();
-			for(Object[] reg: productos){
-				modelo.addRow(reg);
-			}
-			
-			btnEditar.setEnabled(true);
-			txtFolio.setEditable(false);
-			btnSolicitante.setEnabled(false);
-			rbEmpleado.setEnabled(false);
-			rbProveedor.setEnabled(false);
-			dispose();
-		}else{
-			
-			panel_limpiar();
-			panel_false();
-			txtFolio.requestFocus();
-			btnNuevo.setEnabled(true);
-			JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+obj.getStatus()+"\n "
-												+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[EN VALIDACION,NEGADO]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-			return;
-		}
-	}
 
 	private KeyListener opFiltropuestos = new KeyListener(){
 		public void keyReleased(KeyEvent arg0) {
@@ -834,8 +861,8 @@ private void agregarf() {
       }
 	    
 		private void agregarf() {
+		   rbEmpleado.setEnabled(false);
 		   rbProveedor.setEnabled(false);
-//		   rbProveedorCont.setEnabled(false);
 		   int fila = tablac.getSelectedRow();
 		   btnServicio.setEnabled(true);
 		   txtFolioservici.setText (tablac.getValueAt(fila,0)+"");

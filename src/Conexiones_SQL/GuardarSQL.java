@@ -7291,7 +7291,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			System.out.println(cuestionarios.getStatus());
 			System.out.println(movimiento);
 			
-			
 			pstmt.setInt(1, cuestionarios.getFolio());
 			pstmt.setString(2, cuestionarios.getCuestionario().toUpperCase().trim());
 			pstmt.setString(3, cuestionarios.getClasificacion());

@@ -20,8 +20,11 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 	Object[][] arreglo_de_productos;
 	
 	String status;
-//	String  estab_surte;
+	String  estab_surte;
 	String estab_destino;
+	int folio_chofer;
+	String ObservacionSurte;
+	String tipo_de_chofer;
 //	String fecha_guardado;
 //	int usuario_guardo;
 //	String fecha_ultima_modificacion;
@@ -43,6 +46,10 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 		lista_de_productos = "";// xml,--cod_prod, descripcionManual, unidad, cantidad_solicitada, cantidad_surtida
 		arreglo_de_productos = null;
 		estab_destino = "";
+		estab_surte= "";
+		folio_chofer =0;
+		ObservacionSurte="";
+		tipo_de_chofer="";
 	}
 
 	public int getFolio() {
@@ -125,6 +132,38 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 		this.estab_destino = estab_destino;
 	}
 	
+	public String getEstab_surte() {
+		return estab_surte;
+	}
+
+	public int getFolio_chofer() {
+		return folio_chofer;
+	}
+
+	public void setFolio_chofer(int folio_chofer) {
+		this.folio_chofer = folio_chofer;
+	}
+
+	public void setEstab_surte(String estab_surte) {
+		this.estab_surte = estab_surte;
+	}
+
+	public String getObservacionSurte() {
+		return ObservacionSurte;
+	}
+
+	public void setObservacionSurte(String observacionSurte) {
+		ObservacionSurte = observacionSurte;
+	}
+
+	public String getTipo_de_chofer() {
+		return tipo_de_chofer;
+	}
+
+	public void setTipo_de_chofer(String tipo_de_chofer) {
+		this.tipo_de_chofer = tipo_de_chofer;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -145,6 +184,16 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 	public boolean guardar(String movimiento){
 		return new GuardarSQL().Guardar_Orden_De_Compra_Interna(this, movimiento);
 	}
+	
+	public String surtir(){
+		try {
+			return new BuscarSQL().Surtir_Orden_De_Compra_Interna(this);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public boolean autorizacion(int folio, String status){
 		return new ActualizarSQL().Autorizar_Orden_De_Compra_Interna(folio, status);
