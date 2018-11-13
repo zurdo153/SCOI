@@ -4,12 +4,50 @@ import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
+import Conexiones_SQL.GuardarSQL;
 
 public class Obj_Revision_De_Programacion_de_Pago {
+	int folio_programacion=0; 
 	float total_programacion=0;
 	float total_presupuesto=0;
 	float total_propuesto=0;
+	int presupuesto_propuesto=0;
+	String estatus=""; 
+	
+	public String getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(String estatus) {
+		this.estatus = estatus;
+	}
+
+	public int getPresupuesto_propuesto() {
+		return presupuesto_propuesto;
+	}
+
+	public void setPresupuesto_propuesto(int presupuesto_propuesto) {
+		this.presupuesto_propuesto = presupuesto_propuesto;
+	}
+
 	String [][] tabla_programacion;
+	String GuardarActualizar="";
+
+	public int getFolio_programacion() {
+		return folio_programacion;
+	}
+
+	public void setFolio_programacion(int folio_programacion) {
+		this.folio_programacion = folio_programacion;
+	}
+
+	public String getGuardarActualizar() {
+		return GuardarActualizar;
+	}
+
+	public void setGuardarActualizar(String guardarActualizar) {
+		GuardarActualizar = guardarActualizar;
+	}
 
 	public float getTotal_programacion() {
 		return total_programacion;
@@ -61,35 +99,19 @@ public class Obj_Revision_De_Programacion_de_Pago {
 	}
 	
 	
-//	public boolean Guardar(){
-//		return new GuardarSQL().Guardar_Cuadrante(this);
-//	}
+	public boolean Guardar(){
+		return new GuardarSQL().Guardar_Programacion(this);
+	}
 	
-//	
-//	
-//	public String[][] refrescar_tabla_captura_cuadrante(String clave_checador){
-//		return new BuscarSQL().TablaActividades_Cuadrante_captura(clave_checador);
-//	}
-//	
-//	public boolean Validacion_captura_existe_cuadrante(String clave_checador){
-//		return new BuscarSQL().Valida_Clave_Checador_Si_Existe_Cuadrante(clave_checador);
-//	}
-//	
-//	public String devuelve_clave_checador(){
-//		return new BuscarSQL().clave_checador();
-//	}
-//	
-//	public boolean Guardar_Captura(){
-//		return new GuardarSQL().Guardar_Captura_Cuadrante(this);
-//	}
-//	
-//	public String[] Combo_Turnos() {
-//		try {
-//			return new Cargar_Combo().Combos("turnos");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null; 
-//	}
+	
+	public boolean BucarEstatus(String folio_programacion){
+		return new BuscarSQL().Status_Programacion_de_Pago(folio_programacion);
+	}
+	
+	public boolean Guardar_presupuesto(){
+		return new GuardarSQL().Guardar_Programacion_Presupuesto(this);
+	}
+	
+
 	
 }

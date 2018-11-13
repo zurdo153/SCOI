@@ -63,6 +63,7 @@ import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Orden_De_Gasto;
 import Obj_Contabilidad.Obj_Proveedores;
+import Obj_Contabilidad.Obj_Revision_De_Programacion_de_Pago;
 import Obj_Contabilidad.Obj_Saldo_Banco_Interno;
 import Obj_Contabilidad.Obj_Transpaso_A_Banco_Interno;
 import Obj_Cuadrantes.Obj_Actividad;
@@ -7176,7 +7177,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}
 
 		
-		String query      = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?";
+		String query      = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?";
 		String querysaldo = "exec orden_de_pago_en_efectivo_insert_saldo_nuevo ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt   = null;
@@ -7193,9 +7194,9 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setInt   ( 7, folioBeneficiario);
 				pstmt.setInt   ( 8, usuario.getFolio());		
 				pstmt.setString( 9, Concepto.toUpperCase().trim());
-				pstmt.setString(10, Guardar_actualizar);
+				pstmt.setString(10, Cuenta_Bancaria);
+				pstmt.setString(11, Guardar_actualizar);
 				pstmt.executeUpdate();
-			
 				pstmtsa = con.prepareStatement(querysaldo);
 //				 @folio int  ,@folio_pago int ,@observaciones varchar(160) ,@importe_ingreso numeric(15,2)  ,@importe_egreso numeric(15,2) ,@nombre_de_cuenta varchar(70),@tipo_movimiento char(1)
 				
@@ -8011,55 +8012,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 
 			 int i=1;
 			 
-//			 System.out.println("-------------------------------------------------------------------------------------------------------------");
-//			 System.out.println(movimiento);
-//			 System.out.println(dpr.getFolio());
-//			 System.out.println(dpr.getFolioPuesto());
-//			 System.out.println(dpr.getUnidadNegocio());
-//			 System.out.println(dpr.getEstablecimiento());
-//			 System.out.println(dpr.getDepartamento());
-//			 System.out.println(dpr.getEdadIn());
-//			 System.out.println(dpr.getEdadFin());
-//			 System.out.println(dpr.getFolioReportaA());
-//			 System.out.println(dpr.getSexo());
-//			 System.out.println(dpr.getEstadoCivil());
-//			 
-//			 System.out.println(dpr.getObjetivoPuesto());
-//			 
-//			 System.out.println(dpr.getNivelEstudios());
-//			 System.out.println(dpr.getListaDeEspecificaciones());
-//			 System.out.println(dpr.getCursosHabilidades());
-//			 System.out.println(dpr.getEsperienciaGeneral());
-//			 System.out.println(dpr.getEsperienciaEspecifica());
-//			 System.out.println(dpr.getFacultamientosDirectos());
-//			 System.out.println(dpr.getFacultamientosIndirectos());
-//			 
-//			 System.out.println(dpr.getInteracionDelPuestoExternas());
-//			 System.out.println(dpr.getRelacionDelPuestoExternas());
-//			 System.out.println(dpr.getInteracionDelPuestoInternas());
-//			 System.out.println(dpr.getRelacionDelPuestoInternas());
-//			 
-//			 System.out.println(dpr.getAmbienteDeTrabajo());
-//			 System.out.println(dpr.getEsfuerzoFisico());
-//			 
-//			 System.out.println(dpr.isViaje());
-//			 
-//			 System.out.println(dpr.isLaptop());
-//			 System.out.println(dpr.isPc());
-//			 System.out.println(dpr.isCelular());
-//			 System.out.println(dpr.isExtencion());
-//			 System.out.println(dpr.isAutoPropio());
-//			 System.out.println(dpr.isAutoEmpresa());
-//			 System.out.println(dpr.isLicencia());
-//			 System.out.println(dpr.isLargaDistancia());
-//			 System.out.println(dpr.isOtro());
-//			 System.out.println(dpr.getNotaOtro());
-//			 System.out.println(usuario.getFolio());
-//			 System.out.println(new ByteArrayInputStream(dpr.getOrganigramaB()));
-//			 System.out.println(dpr.getXmlResponsabilidadesPuesto());
-//			 System.out.println("-------------------------------------------------------------------------------------------------------------");
-
-			 
 			 pstmt.setString(i,movimiento);
 			 pstmt.setInt(i+=1,dpr.getFolio());
 			 pstmt.setInt(i+=1,dpr.getFolioPuesto());
@@ -8222,21 +8174,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 //	           @margen numeric(4,2), @margen_familia numeric(4,2), @folio_razon int, @observaciones varchar(500), @usuario_solicita int,@guardar_actualizar char(1)
 	           
 			for(int i=0; i<cantidad_filas ; i++){
-				
-				System.out.println(orden.getFolio());
-				System.out.println(orden.getFolio_orden_de_compra());
-				System.out.println(orden.getTabla_productos()[i][0].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][2].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][3].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][4].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][5].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][6].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][7].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][14].toString().trim());
-				System.out.println(orden.getTabla_productos()[i][15].toString().trim());
-				System.out.println(usuario.getFolio());
-				System.out.println(orden.GuardarActualizar);
-				
 				
 				pstmt.setInt   (1 ,  orden.getFolio());
 				pstmt.setString(2 ,  orden.getFolio_orden_de_compra());
@@ -8471,6 +8408,114 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Compra_Interna ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+
+	public boolean Guardar_Programacion (Obj_Revision_De_Programacion_de_Pago programacion){
+		int cantidad_filas=programacion.getTabla_programacion().length;	
+		String query       = "exec  programacion_de_pagos_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+             // "S","Folio"1,"Codigo Prv"2,"Proveedor"3,"Factura"4,"Importe"5,"Imp.Desc.Fin."6,"Fecha Vence"7,"Observaciones Contabilidad"8, "Clasificacion"9,"Observaciones Comercializacion"10,"Folio Pago"11,"Fecha Pago"12,"Poliza"13,"Cuenta Bancaria"14,"Fecha Cheque"15, "Folio Cheque"16, "Usuario Programo Pago"17,"Fecha Programo"18
+			 // @folio_programacion varchar(10), @cod_prv varchar(8), @factura varchar(15), @importe numeric(16,2), @importe_des_financiero numeric(16,2), @fecha_vencimiento smalldatetime,  @observaciones_contabilidad varchar(250), @clasificacion varchar(100), @observaciones_compras varchar(250), 
+			 // @usuario_propuesta int, @total_programacion numeric(16,2), @total_presupuesto numeric(16,2), @total_propuesto numeric(16,2)
+	           
+			 for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setString(1 ,  programacion.getTabla_programacion()[i][1].toString().trim() );
+				pstmt.setString(2 ,  programacion.getTabla_programacion()[i][2].toString().trim() );
+				pstmt.setString(3 ,  programacion.getTabla_programacion()[i][4].toString().trim() );
+				pstmt.setString(4 ,  programacion.getTabla_programacion()[i][5].toString().trim() );
+				pstmt.setString(5 ,  programacion.getTabla_programacion()[i][6].toString().trim() );
+				pstmt.setString(6 ,  programacion.getTabla_programacion()[i][7].toString().trim() );
+				pstmt.setString(7 ,  programacion.getTabla_programacion()[i][8].toString().trim() );
+				pstmt.setString(8 ,  programacion.getTabla_programacion()[i][9].toString().trim() );
+				pstmt.setString(9 ,  programacion.getTabla_programacion()[i][10].toString().trim());//observaciones compras
+				pstmt.setString(10,  programacion.getTabla_programacion()[i][17].toString().trim());
+				pstmt.setFloat (11,  programacion.getTotal_programacion()                         );
+				pstmt.setFloat (12,  programacion.getTotal_presupuesto()                          );
+				pstmt.setFloat (13,  programacion.getTotal_propuesto()                            );
+				pstmt.setString(14,  programacion.getGuardarActualizar()                          );
+			
+				pstmt.executeUpdate();
+			} 
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Programacion ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Programacion_Presupuesto (Obj_Revision_De_Programacion_de_Pago programacion){
+		int cantidad_filas=programacion.getTabla_programacion().length;	
+		String query       = "exec  programacion_de_pagos_presupuesto_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+             // "S","Folio"1,"Codigo Prv"2,"Proveedor"3,"Factura"4,"Importe"5,"Imp.Desc.Fin."6,"Fecha Vence"7,"Observaciones Contabilidad"8, "Clasificacion"9,"Observaciones Comercializacion"10,"Folio Pago"11,"Fecha Pago"12,"Poliza"13,"Cuenta Bancaria"14,"Fecha Cheque"15, "Folio Cheque"16, "Usuario Programo Pago"17,"Fecha Programo"18
+			 // @folio_programacion varchar(10), @cod_prv varchar(8), @factura varchar(15), @importe numeric(16,2), @importe_des_financiero numeric(16,2), @fecha_vencimiento smalldatetime,  @observaciones_contabilidad varchar(250), @clasificacion varchar(100), @observaciones_compras varchar(250), 
+			 // @usuario_propuesta int, @total_programacion numeric(16,2), @total_presupuesto numeric(16,2), @total_propuesto numeric(16,2)
+	           
+			 for(int i=0; i<cantidad_filas ; i++){
+				pstmt.setString(1 ,  programacion.getTabla_programacion()[i][1].toString().trim() );
+				pstmt.setString(2 ,  programacion.getTabla_programacion()[i][2].toString().trim() );
+				pstmt.setString(3 ,  programacion.getTabla_programacion()[i][4].toString().trim() );
+				pstmt.setString(4 ,  programacion.getTabla_programacion()[i][5].toString().trim() );
+				pstmt.setString(5 ,  programacion.getTabla_programacion()[i][6].toString().trim() );
+				pstmt.setString(6 ,  programacion.getTabla_programacion()[i][7].toString().trim() );
+				pstmt.setString(7 ,  programacion.getTabla_programacion()[i][8].toString().trim() );
+				pstmt.setString(8 ,  programacion.getTabla_programacion()[i][9].toString().trim() );
+				pstmt.setString(9 ,  programacion.getTabla_programacion()[i][10].toString().trim());//observaciones compras
+				pstmt.setString(10,  programacion.getTabla_programacion()[i][17].toString().trim());
+				pstmt.setFloat (11,  programacion.getTotal_programacion()                         );
+				pstmt.setFloat (12,  programacion.getTotal_presupuesto()                          );
+				pstmt.setFloat (13,  programacion.getTotal_propuesto()                            );
+				pstmt.setString(14,  programacion.getGuardarActualizar()                          );
+				
+				pstmt.executeUpdate();
+			} 
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Programacion ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {

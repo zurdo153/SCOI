@@ -14,10 +14,7 @@ import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,7 +29,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-//import Cat_Cuadrantes.Cat_Captura_De_Cuadrantes.CargaDatosDelCombo;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
 import Obj_Administracion_del_Sistema.Obj_Usuario;
@@ -43,7 +39,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
+public class Cat_Presupuesto_De_Programacion_De_Pago extends JFrame {
 	    String aceptar_negar="";
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
@@ -117,7 +113,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 	         return types[columnIndex];
 	     }
 			public boolean isCellEditable(int fila, int columna){
-				if(columna==0 ||columna==9||columna==10)
+				if(columna==8)
 					return true; return false;
 			}
 	    };
@@ -221,34 +217,26 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		       };
 			public JScrollPane scroll_tablatptales = new JScrollPane(tablat);
 			
-		String status[] = programacion.combo_estatus_programacion();
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		JComboBox cmbAplicarClasificador = new JComboBox(status);
-		
-		@SuppressWarnings("rawtypes")
-		JComboBox cmbAgrupacion  = new JComboBox();
-		
 		JToolBar menu_toolbar    = new JToolBar();
 		JTextField txtFolio      = new Componentes().text(new JCTextField()  ,"Folio Programacion" ,15   ,"Int"   );
 		JTextField txtPedientes  = new Componentes().text(new JCTextField(), "Cant. Pendientes"    , 150, "String");
 		JTextField txtFiltro     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<",300 , "String",tabla,Cantidad_Real_De_Columnas );
 		JTextField txtestatus    = new Componentes().text(new JCTextField()  ,"Estatus"            ,15   ,"Int"   );
 		
-		JTextField txtProgramacion= new Componentes().text(new JCTextField() ,"Total Programacion" ,20   ,"Double");
-		JTextField txtPresupuesto = new Componentes().text(new JCTextField() ,"Total Presupuesto"  ,20   ,"Double");
-		JTextField txtTotal       = new Componentes().text(new JCTextField() ,"Total Propuesto"    ,20   ,"Double");
-		JTextField txtPagado      = new Componentes().text(new JCTextField() ,"Total Pagado"       ,20   ,"Double");
-		JTextField txtPendiente   = new Componentes().text(new JCTextField() ,"Total Pagado"       ,20   ,"Double");
+		JTextField txtProgramacion= new Componentes().text(new JCTextField() ,"Total Programacion"   ,20   ,"Double");
+		JTextField txtPresupuesto = new Componentes().text(new JCTextField() ,"Total Presupuesto"    ,20   ,"Double");
+		JTextField txtTotal       = new Componentes().text(new JCTextField() ,"Total Propuesto"      ,20   ,"Double");
+		JTextField txtPagado      = new Componentes().text(new JCTextField() ,"Total Pagado"         ,20   ,"Double");
+		JTextField txtPendiente   = new Componentes().text(new JCTextField() ,"Total Pagado"         ,20   ,"Double");
+		JTextField txtPropuestopre= new Componentes().text(new JCTextField() ,"Presupuesto Propuesto",15   ,"Int");
 		
 		JCButton btnFiltro       = new JCButton("Filtro"      ,"Filter-List-icon16.png","Azul" );
 		JCButton btnGuardar      = new JCButton("Guardar"     ,"Guardar.png"           ,"Azul");
 		JCButton btnImprimir     = new JCButton("Imprimir"    ,"imprimir-16.png"       ,"Azul" );
-		JCButton btnAplicar      = new JCButton("Aplicar A Seleccion ","Aplicar.png"   ,"AzulO");
 		
 		String GuardarActualizar="";
-		private JCheckBox chb_invertir = new JCheckBox("Invertir");
 		
-		public Cat_Revision_De_Programacion_De_Pago()	{
+		public Cat_Presupuesto_De_Programacion_De_Pago()	{
 			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 			setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
@@ -270,15 +258,13 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			
             int x=15 ,y=20 ,width=130 ,height=20;
 
-			this.campo.add(menu_toolbar).setBounds               (x     ,y     ,350      ,20      );
+			this.campo.add(menu_toolbar).setBounds               (x     ,y     ,320      ,20      );
 			this.campo.add(new JLabel("Folio:")).setBounds       (x     ,y+=25 ,width    ,height  );
-			this.campo.add(txtFolio).setBounds                   (x+30  ,y     ,width    ,height  );
-			this.campo.add(chb_invertir).setBounds               (x     ,y+=30 ,62       ,height  );
-			this.campo.add(cmbAplicarClasificador).setBounds     (x+70  ,y     ,width    ,height  );
-			this.campo.add(btnAplicar ).setBounds                (x+210 ,y     ,170      ,height  );
-			this.campo.add(scroll_tablatptales).setBounds        (x+405 ,y=5   ,480      ,145     );
-			
-			this.campo.add(new JLabel("Programacion:")).setBounds(x=920 ,y     ,width    ,height  );
+			this.campo.add(txtFolio).setBounds                   (x+65  ,y     ,145      ,height  );
+			this.campo.add(new JLabel("Presupuesto:")).setBounds (x     ,y+=25 ,width    ,height  );
+			this.campo.add(txtPropuestopre).setBounds            (x+65  ,y     ,145      ,height  );
+			this.campo.add(scroll_tablatptales).setBounds        (x+335 ,y=5   ,480      ,145     );
+			this.campo.add(new JLabel("Programacion:")).setBounds(x=880 ,y     ,width    ,height  );
 			this.campo.add(txtProgramacion).setBounds            (x+70  ,y     ,width    ,height  );
 			this.campo.add(new JLabel("Presupuesto:")).setBounds (x     ,y+=25 ,width    ,height  );
 			this.campo.add(txtPresupuesto).setBounds             (x+70  ,y     ,width    ,height  );
@@ -286,25 +272,22 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			this.campo.add(txtTotal).setBounds                   (x+70  ,y     ,width    ,height  );
 			this.campo.add(new JLabel("Pagado:")).setBounds      (x     ,y+=25 ,width    ,height  );
 			this.campo.add(txtPagado).setBounds                  (x+70  ,y     ,width    ,height  );
-			
 			this.campo.add(txtFiltro).setBounds                  (x=15  ,y+=75 ,ancho-25 ,height  );
 			campo.add(scroll_tabla).setBounds                    (x     ,y+=20 ,ancho-25 ,alto-235);
 			
 			init_tabla_principal();		
 			init_tabla_totales();
-			Seleccionar_Respuesta(tabla);
 			cont.add(campo);
 			btnGuardar.addActionListener(opaGuardar);
 			btnImprimir.addActionListener(opImprimir_Reporte);
 			btnFiltro.addActionListener(opfiltro);
-			btnAplicar.addActionListener(OpAplicar);
-			chb_invertir.addActionListener(OpInvertir);
 			
 			txtProgramacion.setEditable(false);
 			txtPresupuesto.setEditable(false);
 			txtTotal.setEditable(false);
 			txtFolio.setEditable(false);
 			txtPagado.setEditable(false);
+			txtPropuestopre.setEditable(false);
 		}
 		 
 		public void inicializartablatotales() {
@@ -353,44 +336,9 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			
 			  txtTotal.setText(formateador.format (totalpropuesto ));
 			  txtTotal.setHorizontalAlignment(JTextField.RIGHT);
-			  
 			  txtPagado.setText(formateador.format (totalpagadofinal ));
 			  txtPagado.setHorizontalAlignment(JTextField.RIGHT);
 		}
-		
-		ActionListener OpInvertir = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(chb_invertir.isSelected()) {
-					for(int i=0;i<tabla.getRowCount();i++) {
-						tabla.setValueAt("true", i, 0);
-					}
-				}else {
-					for(int i=0;i<tabla.getRowCount();i++) {
-						tabla.setValueAt("false", i, 0);
-					}
-				}
-			}
-		}; 
-		
-		ActionListener OpAplicar = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				for(int i=0;i<tabla.getRowCount();i++) {
-					if(tabla.getValueAt(i,0).toString().equals("true")) {
-						tabla.setValueAt(cmbAplicarClasificador.getSelectedItem().toString().trim(), i, 9);
-						tabla.setValueAt(usuario.getNombre_completo(), i, 17); 
-					}
-				}	
-				calculo_De_totales();
-				chb_invertir.setSelected(false);
-				txtFiltro.setText("");
-				ObjTab.Obj_Filtro(tabla, "", Cantidad_Real_De_Columnas, txtFiltro);
-				for(int i=0;i<tabla.getRowCount();i++) {
-					tabla.setValueAt("false", i, 0);
-				}
-			}
-		};
 		
 	    ActionListener opImprimir_Reporte = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -407,61 +355,6 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 			}
 	  	};
 		
-	  	private void Seleccionar_Respuesta(final JTable tbl) {
-		    tbl.addMouseListener(new java.awt.event.MouseAdapter() {
-				@SuppressWarnings("deprecation")
-				public void mousePressed(MouseEvent e) {
-		        	if(e.getClickCount()!=0){
-                         if(tbl.getSelectedColumn()==9){
-        					    int fila=tabla.getSelectedRow();
-        					    tabla.setValueAt(usuario.getNombre_completo(), fila, 17); 
-                    	        tbl.getColumnModel().getColumn(9).setCellEditor(new javax.swing.DefaultCellEditor(cmbAgrupacion));
-                    		    tbl.getColumn("Clasificacion").setCellEditor(new CargaDatosDelCombo());
-						       return;
-                         } else{
-						        tbl.lostFocus(null, null);
-						        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-						        tbl.getSelectionModel().clearSelection();
-                        	 return;
-                         }	
-		        	}else{
-				        tbl.lostFocus(null, null);
-				        tbl.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-				        tbl.getSelectionModel().clearSelection();
-		        		return;
-		        	}
-		        }
-				public void mouseReleased(MouseEvent e) {
-					calculo_De_totales();
-				}
-				
-				public void mouseEntered(MouseEvent e) {
-					calculo_De_totales();
-				}
-		    });
-		}
-
-	  	
-	  	 private class CargaDatosDelCombo extends DefaultCellEditor{
-		        @SuppressWarnings("rawtypes")
-				public CargaDatosDelCombo(){
-		        	super(new JComboBox());
-		        }
-		        @SuppressWarnings({ "rawtypes", "unchecked" })
-				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-		        	JComboBox combo = (JComboBox)getComponent();
-		        	combo.removeAllItems();
-					try {
-					 String respuestas=tablacompleta[0][19].toString();
-					 String tipo_de_respuestas[] = respuestas.split("/");
-						for(int i=0; i<tipo_de_respuestas.length; i++)  combo.addItem(tipo_de_respuestas[i]);
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					}
-		            return combo;          
-		        }
-		    }
-	  	 
 		ActionListener opaGuardar = new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
 	    		if(txtFolio.getText().equals("")) {
@@ -474,13 +367,14 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 					JOptionPane.showMessageDialog(null, "La Programación De Pago Está Cerrada y Solo Puede Ser Consultada","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 					return;
 				}
+				
 	    		if(tabla.isEditing()){			tabla.getCellEditor().stopCellEditing();	}
 				    programacion.setGuardarActualizar(GuardarActualizar);
 				    programacion.setTabla_programacion(ObjTab.tabla_guardar_sin_validacion(tabla));
 				    programacion.setTotal_programacion(Float.valueOf(tablacompleta[0][20].toString()));
-				    programacion.setTotal_presupuesto(Float.valueOf(tablacompleta[0][21].toString()));
+				    programacion.setTotal_presupuesto(Float.valueOf(txtPropuestopre.getText().toString()));
 				    programacion.setTotal_propuesto(Float.valueOf(txtTotal.getText().toString().trim().replace(",","")));
-			    if(programacion.Guardar()) {
+			    if(programacion.Guardar_presupuesto()) {
 				   JOptionPane.showMessageDialog(null, "Se Guardo Correctamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 			       return;
 			    }else {
@@ -593,22 +487,27 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 	  Double totalprogramacion= Double.valueOf(tablacompleta[0][20].toString());
 	  Double totalpresupuesto = Double.valueOf(tablacompleta[0][21].toString());
 
-	  System.out.println(tablacompleta[0][21].toString());
-	  
 	  GuardarActualizar=tablacompleta[0][23].toString().trim();
 	  txtProgramacion.setText(formateador.format (totalprogramacion));
 	  txtPresupuesto.setText(formateador.format (totalpresupuesto ));
+	  txtPropuestopre.setText(tablacompleta[0][21].toString());
 	  
 	  txtProgramacion.setHorizontalAlignment(JTextField.RIGHT);
 	  txtPresupuesto.setHorizontalAlignment(JTextField.RIGHT);
 	  
+	  
 	  dispose();
 	  inicializartablatotales();
 	  calculo_De_totales();
+	
 		if(programacion.BucarEstatus(txtFolio.getText().toString().trim())) {
 			btnGuardar.setEnabled(false);
+			txtPropuestopre.setEditable(false);
 			JOptionPane.showMessageDialog(null, "La Programación De Pago Está Cerrada \n No Podrá Guardar Cambios","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 			return;
+		}else {
+			btnGuardar.setEnabled(true);
+		    txtPropuestopre.setEditable(true);
 		}
 	}
 	
@@ -617,7 +516,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Revision_De_Programacion_De_Pago().setVisible(true);
+				new Cat_Presupuesto_De_Programacion_De_Pago().setVisible(true);
 			}catch(Exception e){	}
 		}
 	}
