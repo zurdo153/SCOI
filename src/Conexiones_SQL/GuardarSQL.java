@@ -8497,6 +8497,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 // @usuario_propuesta int, @total_programacion numeric(16,2), @total_presupuesto numeric(16,2), @total_propuesto numeric(16,2)
 	           
 			 for(int i=0; i<cantidad_filas ; i++){
+			 
 				pstmt.setString(1 ,  programacion.getTabla_programacion()[i][1].toString().trim() );
 				pstmt.setString(2 ,  programacion.getTabla_programacion()[i][2].toString().trim() );
 				pstmt.setString(3 ,  programacion.getTabla_programacion()[i][4].toString().trim() );
