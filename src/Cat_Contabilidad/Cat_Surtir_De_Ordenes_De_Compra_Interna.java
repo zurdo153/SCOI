@@ -37,6 +37,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import Cat_Contabilidad.Cat_Autorizacion_De_Ordenes_De_Compra_Interna.Cat_Ordenes_De_Compra_Interna_Detalle;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;
@@ -76,7 +77,7 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 		}
 		
 		int Cantidad_Real_De_Columnas=9,checkboxindex=-1;
-		public void init_tabla_principal(){
+		public void init_tabla_principal(String status){
 			this.tablaP.getColumnModel().getColumn( 0).setMinWidth(50);
 			this.tablaP.getColumnModel().getColumn( 0).setMaxWidth(50);
 			this.tablaP.getColumnModel().getColumn( 1).setMinWidth(350);
@@ -88,7 +89,7 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 			this.tablaP.getColumnModel().getColumn( 7).setMinWidth(130);
 			this.tablaP.getColumnModel().getColumn( 8).setMinWidth(130);
 			
-			String comandob = "orden_de_compra_interna_filtro 'SURTIR'";
+			String comandob = "orden_de_compra_interna_filtro '"+status+"'";
 			String basedatos="26",pintar="si";
 			ObjTab.Obj_Refrescar(tablaP,modeloP, Cantidad_Real_De_Columnas, comandob, basedatos,pintar,checkboxindex);
 		}
@@ -114,6 +115,9 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 		
 		JCButton btnActualizar   = new JCButton("Actualizar"           ,"Actualizar.png","Azul");
 		
+		String status[] = {"AUTORIZADO","EN VALIDACION","SURTIDO","CANCELADO","TODOS"};
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		JComboBox cmb_status = new JComboBox(status);
 		
 		Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
 	    String aceptar_negar="";
@@ -130,11 +134,13 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 
 			int x=15,y=15,height=20,width=127;	
 			this.campo.add(btnActualizar).setBounds           (x	 ,y      ,width    ,height );
+			this.campo.add(cmb_status).setBounds           	  (x+1120,y      ,width-20 ,height );
 			this.campo.add(txtFiltro).setBounds               (x=15  ,y+=25  ,ancho-40 ,height);
 			this.campo.add(scroll_tablaP).setBounds           (x     ,y+=20  ,ancho-40 ,alto-150);
 			agregar(tablaP);
-			init_tabla_principal();
+			init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
 			btnActualizar.addActionListener(OpActualizar);
+			cmb_status.addActionListener(actualizartabla);
 			
 			txtTotal.setEditable(false);
 			cont.add(campo);
@@ -146,10 +152,17 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 		
 	   ActionListener OpActualizar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-				init_tabla_principal();
+				init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
 			txtFiltro.requestFocus();
 		 }
 	   };
+	   
+	   ActionListener actualizartabla = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
+				txtFiltro.requestFocus();
+			}
+		};
 	   
 //	   ActionListener opImprimir_Reporte = new ActionListener(){
 //			public void actionPerformed(ActionEvent e){
@@ -167,9 +180,22 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 				public void mouseReleased(MouseEvent e) {
 				
 					int fila = tablaP.getSelectedRow();
-				 	 if(e.getClickCount() == 1){
-	                 	new Cat_Ordenes_De_Compra_Interna_Detalle(Integer.valueOf(tablaP.getValueAt(fila, 0).toString())).setVisible(true);
-				 	 }
+					String status_orden = tablaP.getValueAt(fila, 6).toString().trim();
+//				 	 if(e.getClickCount() == 1){
+//				 		String status[] = {"AUTORIZADO","EN VALIDACION","SURTIDO","CANCELADO","TODOS"};
+//				 		
+//	                 	new Cat_Ordenes_De_Compra_Interna_Detalle(Integer.valueOf(tablaP.getValueAt(fila, 0).toString())).setVisible(true);
+//				 	 }
+				 	 
+				 	if(status_orden.equals("AUTORIZADO")){
+                     	new Cat_Ordenes_De_Compra_Interna_Detalle(Integer.valueOf(tablaP.getValueAt(fila, 0).toString())).setVisible(true);
+		 			}else{
+		 				
+		 				JOptionPane.showMessageDialog(null,  "El Status De La Orden De Compra Interna Seleccionada Es:"+status_orden+"\n "
+		 													+"Solo Se Pueden Modificar Las Ordenes De Compra Interna Con Status[AUTORIZADO]","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+		 				return;
+		 			}
+				 	
 				}
 				public void mousePressed(MouseEvent e) {}
 				public void mouseExited(MouseEvent e)  {}
@@ -357,7 +383,7 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 				agregar(tabla);
 				btnRecibe.addActionListener(opRecibe);
 				btnGuardar.addActionListener(opGuardar);
-				
+
 				tabla.addKeyListener(op_validanumero_en_celda);
 				
 				this.addWindowListener(new WindowAdapter() {
@@ -479,7 +505,7 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 								    		String RespuestaSurtido = OCI.surtir();
 											  if(RespuestaSurtido!="SIN FOLIO GENERADO"){
 												  
-												  init_tabla_principal();
+												  init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
 												  reporte(RespuestaSurtido);
 												  dispose();
 //								                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente La Orden De Compra Interna\nCon El Folio: "+RespuestaSurtido, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));

@@ -67,7 +67,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 		}
 		
 		int Cantidad_Real_De_Columnas=9,checkboxindex=-1;
-		public void init_tabla_principal(){
+		public void init_tabla_principal(String status){
 			this.tablaP.getColumnModel().getColumn( 0).setMinWidth(50);
 			this.tablaP.getColumnModel().getColumn( 0).setMaxWidth(50);
 			this.tablaP.getColumnModel().getColumn( 1).setMinWidth(350);
@@ -79,7 +79,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 			this.tablaP.getColumnModel().getColumn( 7).setMinWidth(130);
 			this.tablaP.getColumnModel().getColumn( 8).setMinWidth(130);
 			
-			String comandob = "orden_de_compra_interna_filtro 'AUTORIZACION'";
+			String comandob = "orden_de_compra_interna_filtro '"+status+"'";
 			String basedatos="26",pintar="si";
 			ObjTab.Obj_Refrescar(tablaP,modeloP, Cantidad_Real_De_Columnas, comandob, basedatos,pintar,checkboxindex);
 		}
@@ -105,6 +105,9 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 		
 		JCButton btnActualizar   = new JCButton("Actualizar"           ,"Actualizar.png","Azul");
 		
+		String status[] = {"EN VALIDACION","AUTORIZADO","SURTIDO","CANCELADO","TODOS"};
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		JComboBox cmb_status = new JComboBox(status);
 		
 		Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
 	    String aceptar_negar="";
@@ -121,11 +124,14 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 
 			int x=15,y=15,height=20,width=127;	
 			this.campo.add(btnActualizar).setBounds           (x	 ,y      ,width    ,height );
+			this.campo.add(cmb_status).setBounds           	  (x+1120,y      ,width-20 ,height );
 			this.campo.add(txtFiltro).setBounds               (x=15  ,y+=25  ,ancho-40 ,height);
 			this.campo.add(scroll_tablaP).setBounds           (x     ,y+=20  ,ancho-40 ,alto-150);
+			
 			agregar(tablaP);
-			init_tabla_principal();
+			init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
 			btnActualizar.addActionListener(OpActualizar);
+			cmb_status.addActionListener(actualizartabla);
 			
 			txtTotal.setEditable(false);
 			cont.add(campo);
@@ -137,10 +143,17 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 		
 	   ActionListener OpActualizar = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-				init_tabla_principal();
+				init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
 			txtFiltro.requestFocus();
 		 }
 	   };
+	   
+	   ActionListener actualizartabla = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
+				txtFiltro.requestFocus();
+			}
+		};
 	   
 //	   ActionListener opImprimir_Reporte = new ActionListener(){
 //			public void actionPerformed(ActionEvent e){
@@ -314,6 +327,8 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 				btnImprimir.addActionListener(opMov);
 		    }
 		   
+		  
+		   
 		   public void llenarDatos(int folio){
 			   Obj_Alimentacion_De_Ordenes_De_Compra_Interna obj = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna().buscar(folio);
 				
@@ -367,7 +382,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 			    			if(ordenCI.autorizacion(Integer.valueOf(txtFolio.getText().toString().trim()), btn)){
 			    				
 				    				//atualizar tabla de autorizaciones
-			    					init_tabla_principal();
+			    					init_tabla_principal(cmb_status.getSelectedItem().toString().trim());
 				    				dispose();
 					                JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente La Orden De Compra Interna", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 			        			
