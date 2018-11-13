@@ -79,7 +79,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 			this.tablaP.getColumnModel().getColumn( 7).setMinWidth(130);
 			this.tablaP.getColumnModel().getColumn( 8).setMinWidth(130);
 			
-			String comandob = "orden_de_compra_interna_filtro";
+			String comandob = "orden_de_compra_interna_filtro 'AUTORIZACION'";
 			String basedatos="26",pintar="si";
 			ObjTab.Obj_Refrescar(tablaP,modeloP, Cantidad_Real_De_Columnas, comandob, basedatos,pintar,checkboxindex);
 		}
@@ -210,7 +210,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 		    }
 			
 			JCButton btnAceptar  = new JCButton("Autorizar"   ,"Aplicar.png"                ,"Azul"); 
-			JCButton btnNegar    = new JCButton("Negar"       ,"Delete.png"                 ,"Azul"); 
+//			JCButton btnNegar    = new JCButton("Negar"       ,"Delete.png"                 ,"Azul"); 
 			JCButton btnCancelar = new JCButton("Cancelar"    ,"cancelar-icono-4961-16.png" ,"Azul"); 
 			JCButton btnImprimir = new JCButton("Imprimir"    ,"imprimir-16.png"            ,"Azul");
 			
@@ -276,9 +276,9 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 		   	    this.menu_toolbar.add(btnAceptar    );
 				this.menu_toolbar.addSeparator(   );
 				this.menu_toolbar.addSeparator(   );
-				this.menu_toolbar.add(btnNegar   );
-				this.menu_toolbar.addSeparator(   );
-				this.menu_toolbar.addSeparator(   );
+//				this.menu_toolbar.add(btnNegar   );
+//				this.menu_toolbar.addSeparator(   );
+//				this.menu_toolbar.addSeparator(   );
 				this.menu_toolbar.add(btnCancelar );
 				this.menu_toolbar.addSeparator(   );
 				this.menu_toolbar.addSeparator(   );
@@ -309,7 +309,7 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 				llenarDatos(folio_orden_de_compra_interna);
 				
 				btnAceptar.addActionListener(opMov);
-				btnNegar.addActionListener(opMov);
+//				btnNegar.addActionListener(opMov);
 				btnCancelar.addActionListener(opMov);
 				btnImprimir.addActionListener(opMov);
 		    }
@@ -360,31 +360,28 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 		    	public void actionPerformed(ActionEvent e){
 		    		
 		    		Obj_Alimentacion_De_Ordenes_De_Compra_Interna ordenCI = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna();
-		    		
 		    		String btn = e.getActionCommand();
 		    		
 		    		if(!btn.equals("Imprimir")){
-		    			System.out.println("Modificar Status De Orden De Compra Interna a:"+btn);
-		    			
-		    			if(ordenCI.autorizacion(Integer.valueOf(txtFolio.getText().toString().trim()), btn)){
-		    				
-			    				//atualizar tabla de autorizaciones
-		    					init_tabla_principal();
-			    				dispose();
-				                JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente La Orden De Compra Interna", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-		        			
-		    			}else{
-		    				JOptionPane.showMessageDialog(null, "La Orden De Compra Interna No Se Actualizo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
-					    	return;
-		    			}
+//		    			System.out.println("Modificar Status De Orden De Compra Interna a:"+btn);
+			    			if(ordenCI.autorizacion(Integer.valueOf(txtFolio.getText().toString().trim()), btn)){
+			    				
+				    				//atualizar tabla de autorizaciones
+			    					init_tabla_principal();
+				    				dispose();
+					                JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente La Orden De Compra Interna", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+			        			
+			    			}else{
+			    				JOptionPane.showMessageDialog(null, "La Orden De Compra Interna No Se Actualizo", "Avise Al Administrador Del Sistema !!!",JOptionPane.ERROR_MESSAGE, new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
+						    	return;
+			    			}
 		    			
 		    		}else{
 		    			reporte();
 		    		}
-		    		
 		    	}
 		    };
-		    
+	
 		    public void reporte(){
 //		    	System.out.println("Generar Reprote De Orden De Compra Interna(PENDIENTE DE DESARROLLAR)");
 					String basedatos="2.26";
@@ -394,13 +391,13 @@ public class Cat_Autorizacion_De_Ordenes_De_Compra_Interna extends JFrame {
 							+ " set @folio = '"+txtFolio.getText().toString()+"' "
 							+ " select RIGHT('0000000000'+convert(varchar(10),ci.folio),10) as folio "
 							+ "		,case ci.status when 'E' then 'EN VALIDACION' "
-							+ "						when 'N' then 'NEGADO' "
-							+ "						when 'C' then 'CANCELADO' "
-							+ "						when 'S' then 'SURTIDO' end status "
-							+ "		,convert(varchar(20),case ci.status when 'V' then ci.fecha_autorizado "
-							+ "											when 'N' then ci.fecha_autorizado "
-							+ "											when 'C' then ci.fecha_autorizado "
-							+ "											when 'S' then ci.fecha_autorizado end,103) as fecha "
+							+ " 					when 'A' then 'AUTORIZADO' "
+							+ " 					when 'S' then 'SURTIDO'"
+							+ "						when 'C' then 'CANCELADO' end status "
+							+ "		,convert(varchar(20),case ci.status when 'E' then ci.fecha_guardado "
+							+ " 										when 'A' then ci.fecha_autorizado "
+							+ "											when 'S' then ci.fecha_surtido "
+							+ "											when 'C' then ci.fecha_ultima_modificacion end,103) as fecha "
 							+ "		,'' as surte "
 							+ "		,estab_dest.establecimiento as destino "
 							+ "		,ci.uso_de_mercancia "

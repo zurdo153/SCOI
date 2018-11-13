@@ -4106,15 +4106,21 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 	}
 	
 	public boolean Autorizar_Orden_De_Compra_Interna(int folio_orden, String status){
-		String query = "exec orden_de_compra_interna_autorizacion ?,?,?";
+		String query = "exec orden_de_compra_interna_autorizacion ?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
+			
+			String pc = InetAddress.getLocalHost().getHostName();
+			String ip = InetAddress.getLocalHost().getHostAddress();
+			
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, folio_orden);
 			pstmt.setString(2, status);
 			pstmt.setInt(3, usuario.getFolio());
+			pstmt.setString(4, pc);
+			pstmt.setString(5, ip);
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
@@ -4139,4 +4145,53 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 		}		
 		return true;
 	}
+	
+//	public boolean Surtirdo_Orden_De_Compra_Interna(int folio_orden, String establecimiento, int folio_chofer, String Observacion, String tipo_chofer_recibe, String xml){
+////		System.out.println(folio_orden);
+////		System.out.println(establecimiento);
+////		System.out.println(folio_chofer);
+////		System.out.println(Observacion);
+////		System.out.println(tipo_chofer_recibe);
+////		System.out.println(xml);
+//		
+//		String query = "exec orden_de_compra_interna_surtir ?,?,?,?,?,?,?,'"+xml+"'";
+////		System.out.println(query);
+//		
+//		Connection con = new Connexion().conexion();
+//		PreparedStatement pstmt = null;
+//		try {
+//			con.setAutoCommit(false);
+//			pstmt = con.prepareStatement(query);
+//			pstmt.setInt(1, folio_orden);
+//			pstmt.setString(2, establecimiento);
+//			pstmt.setInt(3, folio_chofer);
+//			pstmt.setString(4, Observacion);
+//			pstmt.setString(5, tipo_chofer_recibe);
+//			pstmt.setString(6, "S");
+//			pstmt.setInt(7, usuario.getFolio());
+//			pstmt.executeUpdate();
+//			con.commit();
+//		} catch (Exception e) {
+//			System.out.println("SQLException: "+e.getMessage());
+//			if(con != null){
+//				try{
+//					System.out.println("La transacción ha sido abortada");
+//					con.rollback();
+//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Surtido_Orden_De_Compra_Interna ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//				}catch(SQLException ex){
+//					System.out.println(ex.getMessage());
+//					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Surtido_Orden_De_Compra_Interna ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+//				}
+//			}
+//			return false;
+//		}finally{
+//			try {
+//				con.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}		
+//		return true;
+//	}
+
 }

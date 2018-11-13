@@ -11300,6 +11300,33 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return aviso;
 	}
 	
+	public String Surtir_Orden_De_Compra_Interna(Obj_Alimentacion_De_Ordenes_De_Compra_Interna orden) throws SQLException{
+		String FolioOCI="";
+		String query = "exec orden_de_compra_interna_surtir "+orden.getFolio()+",'"+orden.getEstab_surte()+"',"+orden.getFolio_chofer()+",'"+orden.getObservacionSurte()+"','"+orden.getTipo_de_chofer()+"','"+orden.getStatus()+"',"+(new Obj_Usuario().LeerSession().getFolio())+",'"+orden.getLista_de_productos()+"'" ;
+		System.out.println(query);
+//		exec orden_de_compra_interna_surtir 0,'',0,'','','',491,''
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				FolioOCI=(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+		}
+		
+		return FolioOCI;
+	}
+	
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;
