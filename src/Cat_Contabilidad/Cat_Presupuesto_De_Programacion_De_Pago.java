@@ -487,6 +487,7 @@ public class Cat_Presupuesto_De_Programacion_De_Pago extends JFrame {
 	  Double totalprogramacion= Double.valueOf(tablacompleta[0][20].toString());
 	  Double totalpresupuesto = Double.valueOf(tablacompleta[0][21].toString());
 
+	  System.out.println(tablacompleta[0][23].toString());
 	  GuardarActualizar=tablacompleta[0][23].toString().trim();
 	  txtProgramacion.setText(formateador.format (totalprogramacion));
 	  txtPresupuesto.setText(formateador.format (totalpresupuesto ));
