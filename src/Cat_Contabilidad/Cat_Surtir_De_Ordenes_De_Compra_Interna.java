@@ -37,7 +37,6 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import Cat_Contabilidad.Cat_Autorizacion_De_Ordenes_De_Compra_Interna.Cat_Ordenes_De_Compra_Interna_Detalle;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Connexion;
 import Conexiones_SQL.Generacion_Reportes;

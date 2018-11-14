@@ -691,7 +691,7 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 		this.tablab.getColumnModel().getColumn( 7).setMinWidth(130);
 		this.tablab.getColumnModel().getColumn( 8).setMinWidth(130);
 		
-		String comandob = "orden_de_compra_interna_filtro 'AUTORIZACION'";
+		String comandob = "orden_de_compra_interna_filtro 'EN VALIDACION'";
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
 	}
