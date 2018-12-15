@@ -586,7 +586,7 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 					} catch (NumberFormatException nfe){
 						tabla.getSelectionModel().setSelectionInterval(fila, fila);
 						JOptionPane.showMessageDialog(null, "La Fila  "+(fila+1)+"  En La Columna Cantidad Solo Acepta "+Aviso,"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
-						modelo.setValueAt(0, fila, columna);
+						modelo.setValueAt("", fila, columna);
 						tabla.editCellAt(fila, columna);
 						Component accion=tabla.getEditorComponent();
 						accion.requestFocus();
@@ -763,6 +763,79 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 				tabla.getSelectionModel().clearSelection();
 			}
 			return sacarFocoDeTabla;
+	    };
+
+//		public String RecorridoFocotabla(JTable tabla,int fila,int columna, String parametrosacarfoco){
+//			 String sacarFocoDeTabla = "";
+//			 sacarFocoDeTabla=parametrosacarfoco;
+//			
+//			if(sacarFocoDeTabla.equals("seguir")){
+//				int Cantidad_filas =tabla.getRowCount();
+//				sacarFocoDeTabla = "no";
+//				if(Cantidad_filas==fila+1){
+//					fila=0;
+//				}else{
+//				 fila=fila+1;
+//				}
+//			}else{	
+//	            if(!sacarFocoDeTabla.equals("no")){	
+//					int cantidadDeFilas = tabla.getRowCount();
+//					if(fila == cantidadDeFilas-1){
+//							sacarFocoDeTabla="si";
+//					}else{
+//						sacarFocoDeTabla = "no";
+//						fila=fila+1;
+//					}
+//			     }
+//			}
+//			
+//
+//			
+//			if(sacarFocoDeTabla.equals("si")){
+//				tabla.lostFocus(null, null);
+//				tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+//				tabla.getSelectionModel().clearSelection();
+//			}
+//			
+//			tabla.getSelectionModel().setSelectionInterval(fila, fila);
+//			tabla.editCellAt(fila, columna);
+//			Component accion=tabla.getEditorComponent();
+//		
+//			System.out.println(fila);
+//			System.out.println(columna);
+//			System.out.println(parametrosacarfoco);
+//			
+//			final JTextComponent jtc = (JTextComponent)accion;
+//			  jtc.requestFocus();
+//			  jtc.selectAll();	
+//			  scrollposicion(tabla,fila,columna);
+//			return sacarFocoDeTabla;
+//	    };
+	    
+	    @SuppressWarnings("deprecation")
+		public int RecorridoFocotabla_horizontal_x_columnas(JTable tabla,int fila,int columna,int columnasiguiente,String baja, String parametrosacarfoco){
+	    	 int columna_nueva=columnasiguiente;
+			if(parametrosacarfoco.equals("continuar")){
+				columna=columnasiguiente;
+				fila=baja.equals("si")?fila+1:fila; 
+			}else{	
+	            if(!parametrosacarfoco.equals("no")){	
+						fila=fila+1;
+			    }
+			}
+				tabla.getSelectionModel().setSelectionInterval(fila, fila);
+				tabla.editCellAt(fila, columna);
+				Component accion=tabla.getEditorComponent();
+			if(parametrosacarfoco.equals("si")){
+				tabla.lostFocus(null, null);
+				tabla.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+				tabla.getSelectionModel().clearSelection();
+			}
+			final JTextComponent jtc = (JTextComponent)accion;
+			  jtc.requestFocus();
+			  jtc.selectAll();	
+			  scrollposicion(tabla,fila,columna);
+			return columna_nueva;
 	    };
 	    
 	    @SuppressWarnings("deprecation")

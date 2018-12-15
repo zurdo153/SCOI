@@ -24,7 +24,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import Cat_Reportes.Cat_Reportes_De_Diferencias_Entre_Dos_Listas_De_Raya;
-import Cat_Reportes.Cat_Reportes_De_Prestamos_De_Lista_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Diferencias_De_Sueldo_Y_Bonos_En_Listas_De_Raya;
 import Cat_Reportes.Cat_Reportes_De_Fuente_De_Sodas;
 import Cat_Reportes.Cat_Reportes_De_Infonacot_De_Lista_De_Raya;

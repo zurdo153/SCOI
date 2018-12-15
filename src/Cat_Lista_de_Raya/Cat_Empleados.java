@@ -174,7 +174,7 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtemailPersonal          = new Componentes().text(new JCTextField(),"@email personal"             ,150     ,"String");
 	JTextField txtDescanso               = new Componentes().text(new JCTextField(),"Dia De Descanso"             ,100     ,"String");
 	JTextField txtDobla                  = new Componentes().text(new JCTextField(),"Dia Dobla"                   ,100     ,"String");
-	JTextField txtFechaUltimasVacaciones = new Componentes().text(new JCTextField(),"Ultimas Vaciones"            ,100     ,"String");
+
 	JTextField txtFechaIncapacidad       = new Componentes().text(new JCTextField(),"Fecha De Incapacidad"        ,100     ,"String");
 	JTextField txtImss                   = new Componentes().text(new JCTextField(),"Número de Seguro Social"     ,11      ,"Int"   );
 	JTextField txtNumeroInfonavit        = new Componentes().text(new JCTextField(),"Número de Infonavit"         ,15      ,"Int"   );
@@ -189,6 +189,9 @@ public class Cat_Empleados extends JFrame{
 	JTextField txtTarjetaNomina          = new Componentes().text(new JCTextField(),"Cuenta de Nómina"            ,19      ,"Int"   );
 	JTextField txtultimousuariomod       = new Componentes().text(new JCTextField(),"Último Usuario Actualizó"    ,300     ,"String");
 	JTextField txtFormaDePago            = new Componentes().text(new JCTextField(),"Forma de Pago"               ,15      ,"String");
+	JTextField txtFechaUltimasVacaciones = new Componentes().text(new JCTextField(),"Salida Ult. Vaciones"        ,100     ,"String");
+	JTextField txtFechaRegresUltVacac    = new Componentes().text(new JCTextField(),"Regreso Ult. Vaciones"       ,100     ,"String");
+	JTextField txtCantaniosVacaciones    = new Componentes().text(new JCTextField(),"Cantidad De Años De Las Ultimas Vacaciones",15      ,"String");
 	
 	JCButton btnBuscar              = new JCButton("Buscar"                                ,"buscar.png","Azul");
 	JCButton btnFiltro              = new JCButton("Filtro"                                ,"Filter-List-icon16.png","Azul");
@@ -537,10 +540,12 @@ public class Cat_Empleados extends JFrame{
 		panel.add(cmbActivo_Inactivo).setBounds                 (x+290       ,y     ,width/2  ,height );
 		panel.add(new JLabel("N° Infonavit:")).setBounds        (x           ,y+=25 ,width    ,height );
 		panel.add(txtNumeroInfonavit).setBounds                 (x+sep       ,y     ,width/2  ,height );
-		panel.add(new JLabel("Últ.Vacaciones:")).setBounds      (x+290       ,y     ,width/2  ,height );
-		panel.add(txtFechaUltimasVacaciones).setBounds          (x+365       ,y     ,95       ,height );
-		panel.add(btnFechaUltimasVacaciones).setBounds          (x+462       ,y     ,height   ,height );
-		
+		panel.add(new JLabel("Cant. Años Últ.Vacaciones:")).setBounds(x+298  ,y     ,width/2  ,height );
+		panel.add(txtCantaniosVacaciones).setBounds             (x+432       ,y     ,28       ,height );
+		panel.add(new JLabel("Salida Últ.Vacaciones:")).setBounds(x          ,y+=25 ,width    ,height );
+		panel.add(txtFechaUltimasVacaciones).setBounds          (x+sep       ,y     ,100      ,height );
+		panel.add(new JLabel("Regreso Últ.Vacaciones:")).setBounds(x+230     ,y     ,width    ,height );
+		panel.add(txtFechaRegresUltVacac).setBounds             (x+360       ,y     ,100      ,height );
 		sep=100;
 		panel.add(new JLabel("Tipo de horario:")).setBounds     (x=515       ,y=245 ,width=150,height );
 		panel.add(cmbHorarioRotativo).setBounds                 (x+sep       ,y     ,width    ,height );
@@ -704,11 +709,13 @@ public class Cat_Empleados extends JFrame{
 		txtDobla.setEnabled(false);
 		txtChecador.setEnabled(false);
 		txtChecador.setVisible(false);
-		txtFechaActualizacion.setEnabled(false);
-		
+		txtFechaActualizacion.setEditable(false);
+		txtCantaniosVacaciones.setEditable(false);
+		txtFechaUltimasVacaciones.setEditable(false);
+		txtFechaRegresUltVacac.setEditable(false);
 //		pendientes en funcionalidad----------------------------------------------------
-		txtFechaUltimasVacaciones.setEnabled(false);
 		btnFechaUltimasVacaciones.setEnabled(false);
+		
 		txtFechaIncapacidad.setEnabled(false);
 		btnFechaIncapacidad.setEnabled(false);
 		btnFiniquito.setEnabled(false);
@@ -716,7 +723,7 @@ public class Cat_Empleados extends JFrame{
 		panelEnabledFalse();
 		txtFolioEmpleado.setEditable(true);
 		txtFolioEmpleado.setEnabled(true);
-		txtTelefono_Cuadrante.setEnabled(false);
+		txtTelefono_Cuadrante.setEditable(false);
 		txtultimousuariomod.setEditable(false);
 		
 		try {
@@ -1241,7 +1248,8 @@ public class Cat_Empleados extends JFrame{
             txtFormaDePago.setText            (tabla_empleado_consulta[0][68].toString()        );   
             chb_cuadrante_parcial.setSelected(Boolean.valueOf(tabla_empleado_consulta[0][69].toString()));
             txtChecador.setText               (tabla_empleado_consulta[0][78].toString()        );
-
+            txtCantaniosVacaciones.setText    (tabla_empleado_consulta[0][79].toString()        );
+            txtFechaRegresUltVacac.setText    (tabla_empleado_consulta[0][80].toString()        );
             imagB = (byte[]) tabla_empleado_consulta[0][70];
 			btnFoto.setIcon(crearIcon(imagB));
 			
@@ -1773,7 +1781,9 @@ public class Cat_Empleados extends JFrame{
 		cmbEscolaridad.setSelectedIndex(0);
 		cmbContratacion.setSelectedIndex(0);
 		cmbPresenciaFisica.setSelectedIndex(0);
-	    
+		txtCantaniosVacaciones.setText("");
+		txtFechaUltimasVacaciones.setText("");
+		txtFechaRegresUltVacac.setText("");
 		try {
 			imagB  = Files.readAllBytes(Paths.get(System.getProperty("user.dir")+"/Iconos/Un.JPG")); 
 			btnFoto.setIcon(crearIcon(imagB));
@@ -1781,10 +1791,6 @@ public class Cat_Empleados extends JFrame{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-//		 ImageIcon tmpIconDefault = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Un.JPG");
-//         Icon iconoDefault = new ImageIcon(tmpIconDefault.getImage().getScaledInstance(btnFoto.getWidth(), btnFoto.getHeight(), Image.SCALE_DEFAULT));
-//         btnFoto.setIcon(iconoDefault);
          
 		 ImageIcon file_status = new ImageIcon(System.getProperty("user.dir")+"/Iconos/Vigente.png");
          Icon iconoStatus = new ImageIcon(file_status.getImage().getScaledInstance(btnStatus.getWidth(), btnStatus.getHeight(), Image.SCALE_DEFAULT));

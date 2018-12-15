@@ -68,10 +68,10 @@
 	<field name="tipo_banco" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tipo_banco"/>
 	</field>
-	<field name="fecha_ingreso" class="java.sql.Timestamp">
+	<field name="fecha_ingreso" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="fecha_ingreso"/>
 	</field>
-	<field name="fecha_ingreso_imss" class="java.sql.Timestamp">
+	<field name="fecha_ingreso_imss" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="fecha_ingreso_imss"/>
 	</field>
 	<field name="curp" class="java.lang.String">

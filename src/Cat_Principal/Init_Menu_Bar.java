@@ -317,10 +317,8 @@ public class Init_Menu_Bar extends Init_Login{
 			btnAceptar.setVisible(true);
 			btnAceptar.setEnabled(false);
 			btnBuscar.setEnabled(true);
-            btnOrden_Gasto
-            
-            .setEnabled(false);
-			btnCaja.setEnabled(false);
+            btnOrden_Gasto.setEnabled(false);
+            btnOCI.setEnabled(false);
 			btnSolSer.setEnabled(false);
 			btnCortes_Cajeros.setEnabled(false);
 			btnRetirosCajeras.setEnabled(false);

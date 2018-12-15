@@ -515,8 +515,11 @@ public class Cat_Alimentacion_De_Inventarios_Parciales extends JFrame{
 								        getRootPane().getActionMap().put("BUSCA", new AbstractAction(){
 								        @Override
 								     public void actionPerformed(ActionEvent e){
+//								        	ObjTab.RecorridoFocotabla_horizontal_x_columnas((tabla, filap, 3, 3 
 								        	  columna=3;
 								                    RecorridoFoco(fila, "no");
+//								                    ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, 3,3,"no", "no");
+								                    
 								                    }
 								    });
 					      }

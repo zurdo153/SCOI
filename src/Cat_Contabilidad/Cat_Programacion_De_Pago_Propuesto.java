@@ -43,7 +43,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
+public class Cat_Programacion_De_Pago_Propuesto extends JFrame {
 	    String aceptar_negar="";
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
@@ -52,8 +52,8 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		Obj_Usuario usuario = new Obj_Usuario().LeerSession();
 		Obj_Revision_De_Programacion_de_Pago programacion = new Obj_Revision_De_Programacion_de_Pago();
 	    String[][] tablacompleta;
-	    String[][] tablaclafificadores;
-		   
+	    String[][] tablaclafificadores=programacion.Tabla_Programacion_de_pago_clasificadores();
+		 
 		@SuppressWarnings("rawtypes")
 		public Class[] tipos(){
 			Class[] tip = new Class[Cantidad_Real_De_Columnas];
@@ -248,7 +248,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		String GuardarActualizar="";
 		private JCheckBox chb_invertir = new JCheckBox("Invertir");
 		
-		public Cat_Revision_De_Programacion_De_Pago()	{
+		public Cat_Programacion_De_Pago_Propuesto()	{
 			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 			setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
@@ -308,7 +308,6 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		}
 		 
 		public void inicializartablatotales() {
-			 tablaclafificadores= programacion.Tabla_Programacion_de_pago_clasificadores();
 			 ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablaclafificadores, tablat);
 		}
 		
@@ -384,8 +383,6 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 				}	
 				calculo_De_totales();
 				chb_invertir.setSelected(false);
-				txtFiltro.setText("");
-				ObjTab.Obj_Filtro(tabla, "", Cantidad_Real_De_Columnas, txtFiltro);
 				for(int i=0;i<tabla.getRowCount();i++) {
 					tabla.setValueAt("false", i, 0);
 				}
@@ -475,6 +472,8 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 					return;
 				}
 	    		if(tabla.isEditing()){			tabla.getCellEditor().stopCellEditing();	}
+			        txtFiltro.setText("");
+				    ObjTab.Obj_Filtro(tabla, "", Cantidad_Real_De_Columnas, txtFiltro);
 				    programacion.setGuardarActualizar(GuardarActualizar);
 				    programacion.setTabla_programacion(ObjTab.tabla_guardar_sin_validacion(tabla));
 				    programacion.setTotal_programacion(Float.valueOf(tablacompleta[0][20].toString()));
@@ -583,17 +582,16 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 	}
 	
 	private void agregarf() {
+		
 	  modelo.setRowCount(0);
 	  int fila = tablab.getSelectedRow();
-	  tablacompleta= programacion.refrescar_tabla_programacion(tablab.getValueAt(fila,0).toString() );
+	  tablacompleta= programacion.refrescar_tabla_programacion(tablab.getValueAt(fila,0).toString(), usuario.getFolio()+"" );
 	  ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablacompleta, tabla);
 	  txtFolio.setText(tablab.getValueAt(fila,0).toString() );
 	  
 	  DecimalFormat formateador = new DecimalFormat("###,###.##"); 
 	  Double totalprogramacion= Double.valueOf(tablacompleta[0][20].toString());
 	  Double totalpresupuesto = Double.valueOf(tablacompleta[0][21].toString());
-
-	  System.out.println(tablacompleta[0][21].toString());
 	  
 	  GuardarActualizar=tablacompleta[0][23].toString().trim();
 	  txtProgramacion.setText(formateador.format (totalprogramacion));
@@ -617,7 +615,7 @@ public class Cat_Revision_De_Programacion_De_Pago extends JFrame {
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Revision_De_Programacion_De_Pago().setVisible(true);
+				new Cat_Programacion_De_Pago_Propuesto().setVisible(true);
 			}catch(Exception e){	}
 		}
 	}

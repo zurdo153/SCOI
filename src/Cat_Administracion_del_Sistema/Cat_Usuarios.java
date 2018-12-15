@@ -58,7 +58,6 @@ public class Cat_Usuarios extends JFrame{
 	Obj_Usuario user = new Obj_Usuario().LeerSession();
 	// MENU PRICIPAL ADMINISTRACION DEL SISTEMA  (1) select nombre from tb_submenu where menu_principal = 1 order by nombre asc
 	String[] Sub_Administracion_del_Sistema = new Obj_Administracion_del_Sistema.Obj_SubMenus().Relacion_de_SubMenus(1);
-	
 	Obj_CheckBoxNode Administracion_del_sistema[] = {
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[0], false),
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[1], false),
@@ -66,6 +65,7 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[3], false),
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[4], false),
 		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[5], false),
+		new Obj_CheckBoxNode(Sub_Administracion_del_Sistema[6], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Administracion_del_sistemaVector = new Obj_NombreVector("Administración Del Sistema", Administracion_del_sistema);
@@ -337,6 +337,8 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_inventarios[12], false),
 		new Obj_CheckBoxNode(Sub_inventarios[13], false),
 		new Obj_CheckBoxNode(Sub_inventarios[14], false),
+		new Obj_CheckBoxNode(Sub_inventarios[15], false),
+		new Obj_CheckBoxNode(Sub_inventarios[16], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector Vector_inventarios = new Obj_NombreVector("Inventarios", Inventarios);
