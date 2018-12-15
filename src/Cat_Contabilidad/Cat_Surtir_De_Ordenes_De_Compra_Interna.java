@@ -112,7 +112,7 @@ public class Cat_Surtir_De_Ordenes_De_Compra_Interna extends JFrame {
 		JTextField txtFiltro     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<",300 , "String",tablaP,Cantidad_Real_De_Columnas );
 		JTextField txtTotal      = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
 		
-		JCButton btnActualizar   = new JCButton("Actualizar"           ,"Actualizar.png","Azul");
+		JCButton btnActualizar   = new JCButton("Actualizar","Actualizar.png","Azul");
 		
 		String status[] = {"AUTORIZADO","EN VALIDACION","SURTIDO","CANCELADO","TODOS"};
 		@SuppressWarnings({ "unchecked", "rawtypes" })

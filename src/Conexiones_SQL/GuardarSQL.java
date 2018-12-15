@@ -8538,6 +8538,79 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
+	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros, double saldoFinal, String xml){
+
+		int usuario_mov = usuario.getFolio();
+		String query       = "exec  procedure '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+saldoFinal+","+usuario_mov+",'"+xml+"'";
+		
+		System.out.println(query);
+		
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 
+//				pstmt.setString(1 ,  programacion.getTabla_programacion()[i][1].toString().trim() );
+				
+//				pstmt.executeUpdate();
+				con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Conciliacion_De_Cuenta_Bancaria ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+//	public boolean Guardar_Movimientos_De_Cuentas (String xml){
+//		String query       = "exec  xml_insertar_movimientos_de_cuenta '"+xml+"'";
+//		Connection con = new Connexion().conexion();
+//		PreparedStatement pstmt = null;
+//		try {
+//			 con.setAutoCommit(false);
+//			 pstmt = con.prepareStatement(query);
+//			 pstmt.executeUpdate();
+//			con.commit();
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Movimientos_De_Cuentas ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+//			System.out.println("SQLException: " + e.getMessage());
+//			if (con != null){
+//				try {
+//					System.out.println("La transacción ha sido abortada");
+//					con.rollback();
+//				} catch(SQLException ex) {
+//					System.out.println(ex.getMessage());
+//				}
+//			} 
+//			return false;
+//		}finally{
+//			try {
+//				pstmt.close();
+//				con.close();
+//			} catch(SQLException e){
+//				e.printStackTrace();
+//			}
+//		}		
+//		return true;
+//	}
+	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		
 //		String query = "exec aumento_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+razon+"','"+estabRecibe+"'";
