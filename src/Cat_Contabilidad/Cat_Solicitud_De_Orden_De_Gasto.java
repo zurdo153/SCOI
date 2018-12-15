@@ -162,7 +162,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Solicitud De Orden De Gasto");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Solicitud-OG-64.png"));
 		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Solicitud De Orden De Gasto"));
    	

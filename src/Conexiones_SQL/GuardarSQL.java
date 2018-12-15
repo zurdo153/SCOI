@@ -2453,7 +2453,7 @@ public boolean Guardar_Horario(Obj_Horarios horario,int folio_turno){
 				if (con != null){
 					try {
 						System.out.println("La transacción ha sido abortada");
-						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Guardar_Fuente_Sodas  procedimiento almacenado sp_insert_captura_fuente_sodas SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion Guardar_Fuente_Sodas  procedimiento almacenado sp_insert_captura_fuente_sodas \nSQLException: "+e.getMessage()+" "+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 						con.rollback();
 					} catch(SQLException ex) {
 						System.out.println(ex.getMessage());
@@ -8093,7 +8093,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		orden.setFolio( busca_y_actualiza_proximo_folio(63) );
 		
 		int cantidad_filas=orden.getTabla_productos().length;	
-
+        int i=0;
 		String query = "exec orden_de_compra_autorizacion_insert ?,?,?,?,?,?,?,?,?,?,?,?,?,?" ;
 		String querybms= " declare @usuario_autorizacion varchar(5),@folio varchar(10) " + 
 				        "  select @usuario_autorizacion='"+orden.getFolio_usuario_bms()+"' , @folio='"+orden.getFolio_orden_de_compra()+"' " + 
@@ -8113,7 +8113,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			pstmt    = con.prepareStatement(query);
 			pstmtbms = conbms.prepareStatement(querybms);
 		
-			for(int i=0; i<cantidad_filas ; i++){
+			for(i=0; i<cantidad_filas ; i++){
 				pstmt.setInt   (1 ,  orden.getFolio());
 				pstmt.setString(2 ,  orden.getFolio_orden_de_compra());
 				pstmt.setString(3 ,  orden.getTabla_productos()[i][0].toString().trim());
@@ -8137,9 +8137,30 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			conbms.commit();
 		
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Compra ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-			
-			System.out.println("SQLException: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Compra ] "+query+"\n"
+		      +orden.getFolio()+"\n"
+			  +orden.getFolio_orden_de_compra()+"\n"
+			  +orden.getTabla_productos()[i][0].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][2].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][3].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][4].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][5].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][6].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][7].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][14].toString().trim()+"\n"
+			  +orden.getTabla_productos()[i][15].toString().trim()+"\n"
+ 			  +e.getMessage()+"\n"+querybms, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: "+query+" "+e.getMessage()+"\n"+querybms+		      +orden.getFolio()+"\n"
+					  +orden.getFolio_orden_de_compra()+"\n"
+					  +orden.getTabla_productos()[i][0].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][2].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][3].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][4].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][5].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][6].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][7].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][14].toString().trim()+"\n"
+					  +orden.getTabla_productos()[i][15].toString().trim()+"\n");
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
@@ -8381,10 +8402,9 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	}
 	
 	public boolean Guardar_Orden_De_Compra_Interna(Obj_Alimentacion_De_Ordenes_De_Compra_Interna orden,String movimiento){
-		
 		orden.setFolio( movimiento.equals("GUARDAR")?busca_y_actualiza_proximo_folio(79):orden.getFolio());//actualizar o deja el folio segun el movimiento que se realizará
 		
-		String query = "exec guardar_orden_de_compra_interna ?,?,?,?,?,?,?,?,?,'"+orden.getLista_de_productos()+"'" ;
+		String query = "exec guardar_orden_de_compra_interna ?,?,?,?,?,?,?,?,?,?,'"+orden.getLista_de_productos()+"'" ;
 		Connection con    = new Connexion().conexion();
 		PreparedStatement pstmt    = null;
 		
@@ -8392,15 +8412,16 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			con.setAutoCommit(false);
 			pstmt    = con.prepareStatement(query);
 		
-				pstmt.setInt   	(1 ,  orden.getFolio());
-				pstmt.setInt	(2 ,  orden.getFolio_persona_solicita());
-				pstmt.setInt	(3 ,  orden.getFolio_servicio());
-				pstmt.setString	(4 ,  orden.getStatus());			
-				pstmt.setString	(5 ,  orden.getEstab_destino());
-				pstmt.setString	(6 ,  orden.getTipo_de_solicitante());
-				pstmt.setString	(7 ,  orden.getUso_de_mercancia());
-				pstmt.setInt   	(8 ,  usuario.getFolio());
-				pstmt.setString	(9,  movimiento);
+				pstmt.setInt   	( 1 ,  orden.getFolio());
+				pstmt.setInt	( 2 ,  orden.getFolio_persona_solicita());
+				pstmt.setInt	( 3 ,  orden.getFolio_servicio());
+				pstmt.setString	( 4 ,  orden.getStatus());			
+				pstmt.setString	( 5 ,  orden.getEstab_destino());
+				pstmt.setString	( 6 ,  orden.getTipo_de_solicitante());
+				pstmt.setString	( 7 ,  orden.getUso_de_mercancia());
+				pstmt.setString	( 8 ,  orden.getTipo_orden() );
+				pstmt.setInt   	( 9 ,  usuario.getFolio());
+				pstmt.setString	(10 ,  movimiento);
 			
 				pstmt.executeUpdate();
 				con.commit();
@@ -8408,7 +8429,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Orden_De_Compra_Interna ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			
-			System.out.println("SQLException: " + e.getMessage());
+			System.out.println("SQLException: " + e.getMessage()+"\n"+query);
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
@@ -8451,7 +8472,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString(7 ,  programacion.getTabla_programacion()[i][8].toString().trim() );
 				pstmt.setString(8 ,  programacion.getTabla_programacion()[i][9].toString().trim() );
 				pstmt.setString(9 ,  programacion.getTabla_programacion()[i][10].toString().trim());//observaciones compras
-				pstmt.setString(10,  programacion.getTabla_programacion()[i][17].toString().trim());
+				pstmt.setInt   (10,  usuario.getFolio() );
 				pstmt.setFloat (11,  programacion.getTotal_programacion()                         );
 				pstmt.setFloat (12,  programacion.getTotal_presupuesto()                          );
 				pstmt.setFloat (13,  programacion.getTotal_propuesto()                            );

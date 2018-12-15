@@ -25,12 +25,8 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 	int folio_chofer;
 	String ObservacionSurte;
 	String tipo_de_chofer;
-//	String fecha_guardado;
-//	int usuario_guardo;
-//	String fecha_ultima_modificacion;
-//	int usuario_ultima_modificacion;
-//	String fecha_surtido;
-//	int usuario_surtio;
+    String tipo_orden;
+
 	
 
 	public Obj_Alimentacion_De_Ordenes_De_Compra_Interna() {
@@ -42,7 +38,7 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 		servicio = "";//------------------------------------------
 		uso_de_mercancia = "";
 		status="";
-
+		tipo_orden="";
 		lista_de_productos = "";// xml,--cod_prod, descripcionManual, unidad, cantidad_solicitada, cantidad_surtida
 		arreglo_de_productos = null;
 		estab_destino = "";
@@ -50,6 +46,14 @@ public class Obj_Alimentacion_De_Ordenes_De_Compra_Interna {
 		folio_chofer =0;
 		ObservacionSurte="";
 		tipo_de_chofer="";
+	}
+
+	public String getTipo_orden() {
+		return tipo_orden;
+	}
+
+	public void setTipo_orden(String tipo_orden) {
+		this.tipo_orden = tipo_orden;
 	}
 
 	public int getFolio() {

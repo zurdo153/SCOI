@@ -43,8 +43,8 @@ import Cat_Chat.Cat_Chat;
 import Cat_Checador.Cat_Checador;
 import Cat_Contabilidad.Cat_Solicitud_De_Orden_De_Gasto;
 import Cat_Cuadrantes.Cat_Impresion_Y_Revision_De_Cuadrante;
+import Cat_Inventarios.Cat_Orden_De_Compra_Interna_Solicitud;
 import Cat_Lista_de_Raya.Cat_Captura_De_Fuente_De_Sodas_De_Cajeras;
-import Cat_Lista_de_Raya.Cat_Diferencia_De_Cortes;
 import Cat_Lista_de_Raya.Cat_Empleados;
 import Cat_Lista_de_Raya.Cat_Prestamos;
 import Cat_Lista_de_Raya.Cat_Revision_De_Lista_Raya;
@@ -73,7 +73,7 @@ public class Init_Login extends JFrame{
 	public Container cont = getContentPane();
 	public JLayeredPane panel = new JLayeredPane();
 	JLabel fondo = new JLabel();
-	int Version=1309;
+	int Version=1314;
 	
 	String color[] =  new Obj_Menus().Combo_Colores();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -105,8 +105,8 @@ public class Init_Login extends JFrame{
 	JLabel lblSolicitudes= new JLabel("Servicios");
 	
 	/* BOTON ORDENES DE GASTO */
-	JButton btnOrden_Gasto= new JCButton("","Solicitud-64.png","Gris"); 
-	JLabel lblBanco= new JLabel("Solicitud");
+	JButton btnOrden_Gasto= new JCButton("","Solicitud-OG-64.png","Gris"); 
+	JLabel lblBanco= new JLabel("Solicitud De");
 	JLabel lblBanco2= new JLabel("Orden De Gasto");
 	
 	/* BOTON DEDUCCIONES Y PRECEPCIONES */
@@ -114,10 +114,10 @@ public class Init_Login extends JFrame{
 	JLabel lblImpresioncuadrante2= new JLabel("Impresion y Revision");
 	JLabel lblImpresionCuadrante4= new JLabel("De Cuadrante");
 	
-	/* BOTON DIFERENCIA DE CORTES */
-	JButton btnCaja= new JButton(new ImageIcon("imagen/caja2.png"));
-	JLabel lblCaja2= new JLabel("Diferencia de");
-	JLabel lblCaja3= new JLabel("Cortes");
+	/* BOTON SOLICITUD DE ORDEN DE COMPRA INTERNA*/
+	JButton btnOCI = new JCButton("","Solicitud_OCI-64.png","Gris");
+	JLabel lblCaja2= new JLabel("Solicitud de Orden");
+	JLabel lblCaja3= new JLabel("De Compra Interna");
 	
 	/* BOTON PRESTAMOS */
 	JButton btnPrestamo= new JButton(new ImageIcon("imagen/prestamo.png"));
@@ -260,7 +260,7 @@ public class Init_Login extends JFrame{
 		btnOrden_Gasto.addActionListener(Opciones);
 		btnImpresionCuadrante.addActionListener(Opciones);
 		btnServicios.addActionListener(Opciones);
-		btnCaja.addActionListener(Opciones);
+		btnOCI.addActionListener(Opciones);
 		btnSolSer.addActionListener(Opciones);
 		btnCortes_Cajeros.addActionListener(Opciones);
 		btnRetirosCajeras.addActionListener(Opciones);
@@ -277,7 +277,7 @@ public class Init_Login extends JFrame{
 		btnChat.addActionListener(Opciones);
 		
 		btnOrden_Gasto.setEnabled(false);
-		btnCaja.setEnabled(false);
+		btnOCI.setEnabled(false);
 		btnSolSer.setEnabled(false);
 		btnCortes_Cajeros.setEnabled(false);
 		btnRetirosCajeras.setEnabled(false);
@@ -330,7 +330,7 @@ public class Init_Login extends JFrame{
 			/* COLUMNA 2 *//////////////////////////////////////////////////////
 			y=40;			
 			panel.add(btnOrden_Gasto).setBounds                (x+=140,y     ,z,z);
-			panel.add(btnCaja).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnOCI).setBounds                 (x     ,y+=115,z,z);
 			panel.add(btnPrestamo).setBounds             (x     ,y+=115,z,z);
 			panel.add(btnColaborador).setBounds     (x     ,y+=115,z,z);
 			panel.add(btnListaRaya).setBounds            (x     ,y+=115,z,z);
@@ -440,7 +440,7 @@ public class Init_Login extends JFrame{
 			/* COLUMNA 2 *//////////////////////////////////////////////////////
 			y=10;			
 			panel.add(btnOrden_Gasto).setBounds                (x+=140,y     ,z,z);
-			panel.add(btnCaja).setBounds                 (x     ,y+=115,z,z);
+			panel.add(btnOCI).setBounds                 (x     ,y+=115,z,z);
 			panel.add(btnPrestamo).setBounds             (x     ,y+=115,z,z);
 			panel.add(btnColaborador).setBounds     (x     ,y+=115,z,z);
 			panel.add(btnListaRaya).setBounds            (x     ,y+=115,z,z);
@@ -545,7 +545,7 @@ public class Init_Login extends JFrame{
 			/* COLUMNA 2 *//////////////////////////////////////////////////////
 			y=10;			
 			panel.add(btnOrden_Gasto).setBounds                (x+=100,y     ,z,z);
-			panel.add(btnCaja).setBounds                 (x     ,y+=90 ,z,z);
+			panel.add(btnOCI).setBounds                 (x     ,y+=90 ,z,z);
 			panel.add(btnPrestamo).setBounds             (x     ,y+=90 ,z,z);
 			panel.add(btnColaborador).setBounds     (x     ,y+=90 ,z,z);
 			panel.add(btnListaRaya).setBounds            (x     ,y+=90 ,z,z);
@@ -828,8 +828,8 @@ public class Init_Login extends JFrame{
 					btnSolSer.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 14)
 					btnColaborador.setEnabled(true);
-				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 48)
-					btnCaja.setEnabled(true);
+				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 229)
+					btnOCI.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 91)
 					btnRetirosCajeras.setEnabled(true);
 				if(Integer.valueOf(tmpSTR[0].toString().trim()) == 50)
@@ -873,8 +873,8 @@ ActionListener Opciones = new ActionListener(){
 			if(click.getSource().equals(btnImpresionCuadrante))
 				new Cat_Impresion_Y_Revision_De_Cuadrante().setVisible(true);
 			
-			if(click.getSource().equals(btnCaja))
-				new Cat_Diferencia_De_Cortes().setVisible(true);
+			if(click.getSource().equals(btnOCI))
+				new Cat_Orden_De_Compra_Interna_Solicitud().setVisible(true);
 			
 			if(click.getSource().equals(btnRetirosCajeras))
 				new Cat_Retiros_A_Cajeros().setVisible(true);

@@ -39,7 +39,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Presupuesto_De_Programacion_De_Pago extends JFrame {
+public class Cat_Programacion_De_Pago_Presupuesto extends JFrame {
 	    String aceptar_negar="";
 		Container cont = getContentPane();
 		JLayeredPane campo = new JLayeredPane();
@@ -230,13 +230,13 @@ public class Cat_Presupuesto_De_Programacion_De_Pago extends JFrame {
 		JTextField txtPendiente   = new Componentes().text(new JCTextField() ,"Total Pagado"         ,20   ,"Double");
 		JTextField txtPropuestopre= new Componentes().text(new JCTextField() ,"Presupuesto Propuesto",15   ,"Int");
 		
-		JCButton btnFiltro       = new JCButton("Filtro"      ,"Filter-List-icon16.png","Azul" );
+		JCButton btnFiltro       = new JCButton("Buscar"      ,"Filter-List-icon16.png","Azul" );
 		JCButton btnGuardar      = new JCButton("Guardar"     ,"Guardar.png"           ,"Azul");
 		JCButton btnImprimir     = new JCButton("Imprimir"    ,"imprimir-16.png"       ,"Azul" );
 		
 		String GuardarActualizar="";
 		
-		public Cat_Presupuesto_De_Programacion_De_Pago()	{
+		public Cat_Programacion_De_Pago_Presupuesto()	{
 			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 			int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 			setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
@@ -244,8 +244,8 @@ public class Cat_Presupuesto_De_Programacion_De_Pago extends JFrame {
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
-			this.setTitle("Revisión De Programación de Pagos");
-			this.campo.setBorder(BorderFactory.createTitledBorder("Seleccione Las Facturas Que Desea Programar Su Pago"));
+			this.setTitle("Programación de Pago Presupuesto");
+			this.campo.setBorder(BorderFactory.createTitledBorder("Teclee La Cantidad de la programacion de Pago"));
 			
 			this.menu_toolbar.add(btnFiltro     );
 		    this.menu_toolbar.addSeparator(     );
@@ -479,7 +479,7 @@ public class Cat_Presupuesto_De_Programacion_De_Pago extends JFrame {
 	private void agregarf() {
 	  modelo.setRowCount(0);
 	  int fila = tablab.getSelectedRow();
-	  tablacompleta= programacion.refrescar_tabla_programacion(tablab.getValueAt(fila,0).toString() );
+	  tablacompleta= programacion.refrescar_tabla_programacion(tablab.getValueAt(fila,0).toString(),0+"" );
 	  ObjTab.llenado_de_modelo_desde_datos_tabla_precargados(tablacompleta, tabla);
 	  txtFolio.setText(tablab.getValueAt(fila,0).toString() );
 	  
@@ -517,7 +517,7 @@ public class Cat_Presupuesto_De_Programacion_De_Pago extends JFrame {
 		public static void main(String args[]){
 			try{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new Cat_Presupuesto_De_Programacion_De_Pago().setVisible(true);
+				new Cat_Programacion_De_Pago_Presupuesto().setVisible(true);
 			}catch(Exception e){	}
 		}
 	}

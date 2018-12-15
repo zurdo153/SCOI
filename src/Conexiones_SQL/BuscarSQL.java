@@ -122,7 +122,6 @@ import Obj_Xml.LeerXml;
 public class BuscarSQL {
 	
 	Connexion con = new Connexion();
-	
 	@SuppressWarnings({ "unchecked", "rawtypes", "resource" })
 	public Obj_Configuracion_Base_de_Datos_3 Conexion_BD_3() throws IOException {
 		Vector myVector = new Vector();
@@ -10481,7 +10480,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public Object[][] empleado_buscar_datos(String folio_empleado) throws IOException{
 		Object[][] Matriz = null;
 		String query = "exec empleado_buscar_datos '"+folio_empleado+"'";
-		Matriz = new Object[getFilas(query)][79];
+		Matriz = new Object[getFilas(query)][81];
 		Statement s;
 		ResultSet rs;
 		try {			
@@ -10576,7 +10575,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				Matriz[i][76] = rs.getString(77);//parentesco
 				Matriz[i][77] = rs.getString(78);//fecha_nacimiento_beneficiario
 				Matriz[i][78] = rs.getString(79);//clave_checador
-				
+				Matriz[i][79] = rs.getString(80);//años ultimas vacaciones
+				Matriz[i][80] = rs.getString(81);//fecha regreso ultimas vacaciones
 //				 File photo = new File(System.getProperty("user.dir")+"/tmp/tmp.jpg");
 //			     FileOutputStream fos = new FileOutputStream(photo);
 //				
@@ -11168,9 +11168,10 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return Matriz;
 	}
 
-	   public String[][] Tabla_Programacion_de_pago(String folio_programacion){
+	
+	   public String[][] Tabla_Programacion_de_pago(String folio_programacion, String folio_usuario){
 			String[][] Matriz = null;
-			String query = "exec programacion_de_pago_revision '"+folio_programacion+"'";
+			String query = "exec programacion_de_pago_revision '"+folio_programacion+"',"+folio_usuario;
 			
 			Matriz = new String[getFilas(query)][24];
 			Statement s;
@@ -11208,6 +11209,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Tabla_Programacion_de_pago ] SQLException: "+e1.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 			}
 			return Matriz;
 		}
@@ -11304,7 +11306,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		String FolioOCI="";
 		String query = "exec orden_de_compra_interna_surtir "+orden.getFolio()+",'"+orden.getEstab_surte()+"',"+orden.getFolio_chofer()+",'"+orden.getObservacionSurte()+"','"+orden.getTipo_de_chofer()+"','"+orden.getStatus()+"',"+(new Obj_Usuario().LeerSession().getFolio())+",'"+orden.getLista_de_productos()+"'" ;
 		System.out.println(query);
-//		exec orden_de_compra_interna_surtir 0,'',0,'','','',491,''
+
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -11314,6 +11316,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
 		finally{
 			if(stmt!=null){try {

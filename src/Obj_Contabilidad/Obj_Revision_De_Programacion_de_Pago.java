@@ -13,6 +13,7 @@ public class Obj_Revision_De_Programacion_de_Pago {
 	float total_propuesto=0;
 	int presupuesto_propuesto=0;
 	String estatus=""; 
+	boolean estatus_programacion=false;
 	
 	public String getEstatus() {
 		return estatus;
@@ -81,8 +82,8 @@ public class Obj_Revision_De_Programacion_de_Pago {
 		this.tabla_programacion = tabla_programacion;
 	}
 
-	public String[][] refrescar_tabla_programacion(String folio_programacion){
-		return new BuscarSQL().Tabla_Programacion_de_pago(folio_programacion);
+	public String[][] refrescar_tabla_programacion(String folio_programacion, String folio_usuario){
+		return new BuscarSQL().Tabla_Programacion_de_pago(folio_programacion, folio_usuario);
 	}
 	
 	public String[][] Tabla_Programacion_de_pago_clasificadores(){

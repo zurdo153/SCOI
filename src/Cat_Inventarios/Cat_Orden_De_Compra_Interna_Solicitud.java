@@ -1,4 +1,4 @@
-package Cat_Contabilidad;
+package Cat_Inventarios;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -50,7 +50,7 @@ import Obj_Principal.Obj_tabla;
 import Obj_Xml.CrearXmlString;
 
 @SuppressWarnings("serial")
-public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
+public class Cat_Orden_De_Compra_Interna_Solicitud extends JFrame{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -87,30 +87,34 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	JTable tabla = new JTable(modelo);
 	public JScrollPane scroll_tabla = new JScrollPane(tabla);
 	
-	JTextField txtFolio       = new Componentes().text(new JCTextField()  ,"Folio"						,30   ,"String");
+	JTextField txtFolio       = new Componentes().text(new JCTextField()  ,"Folio"						,15   ,"String");
 	JTextField txtDescripcion = new Componentes().text(new JCTextField()  ,"Descripcion Del Producto"	,30   ,"String");
 	JTextField txtFolioSolic= new Componentes().text(new JCTextField()  ,"Folio Solicita"				,30   ,"String");
 	JTextField txtSolicitante = new Componentes().text(new JCTextField()  ,"Persona Que Solicita"		,30   ,"String");
 	JTextField txtFolioservici= new Componentes().text(new JCTextField()  ,"Folio Servicio"				,30   ,"String");
 	JTextField txtDetalleServi= new Componentes().text(new JCTextField()  ,"Detalle Servicio"			,350  ,"String");
 	
-    JTextArea txaUso       = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia", 300);
-	JScrollPane Uso        = new JScrollPane(txaUso);
+    JTextArea txaUso        = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia", 300);
+	JScrollPane Uso         = new JScrollPane(txaUso);
 
-	JCButton btnBuscar     = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
-	JCButton btnNuevo      = new JCButton("Nuevo"        ,"Nuevo.png"             ,"Azul");
+	JCButton btnBuscar      = new JCButton("Buscar"       ,"Filter-List-icon16.png","Azul"); 
+	JCButton btnNuevo       = new JCButton("Nuevo"        ,"Nuevo.png"             ,"Azul");
 	JCButton btnEditar      = new JCButton("Editar"        ,"Modify.png"             ,"Azul");
-	JCButton btnGuardar    = new JCButton("Guardar"      ,"Guardar.png"           ,"Azul");
-	JCButton btnDeshacer   = new JCButton("Deshacer"     ,"deshacer16.png"        ,"Azul");
-	JCButton btnSolicitante= new JCButton(""             ,"Usuario.png"           ,"Azul");	
-	JCButton btnServicio   = new JCButton(""             ,"los-parametros-de-las-herramientas-de-icono-8319-16.png"    ,"Azul");
+	JCButton btnGuardar     = new JCButton("Guardar"      ,"Guardar.png"           ,"Azul");
+	JCButton btnDeshacer    = new JCButton("Deshacer"     ,"deshacer16.png"        ,"Azul");
+	JCButton btnSolicitante = new JCButton(""             ,"Usuario.png"           ,"Azul");	
+	JCButton btnServicio    = new JCButton(""             ,"los-parametros-de-las-herramientas-de-icono-8319-16.png"    ,"Azul");
 
-	JCButton btnQuitarfila = new JCButton("Eliminar"     ,"boton-rojo-menos-icono-5393-16.png","Azul");
-	JCButton btnAgregar    = new JCButton("Agregar"      ,"double-arrow-icone-3883-16.png"    ,"Azul");
+	JCButton btnQuitarfila  = new JCButton("Eliminar"     ,"boton-rojo-menos-icono-5393-16.png","Azul");
+	JCButton btnAgregar     = new JCButton("Agregar"      ,"double-arrow-icone-3883-16.png"    ,"Azul");
 	
 	String status[] = {"EN VALIDACION","CANCELADO"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_status = new JComboBox(status);
+	
+	String tipo[] = {"SERVICIO","INSUMO"};
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	JComboBox cmb_tipo = new JComboBox(tipo);
 	
 	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento201();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -128,14 +132,14 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	String[][] tablaprecargadaordenes;
     Object[] vector = new Object[7];
 
-   public  Cat_Alimentacion_De_Ordenes_De_Compra_Interna(){
+   public  Cat_Orden_De_Compra_Interna_Solicitud(){
 	    this.cont.add(panel);
 		this.setSize(650,530);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Alimentacion De Ordenes De Compra Interna");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Solicitud_OCI-64.png"));
 		this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
 		this.panel.setBorder(BorderFactory.createTitledBorder(blackline,"Alimentacion De Ordenes De Compra Interna"));
    	
@@ -160,11 +164,12 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
    	 
 		int x=20, y=20,width=122,height=20, sep=130;
 		panel.add(menu_toolbar).setBounds                       (x         ,y      ,400     ,height );
-		panel.add(txtFolio).setBounds                           (x         ,y+=30  ,width   ,height );
-		panel.add(cmb_status).setBounds                         (x+=sep    ,y      ,width   ,height );
+		panel.add(cmb_status).setBounds                         (x+497     ,y      ,105     ,height );
+		panel.add(txtFolio).setBounds                           (x         ,y+=30  ,80      ,height );
+		panel.add(cmb_tipo).setBounds                           (x+=sep    ,y      ,width   ,height );
 		panel.add(new JLabel("Destino De Mercancia:")).setBounds(x+=sep    ,y      ,width   ,height );
 		panel.add(cmbEstablecimiento).setBounds                 (x+=110    ,y      ,233     ,height );
-		panel.add(txtFolioSolic).setBounds                     	(x=20      ,y+=25  ,50     ,height );
+		panel.add(txtFolioSolic).setBounds                     	(x=20      ,y+=25  ,50      ,height );
 		panel.add(txtSolicitante).setBounds                     (x=70      ,y	   ,370     ,height );
 		panel.add(btnSolicitante).setBounds                     (x+370     ,y      ,20      ,height );
 		panel.add(rbEmpleado).setBounds                         (x+390     ,y      ,90      ,height );		
@@ -193,10 +198,10 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		btnDeshacer.addActionListener(deshacer);
 		btnGuardar.addActionListener(guardar);
 		cmbEstablecimiento.addActionListener(opSeleccionEstablecimiento);
+		cmb_tipo.addActionListener(opSeleccion_Tipo);
 		btnSolicitante.addActionListener    (opFiltroBuscarSolicitante );
 		btnAgregar.addActionListener        (opAgregarProducto         );
 		btnQuitarfila.addActionListener     (opQuitarfila              );
-		
         txtDescripcion.addKeyListener       (opAgregarConEnter         );
 		tabla.addKeyListener                (op_validanumero_en_celda  );
 		
@@ -216,7 +221,20 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	             
 	    this.addWindowListener(new WindowAdapter() {  public void windowOpened( WindowEvent e ){ txtFolio.requestFocus();  }  });                
     }
-   
+
+   ActionListener opSeleccion_Tipo = new ActionListener(){
+		public void actionPerformed(ActionEvent e){
+			if(cmb_tipo.getSelectedItem().toString().trim().equals("INSUMO")) {
+				txtFolioservici.setText("");
+				txtDetalleServi.setText("");
+				btnServicio.setEnabled(false);
+			}else {
+				btnServicio.setEnabled(true);
+			}
+			
+		}
+	};	
+	
    ActionListener opFiltroServicios = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			new Cat_Filtro_Buscar_Servicio().setVisible(true);
@@ -239,7 +257,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		btnQuitarfila.setEnabled(false);
 		rbEmpleado.setEnabled(false);
 		rbProveedor.setEnabled(false);
-		
+		cmb_tipo.setEnabled(false);
 		txtFolioservici.setEnabled(false);
 		txtDetalleServi.setEditable(false);
 		btnServicio.setEnabled(false);
@@ -255,7 +273,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		txaUso.setText("");
 		rbEmpleado.setSelected(true);
 		modelo.setRowCount(0);
-		
+		cmb_tipo.setSelectedIndex(0);
 		movimiento = "";
 		
 		txtFolioservici.setText("");
@@ -332,6 +350,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 	public void keyPressed(KeyEvent e) {}
     };
     
+	
 	ActionListener nuevo = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			panel_limpiar();
@@ -347,10 +366,14 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 			btnGuardar.setEnabled(true);
 			btnBuscar.setEnabled(false);
 			btnNuevo.setEnabled(false);
-			btnServicio.setEnabled(false);
+			btnServicio.setEnabled(true);
+			txaUso.setEditable(true);
+			txaUso.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
 			cmbEstablecimiento.setEnabled(true);
-			cmbEstablecimiento.requestFocus();
-			cmbEstablecimiento.showPopup();
+			cmb_tipo.setEnabled(true);
+			cmb_tipo.requestFocus();
+			cmb_tipo.showPopup();
+
 		}
 	};
 	
@@ -358,21 +381,19 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			cmb_status.setEnabled(true);
 			cmbEstablecimiento.setEnabled(true);
+			cmb_tipo.setEnabled(true);
 			btnSolicitante.setEnabled(true);
 			rbEmpleado.setEnabled(true);
 			rbProveedor.setEnabled(true);
 			btnServicio.setEnabled(true);
-			
 			txaUso.setEditable(true);
 			txtDescripcion.setEditable(true);
 			txaUso.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
 			btnAgregar.setEnabled(true);
 			btnQuitarfila.setEnabled(true);
-			
 			btnGuardar.setEnabled(true);
 			btnEditar.setEnabled(false);
 			btnNuevo.setEnabled(false);
-			
 			movimiento="MODIFICAR";
 		}
 	};
@@ -406,7 +427,6 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 				if(txtDescripcion.getText().equals("")){
 					JOptionPane.showMessageDialog(null, "Es Requerido Teclee La Descripcion Del Producto Para Poder Agregar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 					txtDescripcion.requestFocus();
-//					return;
 				}else {
 					Object[] Vector_Producto = new Object[3];
 					Vector_Producto[0]=txtDescripcion.getText().toUpperCase().trim();		
@@ -420,7 +440,7 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 					tabla.getColumnModel().getColumn(2).setCellEditor(new javax.swing.DefaultCellEditor(cmbUnidades));
 					tabla.getColumn("Unidad").setCellEditor(new CargaDatosDelCombo());
 				   return;	
-				  }
+			   }
 		  }
    };
 	
@@ -487,14 +507,11 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 				 compraInterna.setPersona_solicita(txtSolicitante.getText().trim().toUpperCase());
 				 compraInterna.setTipo_de_solicitante(rbEmpleado.isSelected()?"E":"P");
 				 
-				 compraInterna.setFolio_servicio(Integer.valueOf(txtFolioservici.getText().trim()));
+				 compraInterna.setFolio_servicio(Integer.valueOf(  (txtFolioservici.getText().trim().equals(""))?"0":txtFolioservici.getText().trim())   );
 				 compraInterna.setServicio(txtDetalleServi.getText().trim().toUpperCase());
 				 compraInterna.setUso_de_mercancia(txaUso.getText().trim().toUpperCase());
-				 
+				 compraInterna.setTipo_orden(cmb_tipo.getSelectedItem().toString().trim());
 				 String xml = new CrearXmlString().CadenaXML(tabla, ignorarColumnas);
-				 System.out.println("--------------------------------------------------------------------");
-				 System.out.println(xml);
-				 System.out.println("--------------------------------------------------------------------");
 				 compraInterna.setLista_de_productos(xml);
 				  
 				  if(compraInterna.guardar(movimiento)){
@@ -514,11 +531,11 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
     
     public String validaCampos(){
     	String campos = "";
-		 
     		campos += txtFolio.getText().trim().equals("") ? "- Folio\n" : "";
     		campos += txtFolioSolic.getText().trim().equals("") ? "- Seleccione Un Solicitante\n" : "";
-    		campos += txtFolioservici.getText().trim().equals("") ? "- Seleccione Un Servicio\n" : "";
-//    		campos += cmb_status.getSelectedIndex()==0 ? "- Seleccione Un Status\n" : "";
+    		if(cmb_tipo.getSelectedIndex()==0){
+    			campos += txtFolioservici.getText().trim().equals("") ? "- Seleccione Un Servicio\n" : "";
+    		}
     		campos += cmbEstablecimiento.getSelectedIndex()==0 ? "- Seleccione Un Establecimiento\n" : "";
     		campos += txaUso.getText().trim().equals("") ? "- Uso De Mercancia\n" : "";
     		campos += tabla.getRowCount()==0 ? "- Ingrese Productos\n" : "";
@@ -650,11 +667,13 @@ public class Cat_Alimentacion_De_Ordenes_De_Compra_Interna extends JFrame{
 						txtSolicitante.setText   (tablab.getValueAt(fila,1)+"");
 						txtDescripcion.setEditable(true);
 						btnAgregar.setEnabled(true);
-						btnServicio.setEnabled(true);
 						btnQuitarfila.setEnabled(true);
-						txaUso.setEditable(false);
-						btnServicio.requestFocus();
 						dispose();
+						if(cmb_tipo.getSelectedItem().toString().trim().equals("INSUMO")) {
+							btnServicio.setEnabled(false);
+						}else {
+							btnServicio.setEnabled(true);
+						}
 		        	}
 		        }
 	        });
@@ -868,13 +887,10 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 		   txtFolioservici.setText (tablac.getValueAt(fila,0)+"");
 		   txtDetalleServi.setText (tablac.getValueAt(fila,1)+"");
 		   txtDescripcion.setEditable(true);
-//		   Servicio=txaUso.getText().toString().trim()+"  >>Servicio:"+tablac.getValueAt(fila,1)+" >>Solicitado Por:"+tablac.getValueAt(fila,2)+" El Dia "+tablac.getValueAt(fila,3);
-//		   txaUso.setText(tablac.getValueAt(fila, 1).toString());
 		   btnAgregar.setEnabled(true);
 		   btnQuitarfila.setEnabled(true);
-		   txaUso.setEditable(true);
 		   txaUso.requestFocus();
-		   txaUso.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
+
 		   dispose();
 	    }
 		
@@ -892,7 +908,7 @@ public class Cat_Filtro_Buscar_Orden_De_Compra_Interna extends JDialog{
 	public static void main(String args[]){
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Alimentacion_De_Ordenes_De_Compra_Interna().setVisible(true);
+			new Cat_Orden_De_Compra_Interna_Solicitud().setVisible(true);
 		}catch(Exception e){	}
 	}
 };
