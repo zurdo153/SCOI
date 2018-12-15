@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
-
+ 
 public class Obj_Conciliacion_de_Movimientos_Bancarios_Contra_Contabilidad {
 	
 	

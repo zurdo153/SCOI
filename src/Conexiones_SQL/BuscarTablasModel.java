@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-
+ 
 public class BuscarTablasModel {
 	
 	DecimalFormat df = new DecimalFormat("#0.00");

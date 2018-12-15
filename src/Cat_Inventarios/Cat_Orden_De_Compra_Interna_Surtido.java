@@ -115,12 +115,8 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		JTextField txtFiltro     = new Componentes().textfiltro(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<",300 , "String",tablaP,Cantidad_Real_De_Columnas );
 		JTextField txtTotal      = new Componentes().text(new JCTextField()  ,"Total"                     ,30   ,"String");
 		
-<<<<<<< HEAD:src/Cat_Contabilidad/Cat_Surtir_De_Ordenes_De_Compra_Interna.java
-		JCButton btnActualizar   = new JCButton("Actualizar","Actualizar.png","Azul");
-=======
 		JCButton btnActualizar   = new JCButton("Actualizar"  ,"Actualizar.png","Azul");
 		JCButton btnImprimir     = new JCButton("Imprimir"    ,"imprimir-16.png"  ,"Azul");
->>>>>>> e2bb0de0ceea2455ea74e820230c901f03e20b97:src/Cat_Inventarios/Cat_Orden_De_Compra_Interna_Surtido.java
 		
 		String status[] = {"AUTORIZADO","EN VALIDACION","SURTIDO","CANCELADO","TODOS"};
 		@SuppressWarnings({ "unchecked", "rawtypes" })

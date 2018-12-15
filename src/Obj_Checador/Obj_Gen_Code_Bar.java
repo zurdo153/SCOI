@@ -16,7 +16,7 @@ public class Obj_Gen_Code_Bar {
 	public void Generar_Code(String code, String name){
 		Code128Bean bean = new Code128Bean();
 		final int dpi = 150;
-		
+		 
 		bean.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
 		
 		bean.doQuietZone(false);

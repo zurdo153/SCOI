@@ -6,7 +6,7 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
-
+ 
 public class Cat_RecibirMail{
  
     public static void main(String[] args){

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-
+ 
 public class Mantenimiento_BD {
 	//se declara la funcion que sera carga en el objeto
 	public boolean reducir_log(){

@@ -3,7 +3,7 @@ package Obj_Administracion_del_Sistema;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
+ 
 public class Obj_MD5 {
 	public static String cryptMD5(String textoPlano,String semilla){
 		try{

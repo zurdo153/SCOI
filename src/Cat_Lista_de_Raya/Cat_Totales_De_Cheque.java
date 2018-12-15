@@ -25,7 +25,7 @@ import Cat_Reportes.Cat_Reportes_De_Totales_De_Cheques_De_Lista_De_Raya;
 import Conexiones_SQL.Connexion;
 import Obj_Lista_de_Raya.Obj_Totales_De_Cheque;
 import Obj_Renders.tablaRenderer;
-
+ 
 
 @SuppressWarnings("serial")
 public class Cat_Totales_De_Cheque extends Cat_Root {

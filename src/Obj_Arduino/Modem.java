@@ -10,7 +10,7 @@ public class Modem {
 	@SuppressWarnings({ "deprecation", "unused" })
 	public static void main(String args[]){
 	
-		try{
+		try{ 
 		SerialPort serialPort = new SerialPort();
 		List<String> freeSerialPort = serialPort.getFreeSerialPort();
 		

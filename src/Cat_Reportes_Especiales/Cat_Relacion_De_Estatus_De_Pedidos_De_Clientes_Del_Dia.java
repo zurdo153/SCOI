@@ -58,7 +58,7 @@ public class Cat_Relacion_De_Estatus_De_Pedidos_De_Clientes_Del_Dia extends JFra
 	JLayeredPane panel = new JLayeredPane();
 	Connexion con = new Connexion();
 	Runtime R = Runtime.getRuntime();
-	
+	 
 	
 	DefaultTableModel modelo = new DefaultTableModel(null,new String[]{"Establecimiento", "Pedido","Fecha Elaboracion","Fecha Surtido","Tiempo","Notas del Pedido","Cajero"}
 			){
