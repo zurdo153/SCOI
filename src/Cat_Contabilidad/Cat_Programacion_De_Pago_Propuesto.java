@@ -67,7 +67,7 @@ public class Cat_Programacion_De_Pago_Propuesto extends JFrame {
 			return tip;
 		}
 		
-		int Cantidad_Real_De_Columnas=19,checkboxindex=1;
+		int Cantidad_Real_De_Columnas=20,checkboxindex=1;
 		public void init_tabla_principal(){
 			this.tabla.getColumnModel().getColumn( 0).setMinWidth(20);
 			this.tabla.getColumnModel().getColumn( 0).setMaxWidth(20);
@@ -91,8 +91,9 @@ public class Cat_Programacion_De_Pago_Propuesto extends JFrame {
 	    	this.tabla.getColumnModel().getColumn(16).setMinWidth(90);
 	    	this.tabla.getColumnModel().getColumn(17).setMinWidth(250);
 	    	this.tabla.getColumnModel().getColumn(18).setMinWidth(90);
+	    	this.tabla.getColumnModel().getColumn(18).setMinWidth(100);
 	    	
-			String comando = "select '','','','','',0,0,'','','','','','','','','','','','' ";
+			String comando = "select '','','','','',0,0,'','','','','','','','','','','','','' ";
 			ObjTab.Obj_Refrescar(tabla,modelo, Cantidad_Real_De_Columnas, comando, "26","si",checkboxindex);
 			modelo.setRowCount(0);
 	    }
@@ -109,7 +110,7 @@ public class Cat_Programacion_De_Pago_Propuesto extends JFrame {
 			ObjTab.Obj_Refrescar(tablat,modelot, 4, comandot, "26","si",-1);
 	 }
 		
-	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"S","Folio","Codigo Prv","Proveedor","Factura","Importe","Imp.Desc.Fin.","Fecha Vence","Observaciones Contabilidad", "Clasificacion","Observaciones Comercializacion","Folio Pago","Fecha Pago","Poliza","Cuenta Bancaria","Fecha Cheque", "Folio Cheque", "Usuario Programo Pago","Fecha Programo"}){
+	 public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"S","Folio","Codigo Prv","Proveedor","Factura","Importe","Imp.Desc.Fin.","Fecha Vence","Observaciones Contabilidad", "Clasificacion","Observaciones Comercializacion","Folio Pago","Fecha Pago","Poliza","Cuenta Bancaria","Fecha Cheque", "Folio Cheque", "Usuario Programo Pago","Fecha Programo","Tipo Proveedor"}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = tipos();
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -260,9 +261,9 @@ public class Cat_Programacion_De_Pago_Propuesto extends JFrame {
 			this.campo.setBorder(BorderFactory.createTitledBorder("Seleccione Las Facturas Que Desea Programar Su Pago"));
 			
 			this.menu_toolbar.add(btnFiltro     );
-		    this.menu_toolbar.addSeparator(     );
-		    this.menu_toolbar.addSeparator(     );
-			this.menu_toolbar.add(btnImprimir   );
+//		    this.menu_toolbar.addSeparator(     );
+//		    this.menu_toolbar.addSeparator(     );
+//			this.menu_toolbar.add(btnImprimir   );
 		    this.menu_toolbar.addSeparator(     );
 		    this.menu_toolbar.addSeparator(     );
 			this.menu_toolbar.add(btnGuardar    );
@@ -449,7 +450,7 @@ public class Cat_Programacion_De_Pago_Propuesto extends JFrame {
 		        	JComboBox combo = (JComboBox)getComponent();
 		        	combo.removeAllItems();
 					try {
-					 String respuestas=tablacompleta[0][19].toString();
+					 String respuestas=tablacompleta[0][24].toString();
 					 String tipo_de_respuestas[] = respuestas.split("/");
 						for(int i=0; i<tipo_de_respuestas.length; i++)  combo.addItem(tipo_de_respuestas[i]);
 					} catch (NumberFormatException e) {
@@ -582,7 +583,6 @@ public class Cat_Programacion_De_Pago_Propuesto extends JFrame {
 	}
 	
 	private void agregarf() {
-		
 	  modelo.setRowCount(0);
 	  int fila = tablab.getSelectedRow();
 	  tablacompleta= programacion.refrescar_tabla_programacion(tablab.getValueAt(fila,0).toString(), usuario.getFolio()+"" );

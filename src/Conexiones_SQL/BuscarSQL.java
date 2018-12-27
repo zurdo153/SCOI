@@ -11173,7 +11173,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			String[][] Matriz = null;
 			String query = "exec programacion_de_pago_revision '"+folio_programacion+"',"+folio_usuario;
 			
-			Matriz = new String[getFilas(query)][24];
+			Matriz = new String[getFilas(query)][25];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -11205,6 +11205,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][21] = rs.getString(22);
 					Matriz[i][22] = rs.getString(23);
 					Matriz[i][23] = rs.getString(24);
+					Matriz[i][24] = rs.getString(25);
 					i++;
 				}
 			} catch (SQLException e1) {
@@ -11241,7 +11242,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public Obj_Alimentacion_De_Ordenes_De_Compra_Interna ordenDeCompraInterna(int folio) throws SQLException{
 		Obj_Alimentacion_De_Ordenes_De_Compra_Interna prod = new Obj_Alimentacion_De_Ordenes_De_Compra_Interna();
 		String query = "exec orden_de_compra_interna_buscar "+folio;
-		System.out.println(query);
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();

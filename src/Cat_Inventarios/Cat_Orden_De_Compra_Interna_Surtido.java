@@ -103,10 +103,9 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 			public Class getColumnClass(int columnIndex) {
 	         return types[columnIndex];
 	     }
-			public boolean isCellEditable(int fila, int columna){
-				if(columna==0)
-					return true; return false;
-			}
+	     public boolean isCellEditable(int fila, int columna){
+		 	 return false;
+	  	 }
 	    };
 	    JTable tablaP = new JTable(modeloP);
 		public JScrollPane scroll_tablaP = new JScrollPane(tablaP);
@@ -188,7 +187,6 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 				txtFiltro.requestFocus();
 			}
 		};
-	
 		
 		  private void agregar(final JTable tbl) {
 			  tbl.addMouseListener(new MouseListener() {
@@ -547,10 +545,10 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		    	boolean cumple=true;
 			    for(int i=0; i<tabla.getRowCount(); i++){
 	    			if(ObjTab.validacelda(tabla,"decimal", i,1)){
-		    			if(tabla.getValueAt(i, 0).toString().trim().equals("")){
-							JOptionPane.showMessageDialog(null, "Es Requerido que tenga un codigo de producto Valido Corrija la Fila:"+(i+1), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-							cumple= false;
-		    			}
+//		    			if(tabla.getValueAt(i, 0).toString().trim().equals("")){
+//							JOptionPane.showMessageDialog(null, "Es Requerido que tenga un codigo de producto Valido Corrija la Fila:"+(i+1), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+//							cumple= false;
+//		    			}
 		    			
 		    			if(Float.valueOf(tabla.getValueAt(i, 1).toString().trim())>Float.valueOf(tabla.getValueAt(i, 2).toString().trim())){
 							JOptionPane.showMessageDialog(null, "Para Poder Guardar Es Requerido Que El Surtido Sea Igual O Menor Al Solicitado \nCorrija:"+tabla.getValueAt(i, 3).toString().trim(), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));

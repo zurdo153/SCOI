@@ -8559,6 +8559,47 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
+	public boolean Guardar_Proveedor_Tipo_y_Datos_Contacto(Obj_Proveedores proveedores) {
+		String query = "exec  proveedores_BMS_actualiza ?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+				pstmt.setString(1 ,  proveedores.getCod_prv());
+				pstmt.setString(2 ,  proveedores.getNombre_comercial());
+				pstmt.setString(3 ,  proveedores.getNotas());
+				pstmt.setString(4 ,  proveedores.getTelefono1());
+				pstmt.setString(5 ,  proveedores.getTelefono2());
+				pstmt.setString(6 ,  proveedores.getTelefono3());
+				pstmt.setString(7 ,  proveedores.getTipo_proveedor());
+				pstmt.executeUpdate();
+			 con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud_De_Acceso_A_Proveedores ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+
+	
 //	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
 //		
 //		String query = "exec aumento_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+razon+"','"+estabRecibe+"'";
