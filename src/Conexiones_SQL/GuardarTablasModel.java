@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
 import Obj_Auditoria.Obj_Alimentacion_De_Cheques;
-
+ 
 
 public class GuardarTablasModel {
 	Obj_Usuario usuario = new Obj_Usuario().LeerSession();

@@ -1,5 +1,5 @@
 package Conexiones_SQL;
-
+ 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11330,6 +11330,102 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return FolioOCI;
 	}
 	
+	public Object[] Saldos_De_Cuentas_Mov_Banco(String xml){
+		Object[] datos = new Object[5];
+		String query       = "exec  xml_insertar_movimientos_de_cuenta '"+xml+"'";
+		System.out.println(query);
+		Statement stmt = null;
+		try {
+			stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				datos[0] =(rs.getString(1));
+				datos[1] =(rs.getString(2));
+				datos[2] =(rs.getString(3));
+				datos[3] =(rs.getString(4));
+				datos[4] =(rs.getString(5));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(stmt!=null){try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+		}
+		
+		return datos;
+	}
+	
+	   public Object[][] Saldos_De_Cuentas_Mov_Conciliacion_Auto(String cuenta, String fechaIn, String fechaFin){
+		   Object[][] Matriz = null;
+				String query = "exec buscar_saldos_de_cuenta_para_conciliacion_automatica '"+cuenta+"','"+fechaIn+"','"+fechaFin+"'";
+				System.out.println(query);
+				
+				Matriz = new Object[getFilas(query)][13];
+				Statement s;
+				ResultSet rs;
+				try {			
+					s = con.conexion().createStatement();
+					rs = s.executeQuery(query);
+					int i=0;
+					while(rs.next()){
+						Matriz[i][0]  = rs.getBoolean( 1);
+						Matriz[i][1]  = rs.getString( 2);
+						Matriz[i][2]  = rs.getString( 3);
+						Matriz[i][3]  = rs.getString( 4);
+						Matriz[i][4]  = rs.getString( 5);
+						Matriz[i][5]  = rs.getString( 6);
+						Matriz[i][6]  = rs.getString( 7);
+						Matriz[i][7]  = rs.getString( 8);
+						Matriz[i][8]  = rs.getString( 9);
+						Matriz[i][9]  = rs.getString( 10);
+						Matriz[i][10]  = rs.getString( 11);
+						Matriz[i][11]  = rs.getString( 12);
+						Matriz[i][12]  = rs.getString( 13);
+						i++;
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				return Matriz;
+			}
+	   
+		public Double TotalDePagosEmitidos(String folio_cuenta){
+			Statement stmt = null;
+			
+			String query = "select isnull(sum(importe),0) as importeTotal from movimientos_en_cuentas_pagos_emitidos where status = 'V' and status_cobro= 'PE' and cuenta = '"+folio_cuenta+"'";
+			double PE = 0;
+			
+			try {
+				
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				
+				while(rs.next()){
+						PE = rs.getDouble("importeTotal");
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error al Buscar en funcion [TotalDePagosEmitidos] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				
+				return null;
+			}
+			finally{
+				if(stmt != null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}}
+			}
+			return PE;
+		}
+		
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;

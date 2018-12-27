@@ -10,7 +10,7 @@ public class Obj_Retiros_Cajeros {
 	byte[] fotosupervisor;
 	Integer folio_empleado;
 	Integer folio_supervisor;
-	
+	 
 	String nombre;
 	String puesto;
 	String establecimiento;

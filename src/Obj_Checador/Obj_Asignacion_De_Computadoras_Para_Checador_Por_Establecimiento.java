@@ -11,7 +11,7 @@ public class Obj_Asignacion_De_Computadoras_Para_Checador_Por_Establecimiento {
 	private String Establecimiento;
 	public int getFolio() {
 		return folio;
-	}
+	} 
 	public void setFolio(int folio) {
 		this.folio = folio;
 	}

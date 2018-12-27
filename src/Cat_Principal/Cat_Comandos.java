@@ -1,7 +1,7 @@
 package Cat_Principal;
 
 import Obj_Administracion_del_Sistema.Obj_Usuario;
-
+ 
 public class Cat_Comandos {
 	
 	String comando="";

@@ -12,7 +12,7 @@ public class Obj_Conn {
 	String db="";
 	String user="";
 	String pass="";
-	
+	 
 	public void llenarConn(String estab){
 		
 		dir = new BuscarSQL().Server(estab);

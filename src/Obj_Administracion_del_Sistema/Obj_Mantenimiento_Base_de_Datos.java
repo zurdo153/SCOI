@@ -1,7 +1,7 @@
 package Obj_Administracion_del_Sistema;
 
 import Conexiones_SQL.Mantenimiento_BD;
-
+ 
 public class Obj_Mantenimiento_Base_de_Datos {
           //se declara la funcion
 	  public boolean reducir_Log(){

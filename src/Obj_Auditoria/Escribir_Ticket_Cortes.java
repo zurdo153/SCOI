@@ -9,7 +9,7 @@ public class Escribir_Ticket_Cortes {
 //	este archivo sera leido posteriormente para su impresion
 	public boolean escribirTicket(Obj_TicketCortes ex)
 	{
-		BufferedWriter bw = null;
+		BufferedWriter bw = null; 
 		String nomArchivo = "DbTiket/" + "Ticket.txt";
 		try
 		{

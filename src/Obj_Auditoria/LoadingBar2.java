@@ -12,7 +12,7 @@ import javax.swing.JProgressBar;
 public class LoadingBar2 extends JDialog
 {
 	Container cont = getContentPane();
-	JLayeredPane campo = new JLayeredPane();
+	JLayeredPane campo = new JLayeredPane(); 
 	JProgressBar barra = new JProgressBar();
 	JLabel puntos = new JLabel();
 	

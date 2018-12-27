@@ -15,7 +15,7 @@ public class Obj_Entosal {
 		return clave;
 	}
 
-
+ 
 
 	public void setClave(String clave) {
 		this.clave = clave;

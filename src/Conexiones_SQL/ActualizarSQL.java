@@ -4170,7 +4170,7 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 //			pstmt.setString(6, "S");
 //			pstmt.setInt(7, usuario.getFolio());
 //			pstmt.executeUpdate();
-//			con.commit();
+//			con.commit(); 
 //		} catch (Exception e) {
 //			System.out.println("SQLException: "+e.getMessage());
 //			if(con != null){
