@@ -1929,4 +1929,35 @@ public class Cargar_Combo {
 		return pila;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Object[] movimientoEnCuentas() throws SQLException{
+		String query = "select numero_de_cuenta from movimientos_en_cuentas_saldos where observaciones = 'SALDO INICIAL' order by numero_de_cuenta";
+		Statement stmt = null;
+		try {
+				stmt = con.conexion().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int j=0;
+			while(rs.next()){
+				if(j == 0){
+					miVector.add("Selecciona una Cuenta");
+				}
+				miVector.add(rs.getString("numero_de_cuenta"));
+				j++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			if(stmt!=null){stmt.close();}
+		}
+		int i=0;
+		String[] pila= new String[miVector.size()];
+		
+		while(i < miVector.size()){
+			pila[i]= miVector.get(i).toString();
+			i++;
+		}
+		return pila;
+	}
+	
 }

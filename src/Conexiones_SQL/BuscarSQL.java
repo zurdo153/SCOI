@@ -11331,7 +11331,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	}
 	
 	public Object[] Saldos_De_Cuentas_Mov_Banco(String xml){
-		Object[] datos = new Object[4];
+		Object[] datos = new Object[5];
 		String query       = "exec  xml_insertar_movimientos_de_cuenta '"+xml+"'";
 		System.out.println(query);
 		Statement stmt = null;
@@ -11343,6 +11343,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				datos[1] =(rs.getString(2));
 				datos[2] =(rs.getString(3));
 				datos[3] =(rs.getString(4));
+				datos[4] =(rs.getString(5));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -11392,7 +11393,39 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}
 				return Matriz;
 			}
-	
+	   
+		public Double TotalDePagosEmitidos(String folio_cuenta){
+			Statement stmt = null;
+			
+			String query = "select isnull(sum(importe),0) as importeTotal from movimientos_en_cuentas_pagos_emitidos where status = 'V' and status_cobro= 'PE' and cuenta = '"+folio_cuenta+"'";
+			double PE = 0;
+			
+			try {
+				
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				
+				while(rs.next()){
+						PE = rs.getDouble("importeTotal");
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error al Buscar en funcion [TotalDePagosEmitidos] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				
+				return null;
+			}
+			finally{
+				if(stmt != null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}}
+			}
+			return PE;
+		}
+		
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;

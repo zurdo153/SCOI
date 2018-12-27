@@ -62,6 +62,7 @@ import Obj_Contabilidad.Obj_Alta_Proveedores_Polizas;
 import Obj_Contabilidad.Obj_Conceptos_De_Ordenes_De_Pago;
 import Obj_Contabilidad.Obj_Importar_Voucher;
 import Obj_Contabilidad.Obj_Orden_De_Gasto;
+import Obj_Contabilidad.Obj_Pagos_Emitidos;
 import Obj_Contabilidad.Obj_Proveedores;
 import Obj_Contabilidad.Obj_Revision_De_Programacion_de_Pago;
 import Obj_Contabilidad.Obj_Saldo_Banco_Interno;
@@ -8559,10 +8560,10 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros, double saldoFinal, String xml){
+	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros/*, double saldoFinal*/, String xml){
 
 		int usuario_mov = usuario.getFolio();
-		String query       = "exec  procedure '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+saldoFinal+","+usuario_mov+",'"+xml+"'";
+		String query       = "exec  movimiento_en_cuenta_bancaria '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+usuario_mov+",'"+xml+"'";
 		
 		System.out.println(query);
 		
@@ -8575,10 +8576,86 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 
 //				pstmt.setString(1 ,  programacion.getTabla_programacion()[i][1].toString().trim() );
 				
-//				pstmt.executeUpdate();
+				pstmt.executeUpdate();
 				con.commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Conciliacion_De_Cuenta_Bancaria ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Guardar_Pagos_Emitidos(Obj_Pagos_Emitidos pagos){
+		String query       = "exec  movimientos_en_cuenta_pagos_emitidos_guardar ?,?,?,?,?,?,?,?,?";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 
+				pstmt.setInt	(1 ,  pagos.getFolio());
+				pstmt.setString	(2 ,  pagos.getCuenta());
+				pstmt.setString	(3 ,  pagos.getCheque());
+				pstmt.setString	(4 ,  pagos.getFecha());
+				pstmt.setDouble	(5 ,  pagos.getImporte());
+				pstmt.setString	(6 ,  pagos.getStatus_cobro());
+				pstmt.setString	(7 ,  pagos.getObservacion());
+				pstmt.setInt	(8 ,  usuario.getFolio());
+				pstmt.setString	(9 ,  pagos.getBandera());
+				
+				pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pagos_Emitidos ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
+	public boolean Cancelacion_De_Pagos_Emitidos(String xml){
+		String query       = "exec cancelacion_de_pagos_emitidos '"+xml+"'";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 
+				pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Cancelacion_De_Pagos_Emitidos ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {
