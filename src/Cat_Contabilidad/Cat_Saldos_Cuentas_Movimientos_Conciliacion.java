@@ -672,7 +672,7 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 	                				return;
 	     						 }
          				}else{
-         					JOptionPane.showMessageDialog(null, "Solo Se Pueden Cargar Imagenes Con Extencion TXT.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+         					JOptionPane.showMessageDialog(null, "Solo Se Pueden Cargar Archivos Con Extencion TXT.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
             				return;
          				}
              }

@@ -56,7 +56,6 @@ public class Cat_Pagos_Emitidos extends JFrame{
 	JCButton btnDeshacer       = new JCButton("Deshacer"  ,"deshacer16.png"              ,"Azul");
 	
 	Object[] cuentas = new Obj_Pagos_Emitidos().cuentas(); 
-//		{"Selecciona Una Cuenta","00000001","00000002"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbCuentas = new JComboBox(cuentas); 
 	

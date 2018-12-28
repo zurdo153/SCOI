@@ -11426,6 +11426,62 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return PE;
 		}
 		
+		public Object[][] Saldos_De_Cuentas_Mov_Conciliacion_Temporal(String cuenta){
+			   Object[][] Matriz = null;
+					String query = "exec buscar_saldos_de_cuenta_para_conciliacion_de_temporales '"+cuenta+"'";
+					System.out.println(query);
+					
+					Matriz = new Object[getFilas(query)][13];
+					Statement s;
+					ResultSet rs;
+					try {			
+						s = con.conexion().createStatement();
+						rs = s.executeQuery(query);
+						int i=0;
+						while(rs.next()){
+							Matriz[i][0]  = rs.getBoolean( 1);
+							Matriz[i][1]  = rs.getString( 2);
+							Matriz[i][2]  = rs.getString( 3);
+							Matriz[i][3]  = rs.getString( 4);
+							Matriz[i][4]  = rs.getString( 5);
+							Matriz[i][5]  = rs.getString( 6);
+							Matriz[i][6]  = rs.getString( 7);
+							Matriz[i][7]  = rs.getString( 8);
+							Matriz[i][8]  = rs.getString( 9);
+							Matriz[i][9]  = rs.getString( 10);
+							Matriz[i][10]  = rs.getString( 11);
+							Matriz[i][11]  = rs.getString( 12);
+							Matriz[i][12]  = rs.getString( 13);
+							i++;
+						}
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					return Matriz;
+		}
+		
+		public Object[] Saldos_De_Cuentas_Sin_Conciliacion_Automatica(String cuenta){
+			   Object[] array = new Object[3];
+					String query = "exec saldo_en_cuentas_bancarias_sin_conciliar_automatico '"+cuenta+"'";
+					System.out.println(query);
+					
+					Statement s;
+					ResultSet rs;
+					try {			
+						s = con.conexion().createStatement();
+						rs = s.executeQuery(query);
+						while(rs.next()){
+							array[0]  = rs.getDouble( 1);
+							array[1]  = rs.getDouble( 2);
+							array[2]  = rs.getDouble( 3);
+						}
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					return array;
+		}
+		
+		
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;
