@@ -36,6 +36,14 @@ public class Init_Menu_Bar extends Init_Login{
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 	 }	
+	
+	
+	
+	
+	
+	
+	
+	
 		
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){

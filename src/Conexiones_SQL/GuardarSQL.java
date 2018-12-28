@@ -8560,22 +8560,56 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
-	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros/*, double saldoFinal*/, String xml){
-
-		int usuario_mov = usuario.getFolio();
-		String query       = "exec  movimiento_en_cuenta_bancaria '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+usuario_mov+",'"+xml+"'";
-		
-		System.out.println(query);
-		
-		
+	public boolean Guardar_Proveedor_Tipo_y_Datos_Contacto(Obj_Proveedores proveedores) {
+		String query = "exec  proveedores_BMS_actualiza ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
 			 con.setAutoCommit(false);
 			 pstmt = con.prepareStatement(query);
-			 
+			 pstmt.setString(1 ,  proveedores.getCod_prv());
+				pstmt.setString(2 ,  proveedores.getNombre_comercial());
+				pstmt.setString(3 ,  proveedores.getNotas());
+				pstmt.setString(4 ,  proveedores.getTelefono1());
+				pstmt.setString(5 ,  proveedores.getTelefono2());
+				pstmt.setString(6 ,  proveedores.getTelefono3());
+				pstmt.setString(7 ,  proveedores.getTipo_proveedor());
 				pstmt.executeUpdate();
-				con.commit();
+			 con.commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud_De_Acceso_A_Proveedores ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				} catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} 
+			return false;
+		}finally{
+			try {
+				pstmt.close();
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}	 
+			 
+		
+	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros/*, double saldoFinal*/, String xml){
+		int usuario_mov = usuario.getFolio();
+		String query       = "exec  movimiento_en_cuenta_bancaria '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+usuario_mov+",'"+xml+"'";
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+ 			 pstmt.executeUpdate();
+			 con.commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Conciliacion_De_Cuenta_Bancaria ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			System.out.println("SQLException: " + e.getMessage());
@@ -8746,120 +8780,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 //		return true;
 //	}
 	
-//	public boolean Entrada_Dedddd_Insumos(String xml,String nota,String estabRecibe, int folioEmpleadoRecibe, String razon,String estabSurte,String movimiento){
-//		
-//		String query = "exec aumento_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+razon+"','"+estabRecibe+"'";
-//		String query2 = "exec disminucion_de_insumos '"+xml+"','"+nota+"',"+usuario.getFolio()+",'"+estabRecibe+"',"+folioEmpleadoRecibe+",'"+razon+"','"+estabSurte+"'";
-//		
-//		String queryF = "";
-//		
-//		switch(movimiento){
-//			case "aumento":		queryF = query	;break;
-//			case "disminucion":	queryF = query2	;break;
-//			default:			queryF = "x"	; break;
-//		}
-//
-//		Connection con = new Connexion().conexion();
-//		PreparedStatement pstmt = null;
-//		try {
-//			 con.setAutoCommit(false);
-//			 pstmt = con.prepareStatement(queryF);
-//			 pstmt.executeUpdate();
-//
-//				con.commit();
-//		} catch (Exception e) {
-//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Entrada_De_Insumos ] "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-//			
-//			System.out.println("SQLException: " + e.getMessage());
-//			if (con != null){
-//				try {
-//					System.out.println("La transacción ha sido abortada");
-//					con.rollback();
-//				} catch(SQLException ex) {
-//					System.out.println(ex.getMessage());
-//				}
-//			} 
-//			return false;
-//		}finally{
-//			try {
-//				pstmt.close();
-//				con.close();
-//			} catch(SQLException e){
-//				e.printStackTrace();
-//			}
-//		}		
-//		return true;
-//	}
-	   
-//	public boolean Guardar_Alimentacion_De_Productos_Proximos_A_Caducar(Obj_Alimentacion_De_Productos_Proximos_A_Caducar proximos_caducar){
-//		int folio_transaccion=busca_y_actualiza_proximo_folio(42);
-//		proximos_caducar.setFolio(folio_transaccion+"");
-//		String query = "exec sp_guardar_actualizar_productos_proximos_a_caducar ?,?,?,?,?,?,?,?,?,?,?,?";
-//		Connection con = new Connexion().conexion();	
-//		try {
-//			con.setAutoCommit(false);
-//			PreparedStatement pstmt = con.prepareStatement(query);
-//			//@folio_proximos_caducar int, @establecimiento char(100) ,@cod_prod char(10) ,@cantidad int  ,@ultimo_costo money ,@costo_promedio money ,@precio_de_lista money ,@fecha_caducidad datetime ,@estatus char(1), @folio_usuario int, @notas varchar(500),@guarda_actualiza char(1)
-//			int cantidad_filas=proximos_caducar.getTabla_obj().length;
-//			//guarda solo notas y el registro en 0
-//			
-//			 if(cantidad_filas==0){
-//				 pstmt.setInt   (1 , folio_transaccion);
-// 				 pstmt.setString(2 , proximos_caducar.getEstablecimiento());
-//				 pstmt.setString(3 , "0");
-//				 pstmt.setFloat (4 ,  0 );
-//				 pstmt.setFloat (5 ,  0 );
-//				 pstmt.setFloat (6 ,  0 );
-//				 pstmt.setFloat (7 ,  0 );
-//				 pstmt.setString(8 , "01/01/1900");
-//				 pstmt.setString(9 , proximos_caducar.getStatus());
-//				 pstmt.setInt   (10, usuario.getFolio());
-//				 pstmt.setString(11, proximos_caducar.getNotas());				
-//				 pstmt.setString(12, proximos_caducar.getGuardar_actualizar());
-//				 pstmt.executeUpdate();
-//			 }else{
-//				 //guardado normal
-//				for(int i=0; i<cantidad_filas ; i++){
-//					pstmt.setInt   (1 ,  folio_transaccion);
-//					pstmt.setString(2 ,  proximos_caducar.getEstablecimiento());
-//					pstmt.setString(3 ,  proximos_caducar.getTabla_obj()[i][0].toString().trim());
-//					pstmt.setFloat (4 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][3].toString().trim()));
-//					pstmt.setFloat (5 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][5].toString().trim()));
-//					pstmt.setFloat (6 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][6].toString().trim()));
-//					pstmt.setFloat (7 ,  Float.valueOf(proximos_caducar.getTabla_obj()[i][7].toString().trim()));
-//					pstmt.setString(8 ,  proximos_caducar.getTabla_obj()[i][4].toString().trim());
-//					pstmt.setString(9 ,  proximos_caducar.getStatus());
-//					pstmt.setInt   (10,  usuario.getFolio());
-//					pstmt.setString(11,  proximos_caducar.getNotas());				
-//					pstmt.setString(12,  proximos_caducar.getGuardar_actualizar());
-//					pstmt.executeUpdate();
-//			    }
-//			 }
-//			con.commit();
-//		} catch (Exception e) {
-//			System.out.println("SQLException: "+e.getMessage());
-//			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_inventarios_parciales ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-// 		if(con != null){
-//				try{
-//					System.out.println("La transacción ha sido abortada");
-//					con.rollback();
-//				}catch(SQLException ex){
-//					System.out.println(ex.getMessage());
-//					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_inventarios_parciales ]\n"+query+"\nSQLException:"+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-//				}
-//			}
-//			return false;
-//		}finally{
-//			try {
-//				con.close();
-//			} catch(SQLException e){
-//				e.printStackTrace();
-//			}
-//		}		
-//		return true;
-//	}
-	
-	//--------------------traba el servicio
+//--------------------traba el servicio
 	//public boolean envio_de_correo(){
 //		String query =  "sp_envio_de_correo_automatico_de_servicios_nuevos";
 //		Connection con = new Connexion().conexion();

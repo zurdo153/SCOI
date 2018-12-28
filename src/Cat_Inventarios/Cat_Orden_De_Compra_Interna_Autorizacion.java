@@ -209,7 +209,7 @@ public class Cat_Orden_De_Compra_Interna_Autorizacion extends JFrame {
 	        };
 	        
 	        
-//(INICIO)AUTORIZACION DE ORDEN DE COMPRA INTERNA ---------------------------------------------------------------------------------------------------------------------------------------------
+//(TODO INICIO)AUTORIZACION DE ORDEN DE COMPRA INTERNA ---------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		public class Cat_Ordenes_De_Compra_Interna_Detalle extends JDialog{
@@ -345,8 +345,7 @@ public class Cat_Orden_De_Compra_Interna_Autorizacion extends JFrame {
 				txtDetalleServi.setText(obj.getServicio());
 				txaUso.setText(obj.getUso_de_mercancia());
 				
-				System.out.println(obj.getStatus());
-				if(obj.getStatus().trim().equals("EN VALIDACION")) {
+				if(obj.getStatus().trim().equals("EN VALIDACION") || obj.getStatus().trim().equals("AUTORIZADO")  ) {
 					btnAceptar.setEnabled(true);
 					btnCancelar.setEnabled(true);
 				 }

@@ -164,7 +164,10 @@ public class Cat_Validacion_De_Ordenes_De_Gasto extends JFrame {
 			tbl.addKeyListener(new KeyListener() {
 				public void keyPressed(KeyEvent e)  {
 					if(e.getKeyCode()==KeyEvent.VK_ENTER){
+				
+					System.out.println(tabla.getSelectedRow());
 						int fila = tabla.getSelectedRow();
+						
 	                     new Cat_Solicitud_De_Orden_De_Gasto_Validacion(Integer.valueOf(tabla.getValueAt(fila, 1).toString())).setVisible(true);
 					}
 				}
