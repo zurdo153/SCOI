@@ -608,6 +608,9 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 	        							 modeloBMS.setRowCount(0);
 	        							 modeloConciliados.setRowCount(0);
 	        							 modeloComisiones.setRowCount(0);
+	        							 
+	        							 depositos = 0;
+        								 retiros = 0;
 	     							 
 			     							int[] ignorarColumnas = {-1};
 			        						 String xml = new Obj_Xml.CrearXmlString().CadenaXML(tabla, ignorarColumnas);
@@ -694,8 +697,13 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 					
 					if(cont==0){
 						
-							if(cadena.trim().equals("Cuenta|Fecha de Operación|Fecha|Referencia|Descripcion|Cod. Transac|Sucursal|Depósitos|Retiros|Saldo|Movimiento|Descripción Detallada|Cheque")){
-								cabecera = cadena.replace(" ", "_").split("\\|");
+						String cadena_tmp = "";
+						cadena_tmp = getTextProcesaClean(cadena);
+//						System.out.println(cadena);
+//						System.out.println(cadena_tmp);
+						
+							if(cadena_tmp.trim().equals("Cuenta|Fecha de Operacion|Fecha|Referencia|Descripcion|Cod. Transac|Sucursal|Depositos|Retiros|Saldo|Movimiento|Descripcion Detallada|Cheque")){
+								cabecera = cadena_tmp.replace(" ", "_").split("\\|");
 								int columnas=cabecera.length;
 								modelo = new DefaultTableModel(null, cabecera);
 							}else{
@@ -723,6 +731,16 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 					}
 				}
 				return modelo;
+	}
+	
+	public String getTextProcesaClean(String input) {
+	    String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+	    String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+	    
+	    for(int i=0; i<original.length(); i++)
+	    	input = input.replace(original.charAt(i), ascii.charAt(i));
+
+	    return input;
 	}
 	
 			int filaAnteriorArchivo = -1;
