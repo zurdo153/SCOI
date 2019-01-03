@@ -11172,7 +11172,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	   public String[][] Tabla_Programacion_de_pago(String folio_programacion, String folio_usuario){
 			String[][] Matriz = null;
 			String query = "exec programacion_de_pago_revision '"+folio_programacion+"',"+folio_usuario;
-			
+			System.out.println(query);
 			Matriz = new String[getFilas(query)][25];
 			Statement s;
 			ResultSet rs;
