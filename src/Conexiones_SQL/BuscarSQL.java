@@ -11332,7 +11332,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	public Object[] Saldos_De_Cuentas_Mov_Banco(String xml){
 		Object[] datos = new Object[5];
-		String query       = "exec  xml_insertar_movimientos_de_cuenta '"+xml+"'";
+		String query       = "exec  movimientos_en_cuenta_cargar_xml '"+xml+"'";
 		System.out.println(query);
 		Statement stmt = null;
 		try {
@@ -11362,7 +11362,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	
 	   public Object[][] Saldos_De_Cuentas_Mov_Conciliacion_Auto(String cuenta, String fechaIn, String fechaFin){
 		   Object[][] Matriz = null;
-				String query = "exec buscar_saldos_de_cuenta_para_conciliacion_automatica '"+cuenta+"','"+fechaIn+"','"+fechaFin+"'";
+				String query = "exec movimientos_en_cuenta_conciliacion_automatica '"+cuenta+"','"+fechaIn+"','"+fechaFin+"'";
 				System.out.println(query);
 				
 				Matriz = new Object[getFilas(query)][13];
@@ -11428,7 +11428,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		
 		public Object[][] Saldos_De_Cuentas_Mov_Conciliacion_Temporal(String cuenta){
 			   Object[][] Matriz = null;
-					String query = "exec buscar_saldos_de_cuenta_para_conciliacion_de_temporales '"+cuenta+"'";
+					String query = "exec movimientos_en_cuenta_conciliacion_temporal '"+cuenta+"'";
 					System.out.println(query);
 					
 					Matriz = new Object[getFilas(query)][13];

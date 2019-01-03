@@ -8602,7 +8602,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		
 	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros/*, double saldoFinal*/, String xml){
 		int usuario_mov = usuario.getFolio();
-		String query       = "exec  movimiento_en_cuenta_bancaria '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+usuario_mov+",'"+xml+"'";
+		String query       = "exec  movimientos_en_cuenta_conciliacion_automatica_guardar '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+usuario_mov+",'"+xml+"'";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -8712,7 +8712,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria_De_Temporales(String cuenta, String xml){
 
 		int usuario_mov = usuario.getFolio();
-		String query       = "exec movimiento_en_cuenta_bancaria_de_temporales '"+cuenta+"','"+usuario_mov+"','"+xml+"'";
+		String query       = "exec movimientos_en_cuenta_conciliacion_temporal_guardar '"+cuenta+"','"+usuario_mov+"','"+xml+"'";
 		
 		System.out.println(query);
 		

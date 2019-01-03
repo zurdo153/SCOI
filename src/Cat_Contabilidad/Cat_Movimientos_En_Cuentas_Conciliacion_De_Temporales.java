@@ -29,7 +29,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Conciliar_Movimientos_Temporales extends JFrame{
+public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFrame{
 
 	Obj_tabla ObjTab= new Obj_tabla();
 	Container cont = getContentPane();
@@ -131,7 +131,7 @@ public class Cat_Conciliar_Movimientos_Temporales extends JFrame{
 		double depositos = 0;
 		double retiros = 0;
 		
-	public Cat_Conciliar_Movimientos_Temporales() {
+	public Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales() {
 //		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		int anchoVentana = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int altoVentana  = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -260,7 +260,7 @@ public class Cat_Conciliar_Movimientos_Temporales extends JFrame{
 	
 		if(datosEncontrados){
 				((DefaultTableModel) tablaP.getModel()).setRowCount(0);
-				String comandob = "buscar_pagos_a_proveedores_pendientes_de_conciliar '"+cmbCuentas.getSelectedItem().toString().trim()+"','"+""+"','"+""+"'";//TODO(cambiar procedimiento almacenado --mostrar todos los registros ???? -- )
+				String comandob = "movimientos_en_cuenta_conciliacion_temporal_BMS '"+cmbCuentas.getSelectedItem().toString().trim()+"','"+""+"','"+""+"'";//TODO(cambiar procedimiento almacenado --mostrar todos los registros ???? -- )
 				String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablaP,((DefaultTableModel) tablaP.getModel()), 9, comandob, basedatos,pintar,checkboxindex);
 		}else{
@@ -301,6 +301,7 @@ public class Cat_Conciliar_Movimientos_Temporales extends JFrame{
 		depositos = 0;
 		retiros = 0;
 		
+		cmbCuentas.setEnabled(true);
 		btnBuscar.setEnabled(true);
 		btnGuardar.setEnabled(false);
 	}
@@ -309,6 +310,7 @@ public class Cat_Conciliar_Movimientos_Temporales extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			
 			if(cmbCuentas.getSelectedIndex()>0){
+					cmbCuentas.setEnabled(false);
 					btnBuscar.setEnabled(false);
 					btnGuardar.setEnabled(true);
 					
@@ -325,7 +327,8 @@ public class Cat_Conciliar_Movimientos_Temporales extends JFrame{
 					init_tabla_principalBMS(tablaBMS,cmbCuentas.getSelectedIndex()==0?false:true);
 					 tablaBMS.getTableHeader().setReorderingAllowed(false);
 			}else{
-					System.out.println("Se Requiere Seleccionar Una Cuenta");
+					 JOptionPane.showMessageDialog(null,  "Se Requiere Seleccionar Una Cuenta","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+					 return;
 			}
 		}
 	};
@@ -548,7 +551,7 @@ public class Cat_Conciliar_Movimientos_Temporales extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Conciliar_Movimientos_Temporales().setVisible(true);
+			new Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales().setVisible(true);
 		}catch(Exception e){	}
 	}
 }
