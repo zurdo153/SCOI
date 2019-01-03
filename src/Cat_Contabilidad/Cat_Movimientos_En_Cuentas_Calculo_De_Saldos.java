@@ -51,7 +51,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Movimientos_En_Cuentas_Conciliacion_Automatica extends JFrame{
+public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 
 	Obj_tabla ObjTab= new Obj_tabla();
 	Container cont = getContentPane();
@@ -176,7 +176,7 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_Automatica extends JFrame{
 		double depositos = 0;
 		double retiros = 0;
 		
-	public Cat_Movimientos_En_Cuentas_Conciliacion_Automatica() {
+	public Cat_Movimientos_En_Cuentas_Calculo_De_Saldos() {
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		int anchoVentana = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int altoVentana  = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -1482,7 +1482,7 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_Automatica extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Movimientos_En_Cuentas_Conciliacion_Automatica().setVisible(true);
+			new Cat_Movimientos_En_Cuentas_Calculo_De_Saldos().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

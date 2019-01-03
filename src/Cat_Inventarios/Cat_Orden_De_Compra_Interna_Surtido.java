@@ -625,15 +625,29 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 	    		}
 		    }
 		    
-		    int fila = 0 ;
+		    int fila = -1 ;
+		    int fila_anterior_seleccionada = -1;
 		    int columna = 1;
 		    private void agregar(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			        public void mouseClicked(MouseEvent e) {
 			        	if(e.getClickCount() == 1){
 			        		if(cmbEstablecimientoSurte.getSelectedIndex()>0){
+			        			
+			        			fila_anterior_seleccionada = fila_anterior_seleccionada==-1?tbl.getSelectedRow():fila;
 			        			fila = tbl.getSelectedRow();
-					        	new Cat_Cargar_Producto("").setVisible(true);
+			        			
+			        			double  surtida=Double.valueOf(tabla.getValueAt(fila_anterior_seleccionada, 1).toString().equals("")?"0":tabla.getValueAt(fila_anterior_seleccionada, 1).toString());
+								double  solicitada=Double.valueOf(tabla.getValueAt(fila_anterior_seleccionada, 2).toString());
+								if(surtida>solicitada) {
+									fila = fila_anterior_seleccionada;
+									JOptionPane.showMessageDialog(null, "La Cantidad Tecleada:"+surtida+"\nEs Mayor A La Solicitada:"+solicitada, "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+									tabla.setValueAt(0,fila_anterior_seleccionada, 1);
+									return;
+								}
+								tabla.getSelectionModel().setSelectionInterval(fila, fila);
+								new Cat_Cargar_Producto(tabla.getValueAt(fila, 0).toString().trim()).setVisible(true);
+								tabla.getSelectionModel().setSelectionInterval(fila, fila);
 			        		}else{
 								JOptionPane.showMessageDialog(null, "Debe Seleccionar El Establecimiento Que Está Surtiendo", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 								return;
@@ -652,7 +666,10 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 						double  surtida=Double.valueOf(tabla.getValueAt(fila, 1).toString().equals("")?"0":tabla.getValueAt(fila, 1).toString());
 						double  solicitada=Double.valueOf(tabla.getValueAt(fila, 2).toString());
 						if(surtida>solicitada) {
-							JOptionPane.showMessageDialog(null, "La Cantidad Tecleada Es Mayor A La Solicitada", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+							fila = fila_anterior_seleccionada;
+							JOptionPane.showMessageDialog(null, "La Cantidad Tecleada:"+surtida+"\nEs Mayor A La Solicitada:"+solicitada, "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+							tabla.setValueAt(0,fila_anterior_seleccionada, 1);
+							return;
 						}else{
 							fila= fila==tabla.getRowCount()-1 ? 0 : fila+1;
 						}
@@ -768,7 +785,7 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 						this.setTitle("Buscar Codigo De Producto");
 						this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
 						this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
-						this.panelProd.setBorder(BorderFactory.createTitledBorder(blackline,"Filtro De Productos"));
+						this.panelProd.setBorder(BorderFactory.createTitledBorder(blackline,"Presione F2 Para Abrir Filtro De Productos"));
 				   	
 						int x=20, y=30,width=80,height=20;
 						this.panelProd.add(new JLabel("Cod. Prod:")).setBounds  (x	  	     ,y	,width   ,height );
@@ -822,9 +839,8 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 										return;
 									}
 							}else {
-								columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,0,"no", "no");
-								JOptionPane.showMessageDialog(null, "El Codigo De Producto es Vacio", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-								return;
+								dispose();
+								 new Cat_Filtro_De_Productos().setVisible(true);
 							}
 					}
 				}; 

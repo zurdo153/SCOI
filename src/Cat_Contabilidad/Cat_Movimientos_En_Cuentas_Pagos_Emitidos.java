@@ -288,7 +288,6 @@ public class Cat_Movimientos_En_Cuentas_Pagos_Emitidos extends JDialog{
 	}
 	
 	//TODO filtro Busqueda de Pagos Emitidos
-		@SuppressWarnings("serial")
 		public class Cat_Filtro_De_Pagos_Emitidos extends JDialog {
 			Container cont = getContentPane();
 			JLayeredPane campo = new JLayeredPane();
