@@ -51,7 +51,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
+public class Cat_Movimientos_En_Cuentas_Conciliacion_Automatica extends JFrame{
 
 	Obj_tabla ObjTab= new Obj_tabla();
 	Container cont = getContentPane();
@@ -176,7 +176,7 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 		double depositos = 0;
 		double retiros = 0;
 		
-	public Cat_Saldos_Cuentas_Movimientos_Conciliacion() {
+	public Cat_Movimientos_En_Cuentas_Conciliacion_Automatica() {
 		this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 		int anchoVentana = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int altoVentana  = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -350,7 +350,7 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 	
 		if(datosEncontrados){
 				((DefaultTableModel) tablaP.getModel()).setRowCount(0);
-				String comandob = "buscar_pagos_a_proveedores_pendientes_de_conciliar '"+txtCuenta.getText()+"','"+txtFechaIn.getText()+"','"+txtFechaFin.getText()+"'";
+				String comandob = "movimientos_en_cuenta_conciliacion_temporal_BMS '"+txtCuenta.getText()+"','"+txtFechaIn.getText()+"','"+txtFechaFin.getText()+"'";
 				String basedatos="26",pintar="si";
 				ObjTab.Obj_Refrescar(tablaP,((DefaultTableModel) tablaP.getModel()), 9, comandob, basedatos,pintar,checkboxindex);
 		}else{
@@ -608,6 +608,9 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 	        							 modeloBMS.setRowCount(0);
 	        							 modeloConciliados.setRowCount(0);
 	        							 modeloComisiones.setRowCount(0);
+	        							 
+	        							 depositos = 0;
+        								 retiros = 0;
 	     							 
 			     							int[] ignorarColumnas = {-1};
 			        						 String xml = new Obj_Xml.CrearXmlString().CadenaXML(tabla, ignorarColumnas);
@@ -672,7 +675,7 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 	                				return;
 	     						 }
          				}else{
-         					JOptionPane.showMessageDialog(null, "Solo Se Pueden Cargar Imagenes Con Extencion TXT.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+         					JOptionPane.showMessageDialog(null, "Solo Se Pueden Cargar Archivos Con Extencion TXT.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
             				return;
          				}
              }
@@ -694,8 +697,11 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 					
 					if(cont==0){
 						
-							if(cadena.trim().equals("Cuenta|Fecha de OperaciÛn|Fecha|Referencia|Descripcion|Cod. Transac|Sucursal|DepÛsitos|Retiros|Saldo|Movimiento|DescripciÛn Detallada|Cheque")){
-								cabecera = cadena.replace(" ", "_").split("\\|");
+						String cadena_tmp = "";
+						cadena_tmp = getTextProcesaClean(cadena);
+						
+							if(cadena_tmp.trim().equals("Cuenta|Fecha de Operacion|Fecha|Referencia|Descripcion|Cod. Transac|Sucursal|Depositos|Retiros|Saldo|Movimiento|Descripcion Detallada|Cheque")){
+								cabecera = cadena_tmp.replace(" ", "_").split("\\|");
 								int columnas=cabecera.length;
 								modelo = new DefaultTableModel(null, cabecera);
 							}else{
@@ -723,6 +729,16 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 					}
 				}
 				return modelo;
+	}
+	
+	public String getTextProcesaClean(String input) {
+	    String original = "·‡‰ÈËÎÌÏÔÛÚˆ˙˘uÒ¡¿ƒ…»ÀÕÃœ”“÷⁄Ÿ‹—Á«";
+	    String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+	    
+	    for(int i=0; i<original.length(); i++)
+	    	input = input.replace(original.charAt(i), ascii.charAt(i));
+
+	    return input;
 	}
 	
 			int filaAnteriorArchivo = -1;
@@ -1466,7 +1482,7 @@ public class Cat_Saldos_Cuentas_Movimientos_Conciliacion extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Saldos_Cuentas_Movimientos_Conciliacion().setVisible(true);
+			new Cat_Movimientos_En_Cuentas_Conciliacion_Automatica().setVisible(true);
 		}catch(Exception e){	}
 	}
 }

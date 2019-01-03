@@ -31,6 +31,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
@@ -47,6 +48,7 @@ import Obj_Lista_de_Raya.Obj_Establecimiento;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Servicios;
 import Obj_Xml.CrearXmlString;
@@ -124,6 +126,58 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		Obj_Orden_De_Gasto gasto = new Obj_Orden_De_Gasto();
 	    String aceptar_negar="";
 		JToolBar menu_toolbar       = new JToolBar();
+		
+		
+//		productos (para filtro)---------------------------------------------------------------------------------------------------------------------------------------
+		
+		String FActividadesCargado ="";
+		String[][] tablaprecargadaproductos;
+		
+	     int columnas2 = 7;
+			public void init_tabla_filtro_productos(){
+		    	this.tabla2.getColumnModel().getColumn(0).setMinWidth(90);	
+		    	this.tabla2.getColumnModel().getColumn(1).setMinWidth(410);
+		    	this.tabla2.getColumnModel().getColumn(2).setMinWidth(150);
+		    	this.tabla2.getColumnModel().getColumn(3).setMinWidth(190);
+		    	this.tabla2.getColumnModel().getColumn(4).setMinWidth(100);
+		    	this.tabla2.getColumnModel().getColumn(5).setMinWidth(100);
+		    	
+				String comando="exec inventarios_filtro_catalogo_de_productos_con_80_20 ''" ;
+				String basedatos="200",pintar="si";
+			
+				ObjTab.Obj_Refrescar(tabla2, modelo2, columnas2, comando, basedatos,pintar,checkboxindex);
+			}
+				String establecimiento80="";
+				
+			 public DefaultTableModel modelo2 = new DefaultTableModel(null, new String[]{"Codigo Producto","Descripcion","Clase Producto","Categoria","Familia","Marca","80/20 De "+establecimiento80}){
+					 @SuppressWarnings("rawtypes")
+			 		Class[] types = new Class[]{
+							java.lang.Object.class,
+							java.lang.Object.class,
+							java.lang.Object.class,
+			  			    java.lang.Object.class,
+							java.lang.Object.class,
+							java.lang.Object.class,
+					    	java.lang.Object.class,
+					    };
+							
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					public Class getColumnClass(int columnIndex) {
+					         return types[columnIndex];
+			        }
+					
+					public boolean isCellEditable(int fila, int columna2){
+								if(columna2 ==3)
+								return true; return false;
+							}
+				    };
+					    
+				   JTable tabla2 = new JTable(modelo2);
+					public JScrollPane scroll_tabla_filtro = new JScrollPane(tabla2);
+//		--------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+					
+					
 		public Cat_Orden_De_Compra_Interna_Surtido()	{
 			this.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
 			int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -271,7 +325,7 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 					@SuppressWarnings({ "rawtypes", "unchecked" })
 					public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
 					public boolean isCellEditable(int fila, int columna){
-						if(columna<2){
+						if(columna==1){
 							return cmbEstablecimientoSurte.getSelectedIndex()==0?false:true;
 						}else{ 
 							return false;
@@ -390,6 +444,7 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		           	cmbEstablecimientoSurte.showPopup();
 		           }
 		        });
+				
 		    }
 		   int Bandera=0;
 		   ActionListener OpEstablecimiento = new ActionListener() {
@@ -525,11 +580,10 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		    			
 		    		}else{
 						JOptionPane.showMessageDialog(null, "Debe Seleccionar El Establecimiento Que Está Surtiendo", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						return;
 		    		}
 		    	}
 		    };
-		    
-		   
 		    
 		    public String validaTabla(){
 		    	String error = "";
@@ -545,24 +599,16 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		    	boolean cumple=true;
 			    for(int i=0; i<tabla.getRowCount(); i++){
 	    			if(ObjTab.validacelda(tabla,"decimal", i,1)){
-//		    			if(tabla.getValueAt(i, 0).toString().trim().equals("")){
-//							JOptionPane.showMessageDialog(null, "Es Requerido que tenga un codigo de producto Valido Corrija la Fila:"+(i+1), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-//							cumple= false;
-//		    			}
-		    			
-		    			if(Float.valueOf(tabla.getValueAt(i, 1).toString().trim())>Float.valueOf(tabla.getValueAt(i, 2).toString().trim())){
-							JOptionPane.showMessageDialog(null, "Para Poder Guardar Es Requerido Que El Surtido Sea Igual O Menor Al Solicitado \nCorrija:"+tabla.getValueAt(i, 3).toString().trim(), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-							cumple= false; 			    			
-		    			}	
-							
-		    			
+			    			if(Float.valueOf(tabla.getValueAt(i, 1).toString().trim())>Float.valueOf(tabla.getValueAt(i, 2).toString().trim())){
+								JOptionPane.showMessageDialog(null, "Para Poder Guardar Es Requerido Que El Surtido Sea Igual O Menor Al Solicitado \nCorrija:"+tabla.getValueAt(i, 3).toString().trim(), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+								cumple= false; 			    			
+			    			}	
 	    			}else {
 						JOptionPane.showMessageDialog(null, "Es Requerido que la cantidad del surtido sea un numero válido,  corrija la cantidad de la fila:"+(i+1), "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 						cumple= false;
 	    			}
 			    }
 				return cumple;
-    			
     		}
 		    
 		    
@@ -580,16 +626,17 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		    }
 		    
 		    int fila = 0 ;
-		    int columna = 0;
+		    int columna = 1;
 		    private void agregar(final JTable tbl) {
 		        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 			        public void mouseClicked(MouseEvent e) {
 			        	if(e.getClickCount() == 1){
 			        		if(cmbEstablecimientoSurte.getSelectedIndex()>0){
 			        			fila = tbl.getSelectedRow();
-				        		columna = 0;
+					        	new Cat_Cargar_Producto("").setVisible(true);
 			        		}else{
 								JOptionPane.showMessageDialog(null, "Debe Seleccionar El Establecimiento Que Está Surtiendo", "Aviso !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+								return;
 			        		}
 			        	}	
 			        }
@@ -599,54 +646,26 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 		    KeyListener op_validanumero_en_celda = new KeyListener() {
 				public void keyTyped(KeyEvent e) {}
 				public void keyReleased(KeyEvent e) {
-					fila=tabla.getSelectedRow();
-					if(columna==0){
-						String codigo=tabla.getValueAt(fila, columna).toString().trim();
-							if(!codigo.equals("")){
-									String cod_prod=new BuscarSQL().cod_prod_principal_bms(codigo);// si el codigo es vacion retorna el cod_prod = 01491
-									if(!cod_prod.equals("false no existe")){
-											Obj_Ubicaciones_De_Productos  Datos_Producto= new Obj_Ubicaciones_De_Productos().buscardatos_producto(cod_prod,cmbEstablecimientoSurte.getSelectedItem().toString().trim().toUpperCase()+"");
-											if(Datos_Producto.getCosto_Promedio() > 0 && Datos_Producto.getUltimo_Costo()>0){
-												tabla.setValueAt(Datos_Producto.getCod_Prod().trim(), fila, 0);
-												tabla.setValueAt(Datos_Producto.getDescripcion_Prod().trim(), fila, 5);
-												tabla.setValueAt(Datos_Producto.getUltimo_Costo(), fila, 6);
-												tabla.setValueAt(Datos_Producto.getCosto_Promedio(), fila, 7);
-												tabla.setValueAt(Datos_Producto.getPrecio_de_venta(), fila, 8);
-												tabla.setValueAt(Datos_Producto.getExistencia_Total(), fila, 9);
-											    columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,1,"no","continuar");
-											}else{
-										    // esto se hace para que si no tiene costos se regrese a la celda del codigo del producto
-												tabla.setValueAt("", fila, 0);
-												tabla.setValueAt("", fila, 5);
-												JOptionPane.showMessageDialog(null, "El Codigo De Producto ["+Datos_Producto.getCod_Prod().trim()+"]\nNo es Posible Disminuirlo del Establecimiento Seleccionado \nYa Que Cuenta Con Costo Promedio 0 y Ultimo Costo 0  \nVerifique El Codigo del Producto y/o El Establecimiento Seleccionado", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-												columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,0,"no", "no");
-											}
-									}else{
-										tabla.setValueAt("", fila, 0);
-										tabla.setValueAt("", fila, 5);
-										JOptionPane.showMessageDialog(null, "El Codigo De Producto No Fue Encontrado", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-										columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,0,"no", "no");
-									}
-							}else {
-								JOptionPane.showMessageDialog(null, "El Codigo De Producto es Vacio", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-								columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,0,"no", "no");
-							}
-					}else{
-						if(ObjTab.validacelda(tabla,"decimal", fila,columna)){
-							double  surtida=Double.valueOf(tabla.getValueAt(fila, 1).toString());
-							double  solicitada=Double.valueOf(tabla.getValueAt(fila, 2).toString());
-							if(surtida>solicitada) {
-								JOptionPane.showMessageDialog(null, "La Cantidad Tecleada Es Mayor A La Solicitada", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-								columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,1,"no", "no");
-							}else {
-								columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, (tabla.getRowCount()==fila+1?-1:fila), columna,0,"si","continuar");
-						    }	
+					
+					if(ObjTab.validacelda(tabla,"decimal", fila,columna)){
+						
+						double  surtida=Double.valueOf(tabla.getValueAt(fila, 1).toString().equals("")?"0":tabla.getValueAt(fila, 1).toString());
+						double  solicitada=Double.valueOf(tabla.getValueAt(fila, 2).toString());
+						if(surtida>solicitada) {
+							JOptionPane.showMessageDialog(null, "La Cantidad Tecleada Es Mayor A La Solicitada", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						}else{
+							fila= fila==tabla.getRowCount()-1 ? 0 : fila+1;
 						}
 					}
+					
+					tabla.getSelectionModel().setSelectionInterval(fila, fila);
+					new Cat_Cargar_Producto(tabla.getValueAt(fila, 0).toString().trim()).setVisible(true);
+					tabla.getSelectionModel().setSelectionInterval(fila, fila);
+					
 				}
 				public void keyPressed(KeyEvent e) {}
 			};
-//////////////////////////////////////TODO recibe proveedor/empleado	
+			
 			public class Cat_Filtro_Buscar_Proveedor extends JDialog{
 				Container contfb = getContentPane();
 				JLayeredPane panelfb = new JLayeredPane();
@@ -728,7 +747,205 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 					public void keyPressed(KeyEvent arg0) {}		
 				};
 			}
-		};
+			
+			 public class Cat_Cargar_Producto extends JDialog{
+				 
+				 Container contProd = getContentPane();
+				 JLayeredPane panelProd = new JLayeredPane();
+				 
+				 JTextField txtCodigo = new Componentes().text(new JCTextField(), "Codigo Producto", 20, "String");
+				 JCButton btnBuscar = new JCButton("", "buscar.png", "Azul");
+				 
+				 Border blackline, etched, raisedbevel, loweredbevel, empty;
+				 
+				 public Cat_Cargar_Producto(String CodProd){
+					 this.setModal(true);
+					    this.contProd.add(panelProd);
+						this.setSize(270,100);
+						this.setResizable(false);
+						this.setLocationRelativeTo(null);
+						this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						this.setTitle("Buscar Codigo De Producto");
+						this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/articulo-icono-9036-48.png"));
+						this.blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+						this.panelProd.setBorder(BorderFactory.createTitledBorder(blackline,"Filtro De Productos"));
+				   	
+						int x=20, y=30,width=80,height=20;
+						this.panelProd.add(new JLabel("Cod. Prod:")).setBounds  (x	  	     ,y	,width   ,height );
+						this.panelProd.add(txtCodigo).setBounds             	(x+width   	 ,y	,width+20,height );
+						this.panelProd.add(btnBuscar).setBounds             	(x+width*2+20,y	,30		 ,height );
+						
+						txtCodigo.setText(CodProd);
+						btnBuscar.addActionListener(opCargarProducto);
+						txtCodigo.addActionListener(opCargarProducto);
+						
+						///filtro de Productos
+				        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "FiltroProd");
+				          getRootPane().getActionMap().put("FiltroProd", new AbstractAction(){
+						         public void actionPerformed(ActionEvent e){         
+						        	 dispose();
+						        	 new Cat_Filtro_De_Productos().setVisible(true);
+					       	    }
+						     });
+				 }
+				 
+				 ActionListener opCargarProducto = new ActionListener() {
+					 public void actionPerformed(ActionEvent arg0) {
+				
+							String codigo=txtCodigo.getText().toString().trim();
+							if(!codigo.equals("")){
+									String cod_prod=new BuscarSQL().cod_prod_principal_bms(codigo);// si el codigo es vacion retorna el cod_prod = 01491
+									if(!cod_prod.equals("false no existe")){
+											Obj_Ubicaciones_De_Productos  Datos_Producto= new Obj_Ubicaciones_De_Productos().buscardatos_producto(cod_prod,cmbEstablecimientoSurte.getSelectedItem().toString().trim().toUpperCase()+"");
+											if(Datos_Producto.getCosto_Promedio() > 0 && Datos_Producto.getUltimo_Costo()>0){
+												tabla.setValueAt(Datos_Producto.getCod_Prod().trim(), fila, 0);
+												tabla.setValueAt(Datos_Producto.getDescripcion_Prod().trim(), fila, 5);
+												tabla.setValueAt(Datos_Producto.getUltimo_Costo(), fila, 6);
+												tabla.setValueAt(Datos_Producto.getCosto_Promedio(), fila, 7);
+												tabla.setValueAt(Datos_Producto.getPrecio_de_venta(), fila, 8);
+												tabla.setValueAt(Datos_Producto.getExistencia_Total(), fila, 9);
+											    columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,1,"no","continuar");
+											    
+												tabla.setValueAt(txtCodigo.getText().toString().trim(), fila, columna);
+												dispose();
+												
+											}else{
+										    // esto se hace para que si no tiene costos se regrese a la celda del codigo del producto
+												tabla.setValueAt("", fila, 0);
+												tabla.setValueAt("", fila, 5);
+												columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,0,"no", "no");
+												JOptionPane.showMessageDialog(null, "El Codigo De Producto ["+Datos_Producto.getCod_Prod().trim()+"]\nNo es Posible Disminuirlo del Establecimiento Seleccionado \nYa Que Cuenta Con Costo Promedio 0 y Ultimo Costo 0  \nVerifique El Codigo del Producto y/o El Establecimiento Seleccionado", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+												return;
+											}
+									}else{
+										JOptionPane.showMessageDialog(null, "El Codigo De Producto Es Requerido", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+										return;
+									}
+							}else {
+								columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,0,"no", "no");
+								JOptionPane.showMessageDialog(null, "El Codigo De Producto es Vacio", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+								return;
+							}
+					}
+				}; 
+				 
+			 }
+			 
+			//TODO FILTRO DE PRODUCTOS	
+				public class Cat_Filtro_De_Productos extends JDialog{
+					  Container cont = getContentPane();
+					  JLayeredPane panel = new JLayeredPane();
+					  Connexion con = new Connexion();
+					  Runtime R = Runtime.getRuntime();
+					@SuppressWarnings("rawtypes")
+					private TableRowSorter trsfiltro;
+					
+					JTextField txtFiltrop = new Componentes().text(new JCTextField(), ">>>Teclea Aqui Para Realizar La Busqueda En La Tabla<<<", 300, "String");
+					Border blackline, etched, raisedbevel, loweredbevel, empty;
+				    
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					public Cat_Filtro_De_Productos(){
+						int ancho = 1024;
+						int alto = Toolkit.getDefaultToolkit().getScreenSize().height-50;
+						this.setSize(ancho, alto);
+						this.setResizable(false);
+						this.setLocationRelativeTo(null);
+						this.setTitle("Filtro De Busqueda De Productos");
+						this.setModal(true);
+						this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/lista-icono-7220-32.png"));
+						blackline = BorderFactory.createLineBorder(new java.awt.Color(105,105,105));
+						panel.setBorder(BorderFactory.createTitledBorder(blackline,"Doble Click A El Producto Deseado"));
+						this.cont.add(panel);
+
+						trsfiltro = new TableRowSorter(modelo2); 
+						tabla2.setRowSorter(trsfiltro);
+						txtFiltrop.setToolTipText("Filtro Por Producto");
+						txtFiltrop.addKeyListener(opFiltro);
+
+						int y = 20;
+						panel.add(txtFiltrop).setBounds(15,y,500,20);
+						panel.add(scroll_tabla_filtro).setBounds(15,y+=20,ancho-30,alto-70);
+				        
+						if(FActividadesCargado.equals("S")){
+							datos_tabla_precargados();
+						}else{
+							init_tabla_filtro_productos();
+							tablaprecargadaproductos= ObjTab.tabla_guardar(tabla2);
+						  FActividadesCargado="S";
+						}
+						agregar(tabla2);
+					}
+
+					public void datos_tabla_precargados(){
+						 modelo2.setRowCount(0);
+						 String[][] tablacompleta =tablaprecargadaproductos;
+						 Object[] vector = new Object[columnas2];
+						for(int i=0;i<tablacompleta.length;i++){
+							   for(int j=0;j<columnas2;j++){
+								vector[j] = tablacompleta[i][j].toString();
+								}
+								modelo2.addRow(vector);
+						}
+					}
+
+					
+					KeyListener opFiltro = new KeyListener(){
+						@SuppressWarnings("unchecked")
+						public void keyReleased(KeyEvent arg0) {
+							int[] columnas ={0,1,2,3,4,5};
+							new Obj_Filtro_Dinamico_Plus(tabla2 , txtFiltrop.getText().toString().trim().toUpperCase(), columnas  );
+							trsfiltro.setRowFilter(RowFilter.regexFilter(txtFiltrop.getText(), 0));
+						}
+						public void keyTyped(KeyEvent arg0) {}
+						public void keyPressed(KeyEvent arg0) {}	
+					    };
+					
+					private void agregar(final JTable tbl) {
+						tbl.addMouseListener(new MouseListener() {
+							public void mouseReleased(MouseEvent e) {
+									if(e.getClickCount() == 2){
+										int fila_Select = tabla2.getSelectedRow();
+						    			String folio =  tabla2.getValueAt(fila_Select, 0).toString().trim();
+						    			columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,1,"no","continuar");
+
+										String cod_prod=new BuscarSQL().cod_prod_principal_bms(folio);// si el codigo es vacion retorna el cod_prod = 01491
+										if(!cod_prod.equals("false no existe")){
+												Obj_Ubicaciones_De_Productos  Datos_Producto= new Obj_Ubicaciones_De_Productos().buscardatos_producto(cod_prod,cmbEstablecimientoSurte.getSelectedItem().toString().trim().toUpperCase()+"");
+												if(Datos_Producto.getCosto_Promedio() > 0 && Datos_Producto.getUltimo_Costo()>0){
+													tabla.setValueAt(Datos_Producto.getCod_Prod().trim(), fila, 0);
+													tabla.setValueAt(Datos_Producto.getDescripcion_Prod().trim(), fila, 5);
+													tabla.setValueAt(Datos_Producto.getUltimo_Costo(), fila, 6);
+													tabla.setValueAt(Datos_Producto.getCosto_Promedio(), fila, 7);
+													tabla.setValueAt(Datos_Producto.getPrecio_de_venta(), fila, 8);
+													tabla.setValueAt(Datos_Producto.getExistencia_Total(), fila, 9);
+												    columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,1,"no","continuar");
+												    
+													tabla.setValueAt(folio.toString().trim(), fila, columna);
+													dispose();
+													
+												}else{
+											    // esto se hace para que si no tiene costos se regrese a la celda del codigo del producto
+													tabla.setValueAt("", fila, 0);
+													tabla.setValueAt("", fila, 5);
+													columna=ObjTab.RecorridoFocotabla_horizontal_x_columnas(tabla, fila, columna,0,"no", "no");
+													JOptionPane.showMessageDialog(null, "El Codigo De Producto ["+Datos_Producto.getCod_Prod().trim()+"]\nNo es Posible Disminuirlo del Establecimiento Seleccionado \nYa Que Cuenta Con Costo Promedio 0 y Ultimo Costo 0  \nVerifique El Codigo del Producto y/o El Establecimiento Seleccionado", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+													return;
+												}
+										}else{
+											JOptionPane.showMessageDialog(null, "El Codigo De Producto Es Requerido", "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+											return;
+										}
+								
+									}
+							}
+							public void mousePressed(MouseEvent e) {}
+							public void mouseExited(MouseEvent e) {}
+							public void mouseEntered(MouseEvent e) {}
+							public void mouseClicked(MouseEvent e) {}
+						});
+					}
+				}
+		}
 		
 //(FIN)AUTORIZACION DE ORDEN DE COMPRA INTERNA ---------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -738,7 +955,6 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 				int vista_previa_de_ventana=0;
 				String reporte = "Obj_Reporte_De_Orden_De_Compra_Interna.jrxml";				
 				String consulta = "exec orden_de_compra_interna_reporte_surtido '"+folioBMS+"','"+folio_scoi+"'";
-				System.out.println(consulta);
 				
 				new Generacion_Reportes().Reporte(reporte, consulta, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 	    }

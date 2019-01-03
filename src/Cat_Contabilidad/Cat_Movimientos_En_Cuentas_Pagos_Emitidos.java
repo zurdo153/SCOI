@@ -19,7 +19,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -31,6 +30,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+
 import com.toedter.calendar.JDateChooser;
 
 import Conexiones_SQL.BuscarSQL;
@@ -42,7 +42,7 @@ import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
-public class Cat_Pagos_Emitidos extends JFrame{
+public class Cat_Movimientos_En_Cuentas_Pagos_Emitidos extends JDialog{
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -56,6 +56,7 @@ public class Cat_Pagos_Emitidos extends JFrame{
 	JCButton btnDeshacer       = new JCButton("Deshacer"  ,"deshacer16.png"              ,"Azul");
 	
 	Object[] cuentas = new Obj_Pagos_Emitidos().cuentas(); 
+//		{"Selecciona Una Cuenta","00000001","00000002"};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	JComboBox cmbCuentas = new JComboBox(cuentas); 
 	
@@ -73,7 +74,8 @@ public class Cat_Pagos_Emitidos extends JFrame{
 	JScrollPane scrollObservacion = new JScrollPane(txaObservacion);
 
 	String bandera = "";
-	public Cat_Pagos_Emitidos() {
+	public Cat_Movimientos_En_Cuentas_Pagos_Emitidos() {
+		this.setModal(true);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/asistencia.png"));
@@ -123,7 +125,6 @@ public class Cat_Pagos_Emitidos extends JFrame{
 		cont.add(panel);
 		
 		deshacer();
-		
 		btnNuevo.addActionListener(opBtn);
 		btnBuscar.addActionListener(opBtn);
 		btnEditar.addActionListener(opBtn);
@@ -184,9 +185,10 @@ public class Cat_Pagos_Emitidos extends JFrame{
 				pagos.setBandera(bandera);
 				
 				if(pagos.guardar()){
+					
 						deshacer();
-						JOptionPane.showMessageDialog(null, "Los Registros Fueron Guardados Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-			            return;
+						JOptionPane.showMessageDialog(null, "El Registro Fue Guardado Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						return;
 				 }else{
 						JOptionPane.showMessageDialog(null,  "A Ocurrido Un Error En El Guardado, Avise Al Administrador Del Sistema","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 						return;
@@ -237,6 +239,7 @@ public class Cat_Pagos_Emitidos extends JFrame{
 		txaObservacion.setText("");
 		
 		bandera = "";
+		cmbStatus.setSelectedItem("PENDIENTE DE COBRO");
 	}
 	
 	public void blockNuevo(){
@@ -245,7 +248,7 @@ public class Cat_Pagos_Emitidos extends JFrame{
 		txtCheque.setEditable(true);
 		DCFecha.setEnabled(true);
 		txtImporte.setEditable(true);
-		cmbStatus.setEnabled(true);
+//		cmbStatus.setEnabled(true);
 		txaObservacion.setEditable(true);
 		txaObservacion.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
 		
@@ -259,7 +262,7 @@ public class Cat_Pagos_Emitidos extends JFrame{
 		txtCheque.setText("");
 		DCFecha.setDate(null);
 		txtImporte.setText("");
-		cmbStatus.setSelectedIndex(0);
+//		cmbStatus.setSelectedIndex(0);
 		txaObservacion.setText("");
 		
 		bandera = "GUARDAR";
@@ -271,7 +274,7 @@ public class Cat_Pagos_Emitidos extends JFrame{
 		txtCheque.setEditable(true);
 		DCFecha.setEnabled(true);
 		txtImporte.setEditable(true);
-		cmbStatus.setEnabled(true);
+//		cmbStatus.setEnabled(true);
 		txaObservacion.setEditable(true);
 		txaObservacion.setBackground(new Color(Integer.parseInt("FFFFFF",16)));
 		
@@ -285,6 +288,7 @@ public class Cat_Pagos_Emitidos extends JFrame{
 	}
 	
 	//TODO filtro Busqueda de Pagos Emitidos
+		@SuppressWarnings("serial")
 		public class Cat_Filtro_De_Pagos_Emitidos extends JDialog {
 			Container cont = getContentPane();
 			JLayeredPane campo = new JLayeredPane();
@@ -416,11 +420,10 @@ public class Cat_Pagos_Emitidos extends JFrame{
 			return fecha;
 		} 
 		
-	public static void main(String[] args) {
-		try{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Pagos_Emitidos().setVisible(true);
-		}catch(Exception e){	}
-	}
-
+		public static void main(String[] args) {
+			try{
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				new Cat_Movimientos_En_Cuentas_Pagos_Emitidos().setVisible(true);
+			}catch(Exception e){	}
+		}
 }
