@@ -116,7 +116,7 @@ public class Cat_Orden_De_Compra_Interna_Solicitud extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_tipo = new JComboBox(tipo);
 	
-	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento201();
+	String establecimientoScoi[] = new Obj_Establecimiento().Combo_establecimientos("establecimientos_edo_resultados");
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 	

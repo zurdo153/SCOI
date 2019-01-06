@@ -139,7 +139,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_forma_pago = new JComboBox(forma_pago);
 	
-	String establecimientoScoi[] = new Obj_Establecimiento().Combo_Establecimiento();
+	String establecimientoScoi[] = new Obj_Establecimiento().Combo_establecimientos("establecimientos_edo_resultados");
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbEstablecimiento = new JComboBox(establecimientoScoi);
 
