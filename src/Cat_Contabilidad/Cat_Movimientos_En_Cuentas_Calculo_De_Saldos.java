@@ -128,8 +128,7 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 		         return types[columnIndex];
 		     }
 				public boolean isCellEditable(int fila, int columna){
-					if(columna==0)
-						return true; return false;
+					return false;
 				}
 		    };
 	
@@ -441,24 +440,30 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 			
 			if( (modeloConciliados.getRowCount() + modeloComisiones.getRowCount()) > 0 ){
 				
-					int[] ignorarColumnas = {-1};
-					String xml = new Obj_Xml.CrearXmlString().CadenaXML2(ArregloGuardar(), ignorarColumnas);
-					 
-						boolean guardado = new GuardarSQL().Guardar_Conciliacion_De_Cuenta_Bancaria(txtCuenta.getText().trim(), 
-																									txtFechaIn.getText().trim(), 
-																									txtFechaFin.getText().trim(), 
-																									Double.valueOf(txtSaldoInicial.getText().trim()), 
-																									Double.parseDouble(txtDepositos.getText().trim()), 
-																									Double.parseDouble(txtRetiros.getText().trim()), 
-																									xml);
-						 if(guardado){
-							 	deshacer();
-							 	JOptionPane.showMessageDialog(null, "Los Registros Fueron Guardados Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
-				                return;
-						 }else{
-							 JOptionPane.showMessageDialog(null,  "A Ocurrido Un Error En El Guardado, Avise Al Administrador Del Sistema","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
-							 return;
-						 }
+					if( modeloArchivo.getRowCount() == 0 ){
+					
+							int[] ignorarColumnas = {-1};
+							String xml = new Obj_Xml.CrearXmlString().CadenaXML2(ArregloGuardar(), ignorarColumnas);
+							 
+								boolean guardado = new GuardarSQL().Guardar_Conciliacion_De_Cuenta_Bancaria(txtCuenta.getText().trim(), 
+																											txtFechaIn.getText().trim(), 
+																											txtFechaFin.getText().trim(), 
+																											Double.valueOf(txtSaldoInicial.getText().trim()), 
+																											Double.parseDouble(txtDepositos.getText().trim()), 
+																											Double.parseDouble(txtRetiros.getText().trim()), 
+																											xml);
+								 if(guardado){
+									 	deshacer();
+									 	JOptionPane.showMessageDialog(null, "Los Registros Fueron Guardados Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+						                return;
+								 }else{
+									 JOptionPane.showMessageDialog(null,  "A Ocurrido Un Error En El Guardado, Avise Al Administrador Del Sistema","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+									 return;
+								 }
+					}else{
+						JOptionPane.showMessageDialog(null,  "Es Necesario Conciliar Todos Los Registros","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
+						 return;
+					}
 			}else{
 				JOptionPane.showMessageDialog(null,  "No Es Posible Guardar Sin Regitros Por Conciliar","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 				 return;

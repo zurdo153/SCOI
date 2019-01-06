@@ -641,9 +641,8 @@ public class Cat_Orden_De_Compra_Interna_Surtido extends JFrame {
 								double  solicitada=Double.valueOf(tabla.getValueAt(fila_anterior_seleccionada, 2).toString());
 								if(surtida>solicitada) {
 									fila = fila_anterior_seleccionada;
-									JOptionPane.showMessageDialog(null, "La Cantidad Tecleada:"+surtida+"\nEs Mayor A La Solicitada:"+solicitada, "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 									tabla.setValueAt(0,fila_anterior_seleccionada, 1);
-									return;
+									JOptionPane.showMessageDialog(null, "La Cantidad Tecleada:"+surtida+"\nEs Mayor A La Solicitada:"+solicitada, "Avise Al Administrador Del Sistema !!!", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
 								}
 								tabla.getSelectionModel().setSelectionInterval(fila, fila);
 								new Cat_Cargar_Producto(tabla.getValueAt(fila, 0).toString().trim()).setVisible(true);
