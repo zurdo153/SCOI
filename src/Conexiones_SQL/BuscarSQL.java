@@ -11290,7 +11290,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	}
 	
 	public Object[] Saldos_De_Cuentas_Mov_Banco(String xml){
-		Object[] datos = new Object[5];
+		Object[] datos = new Object[6];
 		String query       = "exec  movimientos_en_cuenta_cargar_xml '"+xml+"'";
 		System.out.println(query);
 		Statement stmt = null;
@@ -11303,6 +11303,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				datos[2] =(rs.getString(3));
 				datos[3] =(rs.getString(4));
 				datos[4] =(rs.getString(5));
+				datos[5] =(rs.getString(6));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -11319,9 +11320,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 		return datos;
 	}
 	
-	   public Object[][] Saldos_De_Cuentas_Mov_Conciliacion_Auto(String cuenta, String fechaIn, String fechaFin){
+	   public Object[][] Saldos_De_Cuentas_Mov_Conciliacion_Auto(String cuenta, String fechaIn, String fechaFin,String xml){
 		   Object[][] Matriz = null;
-				String query = "exec movimientos_en_cuenta_conciliacion_automatica '"+cuenta+"','"+fechaIn+"','"+fechaFin+"'";
+				String query = "exec movimientos_en_cuenta_conciliacion_automatica '"+cuenta+"','"+fechaIn+"','"+fechaFin+"','"+xml+"'";
 				System.out.println(query);
 				
 				Matriz = new Object[getFilas(query)][13];
@@ -11439,7 +11440,42 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					}
 					return array;
 		}
-		
+	
+		public String Status_De_Cuenta_Movimientos_De_Cuenta(String folio_cuenta){
+			Statement stmt = null;
+			
+			String query = "DECLARE @noCuenta varchar(20) "
+					+ "	set @noCuenta = '"+folio_cuenta+"' "
+					+ " DECLARE @STATUS char(1) "
+					+ " select @STATUS = status from movimientos_en_cuentas_saldos where numero_de_cuenta = @noCuenta and observaciones = 'SALDO INICIAL' "
+					+ " select isnull(@STATUS,'D') as status";
+			String status = "";
+			
+			try {
+				
+				stmt = con.conexion().createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				
+				while(rs.next()){
+						status = rs.getString(1);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error al Buscar en funcion [TotalDePagosEmitidos] \nSQLServerException:"+e,"Avise Al Administrador del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				
+				return null;
+			}
+			finally{
+				if(stmt != null){try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}}
+			}
+			return status;
+		}
 		
 //	public ImageIcon crearImagIcon(){
 //		

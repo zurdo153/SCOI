@@ -6988,16 +6988,18 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	   
 	public String finalizar_merma(String Establecimiento,String folio_merma_scoi){
 		
-		Obj_Conn conect = new Obj_Conn();
-		conect.llenarConn(Establecimiento);
+//		Obj_Conn conect = new Obj_Conn();
+//		conect.llenarConn(Establecimiento);
 	
 	   String folio_merma="";
-	   String query = "exec sp_finalizar_merma '"+Establecimiento.trim()+"','"+folio_merma_scoi+"'"; 
+//	   String query = "exec sp_finalizar_merma '"+Establecimiento.trim()+"','"+folio_merma_scoi+"'"; 
+	   String query = "exec sp_finalizar_merma_2 '"+Establecimiento.trim()+"','"+folio_merma_scoi+"'"; 
 	   Statement stmt = null;
 		try {
 			//TODO (Connexion Parametrizada)--------------------------------------------------------------------------------------------------------------------
 			Connexion con = new Connexion();
-			stmt = con.conexion_parametrizada(conect.getDir(), conect.getDb(), conect.getUser(), conect.getPass()).createStatement();
+//			stmt = con.conexion_parametrizada(conect.getDir(), conect.getDb(), conect.getUser(), conect.getPass()).createStatement();
+			stmt = con.conexion().createStatement();
 			//--------------------------------------------------------------------------------------------------------------------------------------------------
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
@@ -8576,7 +8578,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString(7 ,  proveedores.getTipo_proveedor());
 				pstmt.executeUpdate();
 			 con.commit();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Solicitud_De_Acceso_A_Proveedores ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
@@ -8600,25 +8602,89 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	}	 
 			 
 		
-	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros/*, double saldoFinal*/, String xml){
-		int usuario_mov = usuario.getFolio();
-		String query       = "exec  movimientos_en_cuenta_conciliacion_automatica_guardar '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+usuario_mov+",'"+xml+"'";
-		Connection con = new Connexion().conexion();
+	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria(String cuenta, String fechaIn, String fechaFin, double saldoInicial, double depositos, double retiros/*, double saldoFinal*/, String xml, String xmlBase){
+		
+		if(actualizarMovimientoBancario3199(xml)){
+			
+			int usuario_mov = usuario.getFolio();
+			String query  = "exec  movimientos_en_cuenta_conciliacion_automatica_guardar '"+cuenta+"','"+fechaIn+"','"+fechaFin+"',"+saldoInicial+","+depositos+","+retiros+","+usuario_mov+",'"+xml+"','"+xmlBase+"'";
+			
+			System.out.println(query);
+			
+			Connection con = new Connexion().conexion();
+			PreparedStatement pstmt = null;
+			try {
+				 con.setAutoCommit(false);
+				 pstmt = con.prepareStatement(query);
+				 pstmt.executeUpdate();
+				 con.commit();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Conciliacion_De_Cuenta_Bancaria ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+				System.out.println("SQLException: " + e.getMessage());
+				if (con != null){
+					try {
+						System.out.println("La transacción ha sido abortada");
+						con.rollback();
+					} catch(SQLException ex) {
+						System.out.println("->"+ex.getMessage());
+					}
+				} 
+				return false;
+			}finally{
+				try {
+					pstmt.close();
+					con.close();
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+			}		
+			return true;
+			
+		}else{
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ actualizarMovimientoBancario3199 ] ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return false;
+		}
+	}
+	
+	public boolean actualizarMovimientoBancario3199(String xml){
+		
+		String query   = "declare @xml xml "
+						+ " set @xml = '"+xml+"' "
+						+ " declare @tabla_xml table(deposito decimal(10,2), retiro decimal(10,2), folio_banco varchar(10), status varchar(10), folio_transaccion_bms varchar(10), folio_bms varchar(10), nota varchar(600)) "
+						+ " insert into @tabla_xml "
+						+ " select T.col.value('col_0[1]','decimal(10,2)') as deposito, "
+						+ "			T.col.value('col_1[1]','decimal(10,2)') as retiro, "
+						+ "			T.col.value('col_2[1]','varchar(10)') as folio_banco, "
+						+ " 		T.col.value('col_3[1]','varchar(10)') as status, "
+						+ "			T.col.value('col_4[1]','varchar(10)') as folio_transaccion_bms, "
+						+ "			T.col.value('col_5[1]','varchar(10)') as folio_bms, "
+						+ "			T.col.value('col_6[1]','varchar(600)') as nota "
+						+ "	FROM @xml.nodes('Root/fila') T(col) "
+						+ " update pp set pp.folio_referencia = '1' "
+						+ " from @tabla_xml tb_xml "
+						+ " inner join pagos_proveedores pp on pp.folio = tb_xml.folio_bms and pp.transaccion = tb_xml.folio_transaccion_bms "
+						+ " where tb_xml.status in ('A','M') "
+						+ " and tb_xml.folio_transaccion_bms != ''"; 
+
+		System.out.println(query);
+		
+		Connection con = new Connexion().conexion_parametrizada("192.168.3.199", "BMSIZAGAR", "sa", "Ragazi/*-1");
 		PreparedStatement pstmt = null;
+		
 		try {
 			 con.setAutoCommit(false);
 			 pstmt = con.prepareStatement(query);
- 			 pstmt.executeUpdate();
+			 pstmt.executeUpdate();
 			 con.commit();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Conciliacion_De_Cuenta_Bancaria ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ actualizarMovimientoBancario3199 ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {
 					System.out.println("La transacción ha sido abortada");
 					con.rollback();
 				} catch(SQLException ex) {
-					System.out.println(ex.getMessage());
+					System.out.println("->"+ex.getMessage());
 				}
 			} 
 			return false;
@@ -8653,7 +8719,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				
 				pstmt.executeUpdate();
 			con.commit();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pagos_Emitidos ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
@@ -8711,11 +8777,66 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria_De_Temporales(String cuenta, String xml){
 
-		int usuario_mov = usuario.getFolio();
-		String query       = "exec movimientos_en_cuenta_conciliacion_temporal_guardar '"+cuenta+"','"+usuario_mov+"','"+xml+"'";
+		if(actualizarMovimientoBancario3199(xml)){	
 		
-		System.out.println(query);
+				int usuario_mov = usuario.getFolio();
+				String query       = "exec movimientos_en_cuenta_conciliacion_temporal_guardar '"+cuenta+"','"+usuario_mov+"','"+xml+"'";
+				
+				System.out.println(query);
+				
+				Connection con = new Connexion().conexion();
+				PreparedStatement pstmt = null;
+				try {
+					 con.setAutoCommit(false);
+					 pstmt = con.prepareStatement(query);
+					 
+						pstmt.executeUpdate();
+						con.commit();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Conciliacion_De_Cuenta_Bancaria_De_Temporales ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+					System.out.println("SQLException: " + e.getMessage());
+					if (con != null){
+						try {
+							System.out.println("La transacción ha sido abortada");
+							con.rollback();
+						} catch(SQLException ex) {
+							System.out.println(ex.getMessage());
+						}
+					} 
+					return false;
+				}finally{
+					try {
+						pstmt.close();
+						con.close();
+					} catch(SQLException e){
+						e.printStackTrace();
+					}
+				}		
+				return true;
 		
+		}else{
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ actualizarMovimientoBancario3199 ] ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return false;
+		}
+	}
+	
+	public boolean Guardar_Cuenta_movimientos_de_cuenta(String cuenta, double saldo, String status){
+		String query    = " declare @STATUS  char(1)"
+						+ " set @STATUS= '"+status+"'"
+						+ " if(@STATUS = 'V') "
+						+ " begin "
+						+ "    update movimientos_en_cuentas_saldos set saldo = "+saldo
+						+ "											,fecha = GETDATE() "
+						+ "											,usuario = "+usuario.getFolio()
+						+ "	   where numero_de_cuenta = '"+cuenta.toString().trim()+"' "
+						+ "	   and observaciones = 'SALDO INICIAL' "
+						+ "	   and status = 'V' "
+						+ " end "
+						+ " if(@STATUS = 'D') "
+						+ " begin "
+						+ "    insert into movimientos_en_cuentas_saldos(observaciones, importe_ingreso, importe_egreso ,fecha, usuario ,numero_de_cuenta ,tipo_movimiento ,saldo ,status)"
+						+ "	   values ('SALDO INICIAL', 0, 0, GETDATE(), "+usuario.getFolio()+", '"+cuenta.toString().trim()+"', 'I', "+saldo+", 'V')"
+						+ " end ";
 		
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt = null;
@@ -8724,9 +8845,9 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 			 pstmt = con.prepareStatement(query);
 			 
 				pstmt.executeUpdate();
-				con.commit();
+			con.commit();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Conciliacion_De_Cuenta_Bancaria_De_Temporales ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Cuenta_movimientos_de_cuenta ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 			System.out.println("SQLException: " + e.getMessage());
 			if (con != null){
 				try {

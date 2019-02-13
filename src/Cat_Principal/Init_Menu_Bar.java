@@ -36,6 +36,7 @@ public class Init_Menu_Bar extends Init_Login{
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);		
 	 }	                                          
 		
+	
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){
 		Vector MenuVector = new Obj_Menus().getMenusNivel (Integer.parseInt(txtFolio.getText()));
@@ -43,6 +44,7 @@ public class Init_Menu_Bar extends Init_Login{
 		for(int i=0; i<MenuVector.size(); i++){
 			String[] tmpSTR = String.valueOf(MenuVector.get(i)).split(",");
 			lsMenus.add(new WP_Menu(tmpSTR[0], tmpSTR[1], tmpSTR[2], tmpSTR[3], tmpSTR[4]));
+			
 		}
 		
 		Vector SubMenuVector = new Obj_Menus().getSubmenuNivel (Integer.parseInt(txtFolio.getText()));

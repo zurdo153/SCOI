@@ -4156,6 +4156,39 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 		return true;
 	}
 	
+	public boolean Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales(String xml){
+		
+		String query = "exec movimiento_en_cuenta_bancaria_restaurar_temporales "+usuario.getFolio()+",'"+xml+"'";
+		System.out.println(query);
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+				con.setAutoCommit(false);
+				pstmt = con.prepareStatement(query);
+				
+				pstmt.executeUpdate();
+				con.commit();
+		} catch (Exception e) {
+			if(con != null){
+				try{
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 //	public boolean Surtirdo_Orden_De_Compra_Interna(int folio_orden, String establecimiento, int folio_chofer, String Observacion, String tipo_chofer_recibe, String xml){
 ////		System.out.println(folio_orden);
 ////		System.out.println(establecimiento);
