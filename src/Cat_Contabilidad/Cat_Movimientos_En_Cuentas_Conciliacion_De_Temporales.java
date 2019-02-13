@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
@@ -26,6 +28,7 @@ import Obj_Contabilidad.Obj_Pagos_Emitidos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
@@ -123,6 +126,8 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 		JTextField txtSaldoComciliado 	= new Componentes().text(new JCTextField(), "Saldo Conciliado", 20, "Double");
 		JTextField txtSaldoDisponible	= new Componentes().text(new JCTextField(), "Saldo Disponible", 20, "Double");
 		
+		JTextField txtFiltro = new Componentes().text(new JCTextField(), "Filtro De Movimientos", 200, "String");
+		
 		Object[] cuentas = new Obj_Pagos_Emitidos().cuentas(); 
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox cmbCuentas = new JComboBox(cuentas); 
@@ -161,6 +166,8 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 		panel.add(txtSaldoDisponible).setBounds   				(x+(ancho*5)+30				,y	 						,ancho+30 				,20 				);
 		
 		panel.add(btnConciliar).setBounds           			(x+((anchoVentana-50)/2)+10 ,y    						,ancho+30 				,25 				);
+		panel.add(txtFiltro).setBounds           				(x+((anchoVentana)/2)+100 ,y    						,ancho*7 				,25 				);
+		
 		
 		panel.add(scroll_tablaArchivo).setBounds  				(x							,y+=25  					,(anchoVentana-50)/2 	,(altoVentana-250)/3);
 		panel.add(scroll_tablaBMS).setBounds   	  				(x+((anchoVentana-50)/2)+10 ,y							,(anchoVentana-50)/2 	,(altoVentana-250)/3);
@@ -181,6 +188,7 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 		btnBuscar.addActionListener(opBuscar);
 		btnDeshacer.addActionListener(opDeshacer);
 		btnGuardar.addActionListener(opGuardar);
+		txtFiltro.addKeyListener(opFiltro);
 		
 		btnConciliar.addActionListener(opConciliar);
 		btnCancelar.addActionListener(opCancelar);
@@ -270,6 +278,22 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 				((DefaultTableModel) tablaP.getModel()).setRowCount(0);
 		}
 	}
+	
+	KeyListener opFiltro = new KeyListener() {
+		public void keyTyped(KeyEvent e) {		}
+		public void keyReleased(KeyEvent e) {
+			int[] columnas = {1,2,3,4,5,6,7,8};
+			new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
+		}
+		public void keyPressed(KeyEvent e) {		}
+	};
+//	ActionListener opFiltro2 = new ActionListener(){
+//		public void actionPerformed(ActionEvent e){
+//			int[] columnas = {1,2,3,4,5,6,7,8};
+//			new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
+////			if(tabla.isEditing()){tabla.getCellEditor().stopCellEditing();	}
+//		}
+//	};
 	
 	ActionListener opDeshacer = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -387,6 +411,10 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 			}
 			
 			if(regSeleccionadosArch==1){
+				
+					txtFiltro.setText("");
+					int[] columnas = {1,2,3,4,5,6,7,8};
+					new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
 				
 					int regSeleccionadosBMS = 0;
 					for(int i = 0; i<tablaBMS.getRowCount() ;i++){

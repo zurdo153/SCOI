@@ -48,6 +48,7 @@ import Obj_Contabilidad.Obj_Pagos_Emitidos;
 import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
+import Obj_Principal.Obj_Filtro_Dinamico_Plus;
 import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
@@ -171,6 +172,8 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 		JTextField txtFechaIn = new Componentes().text(new JCTextField(), "Fecha Inicial", 15, "String");
 		JTextField txtFechaFin = new Componentes().text(new JCTextField(), "Fecha Final", 15, "String");
 		
+		JTextField txtFiltro = new Componentes().text(new JCTextField(), "Filtro De Movimientos", 200, "String");
+		
 		DecimalFormat df = new DecimalFormat("#0.00");
 		double depositos = 0;
 		double retiros = 0;
@@ -220,7 +223,8 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 		
 		panel.add(btnConciliarTemporal).setBounds   			(x+((anchoVentana-50)/2)-200,y    						,ancho+120				,25 				);
 		panel.add(btnConciliar).setBounds           			(x+((anchoVentana-50)/2)+10 ,y    						,ancho+30 				,25 				);
-		
+		panel.add(txtFiltro).setBounds           				(x+((anchoVentana)/2)+100 ,y    						,ancho*7 				,25 				);
+
 		panel.add(scroll_tablaArchivo).setBounds  				(x							,y+=25  					,(anchoVentana-50)/2 	,(altoVentana-250)/3);
 		panel.add(scroll_tablaBMS).setBounds   	  				(x+((anchoVentana-50)/2)+10 ,y							,(anchoVentana-50)/2 	,(altoVentana-250)/3);
 		panel.add(btnCancelar).setBounds           				(x							,y+=((altoVentana-250)/3)+20,ancho+30    		 	,25 				);
@@ -254,6 +258,7 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 		btnConciliar.addActionListener(opConciliar);
 		btnConciliarTemporal.addActionListener(opConciliarTemporal);
 		btnCancelar.addActionListener(opCancelar);
+		txtFiltro.addKeyListener(opFiltro);
 		
 		agregar(tablaArchivo,"tbArchivo");
 		agregar(tablaBMS,"tbBMS");
@@ -385,6 +390,15 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 		}
 	};
 	
+	KeyListener opFiltro = new KeyListener() {
+		public void keyTyped(KeyEvent e) {		}
+		public void keyReleased(KeyEvent e) {
+			int[] columnas = {1,2,3,4,5,6,7,8};
+			new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
+		}
+		public void keyPressed(KeyEvent e) {		}
+	};
+	
 	ActionListener opCancelarPagosEmitidos = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
@@ -441,6 +455,10 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 			if( (modeloConciliados.getRowCount() + modeloComisiones.getRowCount()) > 0 ){
 				
 					if( modeloArchivo.getRowCount() == 0 ){
+						
+						filaAnteriorArchivo = -1;
+						filaAnteriorBMS = -1;
+						filaAnteriorConciliaciones = -1;
 					
 							int[] ignorarColumnas = {-1};
 							String xml = new Obj_Xml.CrearXmlString().CadenaXML2(ArregloGuardar(), ignorarColumnas);
@@ -451,7 +469,7 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 																											Double.valueOf(txtSaldoInicial.getText().trim()), 
 																											Double.parseDouble(txtDepositos.getText().trim()), 
 																											Double.parseDouble(txtRetiros.getText().trim()), 
-																											xml);
+																											xml,xmlBase);
 								 if(guardado){
 									 	deshacer();
 									 	JOptionPane.showMessageDialog(null, "Los Registros Fueron Guardados Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
@@ -540,6 +558,10 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 			
 			if(regSeleccionadosArch==1){
 				
+					txtFiltro.setText("");
+					int[] columnas = {1,2,3,4,5,6,7,8};
+					new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
+				
 					int regSeleccionadosBMS = 0;
 					for(int i = 0; i<tablaBMS.getRowCount() ;i++){
 						if(Boolean.valueOf(tablaBMS.getValueAt(i, 0).toString())){
@@ -588,6 +610,7 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 		}
 	};
 	
+	String xmlBase = "";
 	ActionListener opExaminar = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			
@@ -618,60 +641,77 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
         								 retiros = 0;
 	     							 
 			     							int[] ignorarColumnas = {-1};
-			        						 String xml = new Obj_Xml.CrearXmlString().CadenaXML(tabla, ignorarColumnas);
-			        						 Object[] guardarArchivo = new BuscarSQL().Saldos_De_Cuentas_Mov_Banco(xml);
+			        						 xmlBase = new Obj_Xml.CrearXmlString().CadenaXML(tabla, ignorarColumnas);
+			        						 Object[] guardarArchivo = new BuscarSQL().Saldos_De_Cuentas_Mov_Banco(xmlBase);
 			        						 
-			        						 if(!guardarArchivo[0].toString().equals("")){
-			        							 
-			        							 txtCuenta.setText(guardarArchivo[0].toString());
-				           						 txtFechaIn.setText(guardarArchivo[1].toString());
-				           						 txtFechaFin.setText(guardarArchivo[2].toString());
-				           						 txtSaldoInicial.setText(guardarArchivo[3].toString());
-				           						 txtPagosEmitidos.setText( df.format(Double.valueOf(guardarArchivo[4].toString())) );
-			           						 
-				           						 Object[][] RegistrosBanco = new BuscarSQL().Saldos_De_Cuentas_Mov_Conciliacion_Auto(guardarArchivo[0].toString(), guardarArchivo[1].toString(), guardarArchivo[2].toString());
-			           						 
-				           						 for(Object[] reg: RegistrosBanco){
-				           							 
-				           							int folio_transac = Integer.valueOf(reg[6].toString().trim());
-				           							if(folio_transac==508 || folio_transac==512){
-				           								
-					           								if(reg[10].toString().trim().equals("A")){
-					           									
-						           									modeloConciliados.addRow(reg);
-						           									modeloConciliados.setValueAt("", modeloConciliados.getRowCount()-1, modeloConciliados.getColumnCount()-1);
-				           							 				//incrementar variables
-				           							 				depositos += Double.valueOf(reg[3].toString().trim());
+//			        						 if(guardarArchivo.length==0){
+//			        							 System.out.println("Los Archivo Ya Fue Cargado o Se Encuentra Vacío");
+//			        							 return;
+//			        						 }else{
+			        							 System.out.println( guardarArchivo[0].toString().trim()+"   "+guardarArchivo[5].toString().trim());
+//			        						 }
+			        						 
+			        						
+			        						 
+			        						 
+			        						 
+			        						 
+			        						 if(guardarArchivo[5].toString().trim().equals("PRIMER REGISTRO") || guardarArchivo[5].toString().trim().equals("FOLIO CONSECUTIVO")){
+					        							 if(!guardarArchivo[0].toString().equals("")){
+						        							 
+						        							 txtCuenta.setText(guardarArchivo[0].toString());
+							           						 txtFechaIn.setText(guardarArchivo[1].toString());
+							           						 txtFechaFin.setText(guardarArchivo[2].toString());
+							           						 txtSaldoInicial.setText(guardarArchivo[3].toString());
+							           						 txtPagosEmitidos.setText( df.format(Double.valueOf(guardarArchivo[4].toString())) );
+						           						 
+							           						 Object[][] RegistrosBanco = new BuscarSQL().Saldos_De_Cuentas_Mov_Conciliacion_Auto(guardarArchivo[0].toString(), guardarArchivo[1].toString(), guardarArchivo[2].toString(),xmlBase);
+						           						 
+							           						 for(Object[] reg: RegistrosBanco){
+							           							 
+							           							int folio_transac = Integer.valueOf(reg[6].toString().trim());
+							           							if(folio_transac==508 || folio_transac==512){
+							           								
+								           								if(reg[10].toString().trim().equals("A")){
+								           									
+									           									modeloConciliados.addRow(reg);
+									           									modeloConciliados.setValueAt("", modeloConciliados.getRowCount()-1, modeloConciliados.getColumnCount()-1);
+							           							 				//incrementar variables
+							           							 				depositos += Double.valueOf(reg[3].toString().trim());
+							           							 				retiros += Double.valueOf(reg[4].toString().trim());
+						           							 				
+								           								}else{
+								           										modeloArchivo.addRow(reg);
+								           								}
+					           							 		}else{
+					           							 			
+					           							 			Object[] regConcil = new Object[reg.length-1];
+					           							 			for(int i=0; i<regConcil.length; i++){
+					           							 				regConcil[i] = reg[i+1].toString();
+					           							 			}
+					           							 			
+					           							 			modeloComisiones.addRow(regConcil);
+					           							 			modeloComisiones.setValueAt("", modeloComisiones.getRowCount()-1, modeloComisiones.getColumnCount()-1);
+					           							 			//incrementar variables
+						           							 		depositos += Double.valueOf(reg[3].toString().trim());
 				           							 				retiros += Double.valueOf(reg[4].toString().trim());
-			           							 				
-					           								}else{
-					           										modeloArchivo.addRow(reg);
-					           								}
-		           							 		}else{
-		           							 			
-		           							 			Object[] regConcil = new Object[reg.length-1];
-		           							 			for(int i=0; i<regConcil.length; i++){
-		           							 				regConcil[i] = reg[i+1].toString();
-		           							 			}
-		           							 			
-		           							 			modeloComisiones.addRow(regConcil);
-		           							 			modeloComisiones.setValueAt("", modeloComisiones.getRowCount()-1, modeloComisiones.getColumnCount()-1);
-		           							 			//incrementar variables
-			           							 		depositos += Double.valueOf(reg[3].toString().trim());
-	           							 				retiros += Double.valueOf(reg[4].toString().trim());
-		           							 		}
-				           						 }
-				           						 
-				           						 init_tabla_principalBMS(tablaBMS,txtCuenta.getText().equals("")?false:true);
-				           						 tablaBMS.getTableHeader().setReorderingAllowed(false);
-				           						
-				           						 txtDepositos.setText(df.format(depositos));
-				           						 txtRetiros.setText(df.format(retiros));
-				           						 txtSaldoComciliado.setText(df.format( Double.valueOf(txtSaldoInicial.getText())+Double.valueOf(txtDepositos.getText())-Double.valueOf(txtRetiros.getText()) ) );
-				           						 txtSaldoDisponible.setText(df.format( Double.valueOf(txtSaldoComciliado.getText())-Double.valueOf(txtPagosEmitidos.getText().trim())) ); 
-				           						  
+					           							 		}
+							           						 }
+							           						 
+							           						 init_tabla_principalBMS(tablaBMS,txtCuenta.getText().equals("")?false:true);
+							           						 tablaBMS.getTableHeader().setReorderingAllowed(false);
+							           						
+							           						 txtDepositos.setText(df.format(depositos));
+							           						 txtRetiros.setText(df.format(retiros));
+							           						 txtSaldoComciliado.setText(df.format( Double.valueOf(txtSaldoInicial.getText())+Double.valueOf(txtDepositos.getText())-Double.valueOf(txtRetiros.getText()) ) );
+							           						 txtSaldoDisponible.setText(df.format( Double.valueOf(txtSaldoComciliado.getText())-Double.valueOf(txtPagosEmitidos.getText().trim())) ); 
+							           						  
+						        						 }else{
+						        							JOptionPane.showMessageDialog(null, "No Se Pudo Cargar El Archivo Del Banco", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+						        							return;
+						        						 }
 			        						 }else{
-			        							JOptionPane.showMessageDialog(null, "No Se Pudo Guardar El Archivo Del Banco", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
+			        							 JOptionPane.showMessageDialog(null, "No Se Pudo Cargar El Archivo Del Banco,\nEl Archivo Que Intenta Cargar Esta Vacío O Le Faltan Movimientos.", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			        							return;
 			        						 }
 			        						 
