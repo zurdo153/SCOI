@@ -72,6 +72,15 @@ public class Obj_Establecimiento {
 			this.status = status;
 		}
 
+	public String[] Combo_establecimientos(String paramentro) {
+		try {
+			return new Cargar_Combo().Combos(paramentro);
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+		return null; 
+	}
+		
 	public String[] Combo_Establecimiento_Entysal() {
 		try {
 			return new Cargar_Combo().Establecimiento_Empleado_Entysal("establecimientos");
