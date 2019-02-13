@@ -672,6 +672,8 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			s = con.conexion().createStatement();
 			rs = s.executeQuery(query);
 			
+			System.out.println(query);
+			
 			Vector vPrincipal = new Vector();//filas
 			Vector SubVector;//columnas
 			
@@ -866,7 +868,6 @@ public class Cat_Gestion_De_Pedidos_A_Establecimientos extends JFrame{
 			modeloFiltro.setRowCount(0);
 			
 			if(filtroDePendientes==null ||  actualizar.equals("SI") ||  actualizar.equals("HILO")){
-				
 				System.out.println("nulooo");
 				consultarfiltro("","",cmbEstablecimientos.getSelectedItem().toString().trim());
 			}			

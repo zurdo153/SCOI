@@ -692,6 +692,7 @@ public class Cat_Traspaso_A_Banco_Interno extends JFrame{
 			String comandob="banco_interno_filtro_cortes_cajas_verdes_de_trabajos '"+cadena+"','"+cmbEstablecimiento.getSelectedItem().toString()+"','"+cmbcuenta_bancaria.getSelectedItem().toString().trim()+"'"  ;
 			String basedatos="98",pintar="si";
 			ObjTab.Obj_Refrescar(tablab,modelob, columnasb, comandob, basedatos,pintar,checkbox);
+			System.out.println(comandob);
 	    }
 		
 		@SuppressWarnings("rawtypes")
@@ -794,7 +795,7 @@ public class Cat_Traspaso_A_Banco_Interno extends JFrame{
 	  		txtConcentrado.setText (tablab.getValueAt(fila,1)+"");
 	  		txtFechaConcentrado.setText (tablab.getValueAt(fila,3)+"");
   		
-  		if(grupoestablecimientos.equals("S")||grupoestablecimientos.equals("F")) {
+  		if(grupoestablecimientos.equals("S")||grupoestablecimientos.equals("F")||grupoestablecimientos.equals("P")) {
   			txtImporte_Banco_Interno.setEditable(true);
   			txtImporte_Concentrado.setText (tablab.getValueAt(fila,2)+"");
       		txtImporte_Banco_Interno.setText (tablab.getValueAt(fila,2)+"");

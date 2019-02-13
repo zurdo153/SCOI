@@ -133,7 +133,7 @@ public class Cat_Depositos_A_Bancos extends Cat_Root {
 	public static JTable tabla_totales = new JTable(tabla_model_totales);
 	public JScrollPane scroll_tabla_totales = new JScrollPane(tabla_totales);
 
-	JButton  btn_IDepositosBancLimpio  = new JButton();
+	JButton btn_IDepositosBancLimpio  = new JButton();
 	JButton btn_IDepositosBancP_Estab = new JButton();
 	
 	JCButton btn_lay_out          = new JCButton(""                 ,"tarjeta-de-credito-visa-icono-8242-32.png","Azul" );

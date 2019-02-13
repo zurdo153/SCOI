@@ -35,17 +35,19 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 	
 	Obj_Saldo_Banco_Interno banco_interno= new Obj_Saldo_Banco_Interno();	
 	
-	String cuentas[] =  banco_interno.Combo_Cuentas();
+	String cuentas[] =  banco_interno.Combo_Cuentas_Reporte();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbcuenta_bancaria = new JComboBox(cuentas);
 
 	String operador[] = {"Selecciona Un Reporte"
 			                ,"Saldo de Banco Interno en un Periodo por Cuenta" 
-			                ,"Pagos Realizados Pendientes de Realizar Corte" 
-			                ,"Ingresos Manuales en un Periodo"
+			                ,"Pagos Realizados en un Periodo por Cuenta" 
+			                ,"Pagos Realizados Pendientes de Realizar Corte" 			               
+			                ,"Ingresos Manuales en un Periodo por Cuenta"
+			                ,"Ingresos Manuales Pendientes de Recibir por Cuenta"
 							};
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmbConcepto = new JComboBox(operador);
+	JComboBox cmbReporte = new JComboBox(operador);
 	
 	String conceptos[] = {"TODOS","GASTO","COMPRA"};
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -73,7 +75,7 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 		
 		int x=20, y=25, width=100,height=20;
 		x=20;width=100;
-		this.panel.add(cmbConcepto).setBounds                   (x      ,y      ,width*4  ,height   );
+		this.panel.add(cmbReporte).setBounds                   (x      ,y      ,width*4  ,height   );
 		this.panel.add(new JLabel("Fecha:")).setBounds          (x      ,y+=30  ,width    ,height   );
 		this.panel.add(JLBlinicio).setBounds                    (x+=35  ,y      ,height   ,height   );
 		this.panel.add(c_inicio).setBounds                      (x+=20  ,y      ,width    ,height   );
@@ -81,14 +83,14 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 		this.panel.add(JLBfin).setBounds                        (x+=35  ,y      ,height   ,height   );
 		this.panel.add(c_final).setBounds                       (x+=20  ,y      ,width    ,height   );
 		this.panel.add(cmbcuenta_bancaria).setBounds            (x=20   ,y+=30  ,width    ,height   );
-		this.panel.add(cmbEstablecimiento).setBounds            (x+=115 ,y      ,170      ,height   );
-		this.panel.add(cmb_conceptosolicitud).setBounds         (x+=185 ,y      ,width    ,height   );
+//		this.panel.add(cmbEstablecimiento).setBounds            (x+=115 ,y      ,170      ,height   );
+		this.panel.add(cmb_conceptosolicitud).setBounds         (x+=115 ,y      ,width    ,height   );
 		
 		width=300;
 		this.panel.add(btngenerar_reporte).setBounds            (x=70  ,y+=35  ,width    ,height*2  );
 		this.cont.add(panel);
 		btngenerar_reporte.addActionListener(opGenerar_reporte);
-		cmbConcepto.addActionListener(op_seleccion_reporte);
+		cmbReporte.addActionListener(op_seleccion_reporte);
 		estatus(false);
 	}
 	
@@ -130,7 +132,7 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 		      if(fecha2.before(fecha1))error+="La Fecha Esta Invertida Final\n"  ;
 			}
 		}
-		if(cmbConcepto.getSelectedIndex()==0) {
+		if(cmbReporte.getSelectedIndex()==0) {
 			error+="Seleccionar Un Reporte";
 		}
 		return error;
@@ -140,57 +142,84 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			 estatus(false);
-			 String concepto=cmbConcepto.getSelectedItem().toString().trim();
+			 String concepto=cmbReporte.getSelectedItem().toString().trim();
 			 if(concepto.equals("Selecciona Un Reporte")){
 				 c_inicio.setEnabled(false);
 				 c_final.setEnabled(false);
 				 cmbcuenta_bancaria.setEnabled(false);
+				 cmb_conceptosolicitud.setEnabled(false);
+				 cmbEstablecimiento.setEnabled(false);
 			 }
 			 
 			 if(concepto.equals("Saldo de Banco Interno en un Periodo por Cuenta")){
 				 c_inicio.setEnabled(true);
 				 c_final.setEnabled(true);
 				 cmbcuenta_bancaria.setEnabled(true);
-				 cmbcuenta_bancaria.showPopup();
-				 cmbEstablecimiento.setEnabled(true);
+				 cmbEstablecimiento.setEnabled(false);
+			 }
+			 
+			 if(concepto.equals("Pagos Realizados en un Periodo por Cuenta")){
+				 c_inicio.setEnabled(true);
+				 c_final.setEnabled(true);
+				 cmbcuenta_bancaria.setEnabled(true);
+				 cmb_conceptosolicitud.setEnabled(true);
+				 cmbEstablecimiento.setEnabled(false);
 			 }
 			 
 			 if(concepto.equals("Pagos Realizados Pendientes de Realizar Corte" )){
 				 c_inicio.setEnabled(false);
 				 c_final.setEnabled(false);
+				 cmbcuenta_bancaria.setEnabled(false);
 				 cmb_conceptosolicitud.setEnabled(false);
 				 cmbEstablecimiento.setEnabled(false);
 			 }
 			 
-			 if(concepto.equals("Ingresos Manuales en un Periodo") ){
+			 if(concepto.equals("Ingresos Manuales en un Periodo por Cuenta") ){
 				 c_inicio.setEnabled(true);
 				 c_final.setEnabled(true);
+				 cmbcuenta_bancaria.setEnabled(true);
+				 cmb_conceptosolicitud.setEnabled(false);
+				 cmbEstablecimiento.setEnabled(false);
 			 }
 			 
+			 if(concepto.equals("Ingresos Manuales Pendientes de Recibir por Cuenta") ){
+				 c_inicio.setEnabled(false);
+				 c_final.setEnabled(false);
+				 cmbcuenta_bancaria.setEnabled(true);
+				 cmb_conceptosolicitud.setEnabled(false);
+				 cmbEstablecimiento.setEnabled(false);
+			 }
 		}
 	};
 	
+
+    
 	ActionListener opGenerar_reporte = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 					String basedatos="2.98";
 					String vista_previa_reporte="no";
 					int vista_previa_de_ventana=0;
 					String comando= "";
-					String reporte = "";
-			 if(cmbConcepto.getSelectedIndex()==0){
+					String reporte = ""; 
+			 if(cmbReporte.getSelectedIndex()==0){
 			       JOptionPane.showMessageDialog(null,"Debe de Seleccionar Un Tipo De Reporte","Aviso!", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));
-			        cmbConcepto.requestFocus();
-			        cmbConcepto.showPopup();
+			        cmbReporte.requestFocus();
+			        cmbReporte.showPopup();
 				    return;		
 			      }else{ 
 						if(validar_campos().equals("")){
-							 String concepto=cmbConcepto.getSelectedItem().toString().trim();
+							 String concepto=cmbReporte.getSelectedItem().toString().trim();
 							 String fecha_inicio = new SimpleDateFormat("dd/MM/yyyy").format(c_inicio.getDate())+" 00:00:00";
 							 String fecha_final = new SimpleDateFormat("dd/MM/yyyy").format(c_final.getDate())+" 23:59:58";
 								
 								if(concepto.equals("Saldo de Banco Interno en un Periodo por Cuenta" )){
 									comando="exec banco_interno_reporte_estado_de_cuenta '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+cmbcuenta_bancaria.getSelectedItem().toString().trim()+"'";
-									reporte ="Obj_Reporte_De_Saldo_Banco_Interno.jrxml";
+									reporte ="Obj_Reporte_De_Banco_Interno_Saldo.jrxml";
+							    }
+								
+								if(concepto.equals("Pagos Realizados en un Periodo por Cuenta" )){
+									comando="exec orden_de_pago_en_efectivo_reporte_por_periodo '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+ cmbcuenta_bancaria.getSelectedItem().toString().trim()+"','"+ cmb_conceptosolicitud.getSelectedItem().toString().trim()+"'";
+									reporte ="Obj_Reporte_De_Pagos_En_Efectivo_En_Un_Periodo.jrxml";
 							    }
 								
 								if(concepto.equals("Pagos Realizados Pendientes de Realizar Corte" )){
@@ -198,11 +227,16 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 									reporte ="Obj_Reporte_De_Banco_Interno_Ordenes_De_Gasto_Pendientes_De_Realizar_Corte.jrxml";
 							    }
 								
-								if(concepto.equals("Ingresos Manuales en un Periodo" )){
-									comando="exec banco_interno_reporte_de_ingresos_manuales '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"'";
+								if(concepto.equals("Ingresos Manuales en un Periodo por Cuenta")){
+									comando="exec banco_interno_reporte_de_ingresos_manuales '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+ cmbcuenta_bancaria.getSelectedItem().toString().trim()+"'";
 									reporte ="Obj_Reporte_De_Banco_Interno_Ingresos_Manuales_en_un_Periodo.jrxml";
 							    }
 								
+								if(concepto.equals("Ingresos Manuales Pendientes de Recibir por Cuenta" )){
+									comando="exec banco_interno_reporte_de_ingresos_manuales_pendientes_de_recibir '"+ cmbcuenta_bancaria.getSelectedItem().toString().trim()+"'";
+									reporte ="Obj_Reporte_De_Banco_Interno_Ingresos_Manuales_Pendientes_Recibir.jrxml";
+							    }
+														    
 						}else{
 						  JOptionPane.showMessageDialog(null, "Los Siguientes Campos Estan Vacios y Se Necesitan Para La Consulta:\n "+validar_campos(),"Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
 			               return;

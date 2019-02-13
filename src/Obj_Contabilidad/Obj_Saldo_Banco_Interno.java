@@ -89,6 +89,15 @@ public class Obj_Saldo_Banco_Interno {
 		this.tabla = tabla;
 	}
 
+	public String[] Combo_Cuentas_Reporte() {
+		try {
+			return new Cargar_Combo().Combos("Cuentas_Reporte_Banco_Interno");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
 	public String[] Combo_Cuentas() {
 		try {
 			return new Cargar_Combo().Combos("cuentas");

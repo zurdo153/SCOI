@@ -7,7 +7,7 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="201"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="793"/>
 	<queryString>
-		<![CDATA[exec banco_interno_reporte_de_ingresos_manuales '01/08/2018', '28/08/2018']]>
+		<![CDATA[exec banco_interno_reporte_de_ingresos_manuales_pendientes_de_recibir 'T']]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="folio"/>
@@ -69,10 +69,7 @@
 	<field name="nombre_de_cuenta" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre_de_cuenta"/>
 	</field>
-	<field name="fecha_inicial" class="java.sql.Timestamp">
-		<property name="com.jaspersoft.studio.field.label" value="fecha_inicial"/>
-	</field>
-	<field name="fecha_final" class="java.sql.Timestamp">
+	<field name="fecha_final" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="fecha_final"/>
 	</field>
 	<variable name="SUMA IMPORTE" class="java.lang.Double" resetType="Group" resetGroup="solicitud" calculation="Sum">
@@ -218,19 +215,8 @@
 				<textFieldExpression><![CDATA["INGRESOS MANUALES A BANCO INTERNO EN UN PERIODO "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="110" y="50" width="100" height="13" uuid="b60cd334-dfd1-4f81-b203-4f35f4183b86"/>
-				<textFieldExpression><![CDATA[$F{fecha_inicial}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="230" y="50" width="100" height="13" uuid="ec769d9a-ff83-4d3b-96be-48026d9b9e89"/>
+				<reportElement x="229" y="50" width="100" height="13" uuid="b60cd334-dfd1-4f81-b203-4f35f4183b86"/>
 				<textFieldExpression><![CDATA[$F{fecha_final}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="82" y="50" width="27" height="13" uuid="33e60d37-1802-4e9a-bf27-df421504fcda">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textFieldExpression><![CDATA["DEL: "+$F{estatus_movimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="209" y="50" width="20" height="13" uuid="071bbeff-481e-4dbf-b040-c9fb410dbbc6">

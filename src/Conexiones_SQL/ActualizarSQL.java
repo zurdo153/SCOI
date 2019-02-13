@@ -1769,6 +1769,16 @@ public class ActualizarSQL {
 					pstmtDelete.executeUpdate();
 					
 					for(int i=0; i<tabla.length; i++){
+						System.out.println(query_delete);
+						System.out.println(alim_denom.getFolio_corte().toUpperCase());
+						System.out.println(alim_denom.getEmpleado().toUpperCase().trim());
+						System.out.println(alim_denom.getEstablecimiento().toUpperCase());
+						System.out.println(Integer.parseInt(tabla[i][0].toString().trim()));
+						System.out.println(Integer.parseInt(tabla[i][2].toString().trim()));
+						System.out.println(Integer.parseInt(tabla[i][3].toString().trim()));
+						System.out.println(Integer.parseInt(tabla[i][4].toString().trim()));
+						System.out.println(query);
+						
 						pstmt.setString(1, alim_denom.getFolio_corte().toUpperCase());
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
 						pstmt.setString(3, alim_denom.getEstablecimiento().toUpperCase());

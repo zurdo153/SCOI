@@ -271,22 +271,22 @@
 				<textFieldExpression><![CDATA[$F{saldo_final}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="356" y="111" width="74" height="14" uuid="b8e3bca2-4904-4256-837c-794cb1ee4ba5"/>
+				<reportElement x="372" y="111" width="74" height="14" uuid="b8e3bca2-4904-4256-837c-794cb1ee4ba5"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_autorizado_pendiente_de_pagar_caja_chica}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="356" y="125" width="74" height="14" uuid="fb48efd2-6384-4208-88b4-42598cebc8a8"/>
+				<reportElement x="372" y="125" width="74" height="14" uuid="fb48efd2-6384-4208-88b4-42598cebc8a8"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_pagado_de_caja_chica_sin_corte}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="356" y="139" width="74" height="14" uuid="c2d20459-444a-483b-a9ee-6e84f0775fb2"/>
+				<reportElement x="372" y="139" width="74" height="14" uuid="c2d20459-444a-483b-a9ee-6e84f0775fb2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_pendiente_de_reponer_a_caja_chica}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="161" y="111" width="195" height="14" forecolor="#000000" uuid="e896d723-d12d-48c4-904d-c50a78ae9339">
+				<reportElement x="151" y="111" width="211" height="14" forecolor="#000000" uuid="e896d723-d12d-48c4-904d-c50a78ae9339">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -298,7 +298,7 @@
 				<text><![CDATA[Total Autorizado Pendiente De Pagar:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="161" y="125" width="195" height="14" forecolor="#000000" uuid="0811bbec-6378-4897-9f03-8f94275a1f23">
+				<reportElement x="151" y="125" width="211" height="14" forecolor="#000000" uuid="0811bbec-6378-4897-9f03-8f94275a1f23">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -310,7 +310,7 @@
 				<text><![CDATA[Total Pagado De Caja Chica Sin Corte:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="161" y="139" width="195" height="14" forecolor="#000000" uuid="37591515-c721-4f22-8e24-a08a92a1f15d">
+				<reportElement x="151" y="139" width="211" height="14" forecolor="#000000" uuid="37591515-c721-4f22-8e24-a08a92a1f15d">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -328,14 +328,14 @@
 				<imageExpression><![CDATA["C:/SCOI/imagen/anadir-mas-icono-6934-16.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="352" y="142" width="9" height="9" uuid="cf0da7b1-da72-46a2-b786-df8a3a5bbb60">
+				<reportElement x="363" y="142" width="9" height="9" uuid="cf0da7b1-da72-46a2-b786-df8a3a5bbb60">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/menos-rojo-eliminar-icono-5237-16.png"]]></imageExpression>
 			</image>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="356" y="83" width="74" height="14" uuid="91f8e20d-38b2-492b-b9de-54791a6d937f"/>
+				<reportElement x="372" y="83" width="74" height="14" uuid="91f8e20d-38b2-492b-b9de-54791a6d937f"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{saldo_final}]]></textFieldExpression>
 			</textField>
@@ -352,21 +352,21 @@
 				<text><![CDATA[Saldo Actual:]]></text>
 			</staticText>
 			<image>
-				<reportElement x="352" y="114" width="9" height="9" uuid="58835383-ce0b-46df-8988-33f448cd0a52">
+				<reportElement x="363" y="114" width="9" height="9" uuid="58835383-ce0b-46df-8988-33f448cd0a52">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/menos-rojo-eliminar-icono-5237-16.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="352" y="128" width="9" height="9" uuid="80a83930-9568-4494-b6e2-4bd9ecd17b62">
+				<reportElement x="363" y="128" width="9" height="9" uuid="80a83930-9568-4494-b6e2-4bd9ecd17b62">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/menos-rojo-eliminar-icono-5237-16.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="161" y="153" width="195" height="14" forecolor="#000000" uuid="f6096466-21a0-497b-8b11-133ed29602c2">
+				<reportElement x="151" y="153" width="211" height="14" forecolor="#000000" uuid="f6096466-21a0-497b-8b11-133ed29602c2">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -385,19 +385,19 @@
 				<imageExpression><![CDATA["C:/SCOI/imagen/igual.png"]]></imageExpression>
 			</image>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="356" y="153" width="74" height="14" uuid="f5fa35f4-ef2f-42bc-ac29-3bdb2d89da61"/>
+				<reportElement x="372" y="153" width="74" height="14" uuid="f5fa35f4-ef2f-42bc-ac29-3bdb2d89da61"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{saldo_final_proyectado}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="352" y="156" width="9" height="9" uuid="9ef129b8-6b9e-4d9b-967e-84c93352bb10">
+				<reportElement x="363" y="156" width="9" height="9" uuid="9ef129b8-6b9e-4d9b-967e-84c93352bb10">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/igual.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="161" y="97" width="195" height="14" forecolor="#000000" uuid="fabced76-9e6c-4bef-a16c-5e1f61b2e9d6">
+				<reportElement x="150" y="97" width="222" height="14" forecolor="#000000" uuid="fabced76-9e6c-4bef-a16c-5e1f61b2e9d6">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -406,16 +406,16 @@
 				<textElement textAlignment="Left">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Total Transferido Pendiente De Recibir:]]></text>
+				<text><![CDATA[Total Transferido a B.I. Pendiente De Recibir:]]></text>
 			</staticText>
 			<image>
-				<reportElement x="352" y="100" width="9" height="9" uuid="84a48986-967b-4bf8-88c6-e2f705ca368e">
+				<reportElement x="363" y="100" width="9" height="9" uuid="84a48986-967b-4bf8-88c6-e2f705ca368e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<imageExpression><![CDATA["C:/SCOI/imagen/anadir-mas-icono-6934-16.png"]]></imageExpression>
 			</image>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="356" y="97" width="74" height="14" uuid="dee8c2fa-d1b7-4638-8279-14403e629714"/>
+				<reportElement x="372" y="97" width="74" height="14" uuid="dee8c2fa-d1b7-4638-8279-14403e629714"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{total_ingreso_transferido_pendiente_de_recepcionar}]]></textFieldExpression>
 			</textField>
@@ -452,7 +452,7 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
-						<font size="9" isUnderline="false"/>
+						<font size="7" isUnderline="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{folio}+"-"+$F{observaciones}]]></textFieldExpression>
 				</textField>
@@ -461,7 +461,7 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{importe_ingreso}]]></textFieldExpression>
 				</textField>
@@ -470,7 +470,7 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{importe_egreso}]]></textFieldExpression>
 				</textField>
@@ -479,7 +479,7 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{RunningTotal_de_saldo}]]></textFieldExpression>
 				</textField>

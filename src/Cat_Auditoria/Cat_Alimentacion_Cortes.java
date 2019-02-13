@@ -1372,13 +1372,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	}
 
 	public class Cat_Alimentacion_De_Efectivo extends Cat_Efectivo{
-		
 		public Cat_Alimentacion_De_Efectivo(){
 			this.lblEmpleado.setText(lblNombre_Completo.getText());
 			tabla_model_efectivo.setRowCount(0);
-        
-        Object [][] lista_tabla = new Obj_Alimentacion_Por_Denominacion().get_tabla_model_modificar(lblFolio_Corte.getText());
-        String[] fila = new String[5];
+          Object [][] lista_tabla = new Obj_Alimentacion_Por_Denominacion().get_tabla_model_modificar(lblFolio_Corte.getText());
+          String[] fila = new String[5];
                 for(int i=0; i<lista_tabla.length; i++){
                         fila[0] = lista_tabla[i][0]+"";
                         fila[1] = lista_tabla[i][1]+"";
@@ -1391,21 +1389,13 @@ public class Cat_Alimentacion_Cortes extends JFrame{
             this.tabla_efectivo.addKeyListener(op_key);
 			this.btn_guardar.addActionListener(op_guardar);
 			this.addWindowListener(op_limpiar);
-			
 			filaEfec=0;
-			
 			 agregar(tabla_efectivo);
-			
 				//  guardar al presionar la tecla f2
 			    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 			       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "foco");
-			    
 			    getRootPane().getActionMap().put("foco", new AbstractAction(){
-				        public void actionPerformed(ActionEvent e)
-				        {
-				        	btn_guardar.doClick();    	
-				        }
-			    });
+				        public void actionPerformed(ActionEvent e){ btn_guardar.doClick(); } });
 		}
 		
 		private void agregar(final JTable tbl) {
@@ -1508,15 +1498,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					
 						if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de Denominaciones?") == 0){
 									Obj_Alimentacion_Denominacion Alim_Denom = new Obj_Alimentacion_Denominacion();
-									
 									Alim_Denom.setFolio_corte(lblFolio_Corte.getText());
 									Alim_Denom.setEmpleado(lblEmpleado.getText());
 									Alim_Denom.setEstablecimiento(lblEstablecimineto.getText());
-									
 									boolean existe_folio_corte = new Obj_Alimentacion_Cortes().buscar_folio_corte(lblFolio_Corte.getText());
-									
 									if(existe_folio_corte){
-										
 											if(Alim_Denom.actualizar(folio_usuario,tabla_guardar())){
 													
 													btnCancelar.setEnabled(true);

@@ -33,9 +33,8 @@ public class Init_Menu_Bar extends Init_Login{
     	int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
 		int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
 		this.setSize(ancho,alto);
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		
-	 }	
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);		
+	 }	                                          
 		
 	@SuppressWarnings("rawtypes")
 	public JMenuBar miMenuTop(){

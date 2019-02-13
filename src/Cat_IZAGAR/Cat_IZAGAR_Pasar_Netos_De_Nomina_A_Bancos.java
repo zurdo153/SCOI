@@ -200,8 +200,6 @@ public class Cat_IZAGAR_Pasar_Netos_De_Nomina_A_Bancos  extends JDialog{
 		campo.setBorder(BorderFactory.createTitledBorder("Traspaso de Netos a Bancos"));
 		
 /////////////////LLENADO DE TABLAS/////////////////////////////////////////////////////////////////////////////
-
-         
         trsfiltro = new TableRowSorter(modeloFiltro); 
 		tablaFiltro.setRowSorter(trsfiltro); 
 		

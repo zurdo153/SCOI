@@ -22,6 +22,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -35,16 +36,14 @@ import Obj_Renders.tablaRenderer;
 
 @SuppressWarnings("serial")
 public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFrame {
-	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
-	String[]Colum={"Folio","Nombre de Clasificacion ","Venta Real ","Sugerido A %","Meta de Venta 'A'","Sugerido B %","Meta de Venta 'B'","Sugerido C %","Meta de Venta 'C'"};
+	String[]Colum={"Folio","Nombre de Clasificacion ","Venta Real ","Sugerido A %","Meta de Venta 'A'","Sugerido B %","Meta de Venta 'B'","Sugerido C %","Meta de Venta 'C'", "Utilidad"};
 
-	 int columna=0;
-     int fila=0;
+	int columna=0;
+    int fila=0;
 	
-     Obj_tabla  Objetotabla = new Obj_tabla();
-     
+    Obj_tabla  Objetotabla = new Obj_tabla();
 	Obj_Metas_Establecimiento_periodo omep = new Obj_Metas_Establecimiento_periodo();
 	
 	JLabel lblEstablecimiento =new JLabel("Establecimiento:");
@@ -82,6 +81,7 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 						java.lang.Object.class,
 						java.lang.Object.class,
 						java.lang.Object.class,
+						java.lang.Object.class,
 				};
 				
 				@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -97,6 +97,7 @@ public class Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento extends JFr
 		
 		public JTable tabla = new JTable(modelo);
 		public JScrollPane scroll_tabla = new JScrollPane(tabla);
+		JToolBar menu_toolbar       = new JToolBar();
 		
 public Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento() {
 	            this.setSize(1024,550);
@@ -104,28 +105,28 @@ public Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento() {
 				this.setTitle("Alimentacion De Metas Mensuales Por Establecimiento");
 				this.setLocationRelativeTo(null);
 				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				panel.setBorder(BorderFactory.createTitledBorder("#"));
+				this.panel.setBorder(BorderFactory.createTitledBorder("#"));
 
-				int x=15, y=20, ancho=100,salto=20 ,z=25;
+				this.menu_toolbar.add(cmbEstablecimiento );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.add(cmbAnio );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.add(cmbMes );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.addSeparator(   );
+		   	    this.menu_toolbar.add(btnGenerar    );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.add(btnDeshacer   );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.addSeparator(   );
+				this.menu_toolbar.add(btnGuardar );
+				this.menu_toolbar.setFloatable(false);
 				
-				panel.add(lblEstablecimiento).setBounds(x, y, ancho-15, z);
-				panel.add(cmbEstablecimiento).setBounds(lblEstablecimiento.getX()+lblEstablecimiento.getWidth(), y, ancho+70, z);
-
-				panel.add(lblAnio).setBounds(x+cmbEstablecimiento.getX()+cmbEstablecimiento.getWidth(), y, ancho/3, z);
-				panel.add(cmbAnio).setBounds(lblAnio.getX()+lblAnio.getWidth(), y, ancho, z);
-				
-				panel.add(lblMes).setBounds(x+cmbAnio.getX()+cmbAnio.getWidth(), y, ancho/3, z);
-				panel.add(cmbMes).setBounds(lblMes.getX()+lblMes.getWidth(), y, ancho, z);
-				
-				panel.add(lblGrupo).setBounds(x+cmbMes.getX()+cmbMes.getWidth(), y,(ancho/2), z);
-				panel.add(cmbGrupo).setBounds(lblGrupo.getX()+lblGrupo.getWidth(), y, (ancho+50), z);
-				
-				ancho=140;
-				panel.add(btnGenerar).setBounds (x+cmbGrupo.getX()+cmbGrupo.getWidth()+35 ,y,ancho+20, z);
-				panel.add(btnDeshacer).setBounds(x                                        ,470,ancho, z);
-				panel.add(btnGuardar).setBounds (x+cmbGrupo.getX()+cmbGrupo.getWidth()+55 ,470,ancho, z);
-				
-				panel.add(scroll_tabla).setBounds (x ,cmbGrupo.getY()+salto+10,980,400);
+				panel.add(menu_toolbar).setBounds (15 ,20 ,980, 25);
+				panel.add(scroll_tabla).setBounds (15 ,50 ,980,440);
 			
 				cont.add(panel);
 				
@@ -146,7 +147,6 @@ public Cat_Alimentacion_De_Metas_Mensuales_Por_Establecimiento() {
 		}
 
 
-
 public void init_tablaconsulta(){
 	this.tabla.getTableHeader().setReorderingAllowed(false) ;
 	this.tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -160,7 +160,8 @@ public void init_tablaconsulta(){
 	this.tabla.getColumnModel().getColumn(6).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
 	this.tabla.getColumnModel().getColumn(7).setCellRenderer(new tablaRenderer("texto","centro","Arial","negrita",12));
 	this.tabla.getColumnModel().getColumn(8).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
-
+	this.tabla.getColumnModel().getColumn(9).setCellRenderer(new tablaRenderer("texto","derecha","Arial","negrita",12));
+	
 	this.tabla.getColumnModel().getColumn(0).setMinWidth(40);
 	this.tabla.getColumnModel().getColumn(1).setMinWidth(200);
 	this.tabla.getColumnModel().getColumn(2).setMinWidth(100);
@@ -170,20 +171,22 @@ public void init_tablaconsulta(){
 	this.tabla.getColumnModel().getColumn(6).setMinWidth(100);
 	this.tabla.getColumnModel().getColumn(7).setMinWidth(100);
 	this.tabla.getColumnModel().getColumn(8).setMinWidth(100);
-	
 						}
 
-	private void refrestabla(){    
+	private void refrestabla(String Qry){    
 			modelo.setRowCount(0);
 			Statement s;
 			ResultSet rs;
-			 String [] fila = new String[9];
+			 String [] fila = new String[10];
+			 System.out.println(Qry);
 			try {
 				Connexion con = new Connexion();
 				s = con.conexion_ventas().createStatement();
-				rs = s.executeQuery("exec sp_sugerido_de_metas_por_mes_año_y_establecimiento "+"'"+cmbGrupo.getSelectedItem()+"',"+cmbAnio.getSelectedItem()+","+"'"+cmbMes.getSelectedItem()+"',"+"'"+cmbEstablecimiento.getSelectedItem()+"'");
+				rs = s.executeQuery(Qry);
+				  
 				   while (rs.next()){ 
 					
+				
 				  fila[0] = rs.getString(1).trim();
 				  fila[1] = rs.getString(2).trim()+"";
 				  fila[2] = rs.getString(3).trim()+""; 
@@ -193,44 +196,13 @@ public void init_tablaconsulta(){
 				  fila[6] = rs.getString(7).trim();
 				  fila[7] = rs.getString(8).trim(); 
 				  fila[8] = rs.getString(9).trim(); 
+				  fila[9] = rs.getString(10).trim(); 
 				  	modelo.addRow(fila);
 				  	  }
 		s.close();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Error en la  SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-										  }
-	}
-	
-
-	
-	public void buscaMetaFecha(){    
-			modelo.setRowCount(0);
-			Statement s;
-			ResultSet rs;
-
-			try {
-				Connexion con = new Connexion();
-				s = con.conexion_ventas().createStatement();
-				rs = s.executeQuery("exec sp_consulta_de_metas_mensuales_por_establecimiento '"+cmbEstablecimiento.getSelectedItem().toString().trim()+"',"+cmbAnio.getSelectedItem().toString().trim()+","+cmbMes.getSelectedIndex());
-			 String [] fila = new String[10];
-			while (rs.next()){   
-				  fila[0] = rs.getString(1).trim();//clasificacionMeta
-				  fila[1] = rs.getString(2).trim();//code_esta
-				  fila[2] = rs.getString(3).trim();//meta_mensual 
-				  fila[3] = rs.getString(4).trim();//mes 
-				  fila[4] = rs.getString(5).trim();//año 
-				  fila[5] = rs.getString(6).trim();//estatus 
-				  fila[6] = rs.getString(7).trim();//porcentaje
-				  fila[7] = rs.getString(8).trim();//porcentaje de b 
-				  fila[8] = rs.getString(9).trim();//porcentaje de C 
-				 					modelo.addRow(fila); 
-			}
-			
-		s.close();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Error en la  SQLException: "+e1.getMessage(), "Avisa al Administrador Del Sistema", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
 										  }
 	}
 	
@@ -246,7 +218,6 @@ public void init_tablaconsulta(){
 				int anio=Integer.valueOf((String) cmbAnio.getSelectedItem());
 				int mes =cmbMes.getSelectedIndex()+1;
 				String estab = (String)cmbEstablecimiento.getSelectedItem().toString().trim();
-				int cod_meta=cmbGrupo.getSelectedIndex();
 				
 				if(cmbEstablecimiento.getSelectedItem().toString().trim().equals("Selecciona un Establecimiento")){
 					JOptionPane.showMessageDialog(null, "Es Necesario Selecionar Un Establecimiento ", "Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
@@ -254,71 +225,19 @@ public void init_tablaconsulta(){
 					cmbEstablecimiento.showPopup();
 					return;
 				}
-				if(cmbGrupo.getSelectedItem().toString().trim().equals("Seleccione un Grupo")){
-					JOptionPane.showMessageDialog(null, "Es Necesario Selecionar Un Grupo ", "Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
-					cmbGrupo.requestFocus();
-					cmbGrupo.showPopup();
-					return;
-				}
 				
-				if( omep.buscar_metas_periodo(anio,mes,cmbEstablecimiento.getSelectedItem().toString().trim()).equals("si")){
-					
+				if( omep.buscar_metas_periodo(anio,mes,estab).equals("si")){
 					JOptionPane.showMessageDialog(null, "La Meta Que Estas Queriendo Calcular Ya Existe y No Puede Ser Modificada,\n Esta Se Cargará A Continuación", "Aviso", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
-					buscaMetaFecha();
+					refrestabla("exec sp_consulta_de_metas_mensuales_por_establecimiento '"+estab+"',"+anio+","+mes);
 					btnGenerar.setEnabled(false);
 					btnGuardar.setEnabled(false);
 					cmbAnio.setEnabled(false);
 					cmbMes.setEnabled(false);
-					cmbEstablecimiento.setEnabled(false);
+					cmbEstablecimiento.setEnabled(false); 
 					cmbGrupo.setEnabled(false);
 					return;
 			   }else{
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Supermercados")){
-			            	cod_meta=1;
-			            }	 
-			            
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Alimentos")){
-			            	cod_meta=7;
-			            }
-			            
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Papelerias")){
-			            	cod_meta=16;
-			            }
-			            
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Refaccionarias")){
-			            	cod_meta=23;
-			            }
-			            
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Izacel")){
-			            	cod_meta=49;
-			            }
-			            
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Dulcerias")){
-			            	cod_meta=57;
-			            }
-
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Ferreterias")){
-			            	cod_meta=80;
-			            }
-			            
-			            if(cmbGrupo.getSelectedItem().toString().trim().equals("Depositos")){
-			            	cod_meta=84;
-			            }
-			            
-						if(omep.buscar_metas_a_generar(anio, mes,cod_meta,estab).equals("no") ){
-								modelo.setRowCount(0);
-								JOptionPane.showMessageDialog(null, "No Se Pudieron Calcular Metas Con Los Parametros Seleccionados "
-										+ "  \no No Existe Venta del Año Anterior Seleccionado:["+cmbAnio.getSelectedItem().toString().trim()+"]"
-										+ "  \nA Continuación Unos Ejemplos De Ayuda"
-										+ "  \nEjemplo 1: Establecimiento [SUPER I]        Grupo [Supermercados] "
-										+ "  \nEjemplo 2: Establecimiento [ESPACIO 35] Grupo [Alimentos]"
-										+ "  \nEjemplo 3: Establecimiento [PAPER CITY] Grupo [Papelerias]"
-										+ "  \nEjemplo 3: Establecimiento [FIESTILANDIA] Grupo [Dulcerias]"
-										+ "  \nEjemplo 3: Establecimiento [REFACCIONARIA] Grupo [Refaccionarias]"
-										, "Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-de-alerta-icono-4069-64.png"));	
-								return;						
-						}else{
-							    refrestabla();
+							    refrestabla("exec sp_sugerido_de_metas_por_mes_año_y_establecimiento '"+estab+"',"+anio+","+mes);
 							    btnGenerar.setEnabled(false);
 								btnGuardar.setEnabled(true);
 								cmbAnio.setEnabled(false);
@@ -326,7 +245,6 @@ public void init_tablaconsulta(){
 								cmbEstablecimiento.setEnabled(false);
 								cmbGrupo.setEnabled(false);
 								return;
-						} 
 			   }
 		}
 	};
@@ -374,10 +292,6 @@ public void init_tablaconsulta(){
 									}
 							     }else{
 							    	 JOptionPane.showMessageDialog(null, "ya existen metas con este periodo  \n Error En el Guardado de la Metas por Periodo","Avise Al Adiministrador",JOptionPane.ERROR_MESSAGE, new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
-                                     ////falta hacer el update para cambios en las metas
-//							    	 if(obm.Modidicar_matriz(tabla_para_guardado())){
-//							    		 init_tablaconsulta();
-//							    		 JOptionPane.showMessageDialog(null, "Se han Actualizado Correctamente Los Datos de la Matriz ", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							    	 btnDeshacer.doClick();
 							    	 return;
 //							    	 	}

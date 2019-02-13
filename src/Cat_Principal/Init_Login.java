@@ -73,7 +73,7 @@ public class Init_Login extends JFrame{
 	public Container cont = getContentPane();
 	public JLayeredPane panel = new JLayeredPane();
 	JLabel fondo = new JLabel();
-	int Version=1316;
+	int Version=1320;
 	
 	String color[] =  new Obj_Menus().Combo_Colores();
 	@SuppressWarnings({ "unchecked", "rawtypes" })

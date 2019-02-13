@@ -170,6 +170,10 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 				String reporte = "Obj_Reporte_De_Corte_Caja_Chica_Ordenes_de_Gasto.jrxml";
 			    String comando = "exec ordenes_de_pago_reporte_de_corte "+folio;
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+			 
+				reporte = "Obj_Reporte_De_Orden_De_Pago_En_Efectivo_Corte_A_Detalle.jrxml";
+			    comando = "exec Orden_De_Pago_En_Efectivo_Corte_A_Detalle "+folio;
+			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		   }
 	};
 	

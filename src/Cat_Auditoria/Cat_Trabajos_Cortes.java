@@ -1003,21 +1003,10 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	
 	double total_de_corte_real = 0;
 	public void calcular_totales(){
-		
-//		double t_efect   = 0;
-//		double r_prog    = 0;
-//		double cheques   = 0;
-//		double vales     = 0;
-//		double dolares   = 0;
-
 		double pin_pad   = 0;
-		
 		double r_clt     = 0;
-//		double ta        = 0;
 		double luz       = 0;
-//		double apartados = 0;
 		double t_corte_totales  = 0;
-		
 		double total_izacel    = 0;
 		double total_ta		   = 0;
 		double total_f_sodas   = 0;
@@ -1025,15 +1014,8 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		double r_clt_cv		   = 0;
 		double total_corte_cv  = 0;
 		double pin_pad_cv	   = 0;
-////		double total_cheques   = 0;
-////		double total_vales	   = 0;
-//		double total_dolar	   = 0;
-		
 		double total_ta_cv 	  = 0;
 		double total_rluz_cv  = 0;
-//		double total_apart_cv = 0;
-		
-
 		
 			int filasCV = 0;
 			if(tabla_c_verde.getRowCount()>0){
@@ -1041,12 +1023,7 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			}
 
 			for(int i =0; i<tabla_concentrado.getRowCount()-filasCV; i++){
-						
-////							total_cheques+= Double.valueOf(tabla_concentrado.getValueAt(i, 3 ).toString().trim());
-////							total_vales	 += Double.valueOf(tabla_concentrado.getValueAt(i, 4 ).toString().trim());
-//							total_dolar	 += Double.valueOf(tabla_concentrado.getValueAt(i, 5 ).toString().trim());
 							total_f_sodas	+= Double.valueOf(tabla_concentrado.getValueAt(i, 6 ).toString().trim());
-							
 							pin_pad 	 	+= Double.valueOf(tabla_concentrado.getValueAt(i, 7 ).toString().trim());
 							t_corte_totales	+= Double.valueOf(tabla_concentrado.getValueAt(i, 8 ).toString().trim());
 							total_dif    	+= Double.valueOf(tabla_concentrado.getValueAt(i, 9 ).toString().trim());
@@ -1055,23 +1032,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 							luz 		 	+= Double.valueOf(tabla_concentrado.getValueAt(i, 12).toString().trim());
 							
 							if(tabla_concentrado.getValueAt(i, 0 ).toString().trim().equals("IZACEL")){
-//								System.out.println(total_izacel+"  "+total_ta+"  "+tabla_concentrado.getValueAt(i, 1 ).toString().trim());
 								total_izacel += Double.valueOf(tabla_concentrado.getValueAt(i, 8 ).toString().trim());
 							}
 							
-//							if(tabla_concentrado.getValueAt(i, 0 ).toString().trim().equals("TOTAL CAJA VERDE")){
-//								total_corte_cv 	+= Double.valueOf(tabla_concentrado.getValueAt(i, 8 ).toString().trim());
-//							}
 						}
 					
 			if(filasCV==1){
-//				txtTotalDelCorte.setText(		df.format(t_corte-Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 8 ).toString().trim())));
-//				txtTotalRetiroCliente.setText(	df.format(r_clt-Double.valueOf  (tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 10).toString().trim())));
-				
 //				en esta parte se les suma los totales de caja verde
-////				total_cheques += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 3 ).toString().trim());
-////				total_vales	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 4 ).toString().trim());
-//				total_dolar	  += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 5 ).toString().trim());
 				total_f_sodas += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 6 ).toString().trim());
 				pin_pad_cv 	  = Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 7 ).toString().trim());
 				total_dif     += Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 9 ).toString().trim());
@@ -1080,26 +1047,10 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				r_clt_cv 		= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 10).toString().trim());
 				total_ta_cv		= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 11).toString().trim());
 				total_rluz_cv 	= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 12).toString().trim());
-//				total_apart_cv 	= Double.valueOf(tabla_concentrado.getValueAt(tabla_concentrado.getRowCount()-1, 13).toString().trim());
-				
-				
-//				txtCajaVerde.setText(df.format(	total_corte_cv
-//												- total_f_sodas
-////												- total_dolar
-//												+ (total_dif) ));
-				
 			}
 			txtCajaVerde.setText(df.format(	total_corte_cv
 					- total_f_sodas
 					+ (total_dif) ));
-			
-			
-			
-//			else{
-////				txtTotalDelCorte.setText(		df.format(t_corte));
-////				txtTotalRetiroCliente.setText(	df.format(r_clt));
-//				txtCajaVerde.setText("0.00");
-//			}
 					
 			txtTotalDelCorte.setText( 	df.format(		t_corte_totales + (	Double.valueOf(	txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText()	)	)	) 	);
 			total_de_corte_real = (	Double.valueOf(	txtTotalDelCorte.getText().equals("")?"0":txtTotalDelCorte.getText()	)	);
@@ -1108,17 +1059,11 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			txtTotalRecibosDeLuz.setText(	df.format(luz+total_rluz_cv));
 					
-//					System.out.println(total_izacel+"  "+total_ta);
 					txtIzacel.setText( df.format(total_izacel + total_ta + total_ta_cv) );
-					
-//					pendiente
-//					txtPlanes.setText(df.format(0));
-					
 					txtPines.setText(df.format(pin_pad + pin_pad_cv + r_clt + r_clt_cv));
 					
 					txtDepositos.setText(df.format( Double.valueOf(txtTotalDelCorte.getText())+
 													 Double.valueOf(txtTotalRetiroCliente.getText())-
-//													 Double.valueOf(txtTotalRecibosDeLuz.getText())-
 													 Double.valueOf(txtIzacel.getText())-
 													 Double.valueOf(txtEfectivoPlanes.getText().equals("")?"0":txtEfectivoPlanes.getText())-
 													 Double.valueOf(txtPines.getText())
@@ -1180,7 +1125,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		JTextField txtFolioCorte 				= new Componentes().text(new JTextField(), "Folio Del Corte", 60, "String");
 		JTextField txtAsignacion 				= new Componentes().text(new JTextField(), "Folio De Asignacion", 60, "String");
 		JTextField txtCajero 					= new Componentes().text(new JTextField(), "Nombre Del Cajero(a)", 160, "String");
-		
 		JTextField txtTotalDeEfectivo 			= new Componentes().text(new JTextField(), "Total De Efectivo", 160, "Double");
 		JTextField txtTotalRetirosProgramados 	= new Componentes().text(new JTextField(), "Total De Retiros Programados", 160, "Double");
 		JTextField txtTotalCheques 				= new Componentes().text(new JTextField(), "Total De Cheques", 160, "Double");
@@ -1190,19 +1134,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		JTextField txtTotalPines 				= new Componentes().text(new JTextField(), "Total De Pines", 160, "Double");
 		
 		JButton btnGuardarModificacion = new JButton("Guardar");
-		
-//		tb.getValueAt(fila, 2).toString().trim()//folio corte
-//		,tb.getValueAt(fila, 3).toString().trim()//folio asignacion
-//		,tb.getValueAt(fila, 4).toString().trim()//nombre cajero
-		
-//		,tb.getValueAt(fila, 5).toString().trim() //total efectivo
-		
-//		,tb.getValueAt(fila, 5).toString().trim() //retiros programados
-//		,tb.getValueAt(fila, 5).toString().trim() //cheques
-//		,tb.getValueAt(fila, 5).toString().trim() //vales
-//		,tb.getValueAt(fila, 5).toString().trim() //dolares
-//		,tb.getValueAt(fila, 10).toString().trim()//fuente de sodas
-//		,tb.getValueAt(fila, 11).toString().trim()
 		
 		public Cat_Modificacion_De_Corte(String fCorte, String fAsignacion, String cajero, String efectivo, String retiros_programados, String cheques, String vales, String dolares, String fSodas, String pines){
 			this.setTitle("Modificacion De Trabajo De Corte");
@@ -1263,16 +1194,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			txtCajero.setEditable(false);
 			txtFolioCorte.setEditable(false);
 			txtAsignacion.setEditable(false);
-			
-//			txtTotalDeEfectivo.setEditable(false);
-//			txtTotalRetirosProgramados.setEditable(false);	
-//			txtTotalCheques.setEditable(false);		
-//			txtTotalVales.setEditable(false);
-//			txtTotalDolares.setEditable(false);
-//			txtTotalFuenteDeSodas.setEditable(false);
-//			txtTotalPines.setEditable(false);
-			
-			
 			txtFolioCorte.setText(fCorte);
 			txtAsignacion.setText(fAsignacion);
 			txtCajero.setText(cajero);
@@ -1284,7 +1205,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			txtTotalDolares.setText(dolares);	
 			txtTotalFuenteDeSodas.setText(fSodas);	
 			txtTotalPines.setText(pines); 				
-			
 			
 			btnGuardarModificacion.addActionListener(opGuardarModif);
 			
@@ -1351,11 +1271,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		        }
 		    public boolean isCellEditable(int fila, int columna){
 		                switch(columna){
-//		                        case 0  : if(tabla_model_grupos.getValueAt(fila, 1).toString().trim().equals("IZACEL") || Double.valueOf(tabla_model_grupos.getValueAt(fila, 11).toString()) > 0){
-//		                        				return false; 
-//					                        }else{
-//					                        	return true; 
-//					                        }      
 		                		case 0	: return false;
 		                        case 1 : return false; 
 		                }
@@ -1381,9 +1296,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		JTextField txtOtrosFaltantes = new Componentes().text(new JTextField(), "Otros Faltantes", 20, "Double");
 		JTextField txtOtrosSobrentes = new Componentes().text(new JTextField(), "Otros Sobrantes", 20, "Double");
 		JTextField txtCajaVerdeRepEfect = new Componentes().text(new JTextField(), "Caja Verde", 160, "Double");
-		
-//		JTextField txtTotal = new Componentes().text(new JTextField(), "Total", 20, "Double");
-//		JTextField txtSobrantesFinanazas = new Componentes().text(new JTextField(), "Sobrantes Finanazas", 20, "Double");
 		JTextField txtRetiros_Clientes = new Componentes().text(new JTextField(), "Retiros Clientes", 20, "Double");
 		
 		JTextField txtTotalFinal = new Componentes().text(new JTextField(), "Total Final", 20, "Double");
@@ -1452,10 +1364,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 //			--------------------------------------------------------------------------------
 			panelRep.add(new JLabel("(+)Otros Sobrantes:")).setBounds(x,y+=25,ancho,20);               
 			panelRep.add(txtOtrosSobrentes).setBounds(x+ancho+10,y,ancho,20);                       
-			
-//			panelRep.add(new JLabel("Total:")).setBounds(x,y+=25,ancho,20);
-//			panelRep.add(txtTotal).setBounds(x+ancho+10,y,ancho,20);								
-			
 			panelRep.add(new JLabel("Total Final:")).setBounds(x,y+=25,ancho,20);			
 			panelRep.add(txtTotalFinal).setBounds(x+ancho+10,y,ancho,20);							
 			
@@ -1464,10 +1372,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			panelRep.add(new JLabel("Banco Interno:")).setBounds(x,y+=25,ancho,20);
 			panelRep.add(txtBancoInterno).setBounds(x+ancho+10,y,ancho,20);						panelRep.add(btnGuardarReposicionEfectivo).setBounds(x+ancho*5,y+=25,120,20);
-			
-//			panelRep.add(new JLabel(":")).setBounds(x,y+=25,ancho+50,20);
-//			panelRep.add(txtSobrantesJuan).setBounds(x+ancho+50,y,ancho-20,20);
-			
 			
 			contRep.add(panelRep);
 			
@@ -1479,7 +1383,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			txtDiferenciaDeCortes.setEditable(false);
 			txtCajaVerdeRepEfect.setEditable(false);
 			txtRetiros_Clientes.setEditable(false);
-//			txtTotal.setEditable(false);
 			txtTotalFinal.setEditable(false);
 			txtBancoInterno.setEditable(false);
 			
@@ -1487,11 +1390,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			txtDiferenciaPlanesRep.setEditable(false);
 			
 			llamar_render2();
-			
-//			txtOtrosFaltantes.setEditable(true);
-//			txtOtrosSobrentes.setEditable(true);
-//			txtSobrantesJuan.setEditable(true);
-//			txtDeposito2.setEditable(true);
 			
 			txtConcentrado.setText(grupo_corte);
 			
@@ -1513,10 +1411,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			
 			txtDiferenciaPlanesRep.setText(df.format(Double.valueOf(txtEfectivoPlanes.getText().toString().trim().equals("")?"0":txtEfectivoPlanes.getText().toString().trim())
 					-(Double.valueOf(txtTotalPlanesRep.getText().toString().trim().equals("")?"0":txtTotalPlanesRep.getText().toString().trim())))+"");
-//			txtOtrosFaltantes.addKeyListener(opReposicionEfectivo);
-//			txtOtrosSobrentes.addKeyListener(opReposicionEfectivo);
-//			txtSobrantesJuan.addKeyListener(opReposicionEfectivo);
-//			txtDeposito2.addKeyListener(opReposicionEfectivo);
 			
 			reposicionEfectivo(txtOtrosFaltantes,"otroFaltante");
 			reposicionEfectivo(txtOtrosSobrentes,"otroSobrante");
@@ -1524,7 +1418,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 			reposicionEfectivo(txtDeposito2,"deposito");
 			
 			txtTotalPlanesRep.addKeyListener(opDiferenciaPlanesTelcel);
-			
 			
 			btnGuardarReposicionEfectivo.addActionListener(opGuardarRep);
 			
@@ -1611,21 +1504,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 				public void keyPressed(KeyEvent e){}
 			});
 		}
-//		KeyListener opReposicionEfectivo = new KeyListener() {
-//			public void keyTyped(KeyEvent e) {	}
-//			@SuppressWarnings("static-access")
-//			public void keyReleased(KeyEvent e) {
-//				
-//				if(e.getKeyCode() == e.VK_ENTER){
-//					System.out.println(txt);
-//				}
-//				
-//				
-//				
-//				calcularReposicionDeEfectivo();
-//			}
-//			public void keyPressed(KeyEvent e){}
-//		};
 		
 		public void calcularReposicionDeEfectivo(){
 			

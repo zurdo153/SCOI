@@ -7640,15 +7640,12 @@ public class BuscarSQL {
 		return emp;
 	}
 	
-	public String busca_metas_periodo(int anio,int mes,String cod_est) throws SQLException{
+	public String busca_metas_periodo(int anio,int mes,String establecimiento) throws SQLException{
 		String Descripcion="";
 		String query = 
-				"declare @thiSql char(2), @establ varchar(20) set @establ=(select  top 1 cod_estab from establecimientos where establecimiento='"+cod_est+"')"
-				+" set @thiSql =(select top 1 'si' from metas_mensuales_por_establecimiento where año="+anio+" and cod_estab=@establ and mes="+mes+")"
-				+" if(@thiSql is null) set @thiSql='no'" 
-				+" select @thiSql  as resultado";
-
-	
+				"DECLARE @valor char(2),@anio int="+anio+",@mes int="+mes+",@establ varchar(80)='"+establecimiento+"'" + 
+				" set @valor=isnull((select top 1 'si' from  metas_mensuales_por_establecimiento where cod_estab=(select cod_estab from establecimientos where establecimiento=@establ) and año=@anio and mes=@mes),'no')" + 
+				" select @valor  as resultado";
 		Statement stmt = null;
 	
 		try {
@@ -7671,47 +7668,9 @@ public class BuscarSQL {
 			}
 			}
 		}
-		
 		return Descripcion;
-		
-		
-	
 	}
-	//new
-	public String busca_metas_a_generar(int anio,int mes, int cod_meta,String est) throws SQLException{
-		String Descripcion="";
-		String query = 
-				"declare @thiSql char(2), @establ int set @establ= (select  top 1 cod_estab from establecimientos where establecimiento='"+est+"') "
-				+"set @thiSql =(select top 1 'si' from tabla_de_venta_por_mes_de_un_año_por_un_clasificador_de_meta_y_establecimiento ("+anio+"-1,"+mes+","+cod_meta+",@establ)) "
-			    +"if(@thiSql is null) set @thiSql='no' " 
-			    +"select @thiSql  as resultado";
-		Statement stmt = null;
-		try {
-			stmt = con.conexion_ventas().createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				Descripcion=(rs.getString(1));
-				
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally{
-			if(stmt!=null){
-				
-				try {
-				stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			}
-		}
-		
-		return Descripcion;
-		
-		
 	
-	}
 	public String Folio_Siguiente() throws SQLException{
 		String folio = "";
 		String query = "select folio+1 from tb_folios where folio_transaccion=31 ";
