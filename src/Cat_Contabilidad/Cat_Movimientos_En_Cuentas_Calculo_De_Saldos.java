@@ -563,9 +563,11 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 					new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
 				
 					int regSeleccionadosBMS = 0;
+					int filaAEliminarBms = -1;
 					for(int i = 0; i<tablaBMS.getRowCount() ;i++){
 						if(Boolean.valueOf(tablaBMS.getValueAt(i, 0).toString())){
 							regSeleccionadosBMS++;
+							filaAEliminarBms=i;
 						}
 					}
 				
@@ -579,12 +581,12 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 									arregloConciliarRespaldo[i]= i==0  || i==modeloRespaldo.getColumnCount() ? "false" : tablaArchivo.getValueAt(filaAnteriorArchivo, i);
 									arregloConciliar[i]= i==0 ? "false" : tablaArchivo.getValueAt(filaAnteriorArchivo, i);
 								}else{
-									arregloConciliarRespaldo[i]= i==0 || i==modeloRespaldo.getColumnCount() ? "false" : tablaBMS.getValueAt(filaAnteriorBMS, (i-(tablaArchivo.getColumnCount())) );
+									arregloConciliarRespaldo[i]= i==0 || i==modeloRespaldo.getColumnCount() ? "false" : tablaBMS.getValueAt(filaAEliminarBms, (i-(tablaArchivo.getColumnCount())) );
 								}
 							}
 							
 							modeloArchivo.removeRow(filaAnteriorArchivo);
-							modeloBMS.removeRow(filaAnteriorBMS);
+							modeloBMS.removeRow(filaAEliminarBms);
 							
 							recalcularConciliacion(Double.valueOf(arregloConciliar[3].toString().trim()), Double.valueOf(arregloConciliar[4].toString().trim()));
 							

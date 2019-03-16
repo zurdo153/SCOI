@@ -30,6 +30,8 @@ public class Obj_Checador {
 	
 	private Object[][] arreglo_mensaje;
 	
+	private String puede_checar_sin_cuadrante_capturado;
+	
 	public Obj_Checador() {
 		folio_empleado = 0;		nombre_empleado="";		no_checador="";		status = 0;		folio_estab = 0;
 		establecimiento="";		folio_puesto = 0;		puesto="";		master_key="";		valida_descanso=false;
@@ -39,6 +41,8 @@ public class Obj_Checador {
 		forma_de_checar="";		huella_1=null;		huella_2=null;
 		
 		autorizacion_de_huella_en_pc=false;
+		
+		puede_checar_sin_cuadrante_capturado = "";
 	}
 
 	public int getFolio_empleado() {
@@ -199,6 +203,14 @@ public class Obj_Checador {
 
 	public void setAutorizacion_de_huella_en_pc(boolean autorizacion_de_huella_en_pc) {
 		this.autorizacion_de_huella_en_pc = autorizacion_de_huella_en_pc;
+	}
+
+	public String getPuede_checar_sin_cuadrante_capturado() {
+		return puede_checar_sin_cuadrante_capturado;
+	}
+
+	public void setPuede_checar_sin_cuadrante_capturado(String puede_checar_sin_cuadrante_capturado) {
+		this.puede_checar_sin_cuadrante_capturado = puede_checar_sin_cuadrante_capturado;
 	}
 
 	public Obj_Checador buscar(int folio_empleado){

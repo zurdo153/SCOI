@@ -282,6 +282,12 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 	KeyListener opFiltro = new KeyListener() {
 		public void keyTyped(KeyEvent e) {		}
 		public void keyReleased(KeyEvent e) {
+			
+			if(filaAnteriorBMS>=0){
+				tablaBMS.setValueAt(false, filaAnteriorBMS, 0);
+				filaAnteriorBMS = -1;
+			}
+			
 			int[] columnas = {1,2,3,4,5,6,7,8};
 			new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
 		}
@@ -417,12 +423,15 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 					new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
 				
 					int regSeleccionadosBMS = 0;
+					int filaAEliminarBms = -1;
 					for(int i = 0; i<tablaBMS.getRowCount() ;i++){
 						if(Boolean.valueOf(tablaBMS.getValueAt(i, 0).toString())){
 							regSeleccionadosBMS++;
+							filaAEliminarBms = i;
 						}
 					}
 				
+					
 					if(regSeleccionadosBMS==1){
 						
 							Object[] arregloConciliarRespaldo = new Object[22];
@@ -437,8 +446,12 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 								}
 							}
 							
+//							System.out.println(filaAEliminarBms+" <-- fila a eliminar de BMS");
+//							System.out.println(tablaBMS.getValueAt(filaAEliminarBms, 7).toString()+" <-- transaccion");
+//							System.out.println(tablaBMS.getValueAt(filaAEliminarBms, 8).toString()+" <-- folio");
+		        			
 							modeloArchivo.removeRow(filaAnteriorArchivo);
-							modeloBMS.removeRow(filaAnteriorBMS);
+							modeloBMS.removeRow(filaAEliminarBms);
 							
 							modeloRespaldo.addRow(arregloConciliarRespaldo);
 							modeloConciliados.addRow(arregloConciliar);
@@ -450,6 +463,11 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 							
 							filaAnteriorArchivo = -1;
 							filaAnteriorBMS = -1;
+							
+//							txtFiltro.setText("");
+//							int[] columnas = {1,2,3,4,5,6,7,8};
+//							new Obj_Filtro_Dinamico_Plus(tablaBMS,txtFiltro.getText().toString().trim(), columnas);
+							
 						
 					}else{
 						JOptionPane.showMessageDialog(null, "Verifícar Que Solo Se Haya Seleccionado 1 Registro En La Tabla De BMS", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen/usuario-de-alerta-icono-4069-64.png"));
@@ -465,6 +483,10 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 	int filaAnteriorArchivo = -1;
 	int filaAnteriorBMS = -1;
 	int filaAnteriorConciliaciones = -1;
+	
+//	String transaccionBMS = "";
+//	String folioBMS = "";
+	
 	private void agregar(final JTable tbl,String tablaName) {
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
 	        public void mousePressed(MouseEvent e) {
@@ -475,7 +497,13 @@ public class Cat_Movimientos_En_Cuentas_Conciliacion_De_Temporales extends JFram
 	        		if(columna==0){
 	        			
 	        			int fila= tbl.getSelectedRow();
-		        		
+	        			
+//	        			transaccionBMS = tbl.getValueAt(fila, 7).toString();
+//	        			folioBMS = tbl.getValueAt(fila, 8).toString();
+//	        			System.out.println(fila+" <- fila clikeada");
+//	        			System.out.println(transaccionBMS+" <- transaccion");
+//	        			System.out.println(folioBMS+" <- folio");
+	        			
 	        			if(filaAnterior!=-1){
 	        				if(tbl.getRowCount()>0){
 	        					tbl.setValueAt(false, filaAnterior, columna);
