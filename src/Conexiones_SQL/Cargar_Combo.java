@@ -1234,7 +1234,7 @@ public class Cargar_Combo {
 	
 	@SuppressWarnings("unchecked")
 	public String[] conceptos_de_ordenes_de_pago() throws SQLException{
-		String query = "SELECT concepto_orden_de_pago FROM tb_conceptos_de_orden_de_pago WHERE (status = 'V') order by concepto_orden_de_pago asc";
+		String query = "SELECT concepto_orden_de_pago FROM tb_conceptos_de_orden_de_pago WHERE (status <> 'C') order by concepto_orden_de_pago asc";
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();

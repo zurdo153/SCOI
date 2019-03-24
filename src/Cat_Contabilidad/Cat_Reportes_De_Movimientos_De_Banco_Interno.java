@@ -41,6 +41,7 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 
 	String operador[] = {"Selecciona Un Reporte"
 			                ,"Saldo de Banco Interno en un Periodo por Cuenta" 
+			                ,"Pagos Realizados en un Periodo"
 			                ,"Pagos Realizados en un Periodo por Cuenta" 
 			                ,"Pagos Realizados Pendientes de Realizar Corte" 			               
 			                ,"Ingresos Manuales en un Periodo por Cuenta"
@@ -166,6 +167,14 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 				 cmbEstablecimiento.setEnabled(false);
 			 }
 			 
+			 if(concepto.equals("Pagos Realizados en un Periodo")){
+				 c_inicio.setEnabled(true);
+				 c_final.setEnabled(true);
+				 cmbcuenta_bancaria.setEnabled(false);
+				 cmb_conceptosolicitud.setEnabled(false);
+				 cmbEstablecimiento.setEnabled(false);
+			 }
+			 
 			 if(concepto.equals("Pagos Realizados Pendientes de Realizar Corte" )){
 				 c_inicio.setEnabled(false);
 				 c_final.setEnabled(false);
@@ -221,6 +230,12 @@ public class Cat_Reportes_De_Movimientos_De_Banco_Interno extends JFrame {
 									comando="exec orden_de_pago_en_efectivo_reporte_por_periodo '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"','"+ cmbcuenta_bancaria.getSelectedItem().toString().trim()+"','"+ cmb_conceptosolicitud.getSelectedItem().toString().trim()+"'";
 									reporte ="Obj_Reporte_De_Pagos_En_Efectivo_En_Un_Periodo.jrxml";
 							    }
+								
+								if(concepto.equals("Pagos Realizados en un Periodo")){
+									comando="exec orden_de_pago_en_efectivo_reporte_por_periodo_total_de_cuentas '"+fecha_inicio.substring(0, 10)+"','"+fecha_final+"'";
+									reporte ="Obj_Reporte_De_Pagos_En_Efectivo.B.I.jrxml";
+							    }
+																
 								
 								if(concepto.equals("Pagos Realizados Pendientes de Realizar Corte" )){
 									comando="exec ordenes_de_gasto_reporte_de_pagos_de_caja_chica_sin_corte";

@@ -1756,7 +1756,6 @@ public class ActualizarSQL {
 			}
 			
 			public boolean Actualizar_Alimentacion_Efectivo(Obj_Alimentacion_Denominacion alim_denom, int folio_usuario, Object[][] tabla){
-				
 				String query_delete = "delete from tb_alimentacion_efectivo_cortes where folio_corte ='"+alim_denom.getFolio_corte()+"'";
 				String query ="exec sp_insert_alimentacion_de_efectivo_cortes ?,?,?,?,?,?,?,?";
 				Connection con = new Connexion().conexion();
@@ -1769,15 +1768,15 @@ public class ActualizarSQL {
 					pstmtDelete.executeUpdate();
 					
 					for(int i=0; i<tabla.length; i++){
-						System.out.println(query_delete);
-						System.out.println(alim_denom.getFolio_corte().toUpperCase());
-						System.out.println(alim_denom.getEmpleado().toUpperCase().trim());
-						System.out.println(alim_denom.getEstablecimiento().toUpperCase());
-						System.out.println(Integer.parseInt(tabla[i][0].toString().trim()));
-						System.out.println(Integer.parseInt(tabla[i][2].toString().trim()));
-						System.out.println(Integer.parseInt(tabla[i][3].toString().trim()));
-						System.out.println(Integer.parseInt(tabla[i][4].toString().trim()));
-						System.out.println(query);
+//						System.out.println(query_delete);
+//						System.out.println(alim_denom.getFolio_corte().toUpperCase());
+//						System.out.println(alim_denom.getEmpleado().toUpperCase().trim());
+//						System.out.println(alim_denom.getEstablecimiento().toUpperCase());
+//						System.out.println(Integer.parseInt(tabla[i][0].toString().trim()));
+//						System.out.println(Integer.parseInt(tabla[i][2].toString().trim()));
+//						System.out.println(Integer.parseInt(tabla[i][3].toString().trim()));
+//						System.out.println(Integer.parseInt(tabla[i][4].toString().trim()));
+//						System.out.println(query);
 						
 						pstmt.setString(1, alim_denom.getFolio_corte().toUpperCase());
 						pstmt.setString(2, alim_denom.getEmpleado().toUpperCase().trim());
@@ -1797,10 +1796,10 @@ public class ActualizarSQL {
 						try{
 							System.out.println("La transacción ha sido abortada");
 							con.rollback();
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacion ] update  SQLException: sp_insert_denominaciones "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_Efectivo ]\n update  SQLException: sp_insert_alimentacion_de_efectivo_cortes "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 						}catch(SQLException ex){
 							System.out.println(ex.getMessage());
-							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_denominacio ] update  SQLException: sp_insert_denominaciones "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Actualizar_Alimentacion_Efectivo ]\n update  SQLException: sp_insert_alimentacion_de_efectivo_cortes "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 						}
 					}
 					return false;
@@ -3412,7 +3411,7 @@ public boolean devolver_fuente_de_sodas_por_cambio_de_estatus_en_el_empleado(Str
 }
 
 public boolean Actualizar_Pagos_en_un_Corte_de_Ordenes_de_Pago(Object[] tabla,String folio){
-	String query =  "exec sp_actualizar_ordenes_de_pago_a_un_corte ?,"+folio+","+usuario.getFolio();
+	String query =  "exec sp_ordenes_de_pago_en_efectivo_actualizar_corte ?,"+folio+","+usuario.getFolio();
 	Connection con = new Connexion().conexion();
 	try {
 		PreparedStatement pstmt = con.prepareStatement(query);

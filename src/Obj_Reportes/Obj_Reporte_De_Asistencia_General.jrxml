@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
-<!-- 2018-04-05T19:03:44 -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_General_de_Asistencia_Por_Establecimiento" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24cc16d5-c483-4414-a6b0-717ab373dbf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="ireport.zoom" value="4.59497298635725"/>
@@ -88,10 +87,10 @@
 		<groupHeader>
 			<band height="16">
 				<frame>
-					<reportElement mode="Opaque" x="0" y="0" width="197" height="15" forecolor="#CC6600" backcolor="#0000CC" uuid="b3fc5f3d-3fae-4d0c-8629-9d5933d5d8c2"/>
+					<reportElement mode="Transparent" x="0" y="0" width="197" height="15" forecolor="#CC6600" backcolor="#0000CC" uuid="b3fc5f3d-3fae-4d0c-8629-9d5933d5d8c2"/>
 				</frame>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="195" height="15" forecolor="#FFFFFF" uuid="9b81957f-5648-45a6-a136-8dc96503bce0"/>
+					<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="195" height="15" forecolor="#000000" uuid="9b81957f-5648-45a6-a136-8dc96503bce0"/>
 					<textElement textAlignment="Center">
 						<font size="12" isBold="true"/>
 					</textElement>
@@ -128,60 +127,60 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="41">
+			<band height="36">
 				<frame>
-					<reportElement mode="Opaque" x="0" y="1" width="572" height="38" backcolor="#FFFF99" uuid="aa9c165f-dc3f-41fc-b72a-60766ccf09df"/>
+					<reportElement mode="Transparent" x="0" y="0" width="572" height="35" backcolor="#FFFF99" uuid="aa9c165f-dc3f-41fc-b72a-60766ccf09df"/>
 					<textField>
-						<reportElement x="0" y="0" width="129" height="12" uuid="fbff5475-bf5b-4a49-9781-23a0063a886b"/>
+						<reportElement x="0" y="-1" width="129" height="12" uuid="fbff5475-bf5b-4a49-9781-23a0063a886b"/>
 						<textElement>
 							<font fontName="Times New Roman" size="9"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Dia Descanso: "+$F{descanso}]]></textFieldExpression>
 					</textField>
 					<textField>
-						<reportElement x="0" y="12" width="89" height="11" uuid="d1388acd-20e9-4541-a315-e37d32ee40ab"/>
+						<reportElement x="0" y="11" width="89" height="11" uuid="d1388acd-20e9-4541-a315-e37d32ee40ab"/>
 						<textElement>
 							<font fontName="Times New Roman" size="9"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Dia Dobla: "+$F{dobla}]]></textFieldExpression>
 					</textField>
 					<textField>
-						<reportElement x="0" y="23" width="126" height="12" uuid="9af150f8-ae69-4910-ac06-6dd23822d068"/>
+						<reportElement x="0" y="22" width="126" height="12" uuid="9af150f8-ae69-4910-ac06-6dd23822d068"/>
 						<textElement>
 							<font fontName="Times New Roman" size="9"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Dias Con Registros Faltantes:"+$V{Conteo_de_Registros_Faltantes}]]></textFieldExpression>
 					</textField>
 					<textField>
-						<reportElement x="133" y="0" width="76" height="12" uuid="a6550574-2284-4a8e-ac9b-cfde1c22789b"/>
+						<reportElement x="133" y="-1" width="76" height="12" uuid="a6550574-2284-4a8e-ac9b-cfde1c22789b"/>
 						<textElement>
 							<font fontName="Times New Roman" size="9"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Total Imp: "+$V{Group2_Retardo}+"min"]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="false">
-						<reportElement mode="Transparent" x="133" y="12" width="76" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="72f17e24-bb46-4272-bdde-cbcd9d9b127f"/>
+						<reportElement mode="Transparent" x="133" y="11" width="76" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="72f17e24-bb46-4272-bdde-cbcd9d9b127f"/>
 						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Impunt C/11:"+$V{Group2_Retardo_C_11}]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="false">
-						<reportElement mode="Transparent" x="133" y="24" width="76" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="871e9182-2c73-44f4-a153-10855bbc31f0"/>
+						<reportElement mode="Transparent" x="133" y="23" width="76" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="871e9182-2c73-44f4-a153-10855bbc31f0"/>
 						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Cobro Imp.:"+$V{Variable_1}]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="false">
-						<reportElement mode="Transparent" x="209" y="12" width="80" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="0df12757-a7a2-4c25-b565-791ae7b2ee0d"/>
+						<reportElement mode="Transparent" x="209" y="11" width="80" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="0df12757-a7a2-4c25-b565-791ae7b2ee0d"/>
 						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Cant Omision:"+$V{Cant_Omisiones}]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="false">
-						<reportElement mode="Transparent" x="209" y="24" width="80" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="aa92cd2c-9440-4fc8-8e1c-a436774d2376"/>
+						<reportElement mode="Transparent" x="209" y="23" width="80" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="aa92cd2c-9440-4fc8-8e1c-a436774d2376"/>
 						<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 							<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						</textElement>
@@ -189,38 +188,38 @@
 					</textField>
 				</frame>
 				<line>
-					<reportElement x="2" y="40" width="572" height="1" uuid="89fd0eb3-f57e-46fd-9321-a71495e13cc9"/>
+					<reportElement x="0" y="35" width="572" height="1" uuid="89fd0eb3-f57e-46fd-9321-a71495e13cc9"/>
 				</line>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement x="415" y="25" width="146" height="12" uuid="caca9a39-184a-4742-bbf3-5d8efa1281ca"/>
+					<reportElement x="415" y="23" width="146" height="12" uuid="caca9a39-184a-4742-bbf3-5d8efa1281ca"/>
 					<textElement>
 						<font fontName="Times New Roman" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Dias Laborados:" +($V{Dias_Trabajo}-$V{Faltas})]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="289" y="25" width="126" height="12" uuid="2affd710-a671-489a-bf73-3df6f4bc8473"/>
+					<reportElement x="289" y="23" width="126" height="12" uuid="2affd710-a671-489a-bf73-3df6f4bc8473"/>
 					<textElement>
 						<font fontName="Times New Roman" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Dias Que Falto:"+$V{Faltas}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="415" y="3" width="146" height="12" uuid="7dc3bfa1-873f-4e5c-b77f-a73e5c414e27"/>
+					<reportElement x="415" y="0" width="146" height="12" uuid="7dc3bfa1-873f-4e5c-b77f-a73e5c414e27"/>
 					<textElement>
 						<font fontName="Times New Roman" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Dias Que Falto Con Goce de Sueldo:"+$V{Dias_que_no_trabajo_con_goce_de_sueldo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="415" y="14" width="146" height="12" uuid="a7ae12c9-ec30-400c-97c2-8748a8d96bd8"/>
+					<reportElement x="415" y="11" width="146" height="12" uuid="a7ae12c9-ec30-400c-97c2-8748a8d96bd8"/>
 					<textElement>
 						<font fontName="Times New Roman" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Dias Que Doblo Extra:"+$V{Dias_que_doblo_Extra}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="Group2" isBlankWhenNull="false">
-					<reportElement x="209" y="1" width="80" height="12" uuid="72a0ca88-2538-41f9-9aa2-d80babe290a0"/>
+					<reportElement x="209" y="0" width="80" height="12" uuid="72a0ca88-2538-41f9-9aa2-d80babe290a0"/>
 					<textElement>
 						<font fontName="Times New Roman" size="9"/>
 					</textElement>
@@ -230,14 +229,14 @@
 		</groupFooter>
 	</group>
 	<background>
-		<band height="92" splitType="Stretch"/>
+		<band height="12" splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="44" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="572" height="40" forecolor="#000080" backcolor="#000080" uuid="e240bfbe-93bc-4f07-b945-777193d9b1cb"/>
+				<reportElement mode="Transparent" x="0" y="0" width="572" height="40" forecolor="#000080" backcolor="#000080" uuid="e240bfbe-93bc-4f07-b945-777193d9b1cb"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="401" height="40" uuid="72d156aa-3e58-47f8-be35-76cead36680a"/>
+					<reportElement style="Title" x="0" y="0" width="401" height="30" forecolor="#000000" uuid="72d156aa-3e58-47f8-be35-76cead36680a"/>
 					<textElement textAlignment="Center">
 						<font fontName="Arial Black" size="16" isBold="false"/>
 					</textElement>
@@ -248,28 +247,28 @@
 					<imageExpression><![CDATA["C:\\SCOI\\imagen\\icoreport.jpg"]]></imageExpression>
 				</image>
 				<textField>
-					<reportElement x="443" y="0" width="85" height="20" forecolor="#FFFFFF" uuid="0effe956-b4d4-46c4-9a9b-d938ff80514f"/>
+					<reportElement x="443" y="0" width="85" height="20" forecolor="#000000" uuid="0effe956-b4d4-46c4-9a9b-d938ff80514f"/>
 					<textElement>
 						<font fontName="Times New Roman" size="14" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fecha_inicial}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="443" y="20" width="85" height="20" forecolor="#FFFFFF" uuid="60a8af72-0164-42c3-a544-47da3a2d88eb"/>
+					<reportElement x="443" y="20" width="85" height="20" forecolor="#000000" uuid="60a8af72-0164-42c3-a544-47da3a2d88eb"/>
 					<textElement>
 						<font fontName="Times New Roman" size="14" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fecha_final}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="401" y="0" width="42" height="20" forecolor="#FFFFFF" uuid="a5dc0280-a528-4f29-911e-60255b2f42a1"/>
+					<reportElement x="401" y="0" width="42" height="20" forecolor="#000000" uuid="a5dc0280-a528-4f29-911e-60255b2f42a1"/>
 					<textElement>
 						<font fontName="Times New Roman" size="14" isBold="true"/>
 					</textElement>
 					<text><![CDATA[DEL:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="401" y="20" width="42" height="20" forecolor="#FFFFFF" uuid="ea445ba0-5ba0-4439-b836-4f16a04f5acf"/>
+					<reportElement x="401" y="20" width="42" height="20" forecolor="#000000" uuid="ea445ba0-5ba0-4439-b836-4f16a04f5acf"/>
 					<textElement>
 						<font fontName="Times New Roman" size="14" isBold="true"/>
 					</textElement>
@@ -282,9 +281,10 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="58" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<frame>
-				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="14" width="570" height="14" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#CCFF99" uuid="2a48881a-2e34-4fb8-8a5d-512aa8e4e3a9">
+				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="10" width="570" height="10" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#CCFF99" uuid="2a48881a-2e34-4fb8-8a5d-512aa8e4e3a9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[($F{dia}.equals('Martes')) || ($F{dia}.equals('Sábado'))]]></printWhenExpression>
 				</reportElement>
 				<textField isStretchWithOverflow="true">
@@ -337,7 +337,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#003333" backcolor="#FFFFFF" uuid="bbe76f8e-5a53-4abf-a434-faa3037d7ff9"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="10" isPrintWhenDetailOverflows="true" forecolor="#003333" backcolor="#FFFFFF" uuid="bbe76f8e-5a53-4abf-a434-faa3037d7ff9"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
@@ -346,7 +346,8 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement key="" style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="0" width="570" height="14" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FFFFCC" uuid="f46eaa4b-d071-4166-a4c5-c6cd21456085">
+				<reportElement key="" style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="0" width="570" height="10" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FFFFCC" uuid="f46eaa4b-d071-4166-a4c5-c6cd21456085">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[($F{dia}.equals('Lunes')) || ($F{dia}.equals('Jueves'))]]></printWhenExpression>
 				</reportElement>
 				<textField isStretchWithOverflow="true">
@@ -399,7 +400,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="a3cbec81-0f04-4150-adc5-f84c938ef302"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="10" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="a3cbec81-0f04-4150-adc5-f84c938ef302"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
@@ -408,7 +409,8 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="28" width="570" height="14" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="22f08280-7f56-4768-b85f-0dd547882c3d">
+				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="20" width="570" height="10" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="22f08280-7f56-4768-b85f-0dd547882c3d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[($F{dia}.equals('Miércoles')) || ($F{dia}.equals('Domingo'))|| ($F{dia}.equals('Viernes'))]]></printWhenExpression>
 				</reportElement>
 				<textField isStretchWithOverflow="true">
@@ -461,7 +463,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="96eb2e9f-2f60-4448-aa6c-d6213509941e"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="10" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="96eb2e9f-2f60-4448-aa6c-d6213509941e"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
@@ -470,7 +472,8 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="42" width="570" height="14" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#CCFF33" uuid="627bea63-d78b-4d61-9729-fa0919dfca65">
+				<reportElement style="Row" isPrintRepeatedValues="false" mode="Opaque" x="2" y="30" width="570" height="10" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#CCFF33" uuid="627bea63-d78b-4d61-9729-fa0919dfca65">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[$F{dia}.equals("tu puta madre wey")]]></printWhenExpression>
 				</reportElement>
 				<textField isStretchWithOverflow="true">
@@ -525,7 +528,7 @@
 					<textFieldExpression><![CDATA[$F{comida_receso}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="245" y="0" width="325" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="bdf0ff35-a346-4eea-a4d5-04677e346330"/>
+					<reportElement mode="Transparent" x="245" y="0" width="325" height="10" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="bdf0ff35-a346-4eea-a4d5-04677e346330"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
@@ -536,32 +539,32 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="16" splitType="Stretch">
+		<band height="13" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="1" width="572" height="12" forecolor="#000080" backcolor="#000080" uuid="3779e6f8-81f6-4e28-b25e-c27f5724c713"/>
+				<reportElement mode="Transparent" x="0" y="1" width="572" height="12" forecolor="#000080" backcolor="#000080" uuid="3779e6f8-81f6-4e28-b25e-c27f5724c713"/>
 				<textField evaluationTime="Report">
-					<reportElement style="Column header" x="509" y="0" width="40" height="11" forecolor="#FFFFFF" uuid="0ab7e32f-5093-48e8-9280-55e1963fb350"/>
+					<reportElement style="Column header" mode="Transparent" x="509" y="0" width="40" height="11" forecolor="#000000" uuid="0ab7e32f-5093-48e8-9280-55e1963fb350"/>
 					<textElement verticalAlignment="Middle">
 						<font size="9" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Column header" x="450" y="0" width="59" height="11" forecolor="#FFFFFF" uuid="27854e05-12e3-4e25-87d2-78f26b2ca50e"/>
+					<reportElement style="Column header" mode="Transparent" x="450" y="0" width="59" height="11" forecolor="#000000" uuid="27854e05-12e3-4e25-87d2-78f26b2ca50e"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="9" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Pagina"+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 				</textField>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement style="Column header" x="79" y="1" width="138" height="11" forecolor="#FFFFFF" uuid="2b5b27fe-5005-4724-9d76-f4ce3ac95546"/>
+					<reportElement style="Column header" mode="Transparent" x="79" y="1" width="138" height="11" forecolor="#000000" uuid="2b5b27fe-5005-4724-9d76-f4ce3ac95546"/>
 					<textElement verticalAlignment="Middle">
 						<font size="9" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Transparent" x="1" y="1" width="78" height="11" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="bff43a98-cee1-472d-9e1b-8755c292955c"/>
+					<reportElement mode="Transparent" x="1" y="1" width="78" height="11" forecolor="#000000" backcolor="#FFFFFF" uuid="bff43a98-cee1-472d-9e1b-8755c292955c"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 						<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>

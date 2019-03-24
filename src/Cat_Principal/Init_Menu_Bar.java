@@ -136,10 +136,16 @@ public class Init_Menu_Bar extends Init_Login{
 													}
 													for(WP_Submenu su: depSub){
 														if(me4.Folio == su.Menu_Id){
+															
+															
+															
 															JMenuItem subtmp = new JMenuItem(su.Nombre);
 															subtmp.addActionListener(Opciones);
 															tmp4.add(subtmp);
 														}
+								
+													
+													
 													}
 													tmp3.add(tmp4);
 												}

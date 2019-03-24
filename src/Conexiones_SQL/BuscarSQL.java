@@ -9874,7 +9874,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	 public String[][] Tabla_Orden_Gasto(int folio_gasto){
 			String[][] Matriz = null;
 			String query = "exec orden_de_gasto_consulta "+folio_gasto;
-			Matriz = new String[getFilas(query)][26];
+			Matriz = new String[getFilas(query)][29];
 			Statement s;
 			ResultSet rs;
 			try {			
@@ -9908,6 +9908,9 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 					Matriz[i][23] = rs.getString(24);
 					Matriz[i][24] = rs.getString(25);
 					Matriz[i][25] = rs.getString(26);
+					Matriz[i][26] = rs.getString(27);
+					Matriz[i][27] = rs.getString(28);
+					Matriz[i][28] = rs.getString(29);
 					i++;
 				}
 			} catch (SQLException e1) {
@@ -11264,8 +11267,6 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	public String Surtir_Orden_De_Compra_Interna(Obj_Alimentacion_De_Ordenes_De_Compra_Interna orden) throws SQLException{
 		String FolioOCI="";
 		String query = "exec orden_de_compra_interna_surtir "+orden.getFolio()+",'"+orden.getEstab_surte()+"',"+orden.getFolio_chofer()+",'"+orden.getObservacionSurte()+"','"+orden.getTipo_de_chofer()+"','"+orden.getStatus()+"',"+(new Obj_Usuario().LeerSession().getFolio())+",'"+orden.getLista_de_productos()+"'" ;
-		System.out.println(query);
-
 		Statement stmt = null;
 		try {
 			stmt = con.conexion().createStatement();
@@ -11275,7 +11276,8 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+			System.out.println(query);
+			JOptionPane.showMessageDialog(null, "Error en BuscarSQL  en la funcion [ Surtir_Orden_De_Compra_Interna ] SQLException: "+e.getMessage()+"\n"+query, "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
 		}
 		finally{
 			if(stmt!=null){try {

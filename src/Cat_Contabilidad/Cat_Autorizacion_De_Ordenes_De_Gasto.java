@@ -294,9 +294,10 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 	JScrollPane Uso        = new JScrollPane(txaUso);
 
 	JCButton btnAceptar  = new JCButton("Autorizar"   ,"Aplicar.png"                ,"Azul"); 
+	JCButton btnPendiente= new JCButton("Pendiente"   ,"back.png"                   ,"Azul"); 
 	JCButton btnNegar    = new JCButton("Negar"       ,"Delete.png"                 ,"Azul"); 
 	JCButton btnCancelar = new JCButton("Cancelar"    ,"cancelar-icono-4961-16.png" ,"Azul"); 
-	JCButton btnImprimir = new JCButton("Imprimir"    ,"imprimir-16.png"            ,"Azul");
+	JCButton btnImprimir = new JCButton("Imprimir Orden de Gasto" ,"imprimir-16.png","Azul");
 	
 	JRadioButton rbProveedorCont = new JRadioButton("Proveedor Contado");
 	JRadioButton rbProveedor     = new JRadioButton("Proveedor");
@@ -324,6 +325,9 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		this.menu_toolbar.add(btnAceptar  );
 	 	this.menu_toolbar.addSeparator(   );
 	    this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.add(btnPendiente);
+	 	this.menu_toolbar.addSeparator(   );
+	    this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.add(btnCancelar );
 		this.menu_toolbar.addSeparator(   );
 		this.menu_toolbar.addSeparator(   );
@@ -334,7 +338,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		this.menu_toolbar.setFloatable(false);
    	 
 		int x=20, y=20,width=122,height=20, sep=130;
-		this.panel.add(menu_toolbar).setBounds                        (x         ,y      ,400     ,height );
+		this.panel.add(menu_toolbar).setBounds                        (x         ,y      ,600     ,height );
 
 		this.panel.add(new JLabel("Solicita:")).setBounds             (x=20      ,y+=30  ,width   ,height );
 		this.panel.add(txtSolicito).setBounds                         (x+=40     ,y      ,300     ,height );
@@ -375,7 +379,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		this.panel.add(scroll_tabla).setBounds                        (x=20      ,y+=55  ,780     ,150    );
 		this.panel.add(txtFoliosolicit).setBounds                     (x         ,y+=150 ,60      ,height );		
 		this.panel.add(txtAutoriza).setBounds                         (x+=60     ,y      ,320     ,height );
-
 		
 		this.panel.add(txtTotal).setBounds                            (702       ,y      ,98      ,height );
 		this.init_tabla();
@@ -386,8 +389,9 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		this.btnNegar.addActionListener(opnegar);
 		this.btnCancelar.addActionListener(opacancelar);
 		this.txtFoliosolicit.setText(usuario.getFolio()+"");
+		this.btnPendiente.addActionListener(oppendiente);
 		
-		if(cmb_status.getSelectedItem().equals("PENDIENTE")||cmb_status.getSelectedItem().equals("AUTORIZADO")){
+		if(cmb_status.getSelectedItem().equals("PENDIENTE")||cmb_status.getSelectedItem().equals("AUTORIZADO")||cmb_status.getSelectedItem().equals("CANCELADO")){
 			this.btnAceptar.setEnabled(true);btnCancelar.setEnabled(true);btnNegar.setEnabled(true);	
 		}else{
 			this.btnAceptar.setEnabled(false);btnCancelar.setEnabled(false);btnNegar.setEnabled(false);	
@@ -407,7 +411,13 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 			if(txtTipo.getText().toString().equals("C") ) {
 				aceptar_negar="TERMINADO";
 			}
-			
+			Guardar();
+		}
+	};
+	
+	ActionListener oppendiente = new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+			aceptar_negar="PENDIENTE";
 			Guardar();
 		}
 	};
@@ -456,7 +466,6 @@ public class Cat_Solicitud_De_Orden_De_Gasto_Autorizacion extends JDialog{
 		txtPlazo.setText(tablacompleta[0][23].toString());
 		txtValida.setText(tablacompleta[0][24].toString());
 		txtFechaValida.setText(tablacompleta[0][25].toString());
-
 		
 		txtEstatus.setEditable(false);
 		txtEstablecimiento.setEditable(false);

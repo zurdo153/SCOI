@@ -64,17 +64,26 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	public Class[] basemovimientos (){
 		Class[] types = new Class[columnas];
 		for(int i = 0; i<columnas; i++){
-		if(i==9) {types[i]=java.lang.Boolean.class;}else {types[i]= java.lang.Object.class;  }
+		if(i==9) {
+			types[i]=java.lang.Boolean.class;
+		}else {types[i]= java.lang.Object.class;  }
     	
 		}
 		 return types;
 	}
-	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Fecha", "Importe", "Beneficiario", "Descripcion", "Detalle", "Establecimiento", "Elaboro","Concepto",""}){
+	public DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Folio", "Fecha", "Importe", "Beneficiario", "Cuenta", "Detalle", "Establecimiento", "Elaboro","Concepto",""}){
 		 @SuppressWarnings("rawtypes")
 			Class[] types = basemovimientos();
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Class getColumnClass(int columnIndex) {return types[columnIndex]; }
-			public boolean isCellEditable(int fila, int columna){  if(columna==9) {return true;}else { return false;}}
+			public boolean isCellEditable(int fila, int columna){ 
+				if(columna==9){
+					if(modelo.getValueAt(fila, 4).toString().trim().equals("GASTO SIN CLASIFICAR")) {
+						JOptionPane.showMessageDialog(null, "Para Rembolsar Este Pago es Requerido Se Clasifique Su Cuenta Primero","Aviso",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("imagen/investigacion-icono-9565-48.png"));
+					};
+					return   (modelo.getValueAt(fila, 4).toString().trim().equals("GASTO SIN CLASIFICAR"))?false :true;
+				}else {
+					return false;}}
 	};
 	
 	public JTable tabla = new JTable(modelo);
@@ -92,7 +101,7 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmb_concepto = new JComboBox(conceptos);
 	
-	String cuentas[] =  banco_interno.Combo_Cuentaspago();
+	String cuentas[] =  banco_interno.Combo_Cuentas_reposicion_efectivo();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	JComboBox cmbcuenta_bancaria = new JComboBox(cuentas);
 	
@@ -167,12 +176,12 @@ public class Cat_Corte_Del_Pago_De_Ordenes_De_Gasto  extends JFrame{
 				String basedatos="2.26";
 				String vista_previa_reporte="no";
 				int vista_previa_de_ventana=0;
-				String reporte = "Obj_Reporte_De_Corte_Caja_Chica_Ordenes_de_Gasto.jrxml";
-			    String comando = "exec ordenes_de_pago_reporte_de_corte "+folio;
-			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
+//				String reporte = "Obj_Reporte_De_Corte_Caja_Chica_Ordenes_de_Gasto.jrxml";
+//			    String comando = "exec ordenes_de_pago_reporte_de_corte "+folio;
+//			    new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 			 
-				reporte = "Obj_Reporte_De_Orden_De_Pago_En_Efectivo_Corte_A_Detalle.jrxml";
-			    comando = "exec Orden_De_Pago_En_Efectivo_Corte_A_Detalle "+folio;
+				String reporte = "Obj_Reporte_De_Orden_De_Pago_En_Efectivo_Corte_A_Detalle.jrxml";
+				String comando = "exec Orden_De_Pago_En_Efectivo_Corte "+folio;
 			 new Generacion_Reportes().Reporte(reporte, comando, basedatos, vista_previa_reporte,vista_previa_de_ventana);
 		   }
 	};

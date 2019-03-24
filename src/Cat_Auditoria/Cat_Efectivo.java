@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -19,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.table.DefaultTableModel;
 
+import Obj_Principal.JCButton;
 import Obj_Renders.tablaRenderer;
 
 //guardar denominaciones
@@ -32,7 +32,7 @@ public class Cat_Efectivo extends JDialog {
 	int columnaEfect = 4;
 	
 	public JToolBar menu_toolbar = new JToolBar();
-	JButton btn_guardar= new JButton(new ImageIcon("Iconos/save_icon&16.png"));
+	JButton btn_guardar=  new JCButton("Guardar","Guardar.png","Azul");
 	
 	JLabel lblEmpleado = new JLabel();
 	JTextField txtTotal = new JTextField();
@@ -99,17 +99,15 @@ public class Cat_Efectivo extends JDialog {
 	public void Constructor(){
 		this.setModal(true);
 		this.setTitle("Alimentación de Efectivo");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/captura_nomina_icon&16.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/dinero-icono-8797-48.jpg"));
 		
-		lblEmpleado.setForeground(Color.GRAY);
+		lblEmpleado.setForeground(Color.BLACK);
 		
 		this.panel.add(menu_toolbar).setBounds(0,0,150,25);
-		this.panel.add(lblEmpleado).setBounds(30,35,350,20);
-		
-		this.panel.add(scroll_tabla).setBounds(20,60,730,420);
-		
-		this.panel.add(new JLabel("Total de Cantidades:")).setBounds(470,485,100,20);
-		this.panel.add(txtTotal).setBounds(580,485,90,20);
+		this.panel.add(lblEmpleado).setBounds(30,25,350,20);
+		this.panel.add(scroll_tabla).setBounds                      ( 20 ,45  ,455,270);
+		this.panel.add(new JLabel("Total de Cantidades:")).setBounds(270 ,315 ,100, 20);
+		this.panel.add(txtTotal).setBounds                          (380 ,315 , 90, 20);
 		
 		this.menu_toolbar.add(btn_guardar);
 		this.menu_toolbar.setEnabled(false);
@@ -119,21 +117,21 @@ public class Cat_Efectivo extends JDialog {
 		
 		this.cont.add(panel);
 		
-		this.setSize(780,550);
+		this.setSize(500,380);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
 	public void init_tabla(){
-    	this.tabla_efectivo.getColumnModel().getColumn(0).setMaxWidth(120);
-    	this.tabla_efectivo.getColumnModel().getColumn(0).setMinWidth(120);		
-    	this.tabla_efectivo.getColumnModel().getColumn(1).setMaxWidth(290);
-    	this.tabla_efectivo.getColumnModel().getColumn(1).setMinWidth(290);
-    	this.tabla_efectivo.getColumnModel().getColumn(2).setMaxWidth(120);
-    	this.tabla_efectivo.getColumnModel().getColumn(2).setMinWidth(120);		
-    	this.tabla_efectivo.getColumnModel().getColumn(3).setMaxWidth(120);
-    	this.tabla_efectivo.getColumnModel().getColumn(3).setMinWidth(120);
+    	this.tabla_efectivo.getColumnModel().getColumn(0).setMaxWidth(50);
+    	this.tabla_efectivo.getColumnModel().getColumn(0).setMinWidth(50);		
+    	this.tabla_efectivo.getColumnModel().getColumn(1).setMaxWidth(120);
+    	this.tabla_efectivo.getColumnModel().getColumn(1).setMinWidth(120);
+    	this.tabla_efectivo.getColumnModel().getColumn(2).setMaxWidth(100);
+    	this.tabla_efectivo.getColumnModel().getColumn(2).setMinWidth(100);		
+    	this.tabla_efectivo.getColumnModel().getColumn(3).setMaxWidth(80);
+    	this.tabla_efectivo.getColumnModel().getColumn(3).setMinWidth(80);
     	this.tabla_efectivo.getColumnModel().getColumn(4).setMaxWidth(100);
     	this.tabla_efectivo.getColumnModel().getColumn(4).setMinWidth(100);
     	
