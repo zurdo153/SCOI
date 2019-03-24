@@ -345,7 +345,7 @@ public class Cat_Establecimiento extends JFrame{
 								", nombre as establecimiento "+
 								", abreviatura "+
 								", serie "+
-								", case when grupo_para_cheque='0'  "+
+								", isnull(case when grupo_para_cheque='0'  "+
 								"		then (select 'Sin Grupo')  "+
 								"	   when grupo_para_cheque='1'  "+
 								"		then (select 'SUPER') "+
@@ -353,7 +353,7 @@ public class Cat_Establecimiento extends JFrame{
 								"		then (select 'FERRE Y REFA') "+
 								"	   when grupo_para_cheque='3'  "+
 								"		then (select 'IZACEL')  "+
-								"	END as grupo_para_cheque "+
+								"	END,'') as grupo_para_cheque "+
 								", case when tb_establecimiento.status='1'  "+
 								"		then (select 'VIGENTE')  "+
 								"	   when tb_establecimiento.status=0  "+
@@ -593,21 +593,21 @@ public class Cat_Establecimiento extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 	        	if(e.getClickCount()==1){
 	        		int fila = tabla.getSelectedRow();
-	        		Object id = tabla.getValueAt(fila,0).toString().substring(0,tabla.getValueAt(fila,0).toString().length());
+	        		Object id = tabla.getValueAt(fila,0).toString();
 	        
 						txtFolio.setText(id+"");
-						txtEstablecimiento.setText(tabla.getValueAt(fila,1).toString().substring(0,tabla.getValueAt(fila,1).toString().length()));
-						txtAbreviatura.setText(tabla.getValueAt(fila,2).toString().substring(0,tabla.getValueAt(fila,2).toString().length()));
-						txtSerie.setText(tabla.getValueAt(fila,3).toString().substring(0,tabla.getValueAt(fila,3).toString().length()));
-						cmb_grupo_cheque.setSelectedItem(tabla.getValueAt(fila,4).toString().substring(0,tabla.getValueAt(fila,4).toString().length()));
-						cmb_status.setSelectedItem(tabla.getValueAt(fila,5).toString().substring(0,tabla.getValueAt(fila,5).toString().length()));
-						cmb_grupo_corte.setSelectedItem(tabla.getValueAt(fila,6).toString().substring(0,tabla.getValueAt(fila,6).toString().length()));
-						cmb_grupo_PermitirNC.setSelectedItem(tabla.getValueAt(fila, 7).toString().substring(0, tabla.getValueAt(fila, 7).toString().length()));
+						txtEstablecimiento.setText(tabla.getValueAt(fila,1).toString());
+						txtAbreviatura.setText(tabla.getValueAt(fila,2).toString());
+						txtSerie.setText(tabla.getValueAt(fila,3).toString());
+						cmb_grupo_cheque.setSelectedItem(tabla.getValueAt(fila,4).toString().trim().equals("")? "Sin Grupo" : tabla.getValueAt(fila,4).toString());
+						cmb_status.setSelectedItem(tabla.getValueAt(fila,5).toString());
+						cmb_grupo_corte.setSelectedItem(tabla.getValueAt(fila,6).toString());
+						cmb_grupo_PermitirNC.setSelectedItem(tabla.getValueAt(fila, 7).toString());
 						
-						txtDomicilio.setText(tabla.getValueAt(fila,8).toString().substring(0,tabla.getValueAt(fila,8).toString().length()));
-						txtRazonSocial.setText(tabla.getValueAt(fila,9).toString().substring(0,tabla.getValueAt(fila,9).toString().length()));
-						txtRFC.setText(tabla.getValueAt(fila,10).toString().substring(0,tabla.getValueAt(fila,10).toString().length()));
-						txtTelefono.setText(tabla.getValueAt(fila,11).toString().substring(0,tabla.getValueAt(fila,11).toString().length()));
+						txtDomicilio.setText(tabla.getValueAt(fila,8).toString());
+						txtRazonSocial.setText(tabla.getValueAt(fila,9).toString());
+						txtRFC.setText(tabla.getValueAt(fila,10).toString());
+						txtTelefono.setText(tabla.getValueAt(fila,11).toString());
 						
 						txtFolio.setEditable(false);
 						txtEstablecimiento.setEditable(false);
@@ -627,7 +627,6 @@ public class Cat_Establecimiento extends JFrame{
 						btnEditar.setEnabled(true);
 						
 						txtEstablecimiento.requestFocus();
-						 
 	        	}
 	        }
         });

@@ -393,7 +393,7 @@ public class Cat_Checador extends JFrame {
 //								Obj_Empleados re = new Obj_Empleados().buscar(folio_empleado);  //busca a empleado 
 //		                        Obj_Entosal entosalClave = new Obj_Entosal().buscar(); //busca clave maestra
 								
-								if(checador.getStatus_checador().equals("CHECADOR BLOQUEADO")){
+								if(checador.getStatus_checador().equals("CHECADOR BLOQUEADO") || checador.getPuede_checar_sin_cuadrante_capturado().equals("NO")){
 										txtClaveReal.setText("");
 		                       			txtClaveReal.requestFocus();
 			                        	pantallaDeAvisos();
@@ -629,8 +629,10 @@ public class Cat_Checador extends JFrame {
 //	                                    if(re.getNo_checador().equals(txtClaveReal.getText().toUpperCase())||entosalClave.getClave().equals(claveMaster)){
                                     	if(checador.getNo_checador().equals(txtClaveReal.getText().toUpperCase())||checador.getMaster_key().equals(claveMaster)){
 	                                    	
-                                    		Object[][] registro = intentar_checar(folio_empleado,checada,0);
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                if(checador.getPuede_checar_sin_cuadrante_capturado().toString().trim().equals("SI")){
                                     		
+                                    		Object[][] registro = intentar_checar(folio_empleado,checada,0);
                                     		
                                     		if(!registro[0][0].toString().trim().equals("false")){
 	                                    			ImageIcon tmpIconAux = new ImageIcon(System.getProperty("user.dir")+"/tmp/tmp.jpg");
@@ -671,7 +673,13 @@ public class Cat_Checador extends JFrame {
                                     			return;
                                     		}
                                     		
-                                    		
+                                }else{
+                                	txtClaveReal.setText("");
+                        			txtClaveReal.requestFocus(); 	
+                        			JOptionPane.showMessageDialog(null, "No Puede Checar Salida, Es Necesario Que Capture Su Cuadrante","Aviso",JOptionPane.WARNING_MESSAGE);
+                        			return;
+                                }  		
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
                                     		
 	                                    		
                                  }else{

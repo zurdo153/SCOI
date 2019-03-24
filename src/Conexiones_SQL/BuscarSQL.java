@@ -10135,6 +10135,7 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 	            checador.setHuella_1(rs.getBytes("huella_1"));
 	            checador.setHuella_2(rs.getBytes("huella_2"));
 	            checador.setAutorizacion_de_huella_en_pc(rs.getBoolean("autorizacion_pc"));
+	            checador.setPuede_checar_sin_cuadrante_capturado(rs.getString("puede_checar_sin_cuadrante_caturado"));
 				
 			}
 			
@@ -11477,6 +11478,24 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 				}}
 			}
 			return status;
+		}
+		
+		public boolean buscar_Concidencia_en_configuracion_de_cuadrantes_para_checador(String estab, String depto){
+			String query = "exec checador_configuracion_cuadrante_por_departamentos '"+estab+"','"+depto+"'";
+			boolean existe = false;
+			try {				
+				Statement s = con.conexion().createStatement();
+				ResultSet rs = s.executeQuery(query);
+				
+				while(rs.next()){
+					existe = rs.getBoolean(1);
+				}
+				
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+				
+			return existe;
 		}
 		
 //	public ImageIcon crearImagIcon(){

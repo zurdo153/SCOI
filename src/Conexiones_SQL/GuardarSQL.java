@@ -8772,8 +8772,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria_De_Temporales(String cuenta, String xml){
 
-		if(actualizarMovimientoBancario3199(xml)){	
-		
+		if(actualizarMovimientoBancario3199(xml)){	 
 				int usuario_mov = usuario.getFolio();
 				String query       = "exec movimientos_en_cuenta_conciliacion_temporal_guardar '"+cuenta+"','"+usuario_mov+"','"+xml+"'";
 				
@@ -8907,6 +8906,52 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		return true;
 	}
 	
+	
+	public boolean Guardar_Configuracion_Para_Checar_Sin_Cuadrnate_Capturado(int folio, String Estab, String Depto, String Status, String Mov){
+		String query = "exec checador_guardar_configuracion_para_checar_sin_cuadrante_capturado ?,?,?,?,?,?";
+		
+		System.out.println(query);
+		
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1,folio);
+			pstmt.setString(2, Estab);
+			pstmt.setString(3, Depto);
+			pstmt.setString(4, Status);
+			pstmt.setString(5, Mov);
+			pstmt.setInt(6, usuario.getFolio());
+			
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Configuracion_Para_Checar_Sin_Cuadrnate_Capturado ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Configuracion_Para_Checar_Sin_Cuadrnate_Capturado ] Insert  SQLException "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ Guardar_Pregunta ] Insert  SQLException "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		return true;
+	}
 	
 //	public boolean Guardar_Movimientos_De_Cuentas (String xml){
 //		String query       = "exec  xml_insertar_movimientos_de_cuenta '"+xml+"'";
