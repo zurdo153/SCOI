@@ -8777,8 +8777,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 	public boolean Guardar_Conciliacion_De_Cuenta_Bancaria_De_Temporales(String cuenta, String xml){
 
-		if(actualizarMovimientoBancario3199(xml)){	
-		
+		if(actualizarMovimientoBancario3199(xml)){	 
 				int usuario_mov = usuario.getFolio();
 				String query       = "exec movimientos_en_cuenta_conciliacion_temporal_guardar '"+cuenta+"','"+usuario_mov+"','"+xml+"'";
 				

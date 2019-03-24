@@ -4158,31 +4158,79 @@ public boolean Guardar_Autorizacion_De_Orden_De_Gasto(String folio,String Accion
 	
 	public boolean Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales(String xml){
 		
-		String query = "exec movimiento_en_cuenta_bancaria_restaurar_temporales "+usuario.getFolio()+",'"+xml+"'";
-		System.out.println(query);
+		if(restaurarMovimientoBancario3199(xml)){
+			
+					String query = "exec movimiento_en_cuenta_bancaria_restaurar_temporales "+usuario.getFolio()+",'"+xml+"'";
+					System.out.println(query);
+					
+					Connection con = new Connexion().conexion();
+					PreparedStatement pstmt = null;
+					try {
+							con.setAutoCommit(false);
+							pstmt = con.prepareStatement(query);
+							
+							pstmt.executeUpdate();
+							con.commit();
+					} catch (SQLException e) {
+						if(con != null){
+							try{
+								con.rollback();
+								JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							}catch(SQLException ex){
+								JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						return false;
+					}finally{
+						try {
+							con.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}		
+					return true;
+		}else{
+			JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ restaurarMovimientoBancario3199 ] ", "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			return false;
+		}
+	}
+	
+	public boolean restaurarMovimientoBancario3199(String xml){
 		
-		Connection con = new Connexion().conexion();
+		String query   = "declare @xml xml "
+						+ " set @xml = '"+xml+"' "
+						+ "	update pp set pp.folio_referencia = '' "
+						+ "	FROM pagos_proveedores pp with(nolock) "
+						+ "	inner join @xml.nodes('Root/fila') T(col) on pp.folio = T.col.value('Folio_BMS[1]','varchar(20)') "
+						+ "														and  pp.transaccion = T.col.value('Transaccion_BMS[1]','varchar(20)')"; 
+
+//		System.out.println(query);
+		
+		Connection con = new Connexion().conexion_parametrizada("192.168.3.199", "BMSIZAGAR", "sa", "Ragazi/*-1");
 		PreparedStatement pstmt = null;
+		
 		try {
-				con.setAutoCommit(false);
-				pstmt = con.prepareStatement(query);
-				
-				pstmt.executeUpdate();
-				con.commit();
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+			 pstmt.executeUpdate();
+			 con.commit();
 		} catch (Exception e) {
-			if(con != null){
-				try{
+			JOptionPane.showMessageDialog(null, "Error en GuardarSQL  en la funcion [ restaurarMovimientoBancario3199 ] "+query+" "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE,new ImageIcon("imagen/usuario-icono-eliminar5252-64.png"));
+			System.out.println("SQLException: " + e.getMessage());
+			if (con != null){
+				try {
+					System.out.println("La transacción ha sido abortada");
 					con.rollback();
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales ] update  SQLException: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
-				}catch(SQLException ex){
-					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Restaurar_Conciliacion_De_Cuenta_Bancaria_Temporales ] update  SQLException: "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				} catch(SQLException ex) {
+					System.out.println("->"+ex.getMessage());
 				}
-			}
+			} 
 			return false;
 		}finally{
 			try {
+				pstmt.close();
 				con.close();
-			} catch (SQLException e) {
+			} catch(SQLException e){
 				e.printStackTrace();
 			}
 		}		
