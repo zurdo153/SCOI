@@ -7170,7 +7170,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 	
 //	@folio int,@folio_orden_de_gasto int,@cantidad money, @fecha datetime, @observaciones varchar(150), @tipo_beneficiario char(1), @folio_beneficiario int, @usuario int, @concepto varchar(200)
 	
-	public boolean Guardar_Orden_De_Gasto_Pago_En_Efectivo(int folio_orden_de_gasto,float cantidad, String fecha, String observaciones, String tipoBeneficiario, int folioBeneficiario, String Concepto,String Guardar_actualizar,String Cuenta_Bancaria){
+	public boolean Guardar_Orden_De_Gasto_Pago_En_Efectivo(int folio_orden_de_gasto,float cantidad, String fecha, String observaciones, String tipoBeneficiario, int folioBeneficiario, String Concepto,String Guardar_actualizar,String Cuenta_Bancaria, String Numero_Cheque){
 		int folio_transaccion=0;
 		int folio_saldo=0;
 		
@@ -7180,7 +7180,7 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}
 
 		
-		String query      = "exec orden_de_gasto_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?";
+		String query      = "exec orden_de_pago_en_efectivo_insert_y_actualiza ?,?,?,?,?,?,?,?,?,?,?,?";
 		String querysaldo = "exec orden_de_pago_en_efectivo_insert_saldo_nuevo ?,?,?,?,?,?,?";
 		Connection con = new Connexion().conexion();
 		PreparedStatement pstmt   = null;
@@ -7199,6 +7199,8 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 				pstmt.setString( 9, Concepto.toUpperCase().trim());
 				pstmt.setString(10, Cuenta_Bancaria);
 				pstmt.setString(11, Guardar_actualizar);
+				pstmt.setString(12, Numero_Cheque);				
+				
 				pstmt.executeUpdate();
 				pstmtsa = con.prepareStatement(querysaldo);
 //				 @folio int  ,@folio_pago int ,@observaciones varchar(160) ,@importe_ingreso numeric(15,2)  ,@importe_egreso numeric(15,2) ,@nombre_de_cuenta varchar(70),@tipo_movimiento char(1)
@@ -7287,13 +7289,6 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(query);
-			
-			System.out.println(cuestionarios.getFolio());
-			System.out.println(cuestionarios.getCuestionario().toUpperCase().trim());
-			System.out.println(cuestionarios.getClasificacion());
-			System.out.println(cuestionarios.getEscala());
-			System.out.println(cuestionarios.getStatus());
-			System.out.println(movimiento);
 			
 			pstmt.setInt(1, cuestionarios.getFolio());
 			pstmt.setString(2, cuestionarios.getCuestionario().toUpperCase().trim());
@@ -8867,6 +8862,50 @@ public boolean Guardar_Administracion_De_Equipos(Obj_Administracion_De_Activos e
 		}		
 		return true;
 	}
+
+	public boolean Clasificacion_De_Pagos_En_Efectivo_Gastos(Object[][] tabla_parametro){
+		  String query = " exec orden_de_pago_en_efectivo_actualiza_cuenta_edo_resultados ?,?,?";
+		  int i=0;
+		Connection con = new Connexion().conexion();
+		PreparedStatement pstmt = null;
+		try {
+			 con.setAutoCommit(false);
+			 pstmt = con.prepareStatement(query);
+//		 for(i=0;i<tabla_parametro.length;i++){
+				 pstmt.setInt   (1, Integer.valueOf(tabla_parametro[i][0].toString()));
+				 pstmt.setString(2, tabla_parametro[i][1].toString());
+				 pstmt.setInt   (3, Integer.valueOf(tabla_parametro[i][2].toString()));
+				 pstmt.executeUpdate();	
+//		 }
+			con.commit();
+		} catch (Exception e) {
+			System.out.println("SQLException: "+e.getMessage());
+			if(con != null){
+				try{
+					System.out.println("La transacción ha sido abortada");
+					con.rollback();
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Clasificacion_De_Pagos_En_Efectivo_Gastos ] update  SQLException:\n Procedimiento Almacenado: "+query+
+							"\n Valores Enviados Que Provocaron El Error: " +
+							"\nVariable 1:"+tabla_parametro[i][0] +
+							"\nVariable 2:"+tabla_parametro[i][1] +
+							"\nVariable 3:"+tabla_parametro[i][2] +
+							"\n Error Mostrado SQL: "+e.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}catch(SQLException ex){
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Error en ActualizarSQL  en la funcion [ Clasificacion_De_Pagos_En_Efectivo_Gastos ] update  SQLException:\n sp_actualizar_negacion_o_aceptacion_del_sueldo_y_bono "+ex.getMessage(), "Avisa al Administrador", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			return false;
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return true;
+	}
+	
 	
 	public boolean Guardar_Configuracion_Para_Checar_Sin_Cuadrnate_Capturado(int folio, String Estab, String Depto, String Status, String Mov){
 		String query = "exec checador_guardar_configuracion_para_checar_sin_cuadrante_capturado ?,?,?,?,?,?";

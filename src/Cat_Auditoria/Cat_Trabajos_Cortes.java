@@ -63,10 +63,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
 	
-//	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento();
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	JComboBox cmbEstablecimiento = new JComboBox(establecimiento);
-	
 	JButton btnRegresarCortes = new JButton("Restaurar Quitados");
 	JButton btnQuitarSeleccionado = new JButton("Quitar Seleccionado",new ImageIcon("imagen/Delete.png"));
 	JButton btnQuitarDesmarcados = new JButton("Quitar NO Seleccionado",new ImageIcon("imagen/Delete.png"));
@@ -306,40 +302,13 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		txtEfectivoPlanes.setBackground(Color.lightGray);
 		txtEfectivoPlanes.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-//		if(new ActualizarSQL().actualizar_tabla_cortes_con_asignaciones()){ 
 			refresh();
-//			while(tabla_grupos.getRowCount()>0){
-//				tabla_model_grupos.removeRow(0);
-//			}
-//				String[][] matriz = new BuscarTablasModel().tabla_model_trabajo_de_cortes(cadenaCajaVerde(),grupo_de_concentrado);
-//	 
-//				String[] fila = new String[20];
-//		        for(int i=0; i<matriz.length; i++){
-//		        	
-//		        	for(int j=0; j<20; j++){
-//		        		fila[j] = matriz[i][j]+"";
-//		        	}
-//		        		tabla_model_grupos.addRow(fila);
-//		        }
-//		}else{
-//			JOptionPane.showMessageDialog(null, "No se validaron los folios de asignacion","Aviso",JOptionPane.WARNING_MESSAGE);
-//			return;
-//		}
-
-		 
-		 
-		 
-//		blackline = BorderFactory.createLineBorder(new Color(255,171,0));
 		this.setTitle("Trabajos De Cortes");
 		this.panel.setBorder(BorderFactory.createTitledBorder( "Concentrados De Cortes"));
-		
-//		trsfiltro = new TableRowSorter(tabla_model_grupos); 
-//		tabla_grupos.setRowSorter(trsfiltro);  
 		
 		panel.add(btnRestaurar).setBounds(890, 10, 100, 20);
 		panel.add(scroll).setBounds(20, 30, 970, 80);
 		
-//		panel.add(cmbEstablecimiento).setBounds(45, 165, 160, 20);
 		panel.add(btnRegresarCortes).setBounds(400, 115, 130, 20);
 		panel.add(btnQuitarSeleccionado).setBounds(545, 115, 150, 20);
 		panel.add(btnQuitarDesmarcados).setBounds(710, 115, 150, 20);
@@ -347,7 +316,6 @@ public class Cat_Trabajos_Cortes extends JFrame{
 		
 		panel.add(txtFiltroPorAsignacion).setBounds(275, 115, 110, 20);
 		panel.add(scroll_grupos).setBounds(20, 135, 970, 290);
-//		panel.add(btnCalcular).setBounds(20, 0, 160, 20);
 		panel.add(scroll_concentrado).setBounds(20, 430, 970, 130);
 		
 		int x=20, y= 565,ancho=90;

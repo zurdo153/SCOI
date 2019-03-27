@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.AbstractAction;
@@ -57,7 +58,7 @@ import Obj_Principal.Obj_tabla;
 import Obj_Servicios.Obj_Correos;
 
 @SuppressWarnings("serial")
-public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
+public class Cat_Orden_De_Gasto_Pagos extends JFrame{
 
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -107,6 +108,8 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	JTextField txtautorizo       = new Componentes().text(new JCTextField()  ,"Autorizó"                  ,300  ,"String");
 	JTextField txtFechaAutorizo  = new Componentes().text(new JCTextField()  ,"Fecha Autorizó"            ,60   ,"String");
 	JTextField txtCantidad       = new Componentes().text(new JCTextField()  ,"Cantidad"                  ,30   ,"Double");
+	JTextField txtTipoMovimiento = new Componentes().text(new JCTextField()  ,"Gasto/Compra"              ,30   ,"String");
+	JTextField txtNumeroCheque   = new Componentes().text(new JCTextField()  ,"Numero Cheque"             ,20   ,"String");
 	
     JTextArea  txtaUso           = new Componentes().textArea(new JTextArea(), "Uso De La Mercancia"      ,300);
 	JScrollPane txtUso           = new JScrollPane(txtaUso);
@@ -152,12 +155,12 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	
 	JToolBar menu_toolbar       = new JToolBar();
 	int folioBeneficiario = 0;
-	public Cat_Orden_De_Gasto_Pago_En_Efectivo(){
+	public Cat_Orden_De_Gasto_Pagos(){
 		this.setSize(565, 590);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Pay-Per-Click-icon64px.png"));
-		this.setTitle("Orden De Pago En Efectivo");
+		this.setTitle("Orden De Pago");
 		panel.setBorder(BorderFactory.createTitledBorder("Llena o Selecciona Los Datos Correspondientes"));
 		lblPersona.setBorder(BorderFactory.createTitledBorder(borderline,"Beneficiario"));
 		grupo.add(rbProveedor);
@@ -180,12 +183,19 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		
 		this.menu_toolbar.setFloatable(false);
 		
-		int x=15,y=20,width=90,height=20,sep=60;
+		int x=15,y=20,width=100,height=20,sep=60;
 		this.panel.add(menu_toolbar).setBounds                       (x      ,y     ,500     ,height);
-		this.panel.add(new JLabel("Folio:")).setBounds               (x      ,y+=25 ,width   ,height);
+		
+		this.panel.add(new JLabel("Cuenta:")).setBounds              (x      ,y+=25 ,width   ,height);
+		this.panel.add(cmbcuenta_bancaria).setBounds                 (x+=sep ,y     ,width   ,height);
+		this.panel.add(new JLabel("Fecha de Pago:")).setBounds       (x+=110 ,y     ,width   ,height);
+		this.panel.add(fhFecha).setBounds                            (x+=75  ,y     ,width   ,height);
+		this.panel.add(new JLabel("Tipo:")).setBounds                (x+=110 ,y     ,width   ,height);
+		this.panel.add(txtTipoMovimiento).setBounds                  (x+=30  ,y     ,135     ,height);	
+		
+		this.panel.add(new JLabel("Folio:")).setBounds               (x=15   ,y+=25 ,width   ,height);
 		this.panel.add(txtFolio).setBounds                           (x+=sep ,y     ,width   ,height);
-
-		this.panel.add(new JLabel("Folio Solicitud:")).setBounds     (x+=110 ,y     ,width   ,height);
+		this.panel.add(new JLabel("Folio O. Gasto")).setBounds       (x+=110 ,y     ,width   ,height);
 		this.panel.add(txtFolioSolicitud).setBounds                  (x+=75  ,y     ,width   ,height);
 		this.panel.add(cmbEstablecimiento  ).setBounds               (x+=110 ,y     ,165     ,height);
 		
@@ -205,22 +215,17 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		
 		this.panel.add(scroll_tabla).setBounds                       (x      ,y+=65 ,520     ,100   );
 		
-		this.panel.add(new JLabel("Cuenta:")).setBounds              (x=15   ,y+=110,width   ,height);
-		this.panel.add(cmbcuenta_bancaria).setBounds                 (x+=sep ,y     ,130     ,height);
-		
-		this.panel.add(new JLabel("Fecha:")).setBounds               (x+=145 ,y     ,width   ,height);
-		this.panel.add(fhFecha).setBounds                            (x+=40  ,y     ,100     ,height);
-		
+		this.panel.add(new JLabel("Clasificacion:")).setBounds       (x=15   ,y+=115,width   ,height);
+		this.panel.add(cmbConcepto).setBounds                        (x+=sep ,y     ,275     ,height);
+		this.panel.add(new JLabel("Num. Cheque:")).setBounds         (x+=280 ,y     ,width   ,height);
+		this.panel.add(txtNumeroCheque).setBounds                    (x+=80  ,y     ,width   ,height);
 		
 		this.panel.add(new JLabel("Cantidad:$")).setBounds           (x=15   ,y+=25 ,width   ,height);
 		this.panel.add(txtCantidad).setBounds                        (x+=sep ,y     ,130     ,height);
-		this.panel.add(new JLabel("Saldo:$")).setBounds              (x+=145 ,y     ,width   ,height);
+		this.panel.add(new JLabel("Saldo:$")).setBounds              (x+=135 ,y     ,width   ,height);
 		this.panel.add(txtSaldo).setBounds                           (x+=40  ,y     ,width   ,height);
 		this.panel.add(new JLabel("Nuevo Saldo:$")).setBounds        (x+=105 ,y     ,width   ,height);
 		this.panel.add(txtSaldo_Nuevo).setBounds                     (x+=80  ,y     ,width   ,height);
-		
-		this.panel.add(new JLabel("Concepto:")).setBounds            (x=15   ,y+=25 ,150     ,height);
-		this.panel.add(cmbConcepto).setBounds                        (x+=sep ,y     ,300     ,height);
 		
 		this.panel.add(new JLabel("Beneficiario:")).setBounds        (x=15   ,y+=25 ,70      ,height);
 		this.panel.add(txtBeneficiario).setBounds                    (x+=sep ,y     ,300     ,height);
@@ -239,11 +244,19 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		
 		init_tabla();
 		
+		try {
+			fhFecha.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(new BuscarSQL().fecha(0)));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		txtFolio.setEditable(false);
 		txtBeneficiario.setEditable(false);
 		txtFolioSolicitud.setEditable(false);
 		txtProveedor.setEditable(false);
-		txtSolicitante.setEnabled(false);
+		txtSolicitante.setEditable(false);
 		txtFechaSolicito.setEditable(false);
 		txtautorizo.setEditable(false);
 		txtFechaAutorizo.setEditable(false);
@@ -251,10 +264,12 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		txtCantidad.setEditable(false);
 		txtSaldo.setEditable(false);
 		txtSaldo_Nuevo.setEditable(false);
+		txtTipoMovimiento.setEditable(false);
 		cmbEstablecimiento.setEnabled(false);
-
+		cmbConcepto.setEnabled(false);
+		txtNumeroCheque.setEditable(false);
+		
 		cont.add(panel);
-		cargar_datos_iniciales(); 
 		
 		btnBuscar.addActionListener(buscarorden);
 		rbProveedor.addActionListener(opRButton);
@@ -269,8 +284,8 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		txtautorizo.addKeyListener(enterpasaraBeneficiario);
 		rbEmpleado.addKeyListener(enterpasarafiltroBeneficiario);
 		rbProveedor.addKeyListener(enterpasarafiltroBeneficiario);
-		txtBeneficiario.addKeyListener(enterpasaracantidad);
 		
+		btnDeshacer.doClick();
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "buscarbtn");
          getRootPane().getActionMap().put("buscarbtn", new AbstractAction(){public void actionPerformed(ActionEvent e)
              {                 	    btnBuscar.doClick();                   	    }	                 });
@@ -289,13 +304,8 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
                  
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
         getRootPane().getActionMap().put("escape", new AbstractAction(){    public void actionPerformed(ActionEvent e)  {    btnDeshacer.doClick();        }     });
-                 
-		 this.addWindowListener(new WindowAdapter() {
-             public void windowOpened( WindowEvent e ){
-            	 txtCantidad.requestFocus();
-          }
-     });
-		 
+        
+	    this.addWindowListener(new WindowAdapter() {  public void windowOpened( WindowEvent e ){ cmbcuenta_bancaria.requestFocus(); cmbcuenta_bancaria.showPopup(); }  });    
 	}
 	
 	public void cargar_datos_iniciales() {
@@ -343,14 +353,27 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 			txtSaldo.setText("");
 			txtSaldo_Nuevo.setText("");
 			txaConcepto.setText("");
+			txtTipoMovimiento.setText("");
+			txtNumeroCheque.setText("");
+			
 			cmbEstablecimiento.setSelectedIndex(0);
 			cmbConcepto.setSelectedIndex(0);
 			rbProveedor.setSelected(true);
 			btnAltaproveedor.setSelected(true);
+    		btnBuscarBen.setEnabled(false);
+    		txtNumeroCheque.setEditable(false);
+    		
+    		rbProveedor.setEnabled(false);
+    		rbEmpleado.setEnabled(false);    		
+    		txaConcepto.setEditable(false);
+    		fhFecha.setEnabled(false);
 			txaConcepto.setBackground(new Color(Integer.parseInt("EBEBEB",16)));
 			txtCantidad.requestFocus();
 			cargar_datos_iniciales(); 
 			Guardar_actualizar="";
+			cmbcuenta_bancaria.setSelectedIndex(0);
+			cmbcuenta_bancaria.setEnabled(true);
+            cmbcuenta_bancaria.requestFocus();
 		 }
 		};
 		
@@ -396,7 +419,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 				return;
 			}else{
                //		int folio_orden_de_gasto                               ,float cantidad                                         , String fecha                                               , String observaciones                     , String tipoBeneficiario        , int folioBeneficiario, String Concepto,String Guardar_actualizar){
-			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar,cmbcuenta_bancaria.getSelectedItem().toString().trim()) ){
+			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar,cmbcuenta_bancaria.getSelectedItem().toString().trim(), txtNumeroCheque.getText().trim() )){
 				           Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
 				           String productos="\nDescripcion / Cantidad / Importe\n";
 						   for(int i=0;i<tablaog.getRowCount();i++) {
@@ -458,26 +481,15 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		}
 	};
 	
-	KeyListener enterpasaracantidad = new KeyListener() {
-		public void keyTyped(KeyEvent e){}
-		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ENTER){
-				txtCantidad.requestFocus();
-			}
-		}
-	};
 	
 	private String validaCampos(){
 		String error="";
 		String fecha = "";
 		fecha = fhFecha.getDate()+"";
-		if(txtCantidad.getText().equals(""))error+= "Cantidad del Pago \n";
 		if(fecha.equals("null"))error+= "Fecha\n";
 		if(txaConcepto.getText().equals(""))error+= "Detalle\n";
 		if(txtBeneficiario.getText().equals(""))error+= "Beneficiario\n";
-		if(cmbConcepto.getSelectedItem().toString().equals(""))error+="Concepto\n";
-		if(cmbEstablecimiento.getSelectedIndex()==0)error+="Establecimiento \n";
+		if(txtNumeroCheque.getText().equals(""))error+= "Numero de Cheque\n";		
 		return error;
 	}
 	
@@ -496,7 +508,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 				JLayeredPane panelfb = new JLayeredPane();
 				Connexion con = new Connexion();
 				Obj_tabla ObjTab =new Obj_tabla();
-				int columnasb = 11,checkbox=-1;
+				int columnasb = 13,checkbox=-1;
 				public void init_tablafp(){
 			    	this.tablab.getColumnModel().getColumn( 0).setMinWidth(50);
 			    	this.tablab.getColumnModel().getColumn( 0).setMaxWidth(50);
@@ -522,7 +534,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 					 return types;
 				}
 				
-				public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio","Proveedor","Tipo Provedor","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo"}){
+				public DefaultTableModel modelob = new DefaultTableModel(null, new String[]{"Folio","Proveedor","Tipo Provedor","Descripcion Gasto","Establecimiento","Importe Total","Usuario Solicita", "Fecha","Estatus","Fecha Autorizacion","Usuario Autorizo","Concepto","Forma de Pago"}){
 					 @SuppressWarnings("rawtypes")
 						Class[] types = base();
 						@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -592,13 +604,18 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	        				}
 	        				modelog.addRow(vectortabla);
 	        		}
-	        		
 	        			for(int i=0;i<tablaog.getRowCount();i++) {
 	        				tablaog.setValueAt(Float.valueOf(tablaog.getValueAt(i, 1)+"") * Float.valueOf(tablaog.getValueAt(i, 2)+"")   , i, 3);
 	        			}
 	        		
 	        		
 	        		if(tablab.getValueAt(fila,  8).toString().equals("AUTORIZADO")){
+	        			if(tablacompleta[0][17].toString().equals("COMPRA")){
+	        			  cmbConcepto.setSelectedItem("COMPRAS A PROVEEDORES");	
+	        			 }else {
+	        			  cmbConcepto.setSelectedItem("GASTO SIN CLASIFICAR");		 
+	        			 }
+	        				
 	        			txtFolioSolicitud.setText         (tablab.getValueAt(fila,  0).toString());
 		        		txtProveedor.setText              (tablab.getValueAt(fila,  1).toString());
 		        		txtaUso.setText                   (tablab.getValueAt(fila,  3).toString());
@@ -608,11 +625,26 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 		        		txtFechaSolicito.setText          (tablab.getValueAt(fila,  7).toString());
 		        		txtFechaAutorizo.setText          (tablab.getValueAt(fila,  9).toString());
 		        		txtautorizo.setText               (tablab.getValueAt(fila, 10).toString());	
+		        		txtTipoMovimiento.setText         (tablab.getValueAt(fila, 11).toString());	
+
 		        		cargar_datos_iniciales();
 		        		Guardar_actualizar="N";
-		        		cmbConcepto.requestFocus();
-		        		cmbConcepto.showPopup();
 		        		txaConcepto.setBackground(new Color(254,254,254));
+		        		txaConcepto.setEditable(true);
+		        		btnBuscarBen.setEnabled(true);
+		        		rbProveedor.setEnabled(true);
+		        		fhFecha.setEnabled(true);
+		        		rbEmpleado.setEnabled(true);    		
+		        		cmbcuenta_bancaria.setEnabled(false);
+		        		if(tablab.getValueAt(fila, 12).toString().equals("CHEQUE")) {
+		        			txtNumeroCheque.setText("");
+		        			txtNumeroCheque.setEditable(true);
+		        			txtNumeroCheque.requestFocus();
+		        		}else {
+		        			txtNumeroCheque.setText("0");
+		        			txtNumeroCheque.setEditable(false);
+		        		}
+		        		
 		        		dispose();
 	        		}else{
 						JOptionPane.showMessageDialog(null, "Para Que Un Registro Sea Agregado Para Pago Es Requerido Que Este Haya Sido Autorizado\nEl Que Esta Seleccionando Tiene Estatus De "+tablab.getValueAt(fila,  8).toString(),"Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -735,7 +767,7 @@ public class Cat_Orden_De_Gasto_Pago_En_Efectivo extends JFrame{
 	public static void main(String[] args) {
 		try{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new Cat_Orden_De_Gasto_Pago_En_Efectivo().setVisible(true);
+			new Cat_Orden_De_Gasto_Pagos().setVisible(true);
 		}catch(Exception e){	}	
 	}
 }

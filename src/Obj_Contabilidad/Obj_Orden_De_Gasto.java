@@ -141,6 +141,14 @@ public class Obj_Orden_De_Gasto {
 		return null; 
 	}
 	
+	public String[] Cuentas_Gastos_Edo_Resultados() {
+		try {
+			return new Cargar_Combo().Combos("Cuentas_Gastos_Edo_Resultados");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
 	public Obj_Orden_De_Gasto GuardarActualizar(){ 
 	return new GuardarSQL().Guardar_Solicitud_Orden_De_Gasto(this); }
 

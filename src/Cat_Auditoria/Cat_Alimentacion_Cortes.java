@@ -428,7 +428,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		panel.add(btnQuitarVauchers).setBounds(x,y+=105,ancho+20,20);
 		panel.add(btnReimprimir).setBounds(x*34,y,ancho+80,30);
 		
-		panel.add(btnGuardarCorte).setBounds(x*29,y+=130,ancho-40,20);
+		panel.add(btnGuardarCorte).setBounds(x*29,y+=127,ancho-40,20);
 		panel.add(btnCancelar).setBounds(x*29+110,y,ancho-37,20);
 		panel.add(btnSalir).setBounds(x*29+220,y,ancho-40,20);
 
@@ -828,7 +828,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						if(folio_corte_denominacion.eliminar(lblFolio_Corte.getText())){
 							
 							txtFechaCorte.setText("");
-							
 							txtCorteSistema.setText("");
 							txtTiempoAire.setText("");
 							txtReciboLuz.setText("");
@@ -836,10 +835,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							txtEfectivo.setText("");
 							txtDeposito.setText("");
 							txtCheques.setText("");
-							
 							txtTotalVaucher.setText("");
 							txaObservaciones.setText("");
-							
 							lblDiferenciaCorte.setText("");
 							
 							btnCancelar.setEnabled(false);
@@ -851,20 +848,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 							btnCheques.setEnabled(false);
 							btnFS.setEnabled(false);
 							
-							while(tabla_asignaciones.getRowCount()>0) {
-								modelo_asignaciones.removeRow(0);
-							}
-						
-							while(tabla_vauchers.getRowCount()>0) {
-								modelo_vauchers.removeRow(0);
-							}
+							modelo_asignaciones.setRowCount(0);
+							modelo_vauchers.setRowCount(0);
+							modelo_totales_por_fecha.setRowCount(0);
 							
-							while (tabla_totales_por_fecha.getRowCount()>0) {
-								modelo_totales_por_fecha.removeRow(0);							
-							}
-							
-//							dispose();
-							JOptionPane.showMessageDialog(null, "La registro se elimino exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "El Registro se elimino Exitosamente", "Aviso", JOptionPane.OK_OPTION,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 							return;
 						}else{
 							JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar eliminar el registro","Error",JOptionPane.ERROR_MESSAGE);
@@ -1082,14 +1070,8 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 						rs_IZAGAR = s_IZAGAR.executeQuery(consulta_ta_rluz);
 						
 						while(rs_IZAGAR.next()){
-							
 								con.setAutoCommit(false);
 								pstmt_ta_rluz =  con.prepareStatement(query_ta_rluz);
-								System.out.println(rs_IZAGAR.getString(1));
-								System.out.println(rs_IZAGAR.getString(2));
-								System.out.println(rs_IZAGAR.getString(3));
-								System.out.println(rs_IZAGAR.getString(4));
-								System.out.println(rs_IZAGAR.getString(5));
 								pstmt_ta_rluz.setString(1, 	rs_IZAGAR.getString(1));
 								pstmt_ta_rluz.setString(2, 	rs_IZAGAR.getString(2));
 								pstmt_ta_rluz.setString(3,	rs_IZAGAR.getString(3));
@@ -1185,46 +1167,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		}
 	};
 	
-//	ActionListener opQuitarTurno = new ActionListener(){
-//		public void actionPerformed(ActionEvent e){
-//				int fila = tabla_asignaciones.getSelectedRow();
-//				if(fila<0){
-//			   			 JOptionPane.showMessageDialog(null, "Debe Seleccionar La Asignacion Que Desea Quitar","Aviso",JOptionPane.INFORMATION_MESSAGE);
-//			              return;
-//				}else{
-//					
-//					modelo_asignaciones.removeRow(fila);
-//						txtTotalVaucher.setText( "" );
-//						txtTotalRetiros.setText("");
-//						
-//						while(tabla_vauchers.getRowCount()>0){
-//								modelo_vauchers.removeRow(0);
-//						}
-//						
-//						while(tabla_retiro_de_clientes.getRowCount()>0){
-//							modelo_retiro_de_clientes.removeRow(0);
-//						}
-//						
-//						if(borrar_lista_de_asignaciones()){
-//							cargar_lista_de_asignaciones();
-//				    		obtener_totales_de_tAire_rLuz_por_folio_de_corte();
-//
-//				    		calculoDinamico();
-//				    			
-////			    			procedimiento para llenar  (tabla_de_ventas_por_fecha)  con respecto a las asignaciones seleccionadas
-//			    			llenar_venta_de_asignaciones_por_fecha();
-//						}
-//				}
-//				
-//				if(tabla_asignaciones.getRowCount()==0){
-//						btnDeposito.setEnabled(false);
-//						btnEfectivo.setEnabled(false);
-//						btnCheques.setEnabled(false);
-//						btnFS.setEnabled(false);
-//				}
-//				
-//		}
-//	};
 	
 	ActionListener opQuitarVauchers = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
@@ -1370,8 +1312,10 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		}
 		return filas;
 	}
-
+///TODO Filtro Alimentacion de efectivo
+	
 	public class Cat_Alimentacion_De_Efectivo extends Cat_Efectivo{
+		
 		public Cat_Alimentacion_De_Efectivo(){
 			this.lblEmpleado.setText(lblNombre_Completo.getText());
 			tabla_model_efectivo.setRowCount(0);
@@ -1485,10 +1429,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		
 		ActionListener op_guardar = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if(tabla_efectivo.isEditing()){
-					tabla_efectivo.getCellEditor().stopCellEditing();
-				}
+				if(tabla_efectivo.isEditing()){	tabla_efectivo.getCellEditor().stopCellEditing();}
 				
 				if(valida_tabla() != ""){
 					txtTotal.setText("0.0");
@@ -1496,8 +1437,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					return;
 				}else{
 					
-						if(JOptionPane.showConfirmDialog(null, "¿Desea guardar la lista de Denominaciones?") == 0){
-									Obj_Alimentacion_Denominacion Alim_Denom = new Obj_Alimentacion_Denominacion();
+						Obj_Alimentacion_Denominacion Alim_Denom = new Obj_Alimentacion_Denominacion();
 									Alim_Denom.setFolio_corte(lblFolio_Corte.getText());
 									Alim_Denom.setEmpleado(lblEmpleado.getText());
 									Alim_Denom.setEstablecimiento(lblEstablecimineto.getText());
@@ -1507,12 +1447,9 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 													
 													btnCancelar.setEnabled(true);
 													btnSalir.setEnabled(false);
-													
-//		calculo automatico sin dar enter ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 													float suma = 0;
 													for(int i=0; i<tabla_efectivo.getRowCount(); i++){
-														
 															if(tabla_model_efectivo.getValueAt(i,4).toString().equals("")){
 																	suma = suma + 0;
 															}else{
@@ -1527,16 +1464,12 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 													}
 													txtTotal.setText(suma+"");
 													txtEfectivo.setText(suma+"");
-//		----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 													calculoDinamico();
 													dispose();
-													
 													new Cat_Reporte_De_Efectivo_Cortes(lblFolio_Corte.getText().trim());
-//													JOptionPane.showMessageDialog(null, "La tabla Denominaciones se actualizó exitosamente","Aviso",JOptionPane.INFORMATION_MESSAGE);
-//													return;
 											}else{
 												txtTotal.setText("0.0");
-												JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar actualizó la tabla","Error",JOptionPane.ERROR_MESSAGE);
+												JOptionPane.showMessageDialog(null,"Error Al Guardar Avise al Administrador del Sistema","Aviso",JOptionPane.ERROR_MESSAGE,new ImageIcon("Imagen/usuario-icono-eliminar5252-64.png"));
 												return;
 											}
 								
@@ -1579,9 +1512,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 													return;
 											}
 									}
-						}else{
-							return;
-						}
 				}
 			}
 		};
@@ -1633,7 +1563,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 	    }
 	}
 
-//tabla captura de cheques
+//TODO tabla captura de cheques
 	public class Cat_Captura_Totatales_De_Cheques extends Cat_Alimentacion_De_Cheques{
 		
 	public Cat_Captura_Totatales_De_Cheques(){
@@ -1651,21 +1581,18 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			fila[1]="";																															
 			tabla_model_cheques.addRow(fila);																									
 		};																																		
-
 	
         this.tabla_cheques.addKeyListener(op_key);
-		this.btn_guardar.addActionListener(op_guardar_cheques);
+		this.btnGuardar.addActionListener(op_guardar_cheques);
 		this.addWindowListener(op_limpiar);
-		
 		
 		//  guardar al presionar la tecla f2
 	    getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 	       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "foco");
 	    
 	    getRootPane().getActionMap().put("foco", new AbstractAction(){
-		        public void actionPerformed(ActionEvent e)
-		        {
-		        	btn_guardar.doClick();    	
+		        public void actionPerformed(ActionEvent e){
+		        	btnGuardar.doClick();    	
 		        }
 	    });
 	    
@@ -1713,7 +1640,6 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 			}
 			txtTotal.setText(suma+"");
 			txtCheques.setText(suma+"");
-//			lblDiferenciaCorte.setText((Float.parseFloat(txtCorteSistema.getText())-(suma+Float.parseFloat(txtDeposito.getText())))+"");
 			valor = true;
 		}
 		return valor;
@@ -1902,7 +1828,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 		JLayeredPane panel = new JLayeredPane();
 		
 		public JToolBar menu_toolbar = new JToolBar();
-		JButton btn_guardar=  new JCButton("","Guardar.png","Azul");
+		JButton btn_guardar=  new JCButton("Guardar","Guardar.png","Azul");
 		
 		JLabel lblEmpleado = new JLabel();
 		JTextField txtTotal = new JTextField();
@@ -2853,12 +2779,11 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 				JTextField txtFolio = new JTextField();
 				JTextField txtNombre_Completo = new JTextField();
 				
-				JButton btnAgregar = new JButton(new ImageIcon("Iconos/agregar.png"));
-				
+				JButton btnAgregar=  new JCButton("","Guardar.png","Azul");
 				public Cat_Seleccion_De_Ticket_De_FS_Cortes(int folio,String empleado) {
 					
 					this.setModal(true);
-					setIconImage(Toolkit.getDefaultToolkit().getImage("Iconos/filter_icon&16.png"));
+					setIconImage(Toolkit.getDefaultToolkit().getImage("imagen/fast-food-icon32.png"));
 					setTitle("Ticket Capturados Por Cajero(a)");
 					campo.setBorder(BorderFactory.createTitledBorder("Seleccion De Ticket Por Empleado"));
 					
@@ -2871,11 +2796,7 @@ public class Cat_Alimentacion_Cortes extends JFrame{
 					txtNombre_Completo.setText(empleado);
 					
 					buscar_tabla(folio_empleado);
-					
-					btnAgregar.setToolTipText("Agregar");
-					
 					campo.add(scroll).setBounds(15,43,374,360);
-					
 					campo.add(txtFolio).setBounds(15,20,40,20);
 					campo.add(txtNombre_Completo).setBounds(56,20,280,20);
 					campo.add(btnAgregar).setBounds(340,20,50,20);

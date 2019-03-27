@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Obj_Reporte_De_Orden_De_Pago_En_Efectivo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1680c4b3-ed3f-448e-b482-3446bd4d59e5">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI_PRuebas"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SCOI"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="343"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="647"/>
 	<queryString>
-		<![CDATA[exec orden_de_gasto_reporte_de_pago_en_efectivo 5]]>
+		<![CDATA[exec orden_de_gasto_reporte_de_pago_en_efectivo 9878]]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="folio"/>
@@ -92,6 +92,12 @@
 	<field name="nombre_de_cuenta" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre_de_cuenta"/>
 	</field>
+	<field name="forma_de_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="forma_de_pago"/>
+	</field>
+	<field name="folio_cheque" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio_cheque"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -106,13 +112,13 @@
 				<imageExpression><![CDATA["M:/Sistema De Control Operativo/SCOI/imagen/cancelado.jpg"]]></imageExpression>
 			</image>
 			<rectangle radius="5">
-				<reportElement x="453" y="72" width="101" height="35" uuid="91f13188-e5df-4500-9790-7c7955f5600e"/>
+				<reportElement x="453" y="69" width="101" height="24" uuid="91f13188-e5df-4500-9790-7c7955f5600e"/>
 			</rectangle>
 			<rectangle radius="5">
-				<reportElement x="453" y="69" width="101" height="15" backcolor="#000000" uuid="628d27b0-32bf-48d7-afa4-01b54dd56c52"/>
+				<reportElement x="453" y="66" width="101" height="12" backcolor="#000000" uuid="628d27b0-32bf-48d7-afa4-01b54dd56c52"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="453" y="69" width="101" height="15" forecolor="#FFFFFF" backcolor="#000000" uuid="b08d1e8e-5154-4baa-b306-9fdb5cfe26ea">
+				<reportElement x="453" y="64" width="101" height="15" forecolor="#FFFFFF" backcolor="#000000" uuid="b08d1e8e-5154-4baa-b306-9fdb5cfe26ea">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -137,10 +143,10 @@
 				<textElement textAlignment="Center">
 					<font size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ORDEN DE PAGO EN EFECTIVO]]></text>
+				<text><![CDATA[ORDEN DE PAGO CAJA CHICA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="453" y="82" width="100" height="20" forecolor="#B80000" uuid="89f0079d-e5b2-4706-a7d5-b8fac6b774d8"/>
+				<reportElement x="453" y="74" width="100" height="20" forecolor="#540503" uuid="89f0079d-e5b2-4706-a7d5-b8fac6b774d8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -162,30 +168,30 @@
 				<textFieldExpression><![CDATA["DESCRIPCION SOLICITUD: "+$F{descripcion_gasto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="88" y="29" width="322" height="19" forecolor="#F70202" uuid="33b9630e-057c-4da3-88f5-a6d8e12dfd81">
+				<reportElement mode="Transparent" x="88" y="29" width="322" height="19" forecolor="#540503" uuid="33b9630e-057c-4da3-88f5-a6d8e12dfd81">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cod_estab}+":"+$F{establecimiento}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ESTABLECIMIENTO:"+$F{cod_estab}+":"+$F{establecimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="152" width="545" height="19" uuid="c92c49aa-1585-4b78-af32-f348299de6a7"/>
+				<reportElement x="6" y="152" width="549" height="19" uuid="c92c49aa-1585-4b78-af32-f348299de6a7"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["PROVEEDOR ("+$F{tipo_proveedor}+"): "+$F{proveedor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="6" y="81" width="198" height="14" uuid="f9fafa82-b722-4c16-a9d0-f6d2011fc689">
+				<reportElement x="6" y="95" width="548" height="14" uuid="f9fafa82-b722-4c16-a9d0-f6d2011fc689">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ESTATUS ORDEN: "+$F{estatus}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ORDEN DE GASTO  FOLIO:"+$F{folio} +" / ESTATUS: "+$F{estatus}+" / F.PAGO:"+$F{forma_de_pago}+" / TIPO: "+$F{concepto_compra_gasto}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement key="" x="6" y="18" width="77" height="50" uuid="c619f1c8-a318-4ed7-9fdd-56c1596c8f22">
@@ -218,7 +224,7 @@
 				<imageExpression><![CDATA["C:/SCOI/imagen/gafetes/Logo_Paper_16.png"]]></imageExpression>
 			</image>
 			<textField pattern="M/d/yy h:mm a">
-				<reportElement x="470" y="55" width="85" height="13" uuid="9aa3753b-e1d2-4144-908e-1df851978d75">
+				<reportElement x="470" y="50" width="85" height="13" uuid="9aa3753b-e1d2-4144-908e-1df851978d75">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -227,7 +233,7 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="410" y="55" width="60" height="13" forecolor="#000000" uuid="ab571128-22e3-4b17-ae48-4b8f3f2989b6">
+				<reportElement x="410" y="50" width="60" height="13" forecolor="#000000" uuid="ab571128-22e3-4b17-ae48-4b8f3f2989b6">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -246,18 +252,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA["CONCEPTO PAGO: "+$F{concepto_orden_de_pago}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="198" y="69" width="119" height="25" forecolor="#000000" uuid="5f3b50b3-f820-4306-8c01-57fcf7aa4944">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font size="18" isBold="true" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[CAJA CHICA]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="410" y="29" width="145" height="13" uuid="9dae3829-87c0-4d14-ace7-8cd355004567">
+				<reportElement x="410" y="24" width="145" height="13" uuid="9dae3829-87c0-4d14-ace7-8cd355004567">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -267,7 +263,7 @@
 				<textFieldExpression><![CDATA["Fecha Sol.:"+$F{fecha_solicitud_orden_de_gasto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="42" width="145" height="13" uuid="e6957c66-e33c-457c-b912-483f4873d26e">
+				<reportElement x="410" y="37" width="145" height="13" uuid="e6957c66-e33c-457c-b912-483f4873d26e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -277,38 +273,11 @@
 				<textFieldExpression><![CDATA["Fecha Aut.:"+$F{fecha_solicitud_orden_de_gasto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="6" y="95" width="274" height="14" uuid="5e1f2039-4486-4b6d-8c1f-dca84bade1d8">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
+				<reportElement x="6" y="80" width="442" height="13" uuid="dfc9d9d4-7584-463c-b4f5-0a454d4a59f0"/>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ESTABLECIMIENTO: "+$F{cod_estab}+"-"+$F{establecimiento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="453" y="109" width="102" height="15" uuid="1ac71862-9341-442c-8ed0-5aaea7f13289">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["SOLICITUD:"+$F{folio}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="340" y="82" width="110" height="14" uuid="787bb429-890b-4f5e-bf1c-f444c70b9127">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Left">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["TIPO: "+$F{concepto_compra_gasto}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="340" y="96" width="110" height="13" uuid="dfc9d9d4-7584-463c-b4f5-0a454d4a59f0"/>
-				<textElement textAlignment="Left">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombre_de_cuenta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["FORMA PAGO:"+$F{forma_de_pago}+"         CUENTA:"+$F{nombre_de_cuenta}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -336,7 +305,7 @@
 				</reportElement>
 			</line>
 			<textField>
-				<reportElement x="42" y="17" width="496" height="19" uuid="b8917e64-e4e2-462a-8d86-0cb8409d6c22"/>
+				<reportElement x="40" y="15" width="496" height="19" uuid="b8917e64-e4e2-462a-8d86-0cb8409d6c22"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>

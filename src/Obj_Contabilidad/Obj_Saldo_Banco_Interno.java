@@ -125,6 +125,15 @@ public class Obj_Saldo_Banco_Interno {
 		return null; 
 	}
 	
+	public String[] Combo_Cuentas_reposicion_efectivo() {
+		try {
+			return new Cargar_Combo().Combos("reposicion_efectivo");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
 	public String[] Combo_Cuentas_Vale_Dola() {
 		try {
 			return new Cargar_Combo().Combos("valedola");
@@ -133,7 +142,6 @@ public class Obj_Saldo_Banco_Interno {
 		}
 		return null; 
 	}
-	
 	
 	public Obj_Saldo_Banco_Interno GuardarActualizar(){ 
 		return new GuardarSQL().Guardar_Saldo_Banco_Interno(this); }

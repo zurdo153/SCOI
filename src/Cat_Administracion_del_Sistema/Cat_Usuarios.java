@@ -162,6 +162,8 @@ public class Cat_Usuarios extends JFrame{
 		new Obj_CheckBoxNode(Sub_Contabilidad[34], false),
 		new Obj_CheckBoxNode(Sub_Contabilidad[35], false),
 		new Obj_CheckBoxNode(Sub_Contabilidad[36], false),
+		new Obj_CheckBoxNode(Sub_Contabilidad[37], false),
+		new Obj_CheckBoxNode(Sub_Contabilidad[38], false),
 	};
 	@SuppressWarnings("rawtypes")
 	Vector ContabilidadVector = new Obj_NombreVector("Contabilidad", Contabilidad);

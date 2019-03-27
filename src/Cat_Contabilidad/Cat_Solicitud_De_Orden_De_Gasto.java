@@ -19,10 +19,12 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -39,6 +41,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.MaskFormatter;
 
 import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.BuscarSQL;
@@ -74,6 +77,18 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
     	this.tabla.getColumnModel().getColumn(2).setMinWidth(93 );
     	this.tabla.getColumnModel().getColumn(3).setMinWidth(100);
     	
+	
+		JFormattedTextField ftext = new JFormattedTextField();
+		MaskFormatter mask;
+		try {
+		    mask = new MaskFormatter("#######");
+		    mask.install(ftext);
+		} catch (java.text.ParseException e) {
+		    e.printStackTrace();
+		}
+		tabla.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(ftext));
+
+		
 		String comando="Select '' as Descripcion, 0 P_Unitario,0 as Cantidad,0 as Importe" ;
 		String basedatos="26",pintar="si";
 		ObjTab.Obj_Refrescar(tabla,modelo, columnas, comando, basedatos,pintar,checkbox);
@@ -434,6 +449,7 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 				}
 		  }
    };
+   
 	
 	ActionListener opQuitarfila = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -673,6 +689,8 @@ public class Cat_Solicitud_De_Orden_De_Gasto extends JFrame{
 				case "inicio": fila=0; break;
 				case "fin": fila=tabla.getRowCount()-1; break;
 			}
+			
+			
 			
 			String sacarFocoDeTabla = "no";
 			if(fila == cantidadDeFilas-1){
