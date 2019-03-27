@@ -11496,6 +11496,23 @@ public Obj_Alimentacion_De_Inventarios_Parciales datos_producto_existencia(Strin
 			return existe;
 		}
 		
+	public byte[] buscar_foto_de_merma(int folio_merma){
+		String query = "select archivo from tb_archivos where folio_equipo ="+folio_merma+" and transaccion = 41";
+		String imegenCadena = "";
+		try {				
+			Statement s = con.conexion().createStatement();
+			ResultSet rs = s.executeQuery(query);
+			
+			while(rs.next()){
+				imegenCadena = rs.getString(1);
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+			
+		return String_a_Bytes(imegenCadena);
+	}
 //	public ImageIcon crearImagIcon(){
 //		
 //		byte[] fileContent = null;
