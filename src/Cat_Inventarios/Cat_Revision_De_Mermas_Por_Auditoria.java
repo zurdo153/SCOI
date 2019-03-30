@@ -13,6 +13,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Vector;
@@ -56,6 +59,8 @@ import Obj_Principal.Obj_tabla;
 
 @SuppressWarnings("serial")
 public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
+	
+	byte[] imagB = null;
 	
 	Container cont = getContentPane();
 	JLayeredPane panel = new JLayeredPane();
@@ -127,7 +132,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	JCButton btnEditar    = new JCButton("Editar"       ,"editara.png","Azul");
 	JCButton btnGuardar   = new JCButton("Guardar"      ,"Guardar.png","Azul");
 	JCButton btnDeshacer  = new JCButton("Deshacer"     ,"deshacer16.png","Azul");
-	
+	JCButton btnFotoMerma  = new JCButton(""     ,"investigacion-icono-9565-48.png","Azul");
 	
 //	String establecimiento[] = new Obj_Establecimiento().Combo_Establecimiento201();
 //	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -219,7 +224,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		x=20;
 		panel.add(txtcod_prod).setBounds                   (x         ,y+=30  ,width   ,height );
 		panel.add(btnProducto).setBounds                   (x+=sep    ,y      ,width   ,height );
-		
+		panel.add(btnFotoMerma).setBounds                   (x+320    ,y-5      ,30   ,30 );
 //		panel.add(new JLabel("Foto:")).setBounds		   (x+=160     ,y	   ,100     ,height );
 //		panel.add(btnExaminar).setBounds				   (x+=30      ,y	   ,100     ,height );
 //		panel.add(btnCamara).setBounds					   (x+=110     ,y	   ,30      ,height );
@@ -274,7 +279,12 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		TableColumn destino = tabla.getColumnModel().getColumn(8);		
 		destino.setCellEditor(new javax.swing.DefaultCellEditor(cmbDestinoDeMermaTabla));
 		
-//		imagMerma();
+		try {
+			imagB  = Files.readAllBytes(Paths.get(System.getProperty("user.dir")+"/Iconos/Un.JPG"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
 		
 		init_tabla("");
 		modelo.setRowCount(0);
@@ -296,7 +306,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 //		btnCamara.addActionListener(opFoto);
 		
 		btnQuitarfila.addActionListener(opQuitarfila);
-		
+		btnFotoMerma.addActionListener(opMostrarFoto);
 		agregar(tabla);
 		
 		
@@ -336,7 +346,18 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 	                 
     }
    
-   
+	public Icon crearIcon(byte[] bs){
+		ImageIcon tmpIconDefault= new ImageIcon(bs);
+//			int anchoRealDeImagen = tmpIconDefault.getIconWidth();
+//			int altoRealDeImg = tmpIconDefault.getIconHeight();
+		
+//			int anchoDeImagenEscala = (btnFoto.getWidth());
+//			int altoDeImgagenEscala = (btnFoto.getHeight());
+			
+			int anchoDeImagenEscala = (500);
+			int altoDeImgagenEscala = (480);
+			return new ImageIcon(tmpIconDefault.getImage().getScaledInstance(anchoDeImagenEscala, altoDeImgagenEscala, Image.SCALE_DEFAULT));
+	}
 //   public void imagMerma(){
 //	   
 //	   if(rutaFoto.length()==0){
@@ -379,6 +400,12 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 //		}
 //	};
 	
+	 ActionListener opMostrarFoto = new ActionListener(){
+		 public void actionPerformed(ActionEvent e){
+			 new FotoMerma().setVisible(true);
+		 }  
+	   };
+	   
    ActionListener opRazonMerma = new ActionListener(){
 	 public void actionPerformed(ActionEvent e){
 		 if(tabla.getRowCount()>0){
@@ -630,6 +657,13 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 		calcularTotalCostoDeMerma(13);
 		
 		cmbRazonDeMerma.setEnabled(tabla.getRowCount()>0?false:true);
+		
+		try {
+			imagB  = Files.readAllBytes(Paths.get(System.getProperty("user.dir")+"/Iconos/Un.JPG"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
 		
 //		rutaFoto="";
 //		imagMerma();
@@ -946,6 +980,7 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 				    			String folio =  tabla3.getValueAt(fila_Select, 0).toString().trim();
 				    			String estab = tabla3.getValueAt(fila_Select, 6).toString().trim();
 				    			String nota = tabla3.getValueAt(fila_Select, 7).toString().trim();
+				    			imagB = new BuscarSQL().buscar_foto_de_merma(Integer.valueOf(folio));
 				    			
 				    			txtFolio.setText(folio);
 				    			txtEstablecimiento.setText(estab);
@@ -974,6 +1009,31 @@ public class Cat_Revision_De_Mermas_Por_Auditoria extends JFrame{
 					public void mouseEntered(MouseEvent e) {}
 					public void mouseClicked(MouseEvent e) {}
 				});
+			}
+		}
+		
+		public class FotoMerma extends JDialog{
+			Container cont = getContentPane();
+			JLayeredPane panel = new JLayeredPane();
+			
+			JLabel lblFoto = new JLabel("");
+			
+			@SuppressWarnings({ })
+			public FotoMerma()
+			{
+				this.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagen/Filter-List-icon32.png"));
+				panel.setBorder(BorderFactory.createTitledBorder("Foto"));	
+				this.setModal(true);
+				panel.add(lblFoto).setBounds(20,10,500,500);
+				
+				lblFoto.setIcon(crearIcon(imagB));
+				
+				cont.add(panel);
+				this.setTitle("Visualizar Merma");
+				this.setSize(540,540);
+				this.setLocationRelativeTo(null);
+				this.setResizable(false);
+				
 			}
 		}
 		
