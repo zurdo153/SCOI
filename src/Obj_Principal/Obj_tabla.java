@@ -559,7 +559,6 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 			    DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
 			   String valorcelda= modelo.getValueAt(fila,columna).toString().trim();
 			   String Aviso="";
-			  
 			   if(tipo.equals("decimal")|| tipo.equals("entero")){
 				    if(tipo.equals("decimal")){						
 				    	 Aviso="Numeros";
@@ -573,7 +572,6 @@ public void Obj_Refrescar(JTable tabla,DefaultTableModel  modelo,int columnas,St
 							modelo.setValueAt(0, fila, columna);
 				    		return true;
 						}else{
-							
 							if(tipo.equals("decimal")){						
 							 Double.parseDouble(valorcelda);
 							}

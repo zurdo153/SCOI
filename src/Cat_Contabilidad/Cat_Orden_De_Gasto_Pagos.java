@@ -42,7 +42,6 @@ import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
-import Cat_Principal.EmailSenderService;
 import Conexiones_SQL.BuscarSQL;
 import Conexiones_SQL.Cargar_Combo;
 import Conexiones_SQL.Connexion;
@@ -55,7 +54,6 @@ import Obj_Principal.Componentes;
 import Obj_Principal.JCButton;
 import Obj_Principal.JCTextField;
 import Obj_Principal.Obj_tabla;
-import Obj_Servicios.Obj_Correos;
 
 @SuppressWarnings("serial")
 public class Cat_Orden_De_Gasto_Pagos extends JFrame{
@@ -420,22 +418,22 @@ public class Cat_Orden_De_Gasto_Pagos extends JFrame{
 			}else{
                //		int folio_orden_de_gasto                               ,float cantidad                                         , String fecha                                               , String observaciones                     , String tipoBeneficiario        , int folioBeneficiario, String Concepto,String Guardar_actualizar){
 			if(new GuardarSQL().Guardar_Orden_De_Gasto_Pago_En_Efectivo(Integer.valueOf(txtFolioSolicitud.getText().toString()), Float.valueOf(txtCantidad.getText().toString().trim()),new SimpleDateFormat("dd/MM/yyyy").format(fhFecha.getDate()),txaConcepto.getText().toUpperCase().trim(),rbProveedor.isSelected()?"P":"E",folioBeneficiario,cmbConcepto.getSelectedItem().toString(),Guardar_actualizar,cmbcuenta_bancaria.getSelectedItem().toString().trim(), txtNumeroCheque.getText().trim() )){
-				           Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
-				           String productos="\nDescripcion / Cantidad / Importe\n";
-						   for(int i=0;i<tablaog.getRowCount();i++) {
-							   productos=productos+tablaog.getValueAt(i, 0)+"  / "+tablaog.getValueAt(i, 1)+"  /$"+tablaog.getValueAt(i, 3)+" \n";
-						   }
+//				           Obj_Correos correos = new Obj_Correos().buscar_correos(85, "");	
+//				           String productos="\nDescripcion / Cantidad / Importe\n";
+//						   for(int i=0;i<tablaog.getRowCount();i++) {
+//							   productos=productos+tablaog.getValueAt(i, 0)+"  / "+tablaog.getValueAt(i, 1)+"  /$"+tablaog.getValueAt(i, 3)+" \n";
+//						   }
 						   
-				           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFechaSolicito.getText().toString()+" con folio:"+txtFolioSolicitud.getText().toString()
-							  		      +"\nUn pago con un valor total de:$ "+txtCantidad.getText().toString()
-										  +"\nDescripcion del gasto/compra: "+txtaUso.getText().toString()
-										  +"\n"+productos
-										  +"\nPara el establecimiento: "+cmbEstablecimiento.getSelectedItem().toString().trim()
-										  +"\nBeneficiario: "+txtProveedor.getText().trim()
-										  +"\nAutorizó pago: "+txtautorizo.getText().toString().trim()+" el dia "+txtFechaAutorizo.getText().toString().trim()
-										  +"\nRecibio efectivo: "+txtBeneficiario.getText().trim();
-
-						  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago por un total de $:"+txtCantidad.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
+//				           String Mensaje= "El usuario:"+txtSolicitante.getText().toString()+" solicitó el dia "+txtFechaSolicito.getText().toString()+" con folio:"+txtFolioSolicitud.getText().toString()
+//							  		      +"\nUn pago con un valor total de:$ "+txtCantidad.getText().toString()
+//										  +"\nDescripcion del gasto/compra: "+txtaUso.getText().toString()
+//										  +"\n"+productos
+//										  +"\nPara el establecimiento: "+cmbEstablecimiento.getSelectedItem().toString().trim()
+//										  +"\nBeneficiario: "+txtProveedor.getText().trim()
+//										  +"\nAutorizó pago: "+txtautorizo.getText().toString().trim()+" el dia "+txtFechaAutorizo.getText().toString().trim()
+//										  +"\nRecibio efectivo: "+txtBeneficiario.getText().trim();
+//
+//						  new EmailSenderService().enviarcorreo(correos.getCorreos(),correos.getCantidad_de_correos(),Mensaje,"A.I.§ Pago por un total de $:"+txtCantidad.getText().toString()+" Folio:"+txtFolio.getText().toString()+ " A "+txtProveedor.getText().trim(),"Gastos");
 
 						        btnDeshacer.doClick();
 								Guardar_actualizar="";

@@ -142,10 +142,7 @@ public class Init_Menu_Bar extends Init_Login{
 															JMenuItem subtmp = new JMenuItem(su.Nombre);
 															subtmp.addActionListener(Opciones);
 															tmp4.add(subtmp);
-														}
-								
-													
-													
+														}		
 													}
 													tmp3.add(tmp4);
 												}
