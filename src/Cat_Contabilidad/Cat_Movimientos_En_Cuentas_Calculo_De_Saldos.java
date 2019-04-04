@@ -471,8 +471,29 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 																											Double.parseDouble(txtRetiros.getText().trim()), 
 																											xml,xmlBase);
 								 if(guardado){
+										String cuenta = txtCuenta.getText().toString().trim();
+										String fechaIn = txtFechaIn.getText().toString().trim();
+										String fechaFin = txtFechaFin.getText().toString().trim();
+
+										String saldoInicial = txtSaldoInicial.getText().toString().trim();
+										String depositos = txtDepositos.getText().toString().trim();
+										String retiros = txtRetiros.getText().toString().trim();
+										String saldoConciliado = txtSaldoComciliado.getText().toString().trim();
+										String pagosEmitidos = txtPagosEmitidos.getText().toString().trim();
+										String saldoDisponible = txtSaldoDisponible.getText().toString().trim();
+										
+										String Aviso = "Los Registros Fueron Guardados Correctamente."
+														+"\n-No Cuenta: "+cuenta
+														+"\n-Fecha Del: "+fechaIn+" Al "+fechaFin
+														+"\n-Saldo Inicial: "+saldoInicial
+														+"\n-Depositos: "+depositos
+														+"\n-Retiros: "+retiros
+														+"\n-Saldo Conciliado: "+saldoConciliado
+														+"\n-Pagos Emitidos: "+pagosEmitidos
+														+"\n-Saldo Disponible: "+saldoDisponible;
+										
 									 	deshacer();
-									 	JOptionPane.showMessageDialog(null, "Los Registros Fueron Guardados Correctamente", "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
+									 	JOptionPane.showMessageDialog(null, Aviso, "Aviso", JOptionPane.WARNING_MESSAGE,new ImageIcon("imagen/aplicara-el-dialogo-icono-6256-32.png"));
 						                return;
 								 }else{
 									 JOptionPane.showMessageDialog(null,  "A Ocurrido Un Error En El Guardado, Avise Al Administrador Del Sistema","Aviso",JOptionPane.WARNING_MESSAGE,new ImageIcon("Imagen//usuario-de-alerta-icono-4069-64.png"));
@@ -672,7 +693,7 @@ public class Cat_Movimientos_En_Cuentas_Calculo_De_Saldos extends JFrame{
 							           						 for(Object[] reg: RegistrosBanco){
 							           							 
 							           							int folio_transac = Integer.valueOf(reg[6].toString().trim());
-							           							if(folio_transac==508 || folio_transac==512){
+							           							if(folio_transac==508 || folio_transac==512 || folio_transac==511 ){
 							           								
 								           								if(reg[10].toString().trim().equals("A")){
 								           									
